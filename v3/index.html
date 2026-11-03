@@ -108,6 +108,19 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 .audit-summary-card strong{color:#a7f1da}
 @media(max-width:650px){.audit-group>summary{align-items:flex-start;flex-wrap:wrap}.audit-group .audit-mini{flex-basis:100%;padding-left:37px}.audit-group>.audit-content{padding:0 8px 10px}.audit-group .rule-card{padding:13px}}
 
+
+/* 과거 검증을 읽기 쉬운 비교 화면 */
+.evidence-panel{background:#0e2939;border:1px solid #336b77;border-radius:14px;padding:18px;margin:17px 0;line-height:1.8}
+.evidence-panel h3{margin:0 0 10px;color:#d3f6ea}.evidence-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0}
+.evidence-grid>div{background:#10223b;padding:14px;border-radius:9px;border:1px solid #2d5872}
+.evidence-grid small{display:block;color:#a5c5d2;font-size:12px;line-height:1.6}.evidence-grid b{display:block;color:#eddfb6;font-size:22px;margin-top:4px}
+.evidence-note{color:#c0d9db;font-size:13px;line-height:1.9;margin-top:10px}
+.evidence-meter{height:15px;border-radius:8px;background:#2a4059;position:relative;overflow:hidden;margin:10px 0 7px}
+.evidence-meter .value{height:100%;background:#69c6b5;display:block;border-radius:8px}
+.evidence-meter .base{position:absolute;left:44.444%;height:100%;width:3px;top:0;background:#f9c36a}
+.evidence-compare{font-size:12px;color:#b6cfdd;line-height:1.7}.evidence-compare strong{color:#edf8ff}
+.evidence-tag{display:inline-block;background:#234863;color:#e9d6a8;border:1px solid #527c93;border-radius:5px;padding:3px 8px;margin:7px 0;font-size:12px}
+@media(max-width:650px){.evidence-grid{grid-template-columns:1fr}.evidence-grid>div{padding:10px}}
 </style>
 </head>
 <body>
@@ -539,6 +552,75 @@ function proofSVG(ds,n,e){
   return '<svg xmlns="http://www.w3.org/2000/svg" id="proof-'+n+'-'+e.rule.id+
     '" width="'+W+'" height="'+y+'" viewBox="0 0 '+W+' '+y+'" role="img" aria-label="'+clean(title)+'">'+inner+'</svg>';
 }
+
+const BASIC_COMPARISONS=45*45;
+function binomialUpperTail(n,wins,p){
+  if(!Number.isInteger(n)||n<=0||wins<=0)return 1;
+  if(wins>n)return 0;
+  let probability=Math.pow(1-p,n),tail=0;
+  for(let k=0;k<=n;k++){
+    if(k>=wins)tail+=probability;
+    if(k<n)probability*=((n-k)/(k+1))*(p/(1-p));
+  }
+  return Math.max(0,Math.min(1,tail));
+}
+function wilson95(wins,n){
+  if(n<=0)return [0,1];
+  const z=1.96,rate=wins/n,div=1+z*z/n;
+  const mid=(rate+z*z/(2*n))/div;
+  const margin=z*Math.sqrt(rate*(1-rate)/n+z*z/(4*n*n))/div;
+  return [Math.max(0,mid-margin),Math.min(1,mid+margin)];
+}
+function evidenceOf(e){
+  const n=e.holdCases||0,w=e.holdWins||0;
+  const [lo,hi]=wilson95(w,n);
+  const p=binomialUpperTail(n,w,BASE),corrected=Math.min(1,p*BASIC_COMPARISONS);
+  return {n,w,lo,hi,p,corrected,rate:n?w/n:NaN,
+    confirmed:!e.rule.dynamic&&e.trainCases>=65&&n>=12&&e.trainRate>BASE&&lo>BASE&&corrected<=0.05};
+}
+function evidenceVerdict(e){
+  const v=evidenceOf(e);
+  return e.rule.dynamic?"사후 발견 · 추가 실험 필요":v.confirmed?"보수적 간이 검증 기준 부합":
+    !e.stable?"비교 표본 부족":"우연한 차이 배제 불가";
+}
+function evidenceBar(e){
+  const v=evidenceOf(e);
+  const rate=v.n?pct(v.rate):"비교 자료 없음";
+  const w=v.n?Math.max(0,Math.min(100,v.rate/0.30*100)):0;
+  return '<div class="evidence-panel"><div class="evidence-tag">'+clean(evidenceVerdict(e))+'</div>'+
+    '<div class="evidence-compare"><strong>최근 검증 구간:</strong> '+v.n+'회 중 '+v.w+'회 출현 ('+rate+')</div>'+
+    '<div class="evidence-meter" role="img" aria-label="관찰 출현비율 '+rate+'와 기본 비교선 13.3퍼센트"><span class="value" style="width:'+
+    w.toFixed(1)+'%"></span><i class="base"></i></div>'+
+    '<div class="evidence-compare">민트색: 관찰 비율(표 범위 0~30%) · 금색: 일반적인 비교선 13.3%</div>'+
+    '<div class="evidence-compare">관찰 오차 참고 범위: <strong>'+pct(v.lo)+' ~ '+pct(v.hi)+'</strong></div>'+
+    '<p class="evidence-note">'+(e.rule.dynamic?
+    '이 연결 조건은 최신 기록에 맞춰 사후에 만든 탐색 규칙입니다. 과거 출현 비율이 높아도 독립 검증은 아닙니다.':
+    '45개 기본 규칙 × 45개 번호의 동시 검색을 보수적으로 고려했습니다. 간이 비교일 뿐, 다음 회차 당첨 확률을 계산한 것이 아닙니다.')+
+    '</p></div>';
+}
+function evidenceDashboard(n,fixed,flow){
+  const prelim=fixed.filter(e=>e.support),strong=fixed.filter(e=>evidenceOf(e).confirmed);
+  const stable=fixed.filter(e=>e.stable);
+  const best=fixed.filter(e=>e.holdCases>=12&&e.trainCases>=65).slice()
+    .sort((a,b)=>evidenceOf(a).corrected-evidenceOf(b).corrected).slice(0,3);
+  return '<div class="section panel"><h2>🔬 '+n+'번 패턴 근거 검증판</h2>'+
+    '<p class="hint">과거 조건에 맞는다는 것과, 우연 이상의 차이가 반복됐다는 것은 다릅니다.</p>'+
+    '<div class="evidence-grid"><div><small>기본 조건 중 기존 탐색 신호</small><b>'+prelim.length+'개</b></div>'+
+    '<div><small>보수적 간이 비교에서 확인된 신호</small><b>'+strong.length+'개</b></div>'+
+    '<div><small>별도 연결 패턴 · 사후 탐색</small><b>'+flow.length+'개</b></div></div>'+
+    '<p class="evidence-note">'+(strong.length?
+      '일부 조건이 간이 기준에 부합했지만, 실제 미래 적중력이 입증된 것은 아닙니다.':
+      '현재는 보수적 간이 비교에서 확인된 우위 신호가 없습니다. 따라서 이 번호가 더 잘 나온다고 판단할 근거가 부족합니다.')+
+    ' 기본 조건 중 최근 자료까지 비교할 수 있는 것은 '+stable.length+'개입니다.</p>'+
+    '<h3 style="margin-top:18px">최근 기록에서 비교해 볼 조건</h3>'+
+    '<p class="hint">최근 구간의 단순 비교 순서이며 추천 순위는 아닙니다.</p>'+
+    (best.length?best.map(e=>'<div class="audit-summary-card"><strong>'+clean(labelOf(e,n))+
+      '</strong><p>최근 '+e.holdCases+'회 일치 중 '+e.holdWins+'회 출현 ('+
+      pct(e.holdWins/e.holdCases)+') · '+clean(evidenceVerdict(e))+'</p></div>').join(""):
+      '<p class="hint">비교할 만한 자료가 부족합니다.</p>')+
+    '<p class="caution">오차 범위·간이 검정과 2,025개 기본 조건 검색에 대한 보수적 보정을 참고합니다. 중복 조건과 사후 선택의 영향이 있어 예측력 입증이나 당첨 보장은 아닙니다.</p></div>';
+}
+
 function ruleCard(n,e,ds){
   state.proofCache.set(n+":"+e.rule.id,e);
   const failures=e.cases-e.wins;
@@ -559,7 +641,7 @@ function ruleCard(n,e,ds){
     '<div><small>전체 관측 비율</small><b>'+pct(rate)+'</b></div>'+
     '<div><small>최근 160회 구간 내 일치 사례</small><b>'+e.holdCases+'회</b></div></div>'+
     '<p class="hint">초기 구간 '+e.trainCases+'회 중 '+e.trainWins+'회 출현. 최근 구간 '+e.holdCases+
-      '회 중 '+e.holdWins+'회 출현('+pct(valRate)+'). 일반적인 한 번호의 출현 비율은 6/45 ≈ 13.3%입니다. 여러 조건을 검색했기 때문에 우연한 편차일 수 있습니다.</p>'+
+      '회 중 '+e.holdWins+'회 출현('+pct(valRate)+'). 일반적인 한 번호의 출현 비율은 6/45 ≈ 13.3%입니다.</p>'+evidenceBar(e)+
     '<details ontoggle="if(this.open)loadProof(this,'+n+','+e.rule.id+')"><summary class="openmore">▣ 이 조건의 실제 이전 회차 → 다음 회차 PPT 그림 보기</summary>'+
     '<div class="proof"></div>'+
     '<div class="toolbar"><button class="btn small" onclick="saveProofPNG('+n+','+e.rule.id+')">PNG 이미지 저장</button><button class="btn small outline" onclick="saveProofSVG('+n+','+e.rule.id+')">벡터 이미지 저장</button></div></details></article>';
@@ -701,7 +783,7 @@ function numberReport(n,p,ds){
     '<p class="hint">최근 3번 실제 출현 위치: <strong>'+clean(positionTrail||"기록 부족")+'</strong></p>'+
     '<div class="audit-banner"><strong>숫자 해석:</strong> '+gap+'회는 '+n+'번이 마지막으로 나온 뒤 결과가 확정된 회차에서 연속으로 미출현한 횟수입니다. 다음 '+upcoming(ds)+'회 결과는 아직 모릅니다. 기본 '+fixed.length+'종은 미리 정의한 45개 검색 조건 중 이번 회차에 일치한 항목입니다. 별도 연결 '+flow.length+'종은 최근 출현 자리·간격·관련 번호에서 자동 생성한 조건이며 <strong>기본 '+fixed.length+'종 중 확률이 높은 '+flow.length+'종을 뽑은 게 아닙니다.</strong></div>'+ 
     '<p class="caution">모든 조건은 과거 기록에 대한 관찰입니다. 기본 '+fixed.length+'개 가운데 탐색 기준에 부합한 항목 '+fixed.filter(e=>e.support).length+'개, 연결 '+flow.length+'개 가운데 '+flow.filter(e=>e.support).length+'개입니다. 이 개수는 당첨 예측력이 입증됐다는 뜻이 아닙니다. 비슷한 규칙이 서로 중복될 수 있습니다.</p>'+
-    '</div>'+
+    '</div>'+evidenceDashboard(n,fixed,flow)+
     '<div class="section"><h2>🧩 이번 회차에서 발견한 회차 연결 패턴</h2>'+
     '<p class="hint">이번 회차에 실제 일치한 연결 조건 '+flow.length+'개를 <strong>전부</strong> 표시합니다. 확률 높은 순으로 추린 목록이 아닙니다. 각 조건의 과거 출현·미출현 횟수와 비교 표본을 따로 살펴보세요. 그림은 펼치면 볼 수 있습니다.</p>'+
     (flow.length?flow.map(e=>ruleCard(n,e,ds)).join(""):'<div class="panel">이번 회차에 맞는 연결 조건은 발견됐으나, 비교 가능한 과거 사례가 8회 미만이거나 해당 조건이 없습니다. 빈약한 자료를 근거로 포장하지 않습니다.</div>')+
