@@ -619,13 +619,32 @@ function makeJointStudies(ds,n,p){
   }
   return selected;
 }
+function selectFlowCards(p){
+  const list=p.unique.filter(e=>e.rule.dynamic&&e.trainCases>=8);
+  const result=[],used=new Set();
+  const preferred=[
+    e=>e.rule.group.startsWith("자리순서")||e.rule.group==="자리이동방향",
+    e=>e.rule.group.includes("간격")||e.rule.group==="자리공백",
+    e=>e.rule.group.startsWith("이웃자리")||e.rule.group==="끝수자리",
+    e=>e.rule.group.includes("순서")||e.rule.group==="이웃수방향"
+  ];
+  for(const predicate of preferred){
+    const pick=list.find(e=>predicate(e)&&!used.has(e.rule.id));
+    if(pick){result.push(pick);used.add(pick.rule.id);}
+  }
+  for(const e of list){
+    if(result.length>=6)break;
+    if(!used.has(e.rule.id)){result.push(e);used.add(e.rule.id);}
+  }
+  return result;
+}
 function numberReport(n,p,ds){
   const all=p.list;
   const gap=latestGap(ds,ds.length,n);
   const appearances=ds.filter(d=>d.numbers.includes(n));
   const recent=appearances.slice(-8).reverse();
   const fixed=p.unique.filter(e=>!e.rule.dynamic&&e.trainCases>=25);
-  const flow=p.unique.filter(e=>e.rule.dynamic&&e.trainCases>=8).slice(0,5);
+  const flow=selectFlowCards(p);
   const joint=makeJointStudies(ds,n,p);
   const positionTrail=appearances.slice(-3).map(d=>d.draw_no+"회 "+(d.numbers.indexOf(n)+1)+"구").join(" → ");
   return '<div class="panel"><div class="split"><div><div class="eyebrow">NUMBER '+n+' RESEARCH</div>'+
