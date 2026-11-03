@@ -115,7 +115,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 </section>
 <section id="research" class="page"><div class="eyebrow">NUMBER LAB</div><h1>번호 연구소</h1><p class="lead">특정 번호의 출현 흐름과 이번 회차에 적용되는 번호별 패턴을 확인합니다.</p><div class="toolbar"><label>분석 번호 <input id="focusN" class="field" type="number" min="1" max="45" value="39"></label><button class="btn" onclick="showResearch()">번호 조사하기</button></div><div id="researchResult"></div></section>
 <section id="patterns" class="page"><div class="eyebrow">PATTERN EXPLORER</div><h1>패턴 검색</h1><p class="lead">검사 대상과 조건을 직접 선택해 실제 해당 회차, 다음 회차 결과, 실패 사례를 비교합니다.</p><div class="toolbar"><label>번호 <input id="patternN" class="field" type="number" min="1" max="45" value="39"></label><label>조건 <select id="patternRule" class="field"></select></label><button class="btn" onclick="showPatternSearch()">역대 패턴 검색</button></div><div id="patternResult"></div></section>
-<section id="tickets" class="page"><div class="eyebrow">FIVE TICKET STUDIO</div><h1>최종 5조합</h1><p class="lead">번호별 연구 결과를 참고해 조합을 만들어 기록합니다. 어떤 조합도 다른 6개 번호 조합보다 1등 당첨확률이 높지는 않습니다.</p><div class="panel"><h3>사용할 후보 번호</h3><p class="hint">자동 후보가 채워집니다. 원한다면 쉼표로 구분하여 직접 수정할 수 있습니다.</p><textarea id="poolInput" class="field" rows="3" style="width:100%;resize:vertical"></textarea><div class="toolbar"><button class="btn" onclick="makeTickets(false)">최종 5조합 생성</button><button class="btn secondary" onclick="setAutoPool()">자동 후보 다시 적용</button><button class="btn outline" onclick="saveTicketPNG()">조합 이미지 저장</button></div></div><div id="ticketsResult"></div></section>
+<section id="tickets" class="page"><div class="eyebrow">FIVE TICKET STUDIO</div><h1>최종 5조합</h1><p class="lead">번호별 연구 결과를 참고해 조합을 만들어 기록합니다. 어떤 조합도 다른 6개 번호 조합보다 1등 당첨확률이 높지는 않습니다.</p><div class="panel"><h3>사용할 후보 번호</h3><p class="hint">검증 조건에 해당하는 번호를 먼저 넣습니다. 6개 미만이면 나머지는 전체 45개 분석 기록에서 선별한 <strong>보조 분산수</strong>로 채웁니다. 보조수는 검증 기준을 통과한 후보가 아닙니다. 직접 번호를 수정할 수도 있습니다.</p><textarea id="poolInput" class="field" rows="3" style="width:100%;resize:vertical"></textarea><div class="toolbar"><button class="btn" onclick="makeTickets(false)">최종 5조합 생성</button><button class="btn secondary" onclick="setAutoPool()">자동 후보 다시 적용</button><button class="btn outline" onclick="saveTicketPNG()">조합 이미지 저장</button></div></div><div id="ticketsResult"></div></section>
 <section id="backtest" class="page"><div class="eyebrow">WALK-FORWARD CHECK</div><h1>과거 검증</h1><p class="lead">과거 특정 시점에 알 수 있었던 정보만 사용해 후보를 만든 뒤 다음 회차의 실제 결과와 비교합니다. 작은 표본의 검증으로 예측 우위를 입증할 수는 없습니다.</p><div class="toolbar"><button class="btn" onclick="runBacktest()">최근 12회 시점별 검증 실행</button><span class="hint">계산에 몇 초 걸릴 수 있습니다.</span></div><div id="backtestResult"></div></section>
 <div class="footer">🛡️ LOTTO NOTE · 과거의 패턴은 미래의 당첨을 보장하지 않습니다.<br><a href="https://lotto-note.tistory.com/" target="_blank" rel="noopener">로또 노트 블로그</a></div>
 </main>
@@ -525,17 +525,31 @@ function showPatternSearch(){
     '회 중 '+n+'번 출현 '+wins+'회, 미출현 '+misses+'회. '+(cases?pct(wins/cases):"표본 없음")+
     '는 단순 관측값입니다.</p></div>'+ruleCard(n,sample,state.draws);
 }
+function supplementaryScore(p){
+  // 기준을 통과하지 못한 번호도 과거 조건의 재현 여부만 참고합니다.
+  // 이 수치는 당첨확률이나 공식 예측 점수가 아닙니다.
+  const qualified=p.unique.filter(e=>e.trainCases>=50&&e.holdCases>=10);
+  const concordant=qualified.filter(e=>e.trainRate>BASE&&e.holdWins/e.holdCases>BASE);
+  return concordant.length*100+concordant.slice(0,3).reduce(
+    (sum,e)=>sum+Math.max(0,e.trainRate-BASE)*Math.sqrt(e.trainCases),0);
+}
 function autoNumbers(dsProfiles){
-  const set=[];
+  const chosen=[];
   for(const p of dsProfiles){
-    if(p.status!=="보류"&&!set.includes(p.n))set.push(p.n);
-    if(set.length>=12)break;
+    if(p.status!=="보류"&&!chosen.includes(p.n))chosen.push(p.n);
+    if(chosen.length>=12)break;
   }
-  for(const p of dsProfiles){
-    if(!set.includes(p.n))set.push(p.n);
-    if(set.length>=12)break;
+  const pending=dsProfiles.filter(p=>!chosen.includes(p.n));
+  while(chosen.length<12&&pending.length){
+    pending.sort((a,b)=>{
+      const rating=p=>supplementaryScore(p)-
+        chosen.filter(n=>nRange(n)===nRange(p.n)).length*110+
+        (Math.imul(p.n,2654435761)>>>0)/4294967296*.01;
+      return rating(b)-rating(a);
+    });
+    chosen.push(pending.shift().n);
   }
-  return set.sort((a,b)=>a-b);
+  return chosen.sort((a,b)=>a-b);
 }
 function setAutoPool(){
   if(!state.profiles.length)return;
@@ -604,7 +618,7 @@ function makeTickets(again){
     state.tickets.map((t,i)=>'<div class="ticket"><strong>'+(i+1)+'게임</strong>'+balls(t)+'</div>').join("")+
     '<div class="toolbar"><button class="btn secondary" onclick="makeTickets(true)">다른 5조합 생성</button>'+
     '<button class="btn outline" onclick="saveTicketPNG()">PPT 이미지 저장</button></div>'+
-    '<p class="hint">중복을 줄이고 후보를 분산하는 조합 규칙입니다. 이 배열이 무작위 조합보다 1등에 유리하다는 뜻은 아닙니다.</p></div>';
+    '<p class="hint">분석 통과 후보와 보조 분산수를 섞어 조합을 다양하게 구성했습니다. 보조수의 근거는 검증 기준 미달이며, 이 배열이 무작위 조합보다 1등에 유리하다는 뜻은 아닙니다.</p></div>';
 }
 function saveTicketPNG(){
   if(!state.tickets.length)return alert("먼저 5조합을 생성하세요.");
