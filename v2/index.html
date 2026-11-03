@@ -349,7 +349,7 @@ function findProfile(n){return state.profiles.find(x=>x.n===n);}
 function labelOf(e,n){return e.rule.label.replace("{n}",String(n));}
 function proofSVG(ds,n,e){
   const selected=[];
-  selected.push({i:ds.length,hit:null,current:true});
+  selected.push({i:ds.length,hit:null,current:true,matched:e.rule.test(ds,ds.length,n)});
   const good=e.events.filter(x=>x.hit).slice(-2).reverse();
   const miss=e.events.filter(x=>!x.hit).slice(-1).reverse();
   for(const x of good)selected.push({i:x.i,hit:true,current:false});
@@ -380,7 +380,7 @@ function proofSVG(ds,n,e){
     const result=s.current?null:ds[i];
     const first=before[0].draw_no;
     const lastNo=before[before.length-1].draw_no;
-    let heading=s.current?"이번 회차: "+first+"~"+lastNo+"회 → "+(lastNo+1)+"회 결과 미정":
+    let heading=s.current?"이번 회차: "+first+"~"+lastNo+"회 → "+(lastNo+1)+"회 "+(s.matched?"결과 미정":"조건 불일치"):
       "실제 "+(s.hit?"출현":"미출현")+" 사례: "+first+"~"+lastNo+"회 → "+result.draw_no+"회";
     inner+=tx(23,y+20,heading,21,s.hit===false?"#ae495e":"#194f9b",850,"start");
     y+=43;
@@ -400,7 +400,7 @@ function proofSVG(ds,n,e){
     }
     const outcome=result?result.numbers:["—","—","—","—","—","—"];
     const row=[(result?result.draw_no:(lastNo+1))+"회"].concat(outcome)
-      .concat([result?(result.numbers.includes(n)?n+"번 출현":n+"번 미출현"):"결과 미정"]);
+      .concat([result?(result.numbers.includes(n)?n+"번 출현":n+"번 미출현"):(s.matched?"결과 미정":"조건 불일치")]);
     x=20;
     for(let c=0;c<row.length;c++){
       const mode=c>=1&&c<=6&&result&&Number(row[c])===n?"red":
@@ -422,7 +422,9 @@ function ruleCard(n,e,ds){
   const current=e.rule.k;
   const lastD=latest(ds).draw_no;
   const verdict=e.trainCases<25?"표본 부족":e.stable?"구간 비교 가능":"후반부 사례 부족";
-  const desc="이번 "+upcoming(ds)+"회에는 직전 "+current+"회 기준으로 '"+labelOf(e,n)+"' 조건이 성립합니다.";
+  const matches=e.rule.test(ds,ds.length,n);
+  const desc="이번 "+upcoming(ds)+"회에는 직전 "+current+"회 기준으로 '"+labelOf(e,n)+
+    (matches?"' 조건이 성립합니다.":"' 조건이 성립하지 않아 자동 후보 근거에서 제외됩니다.");
   return '<article class="rule-card"><div class="title"><h3>'+clean(labelOf(e,n))+'</h3>'+
     '<span class="tag '+(e.support?"green":"")+'">'+verdict+'</span></div>'+
     '<p>'+clean(desc)+" "+clean(e.rule.why)+'</p>'+
@@ -518,8 +520,14 @@ function showPatternSearch(){
     events.push({i,hit});
   }
   const current=rule.test(state.draws,state.draws.length,n);
-  const sample={rule,cases,wins,trainCases:cases,trainWins:wins,holdCases:0,holdWins:0,
-    stable:false,support:false,events};
+  const cut=Math.max(140,state.draws.length-160);
+  const train=events.filter(x=>x.i<cut),hold=events.filter(x=>x.i>=cut);
+  const trainWins=train.filter(x=>x.hit).length,holdWins=hold.filter(x=>x.hit).length;
+  const trainRate=(trainWins+30*BASE)/(train.length+30);
+  const stable=train.length>=65&&hold.length>=12;
+  const sample={rule,cases,wins,trainCases:train.length,trainWins,
+    holdCases:hold.length,holdWins,trainRate,stable,
+    support:stable&&trainRate>BASE+0.03&&holdWins/hold.length>BASE,events};
   $("patternResult").innerHTML='<div class="panel"><h2>'+clean(labelOf(sample,n))+'</h2>'+
     '<p class="hint">이번 회차 조건: <strong>'+(current?"일치":"불일치")+'</strong>. 과거 전체 동일 조건 '+cases+
     '회 중 '+n+'번 출현 '+wins+'회, 미출현 '+misses+'회. '+(cases?pct(wins/cases):"표본 없음")+
