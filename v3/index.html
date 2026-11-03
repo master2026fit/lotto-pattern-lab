@@ -351,7 +351,7 @@ function makeFlowRules(ds,n){
     const pos=at+1;
     push("이웃자리"+(candidate<n?"아래":"위"),"직전 "+pos+"구의 "+candidate+"번 → "+n+"번",1,
       (d,j,v)=>d[j-1].numbers[pos-1]===candidate,
-      (v)=>v===candidate,"39번의 이웃수라면 38번·40번처럼 정확한 번호와 1~6구 자리를 모두 맞추어 검색합니다. 다른 번호의 근거를 공유하지 않습니다.",lastDrawIndex);
+      (v)=>v===candidate,n+"번의 실제 이웃수 "+candidate+"번이 직전 "+pos+"구에 나온 조건을 정확히 지정해 검색합니다. 다른 번호에 같은 근거를 자동 부여하지 않습니다.",lastDrawIndex);
   }
   for(const candidate of prev){
     if(candidate===n||candidate%10!==n%10)continue;
@@ -526,9 +526,10 @@ function ruleCard(n,e,ds){
   const valRate=e.holdCases?e.holdWins/e.holdCases:NaN;
   const current=e.rule.k;
   const lastD=latest(ds).draw_no;
-  const verdict=e.trainCases<25?"표본 부족":e.stable?"구간 비교 가능":"후반부 사례 부족";
+  const verdict=e.stable?"구간 비교 가능":e.rule.dynamic?"비교 표본 부족":e.trainCases<25?"표본 부족":"후반부 사례 부족";
   const matches=e.rule.test(ds,ds.length,n);
-  const desc="이번 "+upcoming(ds)+"회에는 직전 "+current+"회 기준으로 '"+labelOf(e,n)+
+  const context=e.rule.group==="복합교차"?"두 조건의 선행 기록":e.rule.dynamic&&/자리순서|자리이동|출현간격|간격연속|자리공백/.test(e.rule.group)?"최근 실제 출현 기록":"직전 "+current+"회";
+  const desc="이번 "+upcoming(ds)+"회에는 "+context+"을 기준으로 '"+labelOf(e,n)+
     (matches?"' 조건이 성립합니다.":"' 조건이 성립하지 않아 자동 후보 근거에서 제외됩니다.");
   return '<article class="rule-card"><div class="title"><h3>'+clean(labelOf(e,n))+'</h3>'+
     '<span class="tag '+(e.support?"green":"")+'">'+verdict+'</span></div>'+
