@@ -459,11 +459,11 @@ function renderNumbers(){
     return '<button class="number-card '+(top?'top':p.status!=="보류"?'detected':'')+'" onclick="openDetail('+p.n+')" title="'+p.n+'번 자세히 보기">'+
       '<span class="n '+(top?'mint':'')+'">'+p.n+'</span>'+
       '<span class="c">'+clean(p.status)+'</span>'+
-      '<span class="c">연결 패턴 '+p.flowCount+'개</span></button>';
+      '<span class="c">이번 회차 연결 일치 '+p.flowCount+'개</span></button>';
   }).join("");
   const detected=state.profiles.filter(x=>x.status!=="보류").length;
   $("candidateInfo").textContent="1~45번 전체 검색 완료 · 연구 후보 "+detected+"개 · 보류 "+(45-detected)+
-    "개. 공통 조건을 전체 번호에 동일한 근거로 부여하지 않습니다. 검색된 조건은 실제 당첨 가능성이 높다는 뜻이 아닙니다.";
+    "개. 연결 조건의 개수는 추천 순위가 아닙니다. 각 번호에 실제 해당한 규칙만 표시하며, 당첨 가능성이 높아졌다는 뜻이 아닙니다.";
 }
 function validN(v){const n=Number(v);return Number.isInteger(n)&&n>=1&&n<=45?n:null;}
 function findProfile(n){return state.profiles.find(x=>x.n===n);}
