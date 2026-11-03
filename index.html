@@ -1931,5 +1931,267 @@ if(draws.length){
   }
 })();
 </script>
+  <style>
+.ln-auto-proof {
+  background:#fff;
+  color:#17345c;
+  border:1px solid #b9ccef;
+  border-radius:12px;
+  padding:16px;
+  margin:14px 0 22px;
+}
+.ln-auto-proof-title {
+  color:#194a9a;
+  font-size:17px;
+  font-weight:800;
+  margin-bottom:10px;
+}
+.ln-auto-proof-image {
+  overflow-x:auto;
+  border:1px solid #d6e3f7;
+  border-radius:8px;
+}
+.ln-auto-proof-image svg {
+  display:block;
+  width:100%;
+  min-width:560px;
+  height:auto;
+}
+.ln-auto-proof-save {
+  margin-top:12px;
+  background:#245ac1;
+  color:#fff;
+  border:0;
+  border-radius:7px;
+  padding:10px 15px;
+  font-weight:700;
+  cursor:pointer;
+}
+.ln-auto-current {
+  background:#fff3da;
+  color:#73501d;
+  padding:14px;
+  margin:15px 0;
+  border-radius:8px;
+  line-height:1.8;
+  font-size:14px;
+}
+.ln-auto-proof-history {
+  color:#526a89;
+  font-size:13px;
+  line-height:1.9;
+  margin-bottom:12px;
+}
+</style>
+
+<script>
+(function(){
+
+  const previousOpenCandidate = window.lnOpenCandidate;
+
+  function getHistory(n,feature){
+    const cases=[];
+
+    for(let i=10;i<draws.length;i++){
+      if(!flagsAt(draws,i,n)[feature])continue;
+
+      cases.push({
+        before:draws[i-1].draw_no,
+        after:draws[i].draw_no,
+        hit:draws[i].numbers.includes(n)
+      });
+    }
+
+    return cases;
+  }
+
+  window.lnSaveAutoPng=function(n,feature){
+
+    const svg=document.getElementById(
+      "lnAutoPatternSvg-"+n+"-"+feature
+    );
+
+    if(!svg)return alert("이미지를 찾을 수 없습니다.");
+
+    const xml=new XMLSerializer().serializeToString(svg);
+    const blob=new Blob([xml],{
+      type:"image/svg+xml;charset=utf-8"
+    });
+
+    const url=URL.createObjectURL(blob);
+    const img=new Image();
+
+    img.onload=function(){
+      const canvas=document.createElement("canvas");
+      canvas.width=Number(svg.getAttribute("width"));
+      canvas.height=Number(svg.getAttribute("height"));
+
+      const ctx=canvas.getContext("2d");
+      ctx.fillStyle="#fff";
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.drawImage(img,0,0);
+
+      const a=document.createElement("a");
+      a.href=canvas.toDataURL("image/png");
+      a.download=
+        "LOTTO-"+nextDraw()+"-"+n+
+        "-pattern-"+(feature+1)+".png";
+      a.click();
+
+      URL.revokeObjectURL(url);
+    };
+
+    img.onerror=function(){
+      URL.revokeObjectURL(url);
+      alert("이미지 저장 오류입니다.");
+    };
+
+    img.src=url;
+  };
+
+  window.lnOpenCandidate=function(n){
+
+    previousOpenCandidate(n);
+
+    const target=document.getElementById("lnDetail"+n);
+    if(!target||!target.innerHTML)return;
+
+    const focus=document.getElementById("focus");
+    const result=document.getElementById("numberResult");
+
+    if(!focus||!result)return;
+
+    /*
+      이미 구현된 번호 연구소의 PPT 그림을
+      현재 자동 발견 번호 화면에도 연결합니다.
+    */
+
+    const savedFocus=focus.value;
+    const savedResult=result.innerHTML;
+
+    focus.value=String(n);
+    window.renderNumber();
+
+    const images=new Map();
+
+    result.querySelectorAll(
+      'svg[id^="lnPatternSvg-"]'
+    ).forEach(svg=>{
+      const feature=Number(svg.id.split("-").pop());
+      images.set(feature,svg.cloneNode(true));
+    });
+
+    focus.value=savedFocus;
+    result.innerHTML=savedResult;
+
+    const detail=target.querySelector(".ln-auto-detail");
+
+    if(!detail)return;
+
+    /*
+      이번 회차는 과거 실제 사례가 아니라
+      결과를 기다리는 분석 대상임을 표시합니다.
+    */
+
+    const current=document.createElement("div");
+    current.className="ln-auto-current";
+
+    current.innerHTML=`
+      <strong>이번 회차 분석</strong><br>
+      ${last().draw_no}회 당첨번호 확인
+      → ${nextDraw()}회 ${n}번 조건 분석<br>
+      <strong>※ ${nextDraw()}회 결과는 아직 미정입니다.</strong>
+    `;
+
+    const introduction=detail.querySelector(".ln-auto-help");
+
+    if(introduction){
+      introduction.insertAdjacentElement("afterend",current);
+    }else{
+      detail.prepend(current);
+    }
+
+    /*
+      분석 조건 카드마다 서로 다른
+      실제 과거 반복 패턴 그림을 넣습니다.
+    */
+
+    detail.querySelectorAll(".ln-auto-example")
+      .forEach(item=>{
+
+        const feature=labels.findIndex(label=>
+          item.textContent.includes(label)
+        );
+
+        if(feature<0)return;
+
+        const svg=images.get(feature);
+        if(!svg)return;
+
+        svg.id="lnAutoPatternSvg-"+n+"-"+feature;
+
+        const history=getHistory(n,feature);
+
+        const success=history
+          .filter(x=>x.hit)
+          .slice(-3)
+          .reverse();
+
+        const failed=history
+          .filter(x=>!x.hit)
+          .slice(-2)
+          .reverse();
+
+        const pairs=success.map(x=>
+          x.before+"회 → "+x.after+"회"
+        ).join(" / ");
+
+        const failedPairs=failed.map(x=>
+          x.before+"회 → "+x.after+"회"
+        ).join(" / ");
+
+        const panel=document.createElement("div");
+        panel.className="ln-auto-proof";
+
+        const title=document.createElement("div");
+        title.className="ln-auto-proof-title";
+        title.textContent="실제 과거 반복 패턴 그림";
+
+        const description=document.createElement("div");
+        description.className="ln-auto-proof-history";
+
+        description.innerHTML=`
+          <strong>39번처럼 분석 대상 번호가 나온 사례</strong><br>
+          ${pairs||"해당 사례 없음"}<br>
+          <strong>같은 조건이었지만 나오지 않은 사례</strong><br>
+          ${failedPairs||"해당 사례 없음"}
+        `.replace(
+          "39번처럼 분석 대상 번호",
+          n+"번"
+        );
+
+        const imageArea=document.createElement("div");
+        imageArea.className="ln-auto-proof-image";
+        imageArea.appendChild(svg);
+
+        const button=document.createElement("button");
+        button.className="ln-auto-proof-save";
+        button.textContent="이 패턴 PPT 이미지 저장";
+
+        button.onclick=function(){
+          window.lnSaveAutoPng(n,feature);
+        };
+
+        panel.appendChild(title);
+        panel.appendChild(description);
+        panel.appendChild(imageArea);
+        panel.appendChild(button);
+
+        item.insertAdjacentElement("afterend",panel);
+      });
+  };
+
+})();
+</script>
 </body>
 </html>
