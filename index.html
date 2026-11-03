@@ -1,0 +1,723 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LOTTO NOTE | PATTERN LAB</title>
+<meta name="description" content="로또6/45 역대 당첨번호 패턴 연구 및 최종 5조합 생성">
+<style>
+:root{
+  --bg:#09111f;--panel:#111e31;--panel2:#17263d;
+  --line:#293a52;--text:#edf2fa;--muted:#9dafc7;
+  --gold:#e2bb77;--blue:#60a5fa;--green:#55c6a5
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font-family:system-ui,-apple-system,"Malgun Gothic",sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{display:flex;min-height:100vh}
+.sidebar{width:244px;padding:30px 18px;background:#0c1728;
+  border-right:1px solid var(--line);flex-shrink:0}
+.brand{display:flex;align-items:center;gap:12px;margin:4px 8px 40px}
+.logo{width:46px;height:46px;border-radius:14px;
+  display:grid;place-items:center;background:var(--gold);
+  color:#101827;font-size:24px;font-weight:900}
+.eyebrow{font-size:11px;letter-spacing:2px;color:var(--gold);
+  font-weight:800}
+.brand h2{font-size:20px;margin:3px 0}
+.nav{display:block;width:100%;text-align:left;padding:14px;
+  margin:7px 0;border:0;border-radius:11px;color:var(--muted);
+  background:transparent;font-weight:700}
+.nav.active,.nav:hover{background:#21334d;color:white}
+.sidefoot{font-size:12px;color:#8092ad;line-height:1.8;
+  margin:50px 12px}
+.main{flex:1;min-width:0;padding:32px;max-width:1480px}
+.top{display:flex;justify-content:space-between;gap:15px;
+  align-items:center;margin-bottom:30px;flex-wrap:wrap}
+.top h1{font-size:26px;margin:5px 0}
+.status{border:1px solid var(--line);background:var(--panel);
+  padding:11px 15px;border-radius:30px;font-size:12px;color:#b5c4d8}
+.hero{background:linear-gradient(125deg,#193554,#10223c 65%,#172b43);
+  border:1px solid #35516f;border-radius:20px;padding:28px;
+  margin-bottom:22px;position:relative;overflow:hidden}
+.hero:after{content:"39";position:absolute;right:24px;top:-20px;
+  font-size:180px;color:#ffffff0b;font-weight:900;pointer-events:none}
+.hero h2{font-size:29px;margin:12px 0;position:relative;z-index:1}
+.hero p{color:#b6c9dc;max-width:650px;line-height:1.8;
+  position:relative;z-index:1}
+.badge{display:inline-block;font-size:11px;letter-spacing:1px;
+  border:1px solid #cfa96675;border-radius:30px;color:var(--gold);
+  padding:7px 10px;font-weight:800}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+  margin-bottom:22px}
+.card{background:var(--panel);border:1px solid var(--line);
+  border-radius:17px;padding:21px}
+.statlabel{font-size:12px;color:var(--muted)}
+.statvalue{display:block;font-size:27px;font-weight:900;
+  margin-top:10px;color:white}
+.section-title{font-size:19px;font-weight:850;margin:4px 0 17px}
+.grid2{display:grid;grid-template-columns:1.15fr 1fr;gap:18px}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+  margin-bottom:18px}
+.btn{border:0;padding:12px 16px;border-radius:11px;
+  font-weight:800;background:var(--gold);color:#111827}
+.btn.secondary{background:#253a56;color:#edf4ff}
+.btn.outline{background:transparent;color:var(--gold);
+  border:1px solid #b9966077}
+input,select{background:#0d192a;border:1px solid #41536b;
+  border-radius:10px;color:white;padding:12px;min-width:0}
+.poolinput{width:100%;font-size:15px}
+.note{font-size:12px;color:var(--muted);line-height:1.85}
+.result{padding:14px;background:#0b1728;border-radius:12px;
+  border:1px solid var(--line);line-height:1.8}
+.line{height:1px;background:var(--line);margin:16px 0}
+.ballset{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.ball{width:38px;height:38px;border-radius:50%;display:inline-grid;
+  place-items:center;font-weight:900;font-size:13px;color:white;
+  box-shadow:inset 0 -4px 7px #0002}
+.b1{background:#d7a341}.b2{background:#3b91ca}
+.b3{background:#d35f80}.b4{background:#708298}
+.b5{background:#3fa47e}
+.tablewrap{overflow:auto}
+table{border-collapse:collapse;width:100%;min-width:400px}
+th,td{padding:13px 9px;text-align:left;border-bottom:1px solid #2b3a50;
+  font-size:13px}
+th{color:#96acc7;font-size:12px;font-weight:700}
+td{color:#e5ecf6}
+tr:hover td{background:#19283a}
+.game{border:1px solid #38516c;border-radius:13px;padding:16px;
+  margin:12px 0;background:#12233a}
+.ghead{display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:12px;font-size:12px;color:var(--muted)}
+.green{color:var(--green)}.gold{color:var(--gold)}
+.page{display:none}.page.active{display:block}
+.empty{color:#899db7;text-align:center;padding:32px 10px;
+  border:1px dashed #354964;border-radius:12px}
+.caution{background:#29301f;border-left:4px solid var(--gold);
+  padding:13px 16px;border-radius:7px;font-size:12px;
+  line-height:1.7;color:#f0dcae}
+footer{font-size:11px;color:#7e91ac;padding:28px 0 10px;line-height:1.8}
+a{color:#a6cdff}
+@media(max-width:920px){
+  .app{display:block}.sidebar{width:auto;padding:16px}
+  .brand{margin:0 0 13px}.navigation{display:flex;gap:6px;overflow:auto}
+  .nav{min-width:max-content;width:auto;font-size:12px;padding:10px}
+  .sidefoot{display:none}.main{padding:18px}
+  .grid2{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}
+  .hero h2{font-size:23px}.hero:after{font-size:120px}
+}
+@media(max-width:440px){
+  .stats{gap:8px}.card{padding:15px}
+  .statvalue{font-size:23px}.ball{width:33px;height:33px;font-size:12px}
+  .main{padding:13px}.hero{padding:18px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand">
+    <div class="logo">L</div>
+    <div><div class="eyebrow">LOTTO NOTE</div><h2>PATTERN LAB</h2></div>
+  </div>
+  <div class="navigation">
+    <button class="nav active" data-page="home" onclick="tab('home')">◈ 종합 대시보드</button>
+    <button class="nav" data-page="number" onclick="tab('number')">◎ 번호 연구소</button>
+    <button class="nav" data-page="pattern" onclick="tab('pattern')">⌕ 패턴 검색</button>
+    <button class="nav" data-page="tickets" onclick="tab('tickets')">▦ 최종 5조합</button>
+    <button class="nav" data-page="verify" onclick="tab('verify')">◷ 과거 검증</button>
+  </div>
+  <p class="sidefoot">LOTTO NOTE RESEARCH<br>번호를 예언하는 앱이 아닌<br>과거 조건을 비교하는 연구 도구</p>
+</aside>
+
+<main class="main">
+  <div class="top">
+    <div>
+      <div class="eyebrow">HISTORICAL NUMBER INTELLIGENCE</div>
+      <h1>로또 패턴 분석 연구소</h1>
+    </div>
+    <div class="status" id="status">● 역대 데이터 연결 중...</div>
+  </div>
+
+  <section class="page active" id="home">
+    <div class="hero">
+      <span class="badge">LOTTO 6/45 · RESEARCH SYSTEM</span>
+      <h2>숫자의 흔적을 찾고<br>조합의 근거를 기록하다.</h2>
+      <p>당첨번호가 등장하기 전의 공통 조건, 실패 사례,
+      이웃수와 끝수의 움직임을 비교하고 최종 5게임까지 연결합니다.</p>
+      <button class="btn" onclick="tab('pattern')">39번 패턴부터 분석하기 →</button>
+    </div>
+    <div class="stats">
+      <div class="card"><span class="statlabel">데이터 회차</span><strong class="statvalue" id="statDraw">—</strong></div>
+      <div class="card"><span class="statlabel">다음 연구 회차</span><strong class="statvalue" id="statNext">—</strong></div>
+      <div class="card"><span class="statlabel">전체 분석 번호</span><strong class="statvalue">45개</strong></div>
+      <div class="card"><span class="statlabel">현재 후보 번호</span><strong class="statvalue">9개</strong></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <div class="section-title">이번 회차 연구 후보</div>
+        <div class="ballset" id="homePool"></div>
+        <p class="note">현재는 사전 입력된 9개 후보입니다. 분석 결과가 확정된 번호와 구분합니다.</p>
+        <button class="btn secondary" onclick="tab('tickets')">후보로 5조합 만들기</button>
+      </div>
+      <div class="card">
+        <div class="section-title">39번 집중 연구</div>
+        <div id="homePattern" class="result">데이터를 불러오는 중입니다.</div>
+        <p class="note">직전 5회 동안 0·9끝수가 없었던 조건과 과거 결과를 비교합니다.</p>
+        <button class="btn outline" onclick="tab('number')">39번 출현 기록 보기</button>
+      </div>
+    </div>
+    <div class="card" style="margin-top:18px">
+      <div class="section-title">이번 회차 분석 순위</div>
+      <div id="rankingTable" class="empty">데이터를 불러오는 중입니다.</div>
+      <p class="note">연구 적합도 지수는 실제 당첨확률이 아닙니다.</p>
+    </div>
+  </section>
+
+  <section class="page" id="number">
+    <div class="section-title">번호 연구소</div>
+    <p class="note">번호가 출현한 과거 회차와 직전 당첨번호를 비교합니다.</p>
+    <div class="toolbar">
+      <label for="focus">분석 번호</label>
+      <input id="focus" type="number" min="1" max="45" value="39" style="width:90px">
+      <button class="btn" onclick="renderNumber()">번호 조사하기</button>
+    </div>
+    <div class="card" id="numberResult">데이터를 불러오는 중입니다.</div>
+  </section>
+
+  <section class="page" id="pattern">
+    <div class="section-title">과거 선행 패턴 검색</div>
+    <p class="note">현재 조건이 과거에 언제 나타났고, 다음 회차에 해당 번호가 실제로 나왔는지 조사합니다.</p>
+    <div class="card">
+      <div class="toolbar">
+        <label>검증 번호 <input id="patternN" type="number" min="1" max="45" value="39" style="width:80px"></label>
+        <label>최근 회차 <input id="lookback" type="number" min="1" max="20" value="5" style="width:80px"></label>
+      </div>
+      <select id="rule" style="width:100%;margin-bottom:14px">
+        <option value="end09">최근 N회에 0·9끝수 동시 미출현</option>
+        <option value="absent">최근 N회에 해당 번호 미출현</option>
+        <option value="neighbor">직전 회차에 이웃수 출현</option>
+        <option value="sameend">직전 회차에 같은 끝수 출현</option>
+      </select>
+      <button class="btn" onclick="renderPattern()">역대 동일 조건 검색하기</button>
+      <div class="line"></div>
+      <div id="patternResult" class="empty">검색 버튼을 눌러주세요.</div>
+    </div>
+  </section>
+
+  <section class="page" id="tickets">
+    <div class="section-title">최종 5조합 생성</div>
+    <p class="note">후보 번호를 직접 입력하거나, 분석 지수 상위 9개를 자동 선택할 수 있습니다.</p>
+    <div class="card">
+      <label class="statlabel" for="pool">후보 번호 입력 · 6~14개</label>
+      <input class="poolinput" id="pool" value="1,5,8,9,34,37,39,43,44">
+      <p class="note">쉼표 또는 공백으로 구분합니다. 처음 입력된 9개는 연구 예시이며 확정 고정수가 아닙니다.</p>
+      <div class="toolbar">
+        <button class="btn" onclick="makeTickets()">최종 5조합 만들기</button>
+        <button class="btn secondary" onclick="autoPool()">분석 상위 9개 적용</button>
+      </div>
+      <div id="ticketResult" class="empty">후보를 선택하고 조합을 생성하세요.</div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <div class="section-title">블로그용 자료</div>
+      <div class="toolbar">
+        <button class="btn secondary" onclick="copyReport()">분석 결과 복사</button>
+        <button class="btn outline" onclick="saveImage()">5조합 이미지 저장</button>
+        <button class="btn outline" onclick="saveRecord()">연구 기록 저장</button>
+      </div>
+      <p class="note" id="saveMessage">번호와 연구 날짜를 기록하고 추첨 후 복기할 수 있습니다.</p>
+    </div>
+  </section>
+
+  <section class="page" id="verify">
+    <div class="section-title">과거 회차 검증</div>
+    <div class="card">
+      <p class="note">각 과거 회차를 예측할 때 그 회차 이전 데이터만 사용합니다.
+      자동 선정 9개 후보로 5게임을 만들고 실제 결과 및 무작위 5게임과 비교합니다.</p>
+      <button class="btn" onclick="runBacktest()">과거 회차 검증 실행</button>
+      <div id="verifyResult" style="margin-top:18px" class="empty">검증 대기 중입니다.</div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <div class="section-title">저장된 연구 기록</div>
+      <div id="records"></div>
+    </div>
+  </section>
+
+  <footer>
+    LOTTO NOTE · 개인 데이터 연구 도구<br>
+    과거 패턴이 미래 당첨을 보장하지 않습니다. 모든 6개 번호 조합의 1등 당첨확률은 동일합니다.<br>
+    공개 데이터: smok95 lotto results · 원본 데이터는 동행복권 결과와 교차 확인이 필요합니다.
+  </footer>
+</main>
+</div>
+
+<input hidden type="file" id="jsonFile" accept=".json,application/json">
+
+<script>
+const SOURCE="https://smok95.github.io/lotto/results/all.json";
+const BASE=6/45;
+const $=id=>document.getElementById(id);
+let draws=[],ranking=[],games=[];
+const seedPool=[1,5,8,9,34,37,39,43,44];
+const labels=[
+  "직전 회차 이웃수",
+  "직전 회차 같은 끝수",
+  "최근 5회 해당수 미출현",
+  "최근 10회 해당수 미출현",
+  "직전 31~45 구간 3개 이상",
+  "직전 홀수 4개 이상",
+  "직전 당첨번호 합계 150 이상",
+  "최근 5회 0·9끝수 미출현"
+];
+
+function tab(id){
+  document.querySelectorAll(".page").forEach(e=>e.classList.toggle("active",e.id===id));
+  document.querySelectorAll(".nav").forEach(e=>e.classList.toggle("active",e.dataset.page===id));
+}
+function ball(n){
+  const group=n<=10?1:n<=20?2:n<=30?3:n<=40?4:5;
+  return '<span class="ball b'+group+'">'+n+'</span>';
+}
+function balls(nums){return '<div class="ballset">'+nums.map(ball).join("")+"</div>";}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function last(){return draws[draws.length-1];}
+function nextDraw(){return last().draw_no+1;}
+function hits(a,b){return a.filter(n=>b.includes(n)).length;}
+
+function normalize(source){
+  const list=Array.isArray(source)?source:source.results;
+  if(!Array.isArray(list))throw Error("당첨번호 목록 형식이 올바르지 않습니다.");
+  const checked=list.map(x=>({
+    draw_no:Number(x.draw_no),
+    numbers:(x.numbers||[]).map(Number).sort((a,b)=>a-b),
+    bonus_no:Number(x.bonus_no||0)
+  })).sort((a,b)=>a.draw_no-b.draw_no);
+  if(checked.length<100)throw Error("전체 회차 데이터가 부족합니다.");
+  for(let i=0;i<checked.length;i++){
+    const d=checked[i];
+    if(d.draw_no!==i+1||d.numbers.length!==6||
+       new Set(d.numbers).size!==6||
+       d.numbers.some(n=>!Number.isInteger(n)||n<1||n>45))
+       throw Error("회차 누락·중복 또는 잘못된 당첨번호가 발견되었습니다.");
+  }
+  return checked;
+}
+
+function flagsAt(ds,i,n){
+  if(i<10)return Array(8).fill(false);
+  const prev=ds[i-1].numbers;
+  let miss5=true,miss10=true,noEnd09=true;
+  for(let k=1;k<=10;k++){
+    const arr=ds[i-k].numbers;
+    if(arr.includes(n))miss10=false;
+    if(k<=5){
+      if(arr.includes(n))miss5=false;
+      if(arr.some(x=>x%10===0||x%10===9))noEnd09=false;
+    }
+  }
+  return [
+    prev.some(x=>Math.abs(x-n)===1),
+    prev.some(x=>x!==n&&x%10===n%10),
+    miss5,miss10,
+    prev.filter(x=>x>=31).length>=3,
+    prev.filter(x=>x%2===1).length>=4,
+    prev.reduce((a,b)=>a+b,0)>=150,
+    noEnd09
+  ];
+}
+
+function analyze(ds){
+  const result=[];
+  for(let n=1;n<=45;n++){
+    const cases=Array(8).fill(0),wins=Array(8).fill(0);
+    for(let i=10;i<ds.length;i++){
+      const f=flagsAt(ds,i,n);
+      const won=ds[i].numbers.includes(n);
+      for(let j=0;j<f.length;j++)if(f[j]){
+        cases[j]++;
+        if(won)wins[j]++;
+      }
+    }
+    const current=flagsAt(ds,ds.length,n);
+    const evidence=[];
+    for(let j=0;j<8;j++)if(current[j]&&cases[j]>0){
+      const rate=(wins[j]+20*BASE)/(cases[j]+20);
+      const strength=(rate/BASE-1)*Math.sqrt(cases[j]/(cases[j]+60));
+      evidence.push({
+        label:labels[j],cases:cases[j],wins:wins[j],
+        rate,delta:strength
+      });
+    }
+    const reliable=evidence.filter(e=>e.cases>=10)
+      .sort((a,b)=>Math.abs(b.delta)-Math.abs(a.delta)).slice(0,3);
+    const signal=reliable.reduce((s,e)=>s+e.delta,0)/Math.max(1,reliable.length);
+    const score=Math.max(15,Math.min(90,Math.round(50+33*signal)));
+    const idx=ds.findLastIndex(d=>d.numbers.includes(n));
+    const gap=idx<0?ds.length:ds.length-1-idx;
+    evidence.sort((a,b)=>b.delta-a.delta);
+    result.push({n,score,gap,evidence});
+  }
+  return result.sort((a,b)=>b.score-a.score||a.n-b.n);
+}
+
+function loadReady(parsed){
+  draws=normalize(parsed);
+  ranking=analyze(draws);
+  $("status").textContent="● "+last().draw_no+"회까지 데이터 확인";
+  $("statDraw").textContent="1~"+last().draw_no+"회";
+  $("statNext").textContent=nextDraw()+"회";
+  $("homePool").innerHTML=balls(seedPool);
+  renderRankings();
+  renderNumber();
+  renderPattern();
+  renderHome39();
+  renderRecords();
+}
+
+async function loadData(){
+  $("status").textContent="● 당첨 데이터 연결 중...";
+  try{
+    const response=await fetch(SOURCE,{cache:"no-store"});
+    if(!response.ok)throw Error("HTTP "+response.status);
+    loadReady(await response.json());
+  }catch(e){
+    $("status").textContent="● 데이터 연결 실패";
+    $("homePattern").innerHTML=
+      '<span style="color:#ffc7a5">자동 연결 실패: '+esc(e.message)+'</span>'+
+      '<p class="note">공개 데이터를 다운로드한 뒤 JSON 파일을 직접 불러올 수 있습니다.</p>'+
+      '<a href="'+SOURCE+'" target="_blank" rel="noopener">당첨번호 JSON 받기</a>'+
+      ' <button class="btn secondary" onclick="$(\'jsonFile\').click()">JSON 파일 선택</button>'+
+      ' <button class="btn outline" onclick="loadData()">재시도</button>';
+    $("rankingTable").innerHTML='<div class="empty">실제 데이터가 연결되어야 분석할 수 있습니다.</div>';
+  }
+}
+
+$("jsonFile").addEventListener("change",async e=>{
+  try{
+    const file=e.target.files[0];
+    if(file)loadReady(JSON.parse(await file.text()));
+  }catch(err){alert("파일 확인 실패: "+err.message);}
+});
+
+function renderRankings(){
+  const top=ranking.slice(0,12);
+  $("rankingTable").innerHTML='<div class="tablewrap"><table><thead><tr>'+
+    '<th>순위</th><th>번호</th><th>적합도 지수</th><th>미출현</th><th>주요 분석 조건</th>'+
+    '</tr></thead><tbody>'+
+    top.map((r,i)=>'<tr><td>'+(i+1)+'</td><td>'+ball(r.n)+'</td>'+
+      '<td><b class="gold">'+r.score+'</b> / 100</td>'+
+      '<td>'+r.gap+'회</td><td>'+esc(r.evidence[0]?.label||"일반 비교")+'</td></tr>'
+    ).join("")+'</tbody></table></div>';
+}
+
+function renderNumber(){
+  if(!draws.length)return;
+  const n=Number($("focus").value);
+  if(!Number.isInteger(n)||n<1||n>45)return alert("1~45에서 번호를 선택하세요.");
+  const r=ranking.find(x=>x.n===n);
+  const found=draws.filter(d=>d.numbers.includes(n));
+  const recent=found.slice(-9).reverse();
+  $("numberResult").innerHTML=
+    '<div class="section-title">'+ball(n)+' 번호 연구 결과</div>'+
+    '<div class="stats" style="grid-template-columns:repeat(3,1fr)">'+
+    '<div><div class="statlabel">전체 출현 횟수</div><b class="statvalue">'+found.length+'</b></div>'+
+    '<div><div class="statlabel">현재 미출현 간격</div><b class="statvalue">'+r.gap+'회</b></div>'+
+    '<div><div class="statlabel">분석 적합도</div><b class="statvalue gold">'+r.score+'</b></div></div>'+
+    '<div class="section-title">현재 조건에 부합하는 과거 패턴</div>'+
+    (r.evidence.length?r.evidence.map(e=>
+      '<div class="result" style="margin:8px 0"><b>'+esc(e.label)+'</b><br>'+
+      '과거 조건 '+e.cases+'회 · 다음 회차 '+n+'번 출현 '+e.wins+'회'+
+      '<br><span class="note">관측 비율 '+(e.wins/e.cases*100).toFixed(1)+
+      '% · 단순 관측값으로 미래 확률을 뜻하지 않습니다.</span></div>'
+    ).join(""):'<p class="note">현재 적용되는 분석 조건이 없습니다.</p>')+
+    '<div class="section-title" style="margin-top:22px">최근 출현 회차와 직전 당첨번호</div>'+
+    '<div class="tablewrap"><table><thead><tr><th>출현 회차</th>'+
+    '<th>직전 회차 번호</th><th>해당 회차 번호</th></tr></thead><tbody>'+
+    recent.map(d=>{
+      const prev=draws[d.draw_no-2];
+      return '<tr><td>'+d.draw_no+'회</td><td>'+
+        (prev?prev.numbers.join(" · "):"—")+'</td>'+
+        '<td>'+d.numbers.join(" · ")+'</td></tr>';
+    }).join("")+'</tbody></table></div>';
+}
+
+function matchRule(ds,i,n,k,rule){
+  if(i<k||i<1)return false;
+  const prior=ds.slice(i-k,i);
+  if(rule==="end09")return prior.every(d=>
+    d.numbers.every(x=>x%10!==0&&x%10!==9));
+  if(rule==="absent")return prior.every(d=>!d.numbers.includes(n));
+  const prev=ds[i-1].numbers;
+  if(rule==="neighbor")return prev.some(x=>Math.abs(x-n)===1);
+  if(rule==="sameend")return prev.some(x=>x!==n&&x%10===n%10);
+  return false;
+}
+
+function patternStats(n,k,rule){
+  const matched=[];
+  for(let i=k;i<draws.length;i++){
+    if(matchRule(draws,i,n,k,rule))
+      matched.push({draw:draws[i],hit:draws[i].numbers.includes(n)});
+  }
+  return {matched,current:matchRule(draws,draws.length,n,k,rule)};
+}
+
+function renderPattern(){
+  if(!draws.length)return;
+  const n=Number($("patternN").value);
+  const k=Number($("lookback").value);
+  const rule=$("rule").value;
+  if(n<1||n>45||!Number.isInteger(n)||k<1||k>20||!Number.isInteger(k))
+    return alert("번호는 1~45, 검색 회차는 1~20으로 입력하세요.");
+  const s=patternStats(n,k,rule);
+  const successes=s.matched.filter(x=>x.hit);
+  const fails=s.matched.filter(x=>!x.hit);
+  $("patternResult").className="";
+  $("patternResult").innerHTML=
+    '<div class="badge">'+(s.current?"이번 회차 조건 일치":"이번 회차 조건 불일치")+'</div>'+
+    '<div class="stats" style="grid-template-columns:repeat(3,1fr);margin-top:16px">'+
+    '<div><div class="statlabel">과거 동일 조건</div><b class="statvalue">'+s.matched.length+'회</b></div>'+
+    '<div><div class="statlabel">'+n+'번 출현</div><b class="statvalue green">'+successes.length+'회</b></div>'+
+    '<div><div class="statlabel">미출현·반례</div><b class="statvalue">'+fails.length+'회</b></div></div>'+
+    '<p class="caution">관측 출현 비율: '+
+    (s.matched.length?(successes.length/s.matched.length*100).toFixed(1)+"%":"자료 없음")+
+    ' · 표본이 적거나 많은 패턴을 동시에 검색하면 우연한 일치가 발생할 수 있습니다.</p>'+
+    '<div class="section-title" style="margin-top:20px">일치한 과거 회차와 실제 다음 결과</div>'+
+    '<div class="tablewrap"><table><thead><tr><th>회차</th><th>39번 등 선택수</th>'+
+    '<th>실제 당첨번호</th></tr></thead><tbody>'+
+    s.matched.slice(-25).reverse().map(x=>
+      '<tr><td>'+x.draw.draw_no+'회</td>'+
+      '<td>'+(x.hit?'<span class="green">출현</span>':'미출현')+'</td>'+
+      '<td>'+x.draw.numbers.join(" · ")+'</td></tr>'
+    ).join("")+'</tbody></table></div>'+
+    (s.matched.length>25?'<p class="note">최근 25개 사례만 표시했습니다. 전체 통계에는 모두 포함됩니다.</p>':"");
+}
+
+function renderHome39(){
+  const r=patternStats(39,5,"end09");
+  $("homePattern").innerHTML=
+    '<span class="gold"><b>직전 5회 0·9끝수 미출현</b></span><br>'+
+    '1249회 등 다음 회차 기준: <b>'+(r.current?"현재 조건 일치":"현재 조건 불일치")+'</b><br>'+
+    '과거 동일 조건 '+r.matched.length+'회 · 다음 회차 39번 출현 '+
+    r.matched.filter(x=>x.hit).length+'회';
+}
+
+function parsePool(){
+  const raw=$("pool").value.split(/[\s,，]+/).filter(Boolean);
+  const nums=raw.map(Number);
+  if(nums.some(x=>!Number.isInteger(x)||x<1||x>45)||
+     new Set(nums).size!==nums.length||nums.length<6||nums.length>14)
+    throw Error("서로 다른 1~45번 숫자를 6~14개 입력해 주세요.");
+  return nums.sort((a,b)=>a-b);
+}
+
+function autoPool(){
+  if(!draws.length)return alert("당첨 데이터를 먼저 불러와야 합니다.");
+  $("pool").value=ranking.slice(0,9).map(x=>x.n).sort((a,b)=>a-b).join(",");
+  makeTickets();
+}
+
+function combinations(arr,size){
+  const out=[];
+  function walk(start,chosen){
+    if(chosen.length===size){out.push(chosen.slice());return;}
+    for(let i=start;i<=arr.length-(size-chosen.length);i++){
+      chosen.push(arr[i]);walk(i+1,chosen);chosen.pop();
+    }
+  }
+  walk(0,[]);
+  return out;
+}
+
+function chooseGames(pool,stats,history){
+  const scoreMap=new Map(stats.map(r=>[r.n,r.score]));
+  const pair=Array.from({length:46},()=>Array(46).fill(0));
+  for(const d of history)for(let i=0;i<6;i++)for(let j=i+1;j<6;j++)
+    pair[d.numbers[i]][d.numbers[j]]++;
+  const expected=history.length*30/(45*44);
+  const candidates=combinations(pool,6).map(nums=>{
+    const sum=nums.reduce((a,b)=>a+b,0);
+    const odd=nums.filter(n=>n%2).length;
+    let pairBonus=0;
+    for(let i=0;i<6;i++)for(let j=i+1;j<6;j++)
+      pairBonus+=Math.max(-2,Math.min(2,
+        (pair[nums[i]][nums[j]]-expected)/Math.sqrt(expected+1)))*0.25;
+    const mean=nums.reduce((a,n)=>a+(scoreMap.get(n)||50),0)/6;
+    const base=mean+pairBonus-Math.abs(sum-138)/15-Math.abs(odd-3)*1.8;
+    return {nums,base};
+  });
+  const selected=[];
+  const usage=new Map();
+  for(let k=0;k<5;k++){
+    let best=null,bestValue=-Infinity;
+    for(const item of candidates){
+      if(selected.includes(item))continue;
+      const overlaps=selected.map(s=>hits(s.nums,item.nums));
+      const maxOverlap=overlaps.length?Math.max(...overlaps):0;
+      const repeat=item.nums.reduce((a,n)=>a+(usage.get(n)||0),0);
+      const utility=item.base-Math.max(0,maxOverlap-3)*7-repeat*0.75;
+      if(utility>bestValue){bestValue=utility;best=item;}
+    }
+    if(!best)break;
+    selected.push(best);
+    best.nums.forEach(n=>usage.set(n,(usage.get(n)||0)+1));
+  }
+  return selected;
+}
+
+function makeTickets(){
+  if(!draws.length)return alert("당첨 데이터 연결 후 사용할 수 있습니다.");
+  try{
+    const pool=parsePool();
+    games=chooseGames(pool,ranking,draws);
+    $("ticketResult").className="";
+    $("ticketResult").innerHTML=
+      '<div class="badge">'+nextDraw()+'회 · 후보 '+pool.length+
+      '개 · 전체 '+combinations(pool,6).length+'조합 비교</div>'+
+      games.map((g,i)=>'<div class="game">'+
+        '<div class="ghead"><b>'+(i+1)+'게임</b>'+
+        '<span>조합 적합도 '+g.base.toFixed(1)+'</span></div>'+
+        balls(g.nums)+'</div>').join("")+
+      '<p class="note">위 지수는 내부 분석 규칙과 조합 분산 기준이며 실제 당첨확률이 아닙니다.</p>';
+  }catch(e){alert(e.message);}
+}
+
+async function copyReport(){
+  if(!games.length)return alert("먼저 5조합을 생성하세요.");
+  const lines=[
+    "[로또 "+nextDraw()+"회] LOTTO NOTE 최종 5조합 연구",
+    "후보 번호: "+parsePool().join(", "),
+    "",
+    ...games.map((g,i)=>(i+1)+"게임: "+g.nums.join(" · ")),
+    "",
+    "과거 흐름과 동반 출현 조건을 비교한 연구 기록입니다.",
+    "분석 적합도는 실제 당첨확률을 의미하지 않습니다."
+  ];
+  try{
+    await navigator.clipboard.writeText(lines.join("\n"));
+    $("saveMessage").textContent="분석 내용이 복사되었습니다.";
+  }catch(e){alert("브라우저에서 복사를 허용해 주세요.");}
+}
+
+function saveImage(){
+  if(!games.length)return alert("먼저 5조합을 생성하세요.");
+  const c=document.createElement("canvas");
+  c.width=1200;c.height=675;
+  const x=c.getContext("2d");
+  x.fillStyle="#0a1424";x.fillRect(0,0,1200,675);
+  x.fillStyle="#dcb878";x.font="bold 24px Malgun Gothic, sans-serif";
+  x.fillText("LOTTO NOTE  |  PATTERN LAB",55,64);
+  x.fillStyle="#ffffff";x.font="bold 48px Malgun Gothic, sans-serif";
+  x.fillText("로또 "+nextDraw()+"회  |  최종 5조합",55,125);
+  x.fillStyle="#9db0c7";x.font="22px Malgun Gothic, sans-serif";
+  x.fillText("과거 패턴 비교 · 후보 조합 연구 기록",58,165);
+  const colors=["#d8a642","#438dc8","#d6607d","#708398","#40a580"];
+  games.forEach((g,i)=>{
+    const y=202+i*76;
+    x.fillStyle="#192940";x.fillRect(50,y,1100,67);
+    x.fillStyle="#c4d3e5";x.font="bold 22px Malgun Gothic, sans-serif";
+    x.fillText((i+1)+"게임",78,y+42);
+    g.nums.forEach((n,j)=>{
+      x.beginPath();x.arc(280+j*137,y+34,25,0,Math.PI*2);
+      x.fillStyle=colors[n<=10?0:n<=20?1:n<=30?2:n<=40?3:4];
+      x.fill();x.fillStyle="#fff";x.textAlign="center";
+      x.font="bold 20px sans-serif";x.fillText(String(n),280+j*137,y+41);
+      x.textAlign="left";
+    });
+  });
+  x.fillStyle="#9fb0c5";x.font="18px Malgun Gothic, sans-serif";
+  x.fillText("LOTTO NOTE · 연구용 조합 · 당첨을 보장하지 않습니다.",55,642);
+  const a=document.createElement("a");
+  a.download="lotto-"+nextDraw()+"-5games.png";
+  a.href=c.toDataURL("image/png");a.click();
+}
+
+function saveRecord(){
+  if(!games.length)return alert("먼저 5조합을 생성하세요.");
+  try{
+    const saved=JSON.parse(localStorage.getItem("ln-lotto-records")||"[]");
+    saved.unshift({
+      draw:nextDraw(),date:new Date().toISOString(),
+      pool:parsePool(),games:games.map(g=>g.nums)
+    });
+    localStorage.setItem("ln-lotto-records",JSON.stringify(saved.slice(0,60)));
+    $("saveMessage").textContent="이 브라우저에 연구 기록을 저장했습니다.";
+    renderRecords();
+  }catch(e){alert("저장 실패: 브라우저 저장 공간을 확인하세요.");}
+}
+
+function renderRecords(){
+  try{
+    const saved=JSON.parse(localStorage.getItem("ln-lotto-records")||"[]");
+    $("records").innerHTML=saved.length?saved.slice(0,10).map(r=>
+      '<div class="result" style="margin:8px 0"><b>'+r.draw+'회</b> · '+
+      esc(r.date.slice(0,10))+'<br>'+
+      r.games.map((g,i)=>(i+1)+'게임 '+g.join("·")).join("<br>")+
+      '</div>').join(""):'<p class="note">아직 저장된 연구 기록이 없습니다.</p>';
+  }catch(e){$("records").textContent="기록을 불러오지 못했습니다.";}
+}
+
+function randomGames(seed){
+  let x=seed>>>0;
+  const rand=()=>{x=(Math.imul(x,1664525)+1013904223)>>>0;return x/4294967296;};
+  const out=[];
+  for(let i=0;i<5;i++){
+    const bag=Array.from({length:45},(_,j)=>j+1);
+    for(let j=bag.length-1;j>0;j--){
+      const k=Math.floor(rand()*(j+1));
+      [bag[j],bag[k]]=[bag[k],bag[j]];
+    }
+    out.push(bag.slice(0,6));
+  }
+  return out;
+}
+
+function runBacktest(){
+  if(!draws.length)return alert("데이터 연결이 필요합니다.");
+  $("verifyResult").className="result";
+  $("verifyResult").textContent="과거 회차를 순서대로 검증하고 있습니다...";
+  setTimeout(()=>{
+    try{
+      let ours3=0,ours4=0,random3=0,random4=0,count=0;
+      const details=[];
+      for(let i=Math.max(100,draws.length-60);i<draws.length;i+=3){
+        const before=draws.slice(0,i);
+        const ranks=analyze(before);
+        const pool=ranks.slice(0,9).map(r=>r.n).sort((a,b)=>a-b);
+        const predicted=chooseGames(pool,ranks,before);
+        const actual=draws[i].numbers;
+        const ourMax=Math.max(...predicted.map(g=>hits(g.nums,actual)));
+        const randomMax=Math.max(...randomGames(draws[i].draw_no).map(g=>hits(g,actual)));
+        if(ourMax>=3)ours3++;
+        if(ourMax>=4)ours4++;
+        if(randomMax>=3)random3++;
+        if(randomMax>=4)random4++;
+        count++;
+        details.push([draws[i].draw_no,ourMax,randomMax]);
+      }
+      $("verifyResult").innerHTML=
+        '<div class="badge">미래 정보 미사용 · 간이 백테스트</div>'+
+        '<p>검증 회차 <b>'+count+'회</b> · 매회 5게임씩</p>'+
+        '<div class="grid2">'+
+          '<div class="result"><b class="gold">패턴 모델</b><br>'+
+          '3개 이상 일치한 회차 '+ours3+'회<br>4개 이상 일치한 회차 '+ours4+'회</div>'+
+          '<div class="result"><b>무작위 비교</b><br>'+
+          '3개 이상 일치한 회차 '+random3+'회<br>4개 이상 일치한 회차 '+random4+'회</div>'+
+        '</div>'+
+        '<p class="note">표본이 적은 간이 검증입니다. 이 결과만으로 예측력이 입증되지는 않습니다.</p>'+
+        '<div class="tablewrap"><table><thead><tr><th>대상 회차</th>'+
+        '<th>패턴 최대 일치</th><th>무작위 최대 일치</th></tr></thead><tbody>'+
+        details.slice(-12).reverse().map(r=>
+          '<tr><td>'+r[0]+'회</td><td>'+r[1]+'개</td><td>'+r[2]+'개</td></tr>'
+        ).join("")+'</tbody></table></div>';
+    }catch(e){$("verifyResult").textContent="검증 오류: "+e.message;}
+  },30);
+}
+
+$("homePool").innerHTML=balls(seedPool);
+loadData();
+</script>
+</body>
+</html>
