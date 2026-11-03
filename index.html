@@ -106,7 +106,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 <main class="main">
 <div class="topbar"><div><div class="identity">HISTORICAL NUMBER INTELLIGENCE</div><p>데이터와 과거 사례로 확인하는 로또 연구소</p></div><div class="connection" id="dataStatus">● 데이터 확인 중</div></div>
 <section id="home" class="page active">
-  <div class="hero"><div class="eyebrow">WEEKLY AUTO DISCOVERY</div><h1 id="heroTitle">로또 번호별 자동 패턴 분석</h1><p class="lead">1~45번 각각의 선행 조건을 독립적으로 검색합니다. 번호를 누르면 이번 회차에 해당하는 패턴의 실제 과거 사례와 PPT형 그림을 확인할 수 있습니다.</p>
+  <div class="hero"><div class="eyebrow">WEEKLY AUTO DISCOVERY</div><h1 id="heroTitle">로또 번호별 자동 패턴 분석</h1><p class="lead">1~45번의 기본 조건과 번호별 출현 자리·간격·회차 이동 흐름을 전수 검사합니다. 번호를 누르면 이번 회차의 실제 연결 패턴과 성공·실패 PPT 그림을 확인할 수 있습니다.</p>
     <div class="flex"><button class="btn" onclick="reloadData()">최신 당첨번호 확인</button><button class="btn secondary" onclick="go('tickets')">최종 5조합 만들기</button><span class="tag" id="sourceBadge">조회 준비 중</span></div>
   </div>
   <div class="cards"><div class="stat"><small>연구 대상 회차</small><b id="drawNext">-</b><small>최신 당첨 결과 이후 다음 회차</small></div><div class="stat"><small>번호별 조건 검색</small><b id="ruleCount">-</b><small>각 번호와 직접 관련된 규칙만</small></div><div class="stat"><small>우선 연구 후보</small><b id="focusCount">-</b><small>다수의 독립 조건이 일치한 번호</small></div></div>
@@ -114,7 +114,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
   <div class="section panel"><div class="section-head"><h2>최신 확인 당첨번호</h2><span id="lastRound" class="tag">-</span></div><div id="lastBalls" class="ballset"></div><p class="hint">표시된 회차는 실제로 확인된 데이터 기준입니다. 새 회차가 반영되면 다음 회차 연구가 갱신됩니다.</p></div>
 </section>
 <section id="research" class="page"><div class="eyebrow">NUMBER LAB</div><h1>번호 연구소</h1><p class="lead">특정 번호의 출현 흐름과 이번 회차에 적용되는 번호별 패턴을 확인합니다.</p><div class="toolbar"><label>분석 번호 <input id="focusN" class="field" type="number" min="1" max="45" value="39"></label><button class="btn" onclick="showResearch()">번호 조사하기</button></div><div id="researchResult"></div></section>
-<section id="patterns" class="page"><div class="eyebrow">PATTERN EXPLORER</div><h1>패턴 검색</h1><p class="lead">검사 대상과 조건을 직접 선택해 실제 해당 회차, 다음 회차 결과, 실패 사례를 비교합니다.</p><div class="toolbar"><label>번호 <input id="patternN" class="field" type="number" min="1" max="45" value="39"></label><label>조건 <select id="patternRule" class="field"></select></label><button class="btn" onclick="showPatternSearch()">역대 패턴 검색</button></div><div id="patternResult"></div></section>
+<section id="patterns" class="page"><div class="eyebrow">PATTERN EXPLORER</div><h1>패턴 검색</h1><p class="lead">선택한 번호의 이번 회차 출현·자리·간격 기록에서 자동 생성한 연결 패턴과 기본 45종 조건을 따로 살펴봅니다. 조건의 과거 성공·실패 회차를 정확히 비교하세요.</p><div class="toolbar"><label>번호 <input id="patternN" class="field" type="number" min="1" max="45" value="39"></label><label>조건 <select id="patternRule" class="field"></select></label><button class="btn" onclick="showPatternSearch()">역대 패턴 검색</button></div><div id="patternResult"></div></section>
 <section id="tickets" class="page"><div class="eyebrow">FIVE TICKET STUDIO</div><h1>최종 5조합</h1><p class="lead">번호별 연구 결과를 참고해 조합을 만들어 기록합니다. 어떤 조합도 다른 6개 번호 조합보다 1등 당첨확률이 높지는 않습니다.</p><div class="panel"><h3>사용할 후보 번호</h3><p class="hint">검증 조건에 해당하는 번호를 먼저 넣습니다. 6개 미만이면 나머지는 전체 45개 분석 기록에서 선별한 <strong>보조 분산수</strong>로 채웁니다. 보조수는 검증 기준을 통과한 후보가 아닙니다. 직접 번호를 수정할 수도 있습니다.</p><textarea id="poolInput" class="field" rows="3" style="width:100%;resize:vertical"></textarea><div class="toolbar"><button class="btn" onclick="makeTickets(false)">최종 5조합 생성</button><button class="btn secondary" onclick="setAutoPool()">자동 후보 다시 적용</button><button class="btn outline" onclick="saveTicketPNG()">조합 이미지 저장</button></div></div><div id="ticketsResult"></div></section>
 <section id="backtest" class="page"><div class="eyebrow">WALK-FORWARD CHECK</div><h1>과거 검증</h1><p class="lead">과거 특정 시점에 알 수 있었던 정보만 사용해 후보를 만든 뒤 다음 회차의 실제 결과와 비교합니다. 작은 표본의 검증으로 예측 우위를 입증할 수는 없습니다.</p><div class="toolbar"><button class="btn" onclick="runBacktest()">최근 12회 시점별 검증 실행</button><span class="hint">계산에 몇 초 걸릴 수 있습니다.</span></div><div id="backtestResult"></div></section>
 <div class="footer">🛡️ LOTTO NOTE · 과거의 패턴은 미래의 당첨을 보장하지 않습니다.<br><a href="https://lotto-note.tistory.com/" target="_blank" rel="noopener">로또 노트 블로그</a></div>
@@ -128,7 +128,7 @@ const DATA_URL="https://smok95.github.io/lotto/results/all.json";
 const BASE=6/45;
 const LOOKBACK=15;
 const $=id=>document.getElementById(id);
-const state={draws:[],source:"",profiles:[],tickets:[],nonce:0,loading:false,cache:new Map()};
+const state={draws:[],source:"",profiles:[],tickets:[],nonce:0,loading:false,cache:new Map(),proofCache:new Map()};
 function clean(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function pct(v){return Number.isFinite(v)?(v*100).toFixed(1)+"%":"—";}
 function ball(n){return '<span class="ball b'+(n<=10?1:n<=20?2:n<=30?3:n<=40?4:5)+'">'+n+'</span>';}
@@ -190,16 +190,17 @@ async function reloadData(){
       return;
     }
   }
-  state.cache.clear();state.loading=false;
+  state.cache.clear();state.proofCache.clear();state.loading=false;
   setStatus("최신 확인 "+latest(state.draws).draw_no+"회"+(success?"":" · 캐시"),success?"#83dcc0":"#f0c981");
   $("sourceBadge").textContent=state.source+" 데이터 · "+state.draws.length+"개 회차";
   $("lastRound").textContent=latest(state.draws).draw_no+"회";
   $("lastBalls").innerHTML=balls(latest(state.draws).numbers);
   $("heroTitle").textContent=upcoming(state.draws)+"회 · 번호별 자동 패턴 탐색";
   $("drawNext").textContent=upcoming(state.draws)+"회";
-  $("ruleCount").textContent=RULES.length+"종";
+  $("ruleCount").textContent=RULES.length+"종 + 연결 탐색";
   await new Promise(r=>setTimeout(r,15));
   state.profiles=analyzeAll(state.draws);
+  fillPatternSelect();
   $("focusCount").textContent=state.profiles.filter(p=>p.status==="우선 연구").length+"개";
   renderNumbers();
   setAutoPool();
@@ -284,6 +285,103 @@ addRule("교차","{n}번 최근 출현 + 동일구간 밀집",3,
   (ds,i,n)=>recentHas(ds,i,3,x=>x===n)&&previousNums(ds,i).filter(x=>x!==n&&nRange(x)===nRange(n)).length>=2,
   (x,n)=>x===n||(x!==n&&nRange(x)===nRange(n)),
   "선택 번호가 최근 출현했고 같은 10단위 구간의 다른 숫자도 밀집했습니다.");
+// 이번 회차의 실제 기록에서 조건을 뽑아내는 회차별 연결 패턴 탐색기.
+// 각 조건은 번호 n이 과거 회차에 이미 등장했던 위치/간격을 사용합니다.
+function recentPositions(ds,i,n,count){
+  const out=[];
+  for(let j=i-1;j>=0&&out.length<count;j--){
+    const at=ds[j].numbers.indexOf(n);
+    if(at>=0)out.push({j,slot:at+1});
+  }
+  return out.length===count?out.reverse():[];
+}
+function gapClass(g){
+  return g<=2?"0~2회":g<=5?"3~5회":g<=9?"6~9회":g<=15?"10~15회":"16회 이상";
+}
+function moveMark(a,b){return b>a?"뒤쪽으로 이동":b<a?"앞쪽으로 이동":"같은 구 유지";}
+function lastTwoHistory(ds,i,n){return recentPositions(ds,i,n,2).map(p=>p.j);}
+function lastThreeHistory(ds,i,n){return recentPositions(ds,i,n,3).map(p=>p.j);}
+function lastDrawIndex(ds,i){return [i-1];}
+function lastTwoDrawIndices(ds,i){return [i-2,i-1];}
+function makeFlowRules(ds,n){
+  const rules=[],i=ds.length;
+  let serial=0;
+  const push=(group,label,k,test,mark,why,history)=>{
+    if(!test(ds,i,n))return;
+    rules.push({id:100000+n*100+serial++,dynamic:true,group,label,k,test,
+      mark:mark||(()=>false),why:why||"",history});
+  };
+  const two=recentPositions(ds,i,n,2);
+  const three=recentPositions(ds,i,n,3);
+  if(two.length===2){
+    const s1=two[0].slot,s2=two[1].slot;
+    push("자리순서2",n+"번 최근 두 출현의 위치 "+s1+"구→"+s2+"구",2,
+      (d,j,v)=>{const a=recentPositions(d,j,v,2);return a.length===2&&a[0].slot===s1&&a[1].slot===s2;},
+      (v)=>v===n,"해당 번호가 실제로 나왔던 최근 두 회차에서 1~6구 중 어느 자리에 있었는지 순서대로 비교합니다. 회차가 연속될 필요는 없습니다.",lastTwoHistory);
+    const currentClass=gapClass(latestGap(ds,i,n));
+    push("자리공백",n+"번 "+s2+"구 출현 후 "+currentClass+" 공백",2,
+      (d,j,v)=>{const a=recentPositions(d,j,v,1);return a.length===1&&a[0].slot===s2&&gapClass(latestGap(d,j,v))===currentClass;},
+      (v)=>v===n,"마지막 출현 자리와 이후 공백 길이를 결합한 조건입니다. 같은 자리에 나왔더라도 공백이 다르면 별개로 봅니다.",
+      (d,j,v)=>recentPositions(d,j,v,1).map(p=>p.j));
+  }
+  if(three.length===3){
+    const [a,b,c]=three.map(x=>x.slot);
+    push("자리순서3",n+"번 세 출현의 위치 "+a+"구→"+b+"구→"+c+"구",3,
+      (d,j,v)=>{const p=recentPositions(d,j,v,3);return p.length===3&&p[0].slot===a&&p[1].slot===b&&p[2].slot===c;},
+      (v)=>v===n,"같은 번호가 직전 세 번 실제 당첨되었을 때의 자리 순서가 똑같았던 역사적 사례를 찾습니다.",lastThreeHistory);
+    const firstMove=moveMark(a,b),secondMove=moveMark(b,c);
+    push("자리이동방향",n+"번 자리 이동 "+firstMove+"→"+secondMove,3,
+      (d,j,v)=>{const p=recentPositions(d,j,v,3);return p.length===3&&moveMark(p[0].slot,p[1].slot)===firstMove&&moveMark(p[1].slot,p[2].slot)===secondMove;},
+      (v)=>v===n,"정확한 자리 번호가 달라도 1~6구에서 앞쪽·뒤쪽·같은 자리로 이동한 흐름을 비교합니다.",lastThreeHistory);
+    const g1=gapClass(three[1].j-three[0].j-1);
+    const g2=gapClass(three[2].j-three[1].j-1);
+    push("출현간격연결",n+"번 이전 출현 간격 "+g1+"→"+g2,3,
+      (d,j,v)=>{const p=recentPositions(d,j,v,3);return p.length===3&&gapClass(p[1].j-p[0].j-1)===g1&&gapClass(p[2].j-p[1].j-1)===g2;},
+      (v)=>v===n,"번호가 연속으로 당첨된 세 회차 사이의 미출현 간격 두 개를 같은 순서로 비교합니다.",lastThreeHistory);
+    const gapNow=gapClass(latestGap(ds,i,n));
+    push("간격연속3",n+"번 간격 "+g1+"→"+g2+" 후 현재 "+gapNow+" 공백",3,
+      (d,j,v)=>{const p=recentPositions(d,j,v,3);return p.length===3&&gapClass(p[1].j-p[0].j-1)===g1&&gapClass(p[2].j-p[1].j-1)===g2&&gapClass(latestGap(d,j,v))===gapNow;},
+      (v)=>v===n,"실제 출현 간격의 흐름과 이번 회차까지의 공백을 함께 만족하는 과거 시점만 비교합니다.",lastThreeHistory);
+  }
+  const prev=ds[i-1].numbers;
+  for(const candidate of [n-1,n+1]){
+    if(candidate<1||candidate>45)continue;
+    const at=prev.indexOf(candidate);
+    if(at<0)continue;
+    const pos=at+1;
+    push("이웃자리"+(candidate<n?"아래":"위"),"직전 "+pos+"구의 "+candidate+"번 → "+n+"번",1,
+      (d,j,v)=>d[j-1].numbers[pos-1]===candidate,
+      (v)=>v===candidate,n+"번의 실제 이웃수 "+candidate+"번이 직전 "+pos+"구에 나온 조건을 정확히 지정해 검색합니다. 다른 번호에 같은 근거를 자동 부여하지 않습니다.",lastDrawIndex);
+  }
+  for(const candidate of prev){
+    if(candidate===n||candidate%10!==n%10)continue;
+    const pos=prev.indexOf(candidate)+1;
+    push("끝수자리","직전 "+pos+"구의 "+candidate+"번(같은 끝수) → "+n+"번",1,
+      (d,j)=>d[j-1].numbers[pos-1]===candidate,
+      (v)=>v===candidate,"선택 번호와 끝수가 같은 실제 선행 번호가 특정 자리에 나온 경우만 비교합니다.",lastDrawIndex);
+    break;
+  }
+  const old=ds[i-2].numbers;
+  const neighbor=x=>Math.abs(x-n)===1;
+  const ending=x=>x!==n&&x%10===n%10;
+  if(old.some(ending)&&prev.some(neighbor)){
+    push("끝수이웃순서",n+"번 관련 끝수→이웃수 2회 이동",2,
+      (d,j,v)=>d[j-2].numbers.some(x=>x!==v&&x%10===v%10)&&d[j-1].numbers.some(x=>Math.abs(x-v)===1),
+      (v)=>neighbor(v)||ending(v),"먼저 같은 끝수의 다른 번호가 나오고, 바로 다음 회차에 이웃수가 출현한 순서를 조사합니다.",lastTwoDrawIndices);
+  }
+  if(old.some(neighbor)&&prev.some(ending)){
+    push("이웃끝수순서",n+"번 관련 이웃수→끝수 2회 이동",2,
+      (d,j,v)=>d[j-2].numbers.some(x=>Math.abs(x-v)===1)&&d[j-1].numbers.some(x=>x!==v&&x%10===v%10),
+      (v)=>neighbor(v)||ending(v),"먼저 이웃수가 나오고 다음 회차에 같은 끝수의 다른 번호가 나온 흐름입니다.",lastTwoDrawIndices);
+  }
+  const beforeNeighbor=old.find(neighbor),afterNeighbor=prev.find(neighbor);
+  if(beforeNeighbor&&afterNeighbor){
+    push("이웃수방향",n+"번 이웃수 "+beforeNeighbor+"→"+afterNeighbor+" 2회 이동",2,
+      (d,j)=>d[j-2].numbers.includes(beforeNeighbor)&&d[j-1].numbers.includes(afterNeighbor),
+      (v)=>v===beforeNeighbor||v===afterNeighbor,"연속 두 회차에 실제로 출현한 이웃수의 번호와 순서를 동시에 비교합니다.",lastTwoDrawIndices);
+  }
+  return rules;
+}
 function studyRule(ds,n,rule){
   const currentIndex=ds.length;
   if(currentIndex<LOOKBACK||!rule.test(ds,currentIndex,n))return null;
@@ -300,24 +398,27 @@ function studyRule(ds,n,rule){
   }
   const trainRate=(trainWins+30*BASE)/(trainCases+30);
   const diff=trainRate-BASE;
-  const stable=trainCases>=65&&holdCases>=12;
-  const support=stable&&diff>0.03&&(holdWins/holdCases)>BASE;
+  const stable=trainCases>=(rule.dynamic?80:65)&&holdCases>=(rule.dynamic?20:12);
+  const support=stable&&diff>(rule.dynamic?0.05:0.03)&&
+    (holdWins/holdCases)>(BASE+(rule.dynamic?0.02:0));
   const rank=diff*Math.sqrt(trainCases/(trainCases+65));
   return {rule,cases,wins,trainCases,trainWins,holdCases,holdWins,
           trainRate,rank,stable,support,events};
 }
 function studyNumber(ds,n){
-  const list=RULES.map(r=>studyRule(ds,n,r)).filter(Boolean);
+  const fixed=RULES.map(r=>studyRule(ds,n,r)).filter(Boolean);
+  const discovered=makeFlowRules(ds,n).map(r=>studyRule(ds,n,r)).filter(Boolean);
+  const list=[...fixed,...discovered];
   list.sort((a,b)=>(b.support?1:0)-(a.support?1:0)||b.rank-a.rank||b.cases-a.cases);
   const unique=[],used=new Set();
   for(const e of list){
-    if(e.trainCases<25)continue;
+    if(e.trainCases<(e.rule.dynamic?8:25))continue;
     if(used.has(e.rule.group))continue;
     unique.push(e);used.add(e.rule.group);
   }
   const supports=unique.filter(x=>x.support);
   const status=supports.length>=2?"우선 연구":supports.length?"추가 검증":"보류";
-  return {n,list,unique,supports,status,
+  return {n,list,unique,supports,status,flowCount:discovered.length,
           groupCount:unique.length,
           score:supports.reduce((s,x)=>s+Math.max(0,x.rank),0)};
 }
@@ -338,7 +439,7 @@ function renderNumbers(){
     return '<button class="number-card '+(top?'top':p.status!=="보류"?'detected':'')+'" onclick="openDetail('+p.n+')" title="'+p.n+'번 자세히 보기">'+
       '<span class="n '+(top?'mint':'')+'">'+p.n+'</span>'+
       '<span class="c">'+clean(p.status)+'</span>'+
-      '<span class="c">분석 그룹 '+p.groupCount+'개</span></button>';
+      '<span class="c">연결 패턴 '+p.flowCount+'개</span></button>';
   }).join("");
   const detected=state.profiles.filter(x=>x.status!=="보류").length;
   $("candidateInfo").textContent="1~45번 전체 검색 완료 · 연구 후보 "+detected+"개 · 보류 "+(45-detected)+
@@ -376,12 +477,15 @@ function proofSVG(ds,n,e){
   y+=34;
   for(let ci=0;ci<selected.length;ci++){
     const s=selected[ci],i=s.i,k=e.rule.k;
-    const before=ds.slice(i-k,i);
+    const before=e.rule.history?
+      e.rule.history(ds,i,n).map(j=>ds[j]):ds.slice(i-k,i);
     const result=s.current?null:ds[i];
     const first=before[0].draw_no;
     const lastNo=before[before.length-1].draw_no;
-    let heading=s.current?"이번 회차: "+first+"~"+lastNo+"회 → "+(lastNo+1)+"회 "+(s.matched?"결과 미정":"조건 불일치"):
-      "실제 "+(s.hit?"출현":"미출현")+" 사례: "+first+"~"+lastNo+"회 → "+result.draw_no+"회";
+    const refLabel=e.rule.history?before.map(d=>d.draw_no).join("·")+"회":first+"~"+lastNo+"회";
+    const nextRound=s.current?latest(ds).draw_no+1:result.draw_no;
+    let heading=s.current?"이번: "+refLabel+" → "+nextRound+"회 "+(s.matched?"결과 미정":"조건 불일치"):
+      "실제 "+(s.hit?"출현":"미출현")+" 사례: "+refLabel+" → "+nextRound+"회";
     inner+=tx(23,y+20,heading,21,s.hit===false?"#ae495e":"#194f9b",850,"start");
     y+=43;
     let x=20;
@@ -399,7 +503,7 @@ function proofSVG(ds,n,e){
       y+=44;
     }
     const outcome=result?result.numbers:["—","—","—","—","—","—"];
-    const row=[(result?result.draw_no:(lastNo+1))+"회"].concat(outcome)
+    const row=[nextRound+"회"].concat(outcome)
       .concat([result?(result.numbers.includes(n)?n+"번 출현":n+"번 미출현"):(s.matched?"결과 미정":"조건 불일치")]);
     x=20;
     for(let c=0;c<row.length;c++){
@@ -409,21 +513,23 @@ function proofSVG(ds,n,e){
     }
     y+=67;
   }
-  inner+=tx(23,y+15,"파란색=선행 조건 관련 번호 | 빨간색=연구 대상 "+n+"번 | 과거 사례는 예측 보장이 아닙니다.",
+  inner+=tx(23,y+15,"표시된 선행 회차는 조건의 근거가 된 기록입니다. 파란색=관련 번호, 빨간색="+n+"번. 미래를 보장하지 않습니다.",
     17,"#697d96",500,"start");
   y+=44;
   return '<svg xmlns="http://www.w3.org/2000/svg" id="proof-'+n+'-'+e.rule.id+
     '" width="'+W+'" height="'+y+'" viewBox="0 0 '+W+' '+y+'" role="img" aria-label="'+clean(title)+'">'+inner+'</svg>';
 }
 function ruleCard(n,e,ds){
+  state.proofCache.set(n+":"+e.rule.id,e);
   const failures=e.cases-e.wins;
   const rate=e.cases?e.wins/e.cases:0;
   const valRate=e.holdCases?e.holdWins/e.holdCases:NaN;
   const current=e.rule.k;
   const lastD=latest(ds).draw_no;
-  const verdict=e.trainCases<25?"표본 부족":e.stable?"구간 비교 가능":"후반부 사례 부족";
+  const verdict=e.stable?"구간 비교 가능":e.rule.dynamic?"비교 표본 부족":e.trainCases<25?"표본 부족":"후반부 사례 부족";
   const matches=e.rule.test(ds,ds.length,n);
-  const desc="이번 "+upcoming(ds)+"회에는 직전 "+current+"회 기준으로 '"+labelOf(e,n)+
+  const context=e.rule.group==="복합교차"?"두 조건의 선행 기록":e.rule.dynamic&&/자리순서|자리이동|출현간격|간격연속|자리공백/.test(e.rule.group)?"최근 실제 출현 기록":"직전 "+current+"회";
+  const desc="이번 "+upcoming(ds)+"회에는 "+context+"을 기준으로 '"+labelOf(e,n)+
     (matches?"' 조건이 성립합니다.":"' 조건이 성립하지 않아 자동 후보 근거에서 제외됩니다.");
   return '<article class="rule-card"><div class="title"><h3>'+clean(labelOf(e,n))+'</h3>'+
     '<span class="tag '+(e.support?"green":"")+'">'+verdict+'</span></div>'+
@@ -434,9 +540,17 @@ function ruleCard(n,e,ds){
     '<div><small>최근 160회 구간 내 일치 사례</small><b>'+e.holdCases+'회</b></div></div>'+
     '<p class="hint">초기 구간 '+e.trainCases+'회 중 '+e.trainWins+'회 출현. 최근 구간 '+e.holdCases+
       '회 중 '+e.holdWins+'회 출현('+pct(valRate)+'). 일반적인 한 번호의 출현 비율은 6/45 ≈ 13.3%입니다. 여러 조건을 검색했기 때문에 우연한 편차일 수 있습니다.</p>'+
-    '<details><summary class="openmore">▣ 이 조건의 실제 이전 회차 → 다음 회차 PPT 그림 보기</summary>'+
-    '<div class="proof">'+proofSVG(ds,n,e)+'</div>'+
+    '<details ontoggle="if(this.open)loadProof(this,'+n+','+e.rule.id+')"><summary class="openmore">▣ 이 조건의 실제 이전 회차 → 다음 회차 PPT 그림 보기</summary>'+
+    '<div class="proof"></div>'+
     '<div class="toolbar"><button class="btn small" onclick="saveProofPNG('+n+','+e.rule.id+')">PNG 이미지 저장</button><button class="btn small outline" onclick="saveProofSVG('+n+','+e.rule.id+')">벡터 이미지 저장</button></div></details></article>';
+}
+function loadProof(details,n,ruleId){
+  if(!details.open)return;
+  const div=details.querySelector(".proof");
+  if(!div||div.querySelector("svg"))return;
+  const e=state.proofCache.get(n+":"+ruleId);
+  if(!e){div.textContent="이미지 데이터를 찾지 못했습니다. 번호를 다시 조회해 주세요.";return;}
+  div.innerHTML=proofSVG(state.draws,n,e);
 }
 function saveProofSVG(n,ruleId){
   const svg=$("proof-"+n+"-"+ruleId);
@@ -470,29 +584,95 @@ function saveProofPNG(n,ruleId){
   img.onerror=function(){URL.revokeObjectURL(url);alert("이미지 저장을 완료하지 못했습니다.");};
   img.src=url;
 }
+function makeJointStudies(ds,n,p){
+  const flow=p.unique.filter(e=>e.rule.dynamic&&e.trainCases>=10).slice(0,5);
+  const base=p.unique.filter(e=>!e.rule.dynamic&&e.trainCases>=65).slice(0,5);
+  const pool=[];
+  let serial=0;
+  for(const a of flow){
+    for(const b of base){
+      if(a.rule.group===b.rule.group)continue;
+      const nameA=labelOf(a,n),nameB=labelOf(b,n);
+      const rule={
+        id:300000+n*100+serial++,dynamic:true,group:"복합교차",
+        label:n+"번 복합 검증: "+a.rule.group+" + "+b.rule.group,
+        k:Math.max(a.rule.k,b.rule.k),
+        test:(d,i,v)=>a.rule.test(d,i,v)&&b.rule.test(d,i,v),
+        mark:(x,v)=>a.rule.mark(x,v)||b.rule.mark(x,v),
+        why:"① "+nameA+" ② "+nameB+" 두 조건이 함께 성립했던 회차만 찾았습니다. 사후 탐색이므로 후보 순위에는 추가하지 않습니다.",
+        history:(d,i,v)=>{
+          const indices=new Set(a.rule.history?a.rule.history(d,i,v):[]);
+          for(let j=Math.max(0,i-Math.min(2,b.rule.k));j<i;j++)indices.add(j);
+          return [...indices].sort((u,w)=>u-w).slice(-5);
+        }
+      };
+      const e=studyRule(ds,n,rule);
+      if(e&&e.cases>=8)pool.push(e);
+    }
+  }
+  pool.sort((a,b)=>b.cases-a.cases||b.holdCases-a.holdCases);
+  const selected=[],used=new Set();
+  for(const e of pool){
+    const key=e.rule.label;
+    if(used.has(key))continue;
+    used.add(key);selected.push(e);
+    if(selected.length>=2)break;
+  }
+  return selected;
+}
+function selectFlowCards(p){
+  const list=p.unique.filter(e=>e.rule.dynamic&&e.trainCases>=8);
+  const result=[],used=new Set();
+  const preferred=[
+    e=>e.rule.group.startsWith("자리순서")||e.rule.group==="자리이동방향",
+    e=>e.rule.group.includes("간격")||e.rule.group==="자리공백",
+    e=>e.rule.group.startsWith("이웃자리")||e.rule.group==="끝수자리",
+    e=>e.rule.group.includes("순서")||e.rule.group==="이웃수방향"
+  ];
+  for(const predicate of preferred){
+    const pick=list.find(e=>predicate(e)&&!used.has(e.rule.id));
+    if(pick){result.push(pick);used.add(pick.rule.id);}
+  }
+  for(const e of list){
+    if(result.length>=6)break;
+    if(!used.has(e.rule.id)){result.push(e);used.add(e.rule.id);}
+  }
+  return result;
+}
 function numberReport(n,p,ds){
   const all=p.list;
-  const selected=p.unique;
   const gap=latestGap(ds,ds.length,n);
   const appearances=ds.filter(d=>d.numbers.includes(n));
   const recent=appearances.slice(-8).reverse();
-  const shown=selected.filter(e=>e.trainCases>=25);
+  const fixed=p.unique.filter(e=>!e.rule.dynamic&&e.trainCases>=25);
+  const flow=selectFlowCards(p);
+  const joint=makeJointStudies(ds,n,p);
+  const positionTrail=appearances.slice(-3).map(d=>d.draw_no+"회 "+(d.numbers.indexOf(n)+1)+"구").join(" → ");
   return '<div class="panel"><div class="split"><div><div class="eyebrow">NUMBER '+n+' RESEARCH</div>'+
     '<h2>'+n+'번 · '+p.status+'</h2><p class="sub">'+upcoming(ds)+'회 기준, '+n+
     '번이 직접 포함된 조건과 관련 번호만 검색했습니다.</p></div>'+
     '<div>'+ball(n)+'</div></div>'+
     '<div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(155px,1fr))"><div class="stat"><small>마지막 출현 이후</small><b>'+gap+'회</b></div>'+
-    '<div class="stat"><small>이번 회차 조건 일치</small><b>'+all.length+'종</b></div>'+
-    '<div class="stat"><small>중복 분야 제거</small><b>'+shown.length+'개 분야</b></div></div>'+
-    '<p class="caution">조건이 일치했다는 사실과 다음 회차 출현 가능성이 높다는 주장은 다릅니다. 같은 계열의 중복 조건을 합쳐 표시하고, 모든 성공·실패 사례를 함께 집계합니다.</p>'+
+    '<div class="stat"><small>기본 조건 해당</small><b>'+all.filter(e=>!e.rule.dynamic).length+'종</b></div>'+
+    '<div class="stat"><small>이번 회차 연결 패턴</small><b>'+p.flowCount+'종</b></div></div>'+
+    '<p class="hint">최근 3번 실제 출현 위치: <strong>'+clean(positionTrail||"기록 부족")+'</strong></p>'+
+    '<p class="caution">연결 패턴은 현재 관측된 순서·간격을 과거에 적용한 연구 결과입니다. 출현 횟수나 관측 비율이 높은 당첨 가능성을 의미하지 않으며, 표본이 적으면 후보 판정에 반영하지 않습니다.</p>'+
     '</div>'+
-    '<div class="section"><h2>이번 회차에 실제로 해당하는 번호별 패턴</h2>'+
-    '<p class="hint">과거 사례가 25회 이상인 조건 중 분야별로 대표 조건을 선택했습니다. 이번 회차 결과는 아직 미정입니다.</p>'+
-    (shown.length?shown.map(e=>ruleCard(n,e,ds)).join(""):'<div class="panel">현재 표본 기준으로 확인 가능한 번호별 선행 조건이 부족합니다. 억지로 근거를 만들지 않습니다.</div>')+
-    '</div><div class="section panel"><h2>'+n+'번 최근 출현 기록</h2>'+
-    '<p class="hint">이 항목은 단순한 출현 기록이며 후보 판정에 자동 가산하지 않습니다.</p>'+
-    '<div class="tablewrap"><table class="simple-table"><thead><tr><th>출현 회차</th><th>당첨번호</th><th>직전 회차</th></tr></thead><tbody>'+
-    recent.map(d=>'<tr><td>'+d.draw_no+'회</td><td>'+d.numbers.join(" · ")+'</td><td>'+(d.draw_no-1)+'회</td></tr>').join("")+
+    '<div class="section"><h2>🧩 이번 회차에서 발견한 회차 연결 패턴</h2>'+
+    '<p class="hint">직전 실제 출현의 1~6구 위치, 출현 사이 공백, 이웃수의 자리와 두 회차 이동 순서를 번호마다 새로 계산합니다. 각 그림에서 파란색은 관련 번호, 빨간색은 연구 번호입니다. 성공과 실패를 함께 확인하세요.</p>'+
+    (flow.length?flow.map(e=>ruleCard(n,e,ds)).join(""):'<div class="panel">이번 회차에 맞는 연결 조건은 발견됐으나, 비교 가능한 과거 사례가 8회 미만이거나 해당 조건이 없습니다. 빈약한 자료를 근거로 포장하지 않습니다.</div>')+
+    '</div>'+
+    '<div class="section"><h2>🔎 서로 다른 조건이 함께 겹친 사례</h2>'+
+    '<p class="hint">연결 패턴과 기본 규칙이 같은 시점에 동시에 성립했던 회차를 찾아 성공·실패를 비교합니다. 우연한 패턴을 많이 만들어낼 수 있으므로 후보 점수에 추가하지 않는 별도 연구입니다.</p>'+
+    (joint.length?joint.map(e=>ruleCard(n,e,ds)).join(""):'<div class="panel">동시에 성립한 과거 사례가 8회 이상인 조합을 찾지 못했습니다. 억지로 결론을 만들지 않습니다.</div>')+
+    '</div>'+
+    '<div class="section"><h2>기본 검색에서 이번 회차에 해당하는 조건</h2>'+
+    '<p class="hint">미출현·이웃수·끝수 등 기본 규칙 45종도 별도로 확인했습니다. 과거 사례가 25회 이상인 조건 중 중복 분야는 대표 조건 하나만 표시합니다.</p>'+
+    (fixed.length?fixed.map(e=>ruleCard(n,e,ds)).join(""):'<div class="panel">현재 표본 기준으로 확인 가능한 기본 선행 조건이 부족합니다.</div>')+
+    '</div><div class="section panel"><h2>'+n+'번 최근 출현 기록과 위치</h2>'+
+    '<p class="hint">아래 위치는 당첨번호 여섯 개를 작은 순서대로 나열했을 때의 자리입니다. 출현 이력 자체에는 후보 점수를 더하지 않습니다.</p>'+
+    '<div class="tablewrap"><table class="simple-table"><thead><tr><th>출현 회차</th><th>당첨번호</th><th>'+n+'번 위치</th><th>직전 회차</th></tr></thead><tbody>'+
+    recent.map(d=>'<tr><td>'+d.draw_no+'회</td><td>'+d.numbers.join(" · ")+'</td><td><strong>'+(d.numbers.indexOf(n)+1)+'구</strong></td><td>'+(d.draw_no-1)+'회</td></tr>').join("")+
     '</tbody></table></div></div>';
 }
 function openDetail(n){
@@ -513,14 +693,20 @@ function showResearch(){
 function fillPatternSelect(){
   const n=validN($("patternN").value)||39;
   const old=$("patternRule").value;
-  $("patternRule").innerHTML=RULES.map(r=>'<option value="'+r.id+'">'+clean(r.label.replace("{n}",n))+'</option>').join("");
-  if(old!=="")$("patternRule").value=old;
+  const flow=state.draws.length?makeFlowRules(state.draws,n):[];
+  state.patternRuleOptions=RULES.concat(flow);
+  $("patternRule").innerHTML='<optgroup label="이번 회차의 번호별 자동 발견">'+
+    flow.map(r=>'<option value="'+r.id+'">'+clean(r.label.replace("{n}",n))+'</option>').join("")+
+    '</optgroup><optgroup label="45종 기본 연구 조건">'+
+    RULES.map(r=>'<option value="'+r.id+'">'+clean(r.label.replace("{n}",n))+'</option>').join("")+'</optgroup>';
+  if(state.patternOptionsReady&&old!==""&&state.patternRuleOptions.some(r=>String(r.id)===old))$("patternRule").value=old;
+  if(state.draws.length)state.patternOptionsReady=true;
 }
 function showPatternSearch(){
   if(!state.draws.length){$("patternResult").textContent="데이터 연결이 필요합니다.";return;}
   const n=validN($("patternN").value);
   if(!n){alert("1~45번 중 하나를 입력해 주세요.");return;}
-  const rule=RULES[Number($("patternRule").value)];
+  const rule=(state.patternRuleOptions||RULES).find(r=>String(r.id)===$("patternRule").value);
   if(!rule)return;
   let cases=0,wins=0,misses=0;
   const events=[];
