@@ -88,6 +88,26 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 .mobile-menu{display:none}
 @media(max-width:960px){.sidebar{width:196px;padding:22px 10px}.number-grid{grid-template-columns:repeat(6,minmax(0,1fr))}.cards{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:720px){.app{display:block}.sidebar{width:auto;height:auto;position:relative;padding:14px;border-right:0;border-bottom:1px solid var(--line)}.logo{margin:0 0 12px}.nav{flex-direction:row;overflow:auto;gap:5px}.nav button{width:auto;flex:none;white-space:nowrap;font-size:12px;padding:8px 11px}.side-foot{display:none}.main{padding:20px 14px 65px}.topbar{margin-bottom:15px}.hero{padding:24px 18px}.number-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}.number-card{min-height:75px}.number-card .n{font-size:22px}.cards,.row{grid-template-columns:1fr}.rule-stats{grid-template-columns:repeat(2,1fr)}.ticket{flex-wrap:wrap}.ball{width:34px;height:34px}#toTop{bottom:15px;right:14px}}
+
+/* 결과 해석과 45개 규칙 전체 목록 */
+.audit-banner{background:#102c40;border:1px solid #426b77;border-left:5px solid #75c9bf;border-radius:12px;padding:16px 18px;margin:14px 0;line-height:1.85;color:#d9eff0}
+.audit-banner strong{color:#b0f4dd}
+.audit-group{border:1px solid #3a5172;background:#102039;border-radius:14px;overflow:hidden;margin:10px 0}
+.audit-group>summary{list-style:none;display:flex;align-items:center;gap:12px;padding:16px;cursor:pointer}
+.audit-group>summary::-webkit-details-marker{display:none}
+.audit-group>summary:before{content:"+";display:grid;place-items:center;flex-shrink:0;width:25px;height:25px;border-radius:7px;background:#243f60;color:#ffe2a7;font-weight:900}
+.audit-group[open]>summary:before{content:"−"}
+.audit-group .audit-label{flex:1;min-width:0;font-weight:750;line-height:1.55;color:#edf5ff}
+.audit-group .audit-mini{font-size:12px;color:#a9bbd3}
+.audit-group>.audit-content{padding:0 15px 14px}
+.audit-group .rule-card{margin:0}
+.audit-count{color:#b7c9de;font-size:13px;line-height:1.8;margin:8px 0 15px}
+.audit-muted{padding:10px 14px;border-bottom:1px solid #2e4866;color:#b7c6d9;line-height:1.7;font-size:13px}
+.audit-muted:last-child{border-bottom:0}
+.audit-summary-card{background:#0e2036;border-radius:10px;padding:14px;margin:12px 0;border:1px solid #355777}
+.audit-summary-card strong{color:#a7f1da}
+@media(max-width:650px){.audit-group>summary{align-items:flex-start;flex-wrap:wrap}.audit-group .audit-mini{flex-basis:100%;padding-left:37px}.audit-group>.audit-content{padding:0 8px 10px}.audit-group .rule-card{padding:13px}}
+
 </style>
 </head>
 <body>
@@ -439,11 +459,11 @@ function renderNumbers(){
     return '<button class="number-card '+(top?'top':p.status!=="보류"?'detected':'')+'" onclick="openDetail('+p.n+')" title="'+p.n+'번 자세히 보기">'+
       '<span class="n '+(top?'mint':'')+'">'+p.n+'</span>'+
       '<span class="c">'+clean(p.status)+'</span>'+
-      '<span class="c">연결 패턴 '+p.flowCount+'개</span></button>';
+      '<span class="c">이번 회차 연결 일치 '+p.flowCount+'개</span></button>';
   }).join("");
   const detected=state.profiles.filter(x=>x.status!=="보류").length;
   $("candidateInfo").textContent="1~45번 전체 검색 완료 · 연구 후보 "+detected+"개 · 보류 "+(45-detected)+
-    "개. 공통 조건을 전체 번호에 동일한 근거로 부여하지 않습니다. 검색된 조건은 실제 당첨 가능성이 높다는 뜻이 아닙니다.";
+    "개. 연결 조건의 개수는 추천 순위가 아닙니다. 각 번호에 실제 해당한 규칙만 표시하며, 당첨 가능성이 높아졌다는 뜻이 아닙니다.";
 }
 function validN(v){const n=Number(v);return Number.isInteger(n)&&n>=1&&n<=45?n:null;}
 function findProfile(n){return state.profiles.find(x=>x.n===n);}
@@ -526,7 +546,7 @@ function ruleCard(n,e,ds){
   const valRate=e.holdCases?e.holdWins/e.holdCases:NaN;
   const current=e.rule.k;
   const lastD=latest(ds).draw_no;
-  const verdict=e.stable?"구간 비교 가능":e.rule.dynamic?"비교 표본 부족":e.trainCases<25?"표본 부족":"후반부 사례 부족";
+  const verdict=e.support?"탐색 기준 부합":e.stable?"비교 가능·우위 미확인":"비교 표본 부족";
   const matches=e.rule.test(ds,ds.length,n);
   const context=e.rule.group==="복합교차"?"두 조건의 선행 기록":e.rule.dynamic&&/자리순서|자리이동|출현간격|간격연속|자리공백/.test(e.rule.group)?"최근 실제 출현 기록":"직전 "+current+"회 기록";
   const desc="이번 "+upcoming(ds)+"회에는 "+context+"을 기준으로 '"+labelOf(e,n)+
@@ -639,27 +659,51 @@ function selectFlowCards(p){
   }
   return result;
 }
+
+function auditRuleRow(n,e,ds,index){
+  const label=labelOf(e,n);
+  const rate=e.cases?pct(e.wins/e.cases):"표본 없음";
+  const badge=e.support?"탐색 기준 부합":e.stable?"비교 가능·우위 미확인":"표본 부족";
+  const hold=e.holdCases?pct(e.holdWins/e.holdCases):"사례 부족";
+  return '<details class="audit-group"><summary><span class="audit-label">'+
+    '<span style="color:#e8c781">'+String(index+1).padStart(2,"0")+'.</span> '+clean(label)+
+    '</span><span class="audit-mini">'+clean(e.rule.group)+' · '+clean(badge)+' · 과거 '+e.cases+
+    '회 중 출현 '+e.wins+'회 ('+rate+')</span></summary><div class="audit-content">'+
+    '<div class="audit-summary-card">최근 검증 구간: <strong>'+hold+'</strong> ('+e.holdCases+
+    '회 중 '+e.holdWins+'회 출현). 과거 관측값으로, 다음 회차 확률이 아닙니다.</div>'+
+    ruleCard(n,e,ds)+'</div></details>';
+}
+function nonmatchingInventory(n,ds){
+  const absent=RULES.filter(r=>!r.test(ds,ds.length,n));
+  return '<details class="audit-group"><summary><span class="audit-label">이번 회차에 성립하지 않은 기본 조건 '+absent.length+
+    '개도 확인하기</span><span class="audit-mini">45종 전체 중 현재 해당하지 않는 조건 · 점수 미반영</span></summary>'+
+    '<div class="audit-content">'+absent.map((r,i)=>'<div class="audit-muted">'+(i+1)+'. ['+
+      clean(r.group)+'] '+clean(r.label.replace("{n}",String(n)))+' — 이번 회차 조건 불일치</div>').join("")+
+    '</div></details>';
+}
+
 function numberReport(n,p,ds){
   const all=p.list;
   const gap=latestGap(ds,ds.length,n);
   const appearances=ds.filter(d=>d.numbers.includes(n));
   const recent=appearances.slice(-8).reverse();
-  const fixed=p.unique.filter(e=>!e.rule.dynamic&&e.trainCases>=25);
-  const flow=selectFlowCards(p);
+  const fixed=all.filter(e=>!e.rule.dynamic);
+  const flow=all.filter(e=>e.rule.dynamic);
   const joint=makeJointStudies(ds,n,p);
   const positionTrail=appearances.slice(-3).map(d=>d.draw_no+"회 "+(d.numbers.indexOf(n)+1)+"구").join(" → ");
   return '<div class="panel"><div class="split"><div><div class="eyebrow">NUMBER '+n+' RESEARCH</div>'+
     '<h2>'+n+'번 · '+p.status+'</h2><p class="sub">'+upcoming(ds)+'회 기준, '+n+
     '번이 직접 포함된 조건과 관련 번호만 검색했습니다.</p></div>'+
     '<div>'+ball(n)+'</div></div>'+
-    '<div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(155px,1fr))"><div class="stat"><small>마지막 출현 이후</small><b>'+gap+'회</b></div>'+
-    '<div class="stat"><small>기본 조건 해당</small><b>'+all.filter(e=>!e.rule.dynamic).length+'종</b></div>'+
-    '<div class="stat"><small>이번 회차 연결 패턴</small><b>'+p.flowCount+'종</b></div></div>'+
+    '<div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(155px,1fr))"><div class="stat"><small>연속 미출현</small><b>'+gap+'회 미출현 중</b></div>'+
+    '<div class="stat"><small>기본 45종 중 이번 회차 일치</small><b>'+fixed.length+'종</b></div>'+
+    '<div class="stat"><small>별도 자동 연결 패턴 일치</small><b>'+flow.length+'종</b></div></div>'+
     '<p class="hint">최근 3번 실제 출현 위치: <strong>'+clean(positionTrail||"기록 부족")+'</strong></p>'+
-    '<p class="caution">연결 패턴은 현재 관측된 순서·간격을 과거에 적용한 연구 결과입니다. 출현 횟수나 관측 비율이 높은 당첨 가능성을 의미하지 않으며, 표본이 적으면 후보 판정에 반영하지 않습니다.</p>'+
+    '<div class="audit-banner"><strong>숫자 해석:</strong> '+gap+'회는 '+n+'번이 마지막으로 나온 뒤 결과가 확정된 회차에서 연속으로 미출현한 횟수입니다. 다음 '+upcoming(ds)+'회 결과는 아직 모릅니다. 기본 '+fixed.length+'종은 미리 정의한 45개 검색 조건 중 이번 회차에 일치한 항목입니다. 별도 연결 '+flow.length+'종은 최근 출현 자리·간격·관련 번호에서 자동 생성한 조건이며 <strong>기본 '+fixed.length+'종 중 확률이 높은 '+flow.length+'종을 뽑은 게 아닙니다.</strong></div>'+ 
+    '<p class="caution">모든 조건은 과거 기록에 대한 관찰입니다. 기본 '+fixed.length+'개 가운데 탐색 기준에 부합한 항목 '+fixed.filter(e=>e.support).length+'개, 연결 '+flow.length+'개 가운데 '+flow.filter(e=>e.support).length+'개입니다. 이 개수는 당첨 예측력이 입증됐다는 뜻이 아닙니다. 비슷한 규칙이 서로 중복될 수 있습니다.</p>'+
     '</div>'+
     '<div class="section"><h2>🧩 이번 회차에서 발견한 회차 연결 패턴</h2>'+
-    '<p class="hint">직전 실제 출현의 1~6구 위치, 출현 사이 공백, 이웃수의 자리와 두 회차 이동 순서를 번호마다 새로 계산합니다. 각 그림에서 파란색은 관련 번호, 빨간색은 연구 번호입니다. 성공과 실패를 함께 확인하세요.</p>'+
+    '<p class="hint">이번 회차에 실제 일치한 연결 조건 '+flow.length+'개를 <strong>전부</strong> 표시합니다. 확률 높은 순으로 추린 목록이 아닙니다. 각 조건의 과거 출현·미출현 횟수와 비교 표본을 따로 살펴보세요. 그림은 펼치면 볼 수 있습니다.</p>'+
     (flow.length?flow.map(e=>ruleCard(n,e,ds)).join(""):'<div class="panel">이번 회차에 맞는 연결 조건은 발견됐으나, 비교 가능한 과거 사례가 8회 미만이거나 해당 조건이 없습니다. 빈약한 자료를 근거로 포장하지 않습니다.</div>')+
     '</div>'+
     '<div class="section"><h2>🔎 서로 다른 조건이 함께 겹친 사례</h2>'+
@@ -667,8 +711,9 @@ function numberReport(n,p,ds){
     (joint.length?joint.map(e=>ruleCard(n,e,ds)).join(""):'<div class="panel">동시에 성립한 과거 사례가 8회 이상인 조합을 찾지 못했습니다. 억지로 결론을 만들지 않습니다.</div>')+
     '</div>'+
     '<div class="section"><h2>기본 검색에서 이번 회차에 해당하는 조건</h2>'+
-    '<p class="hint">미출현·이웃수·끝수 등 기본 규칙 45종도 별도로 확인했습니다. 과거 사례가 25회 이상인 조건 중 중복 분야는 대표 조건 하나만 표시합니다.</p>'+
-    (fixed.length?fixed.map(e=>ruleCard(n,e,ds)).join(""):'<div class="panel">현재 표본 기준으로 확인 가능한 기본 선행 조건이 부족합니다.</div>')+
+    '<p class="hint">기본 45개 규칙 중 이번 회차에 일치한 '+fixed.length+'개를 빠짐없이 나열했습니다. 각 행을 누르면 과거 출현·미출현 횟수, 자세한 설명, PPT 그림을 확인할 수 있습니다. 비슷한 규칙은 서로 겹칠 수 있으며, 이 목록은 추천 순위가 아닙니다.</p>'+
+    (fixed.length?fixed.map((e,i)=>auditRuleRow(n,e,ds,i)).join(""):'<div class="panel">현재 일치하는 기본 조건이 없습니다.</div>')+
+    '<div class="section"><h3>기본 45개 조건 전체 점검</h3><p class="audit-count">일치 '+fixed.length+'종 · 불일치 '+(RULES.length-fixed.length)+'종. 아래에서 적용되지 않은 조건도 열어볼 수 있습니다.</p>'+nonmatchingInventory(n,ds)+'</div>'+
     '</div><div class="section panel"><h2>'+n+'번 최근 출현 기록과 위치</h2>'+
     '<p class="hint">아래 위치는 당첨번호 여섯 개를 작은 순서대로 나열했을 때의 자리입니다. 출현 이력 자체에는 후보 점수를 더하지 않습니다.</p>'+
     '<div class="tablewrap"><table class="simple-table"><thead><tr><th>출현 회차</th><th>당첨번호</th><th>'+n+'번 위치</th><th>직전 회차</th></tr></thead><tbody>'+
