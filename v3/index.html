@@ -528,7 +528,7 @@ function ruleCard(n,e,ds){
   const lastD=latest(ds).draw_no;
   const verdict=e.stable?"구간 비교 가능":e.rule.dynamic?"비교 표본 부족":e.trainCases<25?"표본 부족":"후반부 사례 부족";
   const matches=e.rule.test(ds,ds.length,n);
-  const context=e.rule.group==="복합교차"?"두 조건의 선행 기록":e.rule.dynamic&&/자리순서|자리이동|출현간격|간격연속|자리공백/.test(e.rule.group)?"최근 실제 출현 기록":"직전 "+current+"회";
+  const context=e.rule.group==="복합교차"?"두 조건의 선행 기록":e.rule.dynamic&&/자리순서|자리이동|출현간격|간격연속|자리공백/.test(e.rule.group)?"최근 실제 출현 기록":"직전 "+current+"회 기록";
   const desc="이번 "+upcoming(ds)+"회에는 "+context+"을 기준으로 '"+labelOf(e,n)+
     (matches?"' 조건이 성립합니다.":"' 조건이 성립하지 않아 자동 후보 근거에서 제외됩니다.");
   return '<article class="rule-card"><div class="title"><h3>'+clean(labelOf(e,n))+'</h3>'+
