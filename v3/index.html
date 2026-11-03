@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1425">
+<meta name="description" content="LOTTO NOTE | 회차별 1~45 번호 패턴 자동 탐색 및 검증 연구소">
+<title>LOTTO NOTE · PATTERN LAB 2</title>
+<style>
+:root{--bg:#091324;--side:#0d192d;--panel:#12243b;--panel2:#172e4b;--line:#2c4261;--text:#f2f5fa;--muted:#b4c3d7;--gold:#f0c981;--mint:#76dbbf;--red:#ff8c98;--blue:#82b4ff;--shadow:0 18px 50px #01081380}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(ellipse at 80% -30%,#173b62 0%,transparent 44%),var(--bg);color:var(--text);font-family:Pretendard,"Noto Sans KR","Malgun Gothic",system-ui,sans-serif;line-height:1.6}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+button:disabled{opacity:.48;cursor:not-allowed}
+a{color:var(--gold)}
+.app{display:flex;min-height:100vh}
+.sidebar{width:240px;flex:none;position:sticky;top:0;height:100vh;background:linear-gradient(160deg,#101f34,#091324);border-right:1px solid var(--line);padding:26px 17px}
+.logo{display:flex;align-items:center;gap:12px;margin-bottom:38px}
+.logo-badge{width:45px;height:45px;border-radius:13px;background:linear-gradient(145deg,#ffe4a3,#bf823d);color:#182338;display:grid;place-items:center;font-size:26px;font-weight:900;box-shadow:0 8px 24px #e3b56b35}
+.logo strong{display:block;letter-spacing:.12em;font-size:11px;color:var(--gold)}
+.logo b{font-size:17px;white-space:nowrap}
+.nav{display:flex;flex-direction:column;gap:5px}
+.nav button{width:100%;border:1px solid transparent;background:none;text-align:left;color:#bdcce0;padding:12px;border-radius:11px;font-weight:700}
+.nav button:hover,.nav button.active{background:#244366;border-color:#385b86;color:white}
+.side-foot{margin-top:34px;color:#8299b6;font-size:12px;border-top:1px solid var(--line);padding-top:20px}
+.main{flex:1;min-width:0;max-width:1440px;margin:auto;padding:32px clamp(17px,3vw,48px) 80px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:26px}
+.topbar p{margin:0;color:var(--muted);font-size:13px}.topbar .identity{color:var(--gold);letter-spacing:.16em;font-size:11px;font-weight:800}
+.connection{font-size:12px;color:var(--muted);padding:8px 13px;border:1px solid var(--line);border-radius:999px;background:#152942}
+.page{display:none}.page.active{display:block}
+.hero{background:linear-gradient(135deg,#1d3859 0%,#11233b 66%);border:1px solid #476080;border-radius:23px;padding:clamp(22px,4vw,40px);position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.hero:after{content:"45";position:absolute;right:20px;top:-38px;font-size:230px;font-weight:900;color:#ffffff09;line-height:1;pointer-events:none}
+.eyebrow{color:var(--gold);font-size:11px;font-weight:900;letter-spacing:.2em}
+h1{font-size:clamp(27px,4vw,44px);margin:12px 0;letter-spacing:-.04em;line-height:1.25}
+h2{font-size:23px;letter-spacing:-.035em;margin:0 0 10px}
+h3{font-size:18px;letter-spacing:-.025em;margin:0 0 9px}
+.lead{font-size:15px;color:#cad7e8;max-width:790px;margin:12px 0 22px}
+.flex{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.split{display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap}
+.btn{border:0;border-radius:10px;padding:12px 17px;background:linear-gradient(145deg,#ffe2a0,#d6a75a);color:#1e2939;font-weight:900;box-shadow:0 4px 12px #080c1540}
+.btn.secondary{background:#274463;color:#e9f0f9;border:1px solid #41618a;box-shadow:none}
+.btn.outline{background:transparent;color:var(--gold);border:1px solid #9b7a4a;box-shadow:none}
+.btn.small{font-size:12px;padding:8px 12px}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}
+.stat,.panel{background:linear-gradient(145deg,#132740,#102036);border:1px solid var(--line);border-radius:17px;padding:20px}
+.stat small{color:var(--muted);display:block}.stat b{display:block;font-size:29px;color:var(--gold);margin:4px 0}
+.section{margin:33px 0}.section-head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:13px}
+.hint,.sub{font-size:13px;color:var(--muted);line-height:1.85}.hint{margin:8px 0 16px}
+.number-grid{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:9px}
+.number-card{background:#142941;border:1px solid #2c4464;border-radius:12px;padding:11px 4px;text-align:center;color:white;min-height:88px;position:relative}
+.number-card:hover{border-color:var(--gold);transform:translateY(-1px)}
+.number-card.detected{background:#1b3956;border-color:#60809d}
+.number-card.top{border-color:#bfa068;box-shadow:inset 0 0 0 1px #bfa06850}
+.number-card .n{font-size:26px;font-weight:900;display:block}
+.number-card .c{font-size:10px;color:#c3d2e3;display:block;line-height:1.25}
+.number-card .n.mint{color:var(--mint)}
+.tag{display:inline-flex;align-items:center;border:1px solid #47607e;background:#213c59;padding:4px 9px;border-radius:999px;font-size:11px;color:#e5f0fc;font-weight:700}
+.tag.gold{color:#ffe0a2;background:#3b3225;border-color:#927246}.tag.green{color:#a2f0da;background:#183d38;border-color:#33796a}.tag.red{color:#ffa4ad;background:#422d3d;border-color:#90566d}
+.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:16px 0}
+.field{background:#0b1b2e;border:1px solid #47607f;border-radius:9px;padding:10px 12px;color:#fff;min-height:42px;min-width:80px;max-width:100%}
+input[type=number]{width:95px}
+.ballset{display:flex;flex-wrap:wrap;gap:7px}
+.ball{width:38px;height:38px;border-radius:50%;display:inline-grid;place-items:center;color:white;font-weight:900;font-size:14px;border:1px solid #ffffff46;box-shadow:inset 0 1px 3px #ffffff30,0 3px 9px #0005}
+.b1{background:#e8b349;color:#1f2435}.b2{background:#418bcf}.b3{background:#c75e70}.b4{background:#6f7588}.b5{background:#39a88b}
+.rule-card{background:#12243c;border:1px solid #344d6c;border-radius:16px;padding:20px;margin:15px 0}
+.rule-card .title{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.rule-card p{color:#bbcbdf;margin:10px 0}
+.rule-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:14px}
+.rule-stats div{background:#0d1c30;border:1px solid #2c4565;padding:11px;border-radius:9px}
+.rule-stats small{font-size:11px;color:#9fb5d0;display:block}
+.rule-stats b{font-size:19px;color:#e9f3ff}
+.openmore{width:100%;background:#1e3a5b;color:#fff;border:1px solid #476589;border-radius:9px;padding:10px;margin-top:14px;text-align:left;font-weight:750}
+.proof{background:white;border-radius:12px;padding:10px;margin-top:12px;overflow:auto;border:1px solid #cad8ef}
+.proof svg{min-width:540px;max-width:100%;display:block;height:auto;margin:auto}
+.caution{border-left:4px solid #e0b96d;background:#47382450;color:#f0d7a1;padding:13px 16px;border-radius:7px;font-size:12px;line-height:1.9;margin-top:20px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.ticket{background:#fff;color:#183153;border:1px solid #d9e3ee;border-left:5px solid #d7a859;border-radius:11px;padding:14px 17px;display:flex;justify-content:space-between;align-items:center;gap:12px;margin:10px 0}
+.ticket strong{color:#234b91}
+.tablewrap{overflow:auto}.simple-table{border-collapse:collapse;width:100%;min-width:580px}.simple-table th,.simple-table td{border-bottom:1px solid #344963;padding:10px;text-align:left;font-size:13px}.simple-table th{color:#ead3aa}
+dialog{background:#0e1e32;color:white;border:1px solid #476080;border-radius:20px;width:min(1120px,95vw);max-height:90vh;box-shadow:0 28px 110px #000a;padding:0}
+dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
+.modal-head{position:sticky;top:0;background:#11243c;padding:18px 23px;display:flex;align-items:center;justify-content:space-between;gap:15px;border-bottom:1px solid #3a5272;z-index:2}
+.modal-body{padding:22px}
+.close{background:#2d445f;color:white;border:1px solid #637e9d;border-radius:9px;padding:7px 13px}
+#toTop{position:fixed;bottom:25px;right:24px;border:1px solid #d6b779;background:#1b3451;color:#ffe2a7;width:55px;height:55px;border-radius:50%;font-size:22px;font-weight:900;box-shadow:0 9px 25px #0008;opacity:0;pointer-events:none;transform:translateY(12px);transition:.2s;z-index:30}
+#toTop.show{opacity:1;pointer-events:auto;transform:none}
+.footer{margin-top:60px;text-align:center;color:#8295af;font-size:12px;border-top:1px solid #27394f;padding-top:20px}
+.mobile-menu{display:none}
+@media(max-width:960px){.sidebar{width:196px;padding:22px 10px}.number-grid{grid-template-columns:repeat(6,minmax(0,1fr))}.cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){.app{display:block}.sidebar{width:auto;height:auto;position:relative;padding:14px;border-right:0;border-bottom:1px solid var(--line)}.logo{margin:0 0 12px}.nav{flex-direction:row;overflow:auto;gap:5px}.nav button{width:auto;flex:none;white-space:nowrap;font-size:12px;padding:8px 11px}.side-foot{display:none}.main{padding:20px 14px 65px}.topbar{margin-bottom:15px}.hero{padding:24px 18px}.number-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}.number-card{min-height:75px}.number-card .n{font-size:22px}.cards,.row{grid-template-columns:1fr}.rule-stats{grid-template-columns:repeat(2,1fr)}.ticket{flex-wrap:wrap}.ball{width:34px;height:34px}#toTop{bottom:15px;right:14px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="logo"><div class="logo-badge">L</div><div><strong>LOTTO NOTE</strong><b>PATTERN LAB</b></div></div>
+  <nav class="nav" aria-label="주 메뉴">
+    <button class="active" data-tab="home" onclick="go('home')">◈ 자동 발견</button>
+    <button data-tab="research" onclick="go('research')">◎ 번호 연구소</button>
+    <button data-tab="patterns" onclick="go('patterns')">▤ 패턴 검색</button>
+    <button data-tab="tickets" onclick="go('tickets')">◉ 최종 5조합</button>
+    <button data-tab="backtest" onclick="go('backtest')">◷ 과거 검증</button>
+  </nav>
+  <div class="side-foot">LOTTO NOTE RESEARCH<br>기록 데이터 기반 번호 연구 · 회원가입 없음<br>분석 결과는 당첨 확률을 높인다는 뜻이 아닙니다.</div>
+</aside>
+<main class="main">
+<div class="topbar"><div><div class="identity">HISTORICAL NUMBER INTELLIGENCE</div><p>데이터와 과거 사례로 확인하는 로또 연구소</p></div><div class="connection" id="dataStatus">● 데이터 확인 중</div></div>
+<section id="home" class="page active">
+  <div class="hero"><div class="eyebrow">WEEKLY AUTO DISCOVERY</div><h1 id="heroTitle">로또 번호별 자동 패턴 분석</h1><p class="lead">1~45번의 기본 조건과 번호별 출현 자리·간격·회차 이동 흐름을 전수 검사합니다. 번호를 누르면 이번 회차의 실제 연결 패턴과 성공·실패 PPT 그림을 확인할 수 있습니다.</p>
+    <div class="flex"><button class="btn" onclick="reloadData()">최신 당첨번호 확인</button><button class="btn secondary" onclick="go('tickets')">최종 5조합 만들기</button><span class="tag" id="sourceBadge">조회 준비 중</span></div>
+  </div>
+  <div class="cards"><div class="stat"><small>연구 대상 회차</small><b id="drawNext">-</b><small>최신 당첨 결과 이후 다음 회차</small></div><div class="stat"><small>번호별 조건 검색</small><b id="ruleCount">-</b><small>각 번호와 직접 관련된 규칙만</small></div><div class="stat"><small>우선 연구 후보</small><b id="focusCount">-</b><small>다수의 독립 조건이 일치한 번호</small></div></div>
+  <div class="section"><div class="section-head"><div><h2>이번 회차 자동 검색 결과</h2><div class="sub">번호를 클릭하면 해당 번호만의 조건·출현 및 미출현 사례·이미지가 열립니다.</div></div><div class="flex"><label class="tag"><input type="checkbox" id="showAll" onchange="renderNumbers()"> 전체 45개 보기</label></div></div><div id="candidateGrid" class="number-grid"></div><p class="hint" id="candidateInfo"></p></div>
+  <div class="section panel"><div class="section-head"><h2>최신 확인 당첨번호</h2><span id="lastRound" class="tag">-</span></div><div id="lastBalls" class="ballset"></div><p class="hint">표시된 회차는 실제로 확인된 데이터 기준입니다. 새 회차가 반영되면 다음 회차 연구가 갱신됩니다.</p></div>
+</section>
+<section id="research" class="page"><div class="eyebrow">NUMBER LAB</div><h1>번호 연구소</h1><p class="lead">특정 번호의 출현 흐름과 이번 회차에 적용되는 번호별 패턴을 확인합니다.</p><div class="toolbar"><label>분석 번호 <input id="focusN" class="field" type="number" min="1" max="45" value="39"></label><button class="btn" onclick="showResearch()">번호 조사하기</button></div><div id="researchResult"></div></section>
+<section id="patterns" class="page"><div class="eyebrow">PATTERN EXPLORER</div><h1>패턴 검색</h1><p class="lead">선택한 번호의 이번 회차 출현·자리·간격 기록에서 자동 생성한 연결 패턴과 기본 45종 조건을 따로 살펴봅니다. 조건의 과거 성공·실패 회차를 정확히 비교하세요.</p><div class="toolbar"><label>번호 <input id="patternN" class="field" type="number" min="1" max="45" value="39"></label><label>조건 <select id="patternRule" class="field"></select></label><button class="btn" onclick="showPatternSearch()">역대 패턴 검색</button></div><div id="patternResult"></div></section>
+<section id="tickets" class="page"><div class="eyebrow">FIVE TICKET STUDIO</div><h1>최종 5조합</h1><p class="lead">번호별 연구 결과를 참고해 조합을 만들어 기록합니다. 어떤 조합도 다른 6개 번호 조합보다 1등 당첨확률이 높지는 않습니다.</p><div class="panel"><h3>사용할 후보 번호</h3><p class="hint">검증 조건에 해당하는 번호를 먼저 넣습니다. 6개 미만이면 나머지는 전체 45개 분석 기록에서 선별한 <strong>보조 분산수</strong>로 채웁니다. 보조수는 검증 기준을 통과한 후보가 아닙니다. 직접 번호를 수정할 수도 있습니다.</p><textarea id="poolInput" class="field" rows="3" style="width:100%;resize:vertical"></textarea><div class="toolbar"><button class="btn" onclick="makeTickets(false)">최종 5조합 생성</button><button class="btn secondary" onclick="setAutoPool()">자동 후보 다시 적용</button><button class="btn outline" onclick="saveTicketPNG()">조합 이미지 저장</button></div></div><div id="ticketsResult"></div></section>
+<section id="backtest" class="page"><div class="eyebrow">WALK-FORWARD CHECK</div><h1>과거 검증</h1><p class="lead">과거 특정 시점에 알 수 있었던 정보만 사용해 후보를 만든 뒤 다음 회차의 실제 결과와 비교합니다. 작은 표본의 검증으로 예측 우위를 입증할 수는 없습니다.</p><div class="toolbar"><button class="btn" onclick="runBacktest()">최근 12회 시점별 검증 실행</button><span class="hint">계산에 몇 초 걸릴 수 있습니다.</span></div><div id="backtestResult"></div></section>
+<div class="footer">🛡️ LOTTO NOTE · 과거의 패턴은 미래의 당첨을 보장하지 않습니다.<br><a href="https://lotto-note.tistory.com/" target="_blank" rel="noopener">로또 노트 블로그</a></div>
+</main>
+</div>
+<dialog id="detailDialog"><div class="modal-head"><div><div class="eyebrow">NUMBER PATTERN DETAIL</div><h2 style="margin:3px 0" id="modalTitle">번호 분석</h2></div><div class="toolbar"><button class="close" onclick="document.getElementById('detailDialog').scrollTo({top:0,behavior:'smooth'})">↑ 맨 위로</button><button class="close" onclick="document.getElementById('detailDialog').close()">닫기 ✕</button></div></div><div id="modalBody" class="modal-body"></div></dialog>
+<button id="toTop" aria-label="맨 위로 이동" title="맨 위로 이동" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+"use strict";
+const DATA_URL="https://smok95.github.io/lotto/results/all.json";
+const BASE=6/45;
+const LOOKBACK=15;
+const $=id=>document.getElementById(id);
+const state={draws:[],source:"",profiles:[],tickets:[],nonce:0,loading:false,cache:new Map(),proofCache:new Map()};
+function clean(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function pct(v){return Number.isFinite(v)?(v*100).toFixed(1)+"%":"—";}
+function ball(n){return '<span class="ball b'+(n<=10?1:n<=20?2:n<=30?3:n<=40?4:5)+'">'+n+'</span>';}
+function balls(arr){return '<div class="ballset">'+arr.map(ball).join("")+'</div>';}
+function latest(ds){return ds[ds.length-1];}
+function upcoming(ds){return latest(ds).draw_no+1;}
+function nRange(n){return Math.floor((n-1)/10);}
+function recentCount(ds,i,k,fn){let sum=0;for(let j=i-k;j<i;j++){for(const v of ds[j].numbers)if(fn(v))sum++;}return sum;}
+function recentHas(ds,i,k,fn){for(let j=i-k;j<i;j++)if(ds[j].numbers.some(fn))return true;return false;}
+function latestGap(ds,i,n){for(let j=i-1;j>=0;j--)if(ds[j].numbers.includes(n))return i-1-j;return i;}
+function previousNums(ds,i){return ds[i-1].numbers;}
+function intersectionCount(a,b){return a.filter(v=>b.includes(v)).length;}
+function normalize(raw){
+  let data=Array.isArray(raw)?raw:raw&&raw.results;
+  if(!Array.isArray(data)||data.length<100)throw Error("회차 데이터 형식이 잘못되었습니다.");
+  const items=data.map(x=>({
+    draw_no:Number(x.draw_no),
+    numbers:(x.numbers||[]).map(Number).sort((a,b)=>a-b),
+    bonus_no:Number(x.bonus_no||0)
+  })).sort((a,b)=>a.draw_no-b.draw_no);
+  for(let i=0;i<items.length;i++){
+    const d=items[i];
+    if(d.draw_no!==i+1||d.numbers.length!==6||
+      new Set(d.numbers).size!==6||
+      d.numbers.some(x=>!Number.isInteger(x)||x<1||x>45))
+      throw Error("누락되거나 중복된 회차 또는 번호가 발견되었습니다.");
+  }
+  return items;
+}
+function setStatus(text,color){
+  $("dataStatus").textContent="● "+text;
+  $("dataStatus").style.color=color||"#b4c3d7";
+}
+async function reloadData(){
+  if(state.loading)return;
+  state.loading=true;setStatus("최신 데이터 확인 중","#f0c981");
+  let success=false,raw;
+  try{
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),19000);
+    try{
+      const response=await fetch(DATA_URL,{cache:"no-store",signal:controller.signal});
+      if(!response.ok)throw Error("데이터 HTTP "+response.status);
+      raw=await response.json();
+    }finally{clearTimeout(timer);}
+    state.draws=normalize(raw);
+    state.source="온라인";
+    try{localStorage.setItem("lotto_note_verified_draws_v2",JSON.stringify(state.draws));}catch(_){}
+    success=true;
+  }catch(err){
+    try{
+      const cached=localStorage.getItem("lotto_note_verified_draws_v2");
+      if(!cached)throw err;
+      state.draws=normalize(JSON.parse(cached));
+      state.source="저장된 기록(최신 여부 미확인)";
+    }catch(e){
+      state.loading=false;setStatus("데이터 연결 실패","#ff9fa9");
+      $("candidateGrid").innerHTML='<div class="panel" style="grid-column:1/-1">데이터를 불러오지 못했습니다. 인터넷 연결을 확인하고 다시 눌러주세요. '+clean(err.message)+'</div>';
+      return;
+    }
+  }
+  state.cache.clear();state.proofCache.clear();state.loading=false;
+  setStatus("최신 확인 "+latest(state.draws).draw_no+"회"+(success?"":" · 캐시"),success?"#83dcc0":"#f0c981");
+  $("sourceBadge").textContent=state.source+" 데이터 · "+state.draws.length+"개 회차";
+  $("lastRound").textContent=latest(state.draws).draw_no+"회";
+  $("lastBalls").innerHTML=balls(latest(state.draws).numbers);
+  $("heroTitle").textContent=upcoming(state.draws)+"회 · 번호별 자동 패턴 탐색";
+  $("drawNext").textContent=upcoming(state.draws)+"회";
+  $("ruleCount").textContent=RULES.length+"종 + 연결 탐색";
+  await new Promise(r=>setTimeout(r,15));
+  state.profiles=analyzeAll(state.draws);
+  fillPatternSelect();
+  $("focusCount").textContent=state.profiles.filter(p=>p.status==="우선 연구").length+"개";
+  renderNumbers();
+  setAutoPool();
+  if($("research").classList.contains("active"))showResearch();
+  if($("patterns").classList.contains("active"))showPatternSearch();
+}
+function go(id){
+  document.querySelectorAll(".page").forEach(e=>e.classList.toggle("active",e.id===id));
+  document.querySelectorAll(".nav button").forEach(e=>e.classList.toggle("active",e.dataset.tab===id));
+  window.scrollTo({top:0,behavior:"smooth"});
+  if(id==="research"&&state.draws.length)showResearch();
+  if(id==="patterns"&&state.draws.length)showPatternSearch();
+  if(id==="tickets"&&state.draws.length&&!state.tickets.length)makeTickets(false);
+}
+const RULES=[];
+function addRule(group,label,k,test,mark,why){
+  RULES.push({id:RULES.length,group,label,k,test,mark:mark||(()=>false),why:why||""});
+}
+for(const k of [2,3,5,7,10,12]){
+  addRule("공백","최근 "+k+"회 {n}번 미출현",k,(ds,i,n)=>!recentHas(ds,i,k,x=>x===n),null,
+    "선택 번호가 최근 "+k+"회 동안 한 번도 나오지 않은 상태입니다.");
+}
+for(const k of [1,2,3,5]){
+  addRule("재출현","최근 "+k+"회 {n}번 출현 기록",k,(ds,i,n)=>recentHas(ds,i,k,x=>x===n),
+    (x,n)=>x===n,"선택 번호가 최근 "+k+"회 사이에 이미 등장한 상태입니다.");
+}
+for(const k of [1,3,5]){
+  for(const count of [1,2]){
+    addRule("이웃수","최근 "+k+"회 {n}번 이웃수 "+count+"개 이상",k,
+      (ds,i,n)=>recentCount(ds,i,k,x=>Math.abs(x-n)===1)>=count,
+      (x,n)=>Math.abs(x-n)===1,
+      "선택 번호의 바로 앞뒤 번호가 최근 "+k+"회 동안 나온 횟수를 조사합니다.");
+  }
+}
+for(const k of [1,3,5]){
+  for(const count of [1,2]){
+    addRule("끝수","최근 "+k+"회 {n}번과 같은 끝수 "+count+"개 이상",k,
+      (ds,i,n)=>recentCount(ds,i,k,x=>x!==n&&x%10===n%10)>=count,
+      (x,n)=>x!==n&&x%10===n%10,
+      "선택 번호와 일의 자리가 같은 다른 번호의 출현 흐름입니다.");
+  }
+}
+for(const k of [1,3,5]){
+  for(const count of [2,3,4]){
+    addRule("동일구간","최근 "+k+"회 {n}번과 같은 10단위 구간 "+count+"개 이상",k,
+      (ds,i,n)=>recentCount(ds,i,k,x=>x!==n&&nRange(x)===nRange(n))>=count,
+      (x,n)=>x!==n&&nRange(x)===nRange(n),
+      "1~10, 11~20 등 선택 번호가 속한 구간의 다른 숫자를 검사합니다.");
+  }
+}
+for(const k of [2,3,5]){
+  addRule("끝수공백","최근 "+k+"회 {n}번과 같은 끝수 미출현",k,
+    (ds,i,n)=>!recentHas(ds,i,k,x=>x%10===n%10),
+    (x,n)=>x%10===n%10,
+    "0·9 등 미리 정한 끝수가 아니라 선택 번호 자신의 끝수가 비어 있었는지 검사합니다.");
+}
+for(const k of [3,5,10]){
+  for(const count of [1,2]){
+    addRule("출현횟수","최근 "+k+"회 {n}번 "+count+"회 이상 출현",k,
+      (ds,i,n)=>recentCount(ds,i,k,x=>x===n)>=count,
+      (x,n)=>x===n,
+      "선택 번호 자체의 최근 반복 출현 횟수를 확인합니다.");
+  }
+}
+addRule("교차","{n}번 5회 공백 + 최근 3회 이웃수",5,
+  (ds,i,n)=>!recentHas(ds,i,5,x=>x===n)&&recentHas(ds,i,3,x=>Math.abs(x-n)===1),
+  (x,n)=>Math.abs(x-n)===1,
+  "선택 번호는 5회 나오지 않았고, 이웃수는 최근 3회에 등장했습니다.");
+addRule("교차","{n}번 7회 공백 + 최근 5회 같은 끝수",7,
+  (ds,i,n)=>!recentHas(ds,i,7,x=>x===n)&&recentHas(ds,i,5,x=>x!==n&&x%10===n%10),
+  (x,n)=>x!==n&&x%10===n%10,
+  "선택 번호는 7회 공백이며 같은 끝수의 다른 번호가 나타났습니다.");
+addRule("교차","{n}번 이웃수 + 같은 끝수 동시 출현",3,
+  (ds,i,n)=>recentHas(ds,i,3,x=>Math.abs(x-n)===1)&&recentHas(ds,i,3,x=>x!==n&&x%10===n%10),
+  (x,n)=>Math.abs(x-n)===1||(x!==n&&x%10===n%10),
+  "선택 번호와 관계된 이웃수 및 같은 끝수의 선행 조건이 함께 나타났습니다.");
+addRule("교차","{n}번 3회 공백 + 직전 이웃수",3,
+  (ds,i,n)=>!recentHas(ds,i,3,x=>x===n)&&previousNums(ds,i).some(x=>Math.abs(x-n)===1),
+  (x,n)=>Math.abs(x-n)===1,
+  "선택 번호는 3회 공백이며 바로 직전 회차에 이웃수가 나왔습니다.");
+addRule("교차","{n}번 최근 출현 + 동일구간 밀집",3,
+  (ds,i,n)=>recentHas(ds,i,3,x=>x===n)&&previousNums(ds,i).filter(x=>x!==n&&nRange(x)===nRange(n)).length>=2,
+  (x,n)=>x===n||(x!==n&&nRange(x)===nRange(n)),
+  "선택 번호가 최근 출현했고 같은 10단위 구간의 다른 숫자도 밀집했습니다.");
+// 이번 회차의 실제 기록에서 조건을 뽑아내는 회차별 연결 패턴 탐색기.
+// 각 조건은 번호 n이 과거 회차에 이미 등장했던 위치/간격을 사용합니다.
+function recentPositions(ds,i,n,count){
+  const out=[];
+  for(let j=i-1;j>=0&&out.length<count;j--){
+    const at=ds[j].numbers.indexOf(n);
+    if(at>=0)out.push({j,slot:at+1});
+  }
+  return out.length===count?out.reverse():[];
+}
+function gapClass(g){
+  return g<=2?"0~2회":g<=5?"3~5회":g<=9?"6~9회":g<=15?"10~15회":"16회 이상";
+}
+function moveMark(a,b){return b>a?"뒤쪽으로 이동":b<a?"앞쪽으로 이동":"같은 구 유지";}
+function lastTwoHistory(ds,i,n){return recentPositions(ds,i,n,2).map(p=>p.j);}
+function lastThreeHistory(ds,i,n){return recentPositions(ds,i,n,3).map(p=>p.j);}
+function lastDrawIndex(ds,i){return [i-1];}
+function lastTwoDrawIndices(ds,i){return [i-2,i-1];}
+function makeFlowRules(ds,n){
+  const rules=[],i=ds.length;
+  let serial=0;
+  const push=(group,label,k,test,mark,why,history)=>{
+    if(!test(ds,i,n))return;
+    rules.push({id:100000+n*100+serial++,dynamic:true,group,label,k,test,
+      mark:mark||(()=>false),why:why||"",history});
+  };
+  const two=recentPositions(ds,i,n,2);
+  const three=recentPositions(ds,i,n,3);
+  if(two.length===2){
+    const s1=two[0].slot,s2=two[1].slot;
+    push("자리순서2",n+"번 최근 두 출현의 위치 "+s1+"구→"+s2+"구",2,
+      (d,j,v)=>{const a=recentPositions(d,j,v,2);return a.length===2&&a[0].slot===s1&&a[1].slot===s2;},
+      (v)=>v===n,"해당 번호가 실제로 나왔던 최근 두 회차에서 1~6구 중 어느 자리에 있었는지 순서대로 비교합니다. 회차가 연속될 필요는 없습니다.",lastTwoHistory);
+    const currentClass=gapClass(latestGap(ds,i,n));
+    push("자리공백",n+"번 "+s2+"구 출현 후 "+currentClass+" 공백",2,
+      (d,j,v)=>{const a=recentPositions(d,j,v,1);return a.length===1&&a[0].slot===s2&&gapClass(latestGap(d,j,v))===currentClass;},
+      (v)=>v===n,"마지막 출현 자리와 이후 공백 길이를 결합한 조건입니다. 같은 자리에 나왔더라도 공백이 다르면 별개로 봅니다.",
+      (d,j,v)=>recentPositions(d,j,v,1).map(p=>p.j));
+  }
+  if(three.length===3){
+    const [a,b,c]=three.map(x=>x.slot);
+    push("자리순서3",n+"번 세 출현의 위치 "+a+"구→"+b+"구→"+c+"구",3,
+      (d,j,v)=>{const p=recentPositions(d,j,v,3);return p.length===3&&p[0].slot===a&&p[1].slot===b&&p[2].slot===c;},
+      (v)=>v===n,"같은 번호가 직전 세 번 실제 당첨되었을 때의 자리 순서가 똑같았던 역사적 사례를 찾습니다.",lastThreeHistory);
+    const firstMove=moveMark(a,b),secondMove=moveMark(b,c);
+    push("자리이동방향",n+"번 자리 이동 "+firstMove+"→"+secondMove,3,
+      (d,j,v)=>{const p=recentPositions(d,j,v,3);return p.length===3&&moveMark(p[0].slot,p[1].slot)===firstMove&&moveMark(p[1].slot,p[2].slot)===secondMove;},
+      (v)=>v===n,"정확한 자리 번호가 달라도 1~6구에서 앞쪽·뒤쪽·같은 자리로 이동한 흐름을 비교합니다.",lastThreeHistory);
+    const g1=gapClass(three[1].j-three[0].j-1);
+    const g2=gapClass(three[2].j-three[1].j-1);
+    push("출현간격연결",n+"번 이전 출현 간격 "+g1+"→"+g2,3,
+      (d,j,v)=>{const p=recentPositions(d,j,v,3);return p.length===3&&gapClass(p[1].j-p[0].j-1)===g1&&gapClass(p[2].j-p[1].j-1)===g2;},
+      (v)=>v===n,"번호가 연속으로 당첨된 세 회차 사이의 미출현 간격 두 개를 같은 순서로 비교합니다.",lastThreeHistory);
+    const gapNow=gapClass(latestGap(ds,i,n));
+    push("간격연속3",n+"번 간격 "+g1+"→"+g2+" 후 현재 "+gapNow+" 공백",3,
+      (d,j,v)=>{const p=recentPositions(d,j,v,3);return p.length===3&&gapClass(p[1].j-p[0].j-1)===g1&&gapClass(p[2].j-p[1].j-1)===g2&&gapClass(latestGap(d,j,v))===gapNow;},
+      (v)=>v===n,"실제 출현 간격의 흐름과 이번 회차까지의 공백을 함께 만족하는 과거 시점만 비교합니다.",lastThreeHistory);
+  }
+  const prev=ds[i-1].numbers;
+  for(const candidate of [n-1,n+1]){
+    if(candidate<1||candidate>45)continue;
+    const at=prev.indexOf(candidate);
+    if(at<0)continue;
+    const pos=at+1;
+    push("이웃자리"+(candidate<n?"아래":"위"),"직전 "+pos+"구의 "+candidate+"번 → "+n+"번",1,
+      (d,j,v)=>d[j-1].numbers[pos-1]===candidate,
+      (v)=>v===candidate,"39번의 이웃수라면 38번·40번처럼 정확한 번호와 1~6구 자리를 모두 맞추어 검색합니다. 다른 번호의 근거를 공유하지 않습니다.",lastDrawIndex);
+  }
+  for(const candidate of prev){
+    if(candidate===n||candidate%10!==n%10)continue;
+    const pos=prev.indexOf(candidate)+1;
+    push("끝수자리","직전 "+pos+"구의 "+candidate+"번(같은 끝수) → "+n+"번",1,
+      (d,j)=>d[j-1].numbers[pos-1]===candidate,
+      (v)=>v===candidate,"선택 번호와 끝수가 같은 실제 선행 번호가 특정 자리에 나온 경우만 비교합니다.",lastDrawIndex);
+    break;
+  }
+  const old=ds[i-2].numbers;
+  const neighbor=x=>Math.abs(x-n)===1;
+  const ending=x=>x!==n&&x%10===n%10;
+  if(old.some(ending)&&prev.some(neighbor)){
+    push("끝수이웃순서",n+"번 관련 끝수→이웃수 2회 이동",2,
+      (d,j,v)=>d[j-2].numbers.some(x=>x!==v&&x%10===v%10)&&d[j-1].numbers.some(x=>Math.abs(x-v)===1),
+      (v)=>neighbor(v)||ending(v),"먼저 같은 끝수의 다른 번호가 나오고, 바로 다음 회차에 이웃수가 출현한 순서를 조사합니다.",lastTwoDrawIndices);
+  }
+  if(old.some(neighbor)&&prev.some(ending)){
+    push("이웃끝수순서",n+"번 관련 이웃수→끝수 2회 이동",2,
+      (d,j,v)=>d[j-2].numbers.some(x=>Math.abs(x-v)===1)&&d[j-1].numbers.some(x=>x!==v&&x%10===v%10),
+      (v)=>neighbor(v)||ending(v),"먼저 이웃수가 나오고 다음 회차에 같은 끝수의 다른 번호가 나온 흐름입니다.",lastTwoDrawIndices);
+  }
+  const beforeNeighbor=old.find(neighbor),afterNeighbor=prev.find(neighbor);
+  if(beforeNeighbor&&afterNeighbor){
+    push("이웃수방향",n+"번 이웃수 "+beforeNeighbor+"→"+afterNeighbor+" 2회 이동",2,
+      (d,j)=>d[j-2].numbers.includes(beforeNeighbor)&&d[j-1].numbers.includes(afterNeighbor),
+      (v)=>v===beforeNeighbor||v===afterNeighbor,"연속 두 회차에 실제로 출현한 이웃수의 번호와 순서를 동시에 비교합니다.",lastTwoDrawIndices);
+  }
+  return rules;
+}
+function studyRule(ds,n,rule){
+  const currentIndex=ds.length;
+  if(currentIndex<LOOKBACK||!rule.test(ds,currentIndex,n))return null;
+  const cut=Math.max(140,ds.length-160);
+  let cases=0,wins=0,trainCases=0,trainWins=0,holdCases=0,holdWins=0;
+  const events=[];
+  for(let i=LOOKBACK;i<ds.length;i++){
+    if(!rule.test(ds,i,n))continue;
+    const hit=ds[i].numbers.includes(n);
+    cases++;if(hit)wins++;
+    if(i<cut){trainCases++;if(hit)trainWins++;}
+    else{holdCases++;if(hit)holdWins++;}
+    events.push({i,hit});
+  }
+  const trainRate=(trainWins+30*BASE)/(trainCases+30);
+  const diff=trainRate-BASE;
+  const stable=trainCases>=(rule.dynamic?80:65)&&holdCases>=(rule.dynamic?20:12);
+  const support=stable&&diff>(rule.dynamic?0.05:0.03)&&
+    (holdWins/holdCases)>(BASE+(rule.dynamic?0.02:0));
+  const rank=diff*Math.sqrt(trainCases/(trainCases+65));
+  return {rule,cases,wins,trainCases,trainWins,holdCases,holdWins,
+          trainRate,rank,stable,support,events};
+}
+function studyNumber(ds,n){
+  const fixed=RULES.map(r=>studyRule(ds,n,r)).filter(Boolean);
+  const discovered=makeFlowRules(ds,n).map(r=>studyRule(ds,n,r)).filter(Boolean);
+  const list=[...fixed,...discovered];
+  list.sort((a,b)=>(b.support?1:0)-(a.support?1:0)||b.rank-a.rank||b.cases-a.cases);
+  const unique=[],used=new Set();
+  for(const e of list){
+    if(e.trainCases<(e.rule.dynamic?8:25))continue;
+    if(used.has(e.rule.group))continue;
+    unique.push(e);used.add(e.rule.group);
+  }
+  const supports=unique.filter(x=>x.support);
+  const status=supports.length>=2?"우선 연구":supports.length?"추가 검증":"보류";
+  return {n,list,unique,supports,status,flowCount:discovered.length,
+          groupCount:unique.length,
+          score:supports.reduce((s,x)=>s+Math.max(0,x.rank),0)};
+}
+function analyzeAll(ds){
+  return Array.from({length:45},(_,i)=>studyNumber(ds,i+1))
+    .sort((a,b)=>{
+      const weight=x=>x.status==="우선 연구"?2:x.status==="추가 검증"?1:0;
+      return weight(b)-weight(a)||b.supports.length-a.supports.length||b.score-a.score||a.n-b.n;
+    });
+}
+function renderNumbers(){
+  if(!state.draws.length)return;
+  const all=$("showAll").checked;
+  const pool=all?state.profiles:state.profiles.filter(x=>x.status!=="보류");
+  const list=pool.length?pool:state.profiles;
+  $("candidateGrid").innerHTML=list.map(p=>{
+    const top=p.status==="우선 연구";
+    return '<button class="number-card '+(top?'top':p.status!=="보류"?'detected':'')+'" onclick="openDetail('+p.n+')" title="'+p.n+'번 자세히 보기">'+
+      '<span class="n '+(top?'mint':'')+'">'+p.n+'</span>'+
+      '<span class="c">'+clean(p.status)+'</span>'+
+      '<span class="c">연결 패턴 '+p.flowCount+'개</span></button>';
+  }).join("");
+  const detected=state.profiles.filter(x=>x.status!=="보류").length;
+  $("candidateInfo").textContent="1~45번 전체 검색 완료 · 연구 후보 "+detected+"개 · 보류 "+(45-detected)+
+    "개. 공통 조건을 전체 번호에 동일한 근거로 부여하지 않습니다. 검색된 조건은 실제 당첨 가능성이 높다는 뜻이 아닙니다.";
+}
+function validN(v){const n=Number(v);return Number.isInteger(n)&&n>=1&&n<=45?n:null;}
+function findProfile(n){return state.profiles.find(x=>x.n===n);}
+function labelOf(e,n){return e.rule.label.replace("{n}",String(n));}
+function proofSVG(ds,n,e){
+  const selected=[];
+  selected.push({i:ds.length,hit:null,current:true,matched:e.rule.test(ds,ds.length,n)});
+  const good=e.events.filter(x=>x.hit).slice(-2).reverse();
+  const miss=e.events.filter(x=>!x.hit).slice(-1).reverse();
+  for(const x of good)selected.push({i:x.i,hit:true,current:false});
+  for(const x of miss)selected.push({i:x.i,hit:false,current:false});
+  const W=1060;
+  const col=[155,108,108,108,108,108,108,217];
+  let inner='<rect width="1060" height="100%" fill="#fff"/>';
+  const title=labelOf(e,n);
+  function tx(x,y,s,sz,colr,bold,anchor){
+    return '<text x="'+x+'" y="'+y+'" text-anchor="'+(anchor||'middle')+'" fill="'+(colr||'#27496f')+
+      '" font-size="'+(sz||19)+'" font-weight="'+(bold||600)+
+      '" font-family="Malgun Gothic,Apple SD Gothic Neo,sans-serif">'+clean(s)+'</text>';
+  }
+  function cell(x,y,w,h,text,mode){
+    const fill=mode==="head"?"#e7efff":mode==="red"?"#ffe1e4":mode==="blue"?"#dbeaff":mode==="gray"?"#f1f3f6":"#fff";
+    const ink=mode==="red"?"#cc2842":mode==="blue"?"#1a50a4":"#244165";
+    return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" stroke="#285ed0" stroke-width="2" fill="'+fill+'"/>'+
+      tx(x+w/2,y+h/2+7,text,19,ink,mode==="red"?900:650);
+  }
+  let y=25;
+  inner+=tx(23,y+18,n+"번 · "+title,29,"#123d87",900,"start");
+  y+=60;
+  inner+=tx(23,y,n+"번과 직접 연결된 조건의 반복 기록",19,"#567198",650,"start");
+  y+=34;
+  for(let ci=0;ci<selected.length;ci++){
+    const s=selected[ci],i=s.i,k=e.rule.k;
+    const before=e.rule.history?
+      e.rule.history(ds,i,n).map(j=>ds[j]):ds.slice(i-k,i);
+    const result=s.current?null:ds[i];
+    const first=before[0].draw_no;
+    const lastNo=before[before.length-1].draw_no;
+    const refLabel=e.rule.history?before.map(d=>d.draw_no).join("·")+"회":first+"~"+lastNo+"회";
+    const nextRound=s.current?latest(ds).draw_no+1:result.draw_no;
+    let heading=s.current?"이번: "+refLabel+" → "+nextRound+"회 "+(s.matched?"결과 미정":"조건 불일치"):
+      "실제 "+(s.hit?"출현":"미출현")+" 사례: "+refLabel+" → "+nextRound+"회";
+    inner+=tx(23,y+20,heading,21,s.hit===false?"#ae495e":"#194f9b",850,"start");
+    y+=43;
+    let x=20;
+    const heads=["회차","1구","2구","3구","4구","5구","6구","판정"];
+    for(let c=0;c<heads.length;c++){inner+=cell(x,y,col[c],43,heads[c],"head");x+=col[c];}
+    y+=43;
+    for(const draw of before){
+      const row=[draw.draw_no+"회"].concat(draw.numbers).concat(["선행 조건"]);
+      x=20;
+      for(let c=0;c<row.length;c++){
+        const value=row[c];
+        const mode=c>=1&&c<=6?(Number(value)===n?"red":e.rule.mark(Number(value),n)?"blue":""):"";
+        inner+=cell(x,y,col[c],44,value,mode);x+=col[c];
+      }
+      y+=44;
+    }
+    const outcome=result?result.numbers:["—","—","—","—","—","—"];
+    const row=[nextRound+"회"].concat(outcome)
+      .concat([result?(result.numbers.includes(n)?n+"번 출현":n+"번 미출현"):(s.matched?"결과 미정":"조건 불일치")]);
+    x=20;
+    for(let c=0;c<row.length;c++){
+      const mode=c>=1&&c<=6&&result&&Number(row[c])===n?"red":
+        !result?"gray":(c===7&&s.hit?"red":"");
+      inner+=cell(x,y,col[c],44,row[c],mode);x+=col[c];
+    }
+    y+=67;
+  }
+  inner+=tx(23,y+15,"표시된 선행 회차는 조건의 근거가 된 기록입니다. 파란색=관련 번호, 빨간색="+n+"번. 미래를 보장하지 않습니다.",
+    17,"#697d96",500,"start");
+  y+=44;
+  return '<svg xmlns="http://www.w3.org/2000/svg" id="proof-'+n+'-'+e.rule.id+
+    '" width="'+W+'" height="'+y+'" viewBox="0 0 '+W+' '+y+'" role="img" aria-label="'+clean(title)+'">'+inner+'</svg>';
+}
+function ruleCard(n,e,ds){
+  state.proofCache.set(n+":"+e.rule.id,e);
+  const failures=e.cases-e.wins;
+  const rate=e.cases?e.wins/e.cases:0;
+  const valRate=e.holdCases?e.holdWins/e.holdCases:NaN;
+  const current=e.rule.k;
+  const lastD=latest(ds).draw_no;
+  const verdict=e.trainCases<25?"표본 부족":e.stable?"구간 비교 가능":"후반부 사례 부족";
+  const matches=e.rule.test(ds,ds.length,n);
+  const desc="이번 "+upcoming(ds)+"회에는 직전 "+current+"회 기준으로 '"+labelOf(e,n)+
+    (matches?"' 조건이 성립합니다.":"' 조건이 성립하지 않아 자동 후보 근거에서 제외됩니다.");
+  return '<article class="rule-card"><div class="title"><h3>'+clean(labelOf(e,n))+'</h3>'+
+    '<span class="tag '+(e.support?"green":"")+'">'+verdict+'</span></div>'+
+    '<p>'+clean(desc)+" "+clean(e.rule.why)+'</p>'+
+    '<div class="rule-stats"><div><small>과거 조건 일치</small><b>'+e.cases+'회</b></div>'+
+    '<div><small>'+n+'번 출현 / 미출현</small><b>'+e.wins+' / '+failures+'</b></div>'+
+    '<div><small>전체 관측 비율</small><b>'+pct(rate)+'</b></div>'+
+    '<div><small>최근 160회 구간 내 일치 사례</small><b>'+e.holdCases+'회</b></div></div>'+
+    '<p class="hint">초기 구간 '+e.trainCases+'회 중 '+e.trainWins+'회 출현. 최근 구간 '+e.holdCases+
+      '회 중 '+e.holdWins+'회 출현('+pct(valRate)+'). 일반적인 한 번호의 출현 비율은 6/45 ≈ 13.3%입니다. 여러 조건을 검색했기 때문에 우연한 편차일 수 있습니다.</p>'+
+    '<details ontoggle="if(this.open)loadProof(this,'+n+','+e.rule.id+')"><summary class="openmore">▣ 이 조건의 실제 이전 회차 → 다음 회차 PPT 그림 보기</summary>'+
+    '<div class="proof"></div>'+
+    '<div class="toolbar"><button class="btn small" onclick="saveProofPNG('+n+','+e.rule.id+')">PNG 이미지 저장</button><button class="btn small outline" onclick="saveProofSVG('+n+','+e.rule.id+')">벡터 이미지 저장</button></div></details></article>';
+}
+function loadProof(details,n,ruleId){
+  if(!details.open)return;
+  const div=details.querySelector(".proof");
+  if(!div||div.querySelector("svg"))return;
+  const e=state.proofCache.get(n+":"+ruleId);
+  if(!e){div.textContent="이미지 데이터를 찾지 못했습니다. 번호를 다시 조회해 주세요.";return;}
+  div.innerHTML=proofSVG(state.draws,n,e);
+}
+function saveProofSVG(n,ruleId){
+  const svg=$("proof-"+n+"-"+ruleId);
+  if(!svg){alert("해당 항목의 그림을 먼저 펼쳐 주세요.");return;}
+  const xml=new XMLSerializer().serializeToString(svg);
+  const blob=new Blob([xml],{type:"image/svg+xml;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.download="lotto-"+upcoming(state.draws)+"-"+n+"-pattern-"+ruleId+".svg";
+  a.href=url;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
+function saveProofPNG(n,ruleId){
+  const svg=$("proof-"+n+"-"+ruleId);
+  if(!svg){alert("이미지가 열린 상태에서 저장하세요.");return;}
+  const raw=new XMLSerializer().serializeToString(svg);
+  const blob=new Blob([raw],{type:"image/svg+xml;charset=utf-8"});
+  const url=URL.createObjectURL(blob),img=new Image();
+  img.onload=function(){
+    const canvas=document.createElement("canvas");
+    canvas.width=Number(svg.getAttribute("width"));
+    canvas.height=Number(svg.getAttribute("height"));
+    const context=canvas.getContext("2d");
+    context.fillStyle="#fff";context.fillRect(0,0,canvas.width,canvas.height);
+    context.drawImage(img,0,0);
+    const a=document.createElement("a");
+    a.download="lotto-"+upcoming(state.draws)+"-"+n+"-pattern-"+ruleId+".png";
+    a.href=canvas.toDataURL("image/png");a.click();
+    URL.revokeObjectURL(url);
+  };
+  img.onerror=function(){URL.revokeObjectURL(url);alert("이미지 저장을 완료하지 못했습니다.");};
+  img.src=url;
+}
+function makeJointStudies(ds,n,p){
+  const flow=p.unique.filter(e=>e.rule.dynamic&&e.trainCases>=10).slice(0,5);
+  const base=p.unique.filter(e=>!e.rule.dynamic&&e.trainCases>=65).slice(0,5);
+  const pool=[];
+  let serial=0;
+  for(const a of flow){
+    for(const b of base){
+      if(a.rule.group===b.rule.group)continue;
+      const nameA=labelOf(a,n),nameB=labelOf(b,n);
+      const rule={
+        id:300000+n*100+serial++,dynamic:true,group:"복합교차",
+        label:n+"번 복합 검증: "+a.rule.group+" + "+b.rule.group,
+        k:Math.max(a.rule.k,b.rule.k),
+        test:(d,i,v)=>a.rule.test(d,i,v)&&b.rule.test(d,i,v),
+        mark:(x,v)=>a.rule.mark(x,v)||b.rule.mark(x,v),
+        why:"① "+nameA+" ② "+nameB+" 두 조건이 함께 성립했던 회차만 찾았습니다. 사후 탐색이므로 후보 순위에는 추가하지 않습니다.",
+        history:(d,i,v)=>{
+          const indices=new Set(a.rule.history?a.rule.history(d,i,v):[]);
+          for(let j=Math.max(0,i-Math.min(2,b.rule.k));j<i;j++)indices.add(j);
+          return [...indices].sort((u,w)=>u-w).slice(-5);
+        }
+      };
+      const e=studyRule(ds,n,rule);
+      if(e&&e.cases>=8)pool.push(e);
+    }
+  }
+  pool.sort((a,b)=>b.cases-a.cases||b.holdCases-a.holdCases);
+  const selected=[],used=new Set();
+  for(const e of pool){
+    const key=e.rule.label;
+    if(used.has(key))continue;
+    used.add(key);selected.push(e);
+    if(selected.length>=2)break;
+  }
+  return selected;
+}
+function numberReport(n,p,ds){
+  const all=p.list;
+  const gap=latestGap(ds,ds.length,n);
+  const appearances=ds.filter(d=>d.numbers.includes(n));
+  const recent=appearances.slice(-8).reverse();
+  const fixed=p.unique.filter(e=>!e.rule.dynamic&&e.trainCases>=25);
+  const flow=p.unique.filter(e=>e.rule.dynamic&&e.trainCases>=8).slice(0,5);
+  const joint=makeJointStudies(ds,n,p);
+  const positionTrail=appearances.slice(-3).map(d=>d.draw_no+"회 "+(d.numbers.indexOf(n)+1)+"구").join(" → ");
+  return '<div class="panel"><div class="split"><div><div class="eyebrow">NUMBER '+n+' RESEARCH</div>'+
+    '<h2>'+n+'번 · '+p.status+'</h2><p class="sub">'+upcoming(ds)+'회 기준, '+n+
+    '번이 직접 포함된 조건과 관련 번호만 검색했습니다.</p></div>'+
+    '<div>'+ball(n)+'</div></div>'+
+    '<div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(155px,1fr))"><div class="stat"><small>마지막 출현 이후</small><b>'+gap+'회</b></div>'+
+    '<div class="stat"><small>기본 조건 해당</small><b>'+all.filter(e=>!e.rule.dynamic).length+'종</b></div>'+
+    '<div class="stat"><small>이번 회차 연결 패턴</small><b>'+p.flowCount+'종</b></div></div>'+
+    '<p class="hint">최근 3번 실제 출현 위치: <strong>'+clean(positionTrail||"기록 부족")+'</strong></p>'+
+    '<p class="caution">연결 패턴은 현재 관측된 순서·간격을 과거에 적용한 연구 결과입니다. 출현 횟수나 관측 비율이 높은 당첨 가능성을 의미하지 않으며, 표본이 적으면 후보 판정에 반영하지 않습니다.</p>'+
+    '</div>'+
+    '<div class="section"><h2>🧩 이번 회차에서 발견한 회차 연결 패턴</h2>'+
+    '<p class="hint">직전 실제 출현의 1~6구 위치, 출현 사이 공백, 이웃수의 자리와 두 회차 이동 순서를 번호마다 새로 계산합니다. 각 그림에서 파란색은 관련 번호, 빨간색은 연구 번호입니다. 성공과 실패를 함께 확인하세요.</p>'+
+    (flow.length?flow.map(e=>ruleCard(n,e,ds)).join(""):'<div class="panel">이번 회차에 맞는 연결 조건은 발견됐으나, 비교 가능한 과거 사례가 8회 미만이거나 해당 조건이 없습니다. 빈약한 자료를 근거로 포장하지 않습니다.</div>')+
+    '</div>'+
+    '<div class="section"><h2>🔎 서로 다른 조건이 함께 겹친 사례</h2>'+
+    '<p class="hint">연결 패턴과 기본 규칙이 같은 시점에 동시에 성립했던 회차를 찾아 성공·실패를 비교합니다. 우연한 패턴을 많이 만들어낼 수 있으므로 후보 점수에 추가하지 않는 별도 연구입니다.</p>'+
+    (joint.length?joint.map(e=>ruleCard(n,e,ds)).join(""):'<div class="panel">동시에 성립한 과거 사례가 8회 이상인 조합을 찾지 못했습니다. 억지로 결론을 만들지 않습니다.</div>')+
+    '</div>'+
+    '<div class="section"><h2>기본 검색에서 이번 회차에 해당하는 조건</h2>'+
+    '<p class="hint">미출현·이웃수·끝수 등 기본 규칙 45종도 별도로 확인했습니다. 과거 사례가 25회 이상인 조건 중 중복 분야는 대표 조건 하나만 표시합니다.</p>'+
+    (fixed.length?fixed.map(e=>ruleCard(n,e,ds)).join(""):'<div class="panel">현재 표본 기준으로 확인 가능한 기본 선행 조건이 부족합니다.</div>')+
+    '</div><div class="section panel"><h2>'+n+'번 최근 출현 기록과 위치</h2>'+
+    '<p class="hint">아래 위치는 당첨번호 여섯 개를 작은 순서대로 나열했을 때의 자리입니다. 출현 이력 자체에는 후보 점수를 더하지 않습니다.</p>'+
+    '<div class="tablewrap"><table class="simple-table"><thead><tr><th>출현 회차</th><th>당첨번호</th><th>'+n+'번 위치</th><th>직전 회차</th></tr></thead><tbody>'+
+    recent.map(d=>'<tr><td>'+d.draw_no+'회</td><td>'+d.numbers.join(" · ")+'</td><td><strong>'+(d.numbers.indexOf(n)+1)+'구</strong></td><td>'+(d.draw_no-1)+'회</td></tr>').join("")+
+    '</tbody></table></div></div>';
+}
+function openDetail(n){
+  if(!state.draws.length)return;
+  const p=findProfile(n);
+  if(!p)return;
+  $("modalTitle").textContent=upcoming(state.draws)+"회 · "+n+"번 연구 결과";
+  $("modalBody").innerHTML=numberReport(n,p,state.draws);
+  const dialog=$("detailDialog");
+  if(typeof dialog.showModal==="function")dialog.showModal();
+}
+function showResearch(){
+  if(!state.draws.length){$("researchResult").innerHTML='<p class="hint">데이터가 연결된 후 이용할 수 있습니다.</p>';return;}
+  const n=validN($("focusN").value);
+  if(!n){alert("1~45번 중 하나를 입력해 주세요.");return;}
+  $("researchResult").innerHTML=numberReport(n,findProfile(n),state.draws);
+}
+function fillPatternSelect(){
+  const n=validN($("patternN").value)||39;
+  const old=$("patternRule").value;
+  const flow=state.draws.length?makeFlowRules(state.draws,n):[];
+  state.patternRuleOptions=RULES.concat(flow);
+  $("patternRule").innerHTML='<optgroup label="이번 회차의 번호별 자동 발견">'+
+    flow.map(r=>'<option value="'+r.id+'">'+clean(r.label.replace("{n}",n))+'</option>').join("")+
+    '</optgroup><optgroup label="45종 기본 연구 조건">'+
+    RULES.map(r=>'<option value="'+r.id+'">'+clean(r.label.replace("{n}",n))+'</option>').join("")+'</optgroup>';
+  if(state.patternOptionsReady&&old!==""&&state.patternRuleOptions.some(r=>String(r.id)===old))$("patternRule").value=old;
+  if(state.draws.length)state.patternOptionsReady=true;
+}
+function showPatternSearch(){
+  if(!state.draws.length){$("patternResult").textContent="데이터 연결이 필요합니다.";return;}
+  const n=validN($("patternN").value);
+  if(!n){alert("1~45번 중 하나를 입력해 주세요.");return;}
+  const rule=(state.patternRuleOptions||RULES).find(r=>String(r.id)===$("patternRule").value);
+  if(!rule)return;
+  let cases=0,wins=0,misses=0;
+  const events=[];
+  for(let i=LOOKBACK;i<state.draws.length;i++){
+    if(!rule.test(state.draws,i,n))continue;
+    const hit=state.draws[i].numbers.includes(n);
+    cases++;if(hit)wins++;else misses++;
+    events.push({i,hit});
+  }
+  const current=rule.test(state.draws,state.draws.length,n);
+  const cut=Math.max(140,state.draws.length-160);
+  const train=events.filter(x=>x.i<cut),hold=events.filter(x=>x.i>=cut);
+  const trainWins=train.filter(x=>x.hit).length,holdWins=hold.filter(x=>x.hit).length;
+  const trainRate=(trainWins+30*BASE)/(train.length+30);
+  const stable=train.length>=65&&hold.length>=12;
+  const sample={rule,cases,wins,trainCases:train.length,trainWins,
+    holdCases:hold.length,holdWins,trainRate,stable,
+    support:stable&&trainRate>BASE+0.03&&holdWins/hold.length>BASE,events};
+  $("patternResult").innerHTML='<div class="panel"><h2>'+clean(labelOf(sample,n))+'</h2>'+
+    '<p class="hint">이번 회차 조건: <strong>'+(current?"일치":"불일치")+'</strong>. 과거 전체 동일 조건 '+cases+
+    '회 중 '+n+'번 출현 '+wins+'회, 미출현 '+misses+'회. '+(cases?pct(wins/cases):"표본 없음")+
+    '는 단순 관측값입니다.</p></div>'+ruleCard(n,sample,state.draws);
+}
+function supplementaryScore(p){
+  // 기준을 통과하지 못한 번호도 과거 조건의 재현 여부만 참고합니다.
+  // 이 수치는 당첨확률이나 공식 예측 점수가 아닙니다.
+  const qualified=p.unique.filter(e=>e.trainCases>=50&&e.holdCases>=10);
+  const concordant=qualified.filter(e=>e.trainRate>BASE&&e.holdWins/e.holdCases>BASE);
+  return concordant.length*100+concordant.slice(0,3).reduce(
+    (sum,e)=>sum+Math.max(0,e.trainRate-BASE)*Math.sqrt(e.trainCases),0);
+}
+function autoNumbers(dsProfiles){
+  const chosen=[];
+  for(const p of dsProfiles){
+    if(p.status!=="보류"&&!chosen.includes(p.n))chosen.push(p.n);
+    if(chosen.length>=12)break;
+  }
+  const pending=dsProfiles.filter(p=>!chosen.includes(p.n));
+  while(chosen.length<12&&pending.length){
+    pending.sort((a,b)=>{
+      const rating=p=>supplementaryScore(p)-
+        chosen.filter(n=>nRange(n)===nRange(p.n)).length*110+
+        (Math.imul(p.n,2654435761)>>>0)/4294967296*.01;
+      return rating(b)-rating(a);
+    });
+    chosen.push(pending.shift().n);
+  }
+  return chosen.sort((a,b)=>a-b);
+}
+function setAutoPool(){
+  if(!state.profiles.length)return;
+  $("poolInput").value=autoNumbers(state.profiles).join(", ");
+}
+function parsePool(){
+  const values=$("poolInput").value.split(/[\s,;]+/).filter(Boolean).map(Number);
+  if(values.some(n=>!Number.isInteger(n)||n<1||n>45))
+    throw Error("번호는 1~45의 정수만 입력하세요.");
+  const pool=[...new Set(values)].sort((a,b)=>a-b);
+  if(pool.length<7)throw Error("서로 다른 후보 번호를 7개 이상 입력해 주세요.");
+  return pool;
+}
+function seededRandom(seed){
+  let a=seed>>>0;
+  return function(){
+    a+=0x6D2B79F5;
+    let t=a;
+    t=Math.imul(t^t>>>15,t|1);
+    t^=t+Math.imul(t^t>>>7,t|61);
+    return ((t^t>>>14)>>>0)/4294967296;
+  };
+}
+function pickSix(pool,random){
+  const bag=pool.slice();
+  for(let i=bag.length-1;i>0;i--){
+    const j=Math.floor(random()*(i+1));
+    const temp=bag[i];bag[i]=bag[j];bag[j]=temp;
+  }
+  return bag.slice(0,6).sort((a,b)=>a-b);
+}
+function chooseTickets(pool,seed){
+  const random=seededRandom(seed);
+  const candidates=new Map();
+  for(let i=0;i<Math.min(1500,Math.max(250,pool.length*30));i++){
+    const c=pickSix(pool,random);
+    candidates.set(c.join(","),c);
+  }
+  const taken=[],seen=new Map();
+  const source=[...candidates.values()];
+  for(let k=0;k<5;k++){
+    let best=null,bestScore=-Infinity;
+    for(const c of source){
+      if(taken.some(t=>t.join(",")===c.join(",")))continue;
+      let overlap=0;
+      for(const t of taken)overlap=Math.max(overlap,intersectionCount(c,t));
+      const fresh=c.reduce((s,n)=>s+1/(1+(seen.get(n)||0)),0);
+      const score=fresh*3-overlap*1.5+random()*.001;
+      if(score>bestScore){best=c;bestScore=score;}
+    }
+    if(!best)break;
+    taken.push(best);
+    for(const n of best)seen.set(n,(seen.get(n)||0)+1);
+  }
+  return taken;
+}
+function makeTickets(again){
+  if(!state.draws.length)return alert("데이터를 먼저 연결해 주세요.");
+  let pool;
+  try{pool=parsePool();}catch(e){alert(e.message);return;}
+  if(again)state.nonce++;
+  const seed=upcoming(state.draws)*76543+pool.reduce((s,n)=>s+n*97,0)+state.nonce*313;
+  state.tickets=chooseTickets(pool,seed);
+  $("ticketsResult").innerHTML='<div class="section"><div class="section-head"><h2>'+upcoming(state.draws)+
+    '회 · 연구용 5조합</h2><span class="tag">후보 '+pool.length+'개에서 생성</span></div>'+
+    state.tickets.map((t,i)=>'<div class="ticket"><strong>'+(i+1)+'게임</strong>'+balls(t)+'</div>').join("")+
+    '<div class="toolbar"><button class="btn secondary" onclick="makeTickets(true)">다른 5조합 생성</button>'+
+    '<button class="btn outline" onclick="saveTicketPNG()">PPT 이미지 저장</button></div>'+
+    '<p class="hint">분석 통과 후보와 보조 분산수를 섞어 조합을 다양하게 구성했습니다. 보조수의 근거는 검증 기준 미달이며, 이 배열이 무작위 조합보다 1등에 유리하다는 뜻은 아닙니다.</p></div>';
+}
+function saveTicketPNG(){
+  if(!state.tickets.length)return alert("먼저 5조합을 생성하세요.");
+  const c=document.createElement("canvas");c.width=1250;c.height=860;
+  const x=c.getContext("2d");
+  x.fillStyle="#f9fbff";x.fillRect(0,0,c.width,c.height);
+  x.fillStyle="#163e79";x.font="bold 47px Malgun Gothic,sans-serif";
+  x.fillText("LOTTO NOTE · "+upcoming(state.draws)+"회 연구 5조합",70,105);
+  x.fillStyle="#567198";x.font="25px Malgun Gothic,sans-serif";
+  x.fillText("선택 후보 번호를 분산한 연구용 조합",72,151);
+  const cols=["#e7b449","#4a92d0","#cf697c","#748294","#4faf8d"];
+  state.tickets.forEach((ticket,i)=>{
+    const y=220+i*109;
+    x.fillStyle=i%2?"#eaf2ff":"#f0f5fd";
+    x.fillRect(58,y-27,1130,91);
+    x.font="bold 25px Malgun Gothic,sans-serif";x.fillStyle="#234b82";
+    x.fillText((i+1)+"게임",80,y+27);
+    ticket.forEach((n,j)=>{
+      const cx=290+j*139;
+      x.beginPath();x.arc(cx,y+17,33,0,Math.PI*2);
+      x.fillStyle=cols[n<=10?0:n<=20?1:n<=30?2:n<=40?3:4];x.fill();
+      x.fillStyle=n<=10?"#172943":"#fff";x.textAlign="center";
+      x.font="bold 28px Malgun Gothic,sans-serif";x.fillText(String(n),cx,y+27);
+    });
+    x.textAlign="left";
+  });
+  x.fillStyle="#6a7d97";x.font="21px Malgun Gothic,sans-serif";
+  x.fillText("기록·연구 목적이며 모든 6개 번호 조합의 1등 확률은 동일합니다.",72,806);
+  const a=document.createElement("a");a.href=c.toDataURL("image/png");
+  a.download="lotto-"+upcoming(state.draws)+"-five-tickets.png";a.click();
+}
+async function runBacktest(){
+  if(!state.draws.length)return alert("데이터를 먼저 연결해 주세요.");
+  const output=$("backtestResult");output.innerHTML='<div class="panel">과거 시점으로 이동하며 계산하고 있습니다…</div>';
+  const ds=state.draws;
+  const results=[];
+  for(let step=12;step>=1;step--){
+    const i=ds.length-step;
+    if(i<300)continue;
+    const before=ds.slice(0,i);
+    const profiles=analyzeAll(before);
+    const pool=autoNumbers(profiles);
+    const tickets=chooseTickets(pool,ds[i].draw_no*76543+pool.reduce((s,n)=>s+n*97,0));
+    const actual=ds[i].numbers;
+    const best=Math.max(0,...tickets.map(t=>intersectionCount(t,actual)));
+    const randomTickets=chooseTickets(Array.from({length:45},(_,k)=>k+1),ds[i].draw_no*8999);
+    const randomBest=Math.max(0,...randomTickets.map(t=>intersectionCount(t,actual)));
+    results.push({round:ds[i].draw_no,best,randomBest,actual:actual.join(" · ")});
+    output.innerHTML='<div class="panel">시점별 검증 진행 중: '+results.length+'/12회차</div>';
+    await new Promise(resolve=>setTimeout(resolve,10));
+  }
+  const avg=a=>results.length?(a.reduce((s,n)=>s+n,0)/results.length).toFixed(2):"0";
+  const ours=results.map(x=>x.best),random=results.map(x=>x.randomBest);
+  output.innerHTML='<div class="cards"><div class="stat"><small>검증 회차</small><b>'+results.length+
+    '회</b></div><div class="stat"><small>연구 조합 최고 적중 평균</small><b>'+avg(ours)+
+    '개</b></div><div class="stat"><small>비교용 무작위 최고 적중 평균</small><b>'+avg(random)+
+    '개</b></div></div><div class="section panel"><h2>과거 시점별 결과</h2>'+
+    '<p class="hint">각 행은 그 회차 직전까지의 자료만 보고 번호를 탐색했습니다. 비교 조합도 과거 회차별로 별도로 생성했습니다. 12회는 예측 우위를 판단하기에 매우 작은 표본입니다.</p>'+
+    '<div class="tablewrap"><table class="simple-table"><thead><tr><th>회차</th><th>실제 번호</th><th>연구 5게임 최고 적중</th><th>무작위 5게임 최고 적중</th></tr></thead><tbody>'+
+    results.map(x=>'<tr><td>'+x.round+'회</td><td>'+x.actual+'</td><td>'+x.best+'개</td><td>'+x.randomBest+'개</td></tr>').join("")+
+    '</tbody></table></div><p class="caution">본 검증은 여러 규칙 탐색 후의 작은 회고 실험으로, 실전 예측력이나 당첨확률 상승을 입증하지 않습니다.</p></div>';
+}
+$("patternN").addEventListener("change",fillPatternSelect);
+$("detailDialog").addEventListener("click",e=>{if(e.target===$("detailDialog"))$("detailDialog").close();});
+window.addEventListener("scroll",()=>$("toTop").classList.toggle("show",window.scrollY>110),{passive:true});
+fillPatternSelect();
+reloadData();
+</script>
+</body>
+</html>
