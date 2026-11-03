@@ -719,5 +719,391 @@ function runBacktest(){
 $("homePool").innerHTML=balls(seedPool);
 loadData();
 </script>
+  
+<!-- LOTTO NOTE 자동 후보 발견 · 상세 해설 업데이트 -->
+<style>
+.ln-auto-panel{
+  background:linear-gradient(135deg,#142942,#102034);
+  border:1px solid #35506b;border-radius:18px;
+  padding:23px;margin-bottom:22px
+}
+.ln-auto-head{display:flex;align-items:center;
+  justify-content:space-between;gap:12px;flex-wrap:wrap}
+.ln-auto-head h2{margin:7px 0;font-size:23px}
+.ln-auto-grid{display:grid;grid-template-columns:repeat(2,1fr);
+  gap:12px;margin:17px 0}
+.ln-auto-stat{background:#0b192c;border-radius:12px;padding:15px}
+.ln-auto-stat b{display:block;font-size:25px;margin-top:7px}
+.ln-auto-candidate{background:#102039;border:1px solid #354b65;
+  border-radius:12px;padding:15px;margin:10px 0}
+.ln-auto-top{display:flex;justify-content:space-between;
+  align-items:center;flex-wrap:wrap;gap:10px}
+.ln-auto-label{font-size:12px;color:#b2c2d7}
+.ln-auto-detail{padding:15px;background:#0a192b;
+  border-radius:10px;margin-top:12px;line-height:1.85}
+.ln-auto-help{color:#b5c5d8;font-size:13px;line-height:1.85}
+.ln-auto-example{border-left:3px solid #d4ad71;
+  padding:9px 13px;margin:9px 0;background:#182a41;
+  border-radius:5px;font-size:13px}
+.ln-auto-explain{background:#12273f;border:1px solid #37516c;
+  padding:18px;border-radius:12px;margin-top:20px}
+@media(max-width:520px){
+  .ln-auto-grid{grid-template-columns:1fr}
+  .ln-auto-panel{padding:15px}
+  .ln-auto-head h2{font-size:20px}
+}
+</style>
+
+<script>
+(function(){
+
+let detectedNumbers=[];
+let showOnlyDetected=true;
+
+function conditionGroup(label){
+  if(label.includes("미출현")&&label.includes("해당수"))return "공백";
+  if(label.includes("이웃수"))return "이웃수";
+  if(label.includes("같은 끝수"))return "끝수";
+  if(label.includes("0·9끝수"))return "끝수공백";
+  if(label.includes("홀수"))return "홀짝";
+  if(label.includes("합계"))return "합계";
+  return "구간";
+}
+
+function evaluateCandidate(r){
+  const supported=r.evidence.filter(e=>
+    e.cases>=25 &&
+    e.wins>=5 &&
+    e.wins/e.cases>=0.18
+  );
+
+  const groups=new Set(
+    supported.map(e=>conditionGroup(e.label))
+  );
+
+  const experimental=r.evidence.filter(e=>
+    e.cases>=2 &&
+    e.cases<25 &&
+    e.wins>=2 &&
+    e.wins/e.cases>=0.35
+  );
+
+  let type="보류";
+
+  if(groups.size>=2 && r.score>=52){
+    type="우선 검토";
+  }else if(supported.length || experimental.length){
+    type="추가 검증";
+  }
+
+  return {
+    ...r,
+    type,
+    supported,
+    experimental,
+    conditions:groups.size
+  };
+}
+
+function ensureAutoPanel(){
+  if(document.getElementById("lnAutoPanel"))return;
+
+  const home=document.getElementById("home");
+  if(!home)return;
+
+  const panel=document.createElement("div");
+  panel.id="lnAutoPanel";
+  panel.className="ln-auto-panel";
+
+  const hero=home.querySelector(".hero");
+  if(hero)home.insertBefore(panel,hero);
+  else home.prepend(panel);
+}
+
+function autoScan(){
+  if(!draws.length || !ranking.length)return;
+
+  ensureAutoPanel();
+
+  detectedNumbers=ranking
+    .map(evaluateCandidate)
+    .filter(r=>r.type!=="보류")
+    .sort((a,b)=>{
+      const priority=x=>x.type==="우선 검토"?2:1;
+      return priority(b)-priority(a)||b.score-a.score;
+    });
+
+  renderAutoPanel();
+}
+
+function renderAutoPanel(){
+  const panel=document.getElementById("lnAutoPanel");
+  if(!panel)return;
+
+  const strong=detectedNumbers.filter(
+    r=>r.type==="우선 검토"
+  ).length;
+
+  const watch=detectedNumbers.length-strong;
+
+  const display=showOnlyDetected
+    ?detectedNumbers
+    :ranking.map(evaluateCandidate);
+
+  panel.innerHTML=`
+    <div class="ln-auto-head">
+      <div>
+        <div class="eyebrow">LOTTO NOTE · AUTO DISCOVERY</div>
+        <h2>${nextDraw()}회 자동 발견 번호</h2>
+      </div>
+      <span class="badge">1~45번 전수 검색 완료</span>
+    </div>
+
+    <p class="ln-auto-help">
+      최신 ${last().draw_no}회까지의 당첨번호를 분석했습니다.
+      현재 회차의 선행 조건과 일치하는 번호를 추출했습니다.
+    </p>
+
+    <div class="ln-auto-grid">
+      <div class="ln-auto-stat">
+        <span class="ln-auto-label">우선 검토</span>
+        <b style="color:#65cfad">${strong}개</b>
+      </div>
+      <div class="ln-auto-stat">
+        <span class="ln-auto-label">추가 검증</span>
+        <b style="color:#e2bb77">${watch}개</b>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button class="btn secondary" onclick="lnToggleDetected()">
+        ${showOnlyDetected?"전체 45개도 보기":"발견 번호만 보기"}
+      </button>
+      <button class="btn outline" onclick="lnRefreshData()">
+        최신 회차 다시 확인
+      </button>
+      <button class="btn" onclick="lnApplyCandidates()">
+        발견 번호로 조합 만들기
+      </button>
+    </div>
+
+    <div id="lnAutoCandidates">
+      ${display.length
+        ?display.map(r=>`
+          <div class="ln-auto-candidate">
+            <div class="ln-auto-top">
+              <div style="display:flex;align-items:center;gap:12px">
+                ${ball(r.n)}
+                <div>
+                  <strong>${r.type}</strong><br>
+                  <span class="ln-auto-label">
+                    현재 적용 조건 ${r.evidence.length}개 ·
+                    분석 지수 ${r.score}
+                  </span>
+                </div>
+              </div>
+              <button class="btn secondary"
+                onclick="lnOpenCandidate(${r.n})">
+                근거 자세히 보기
+              </button>
+            </div>
+            <div id="lnDetail${r.n}"></div>
+          </div>
+        `).join("")
+        :'<p class="ln-auto-help">현재 설정된 탐색 기준을 충족한 번호가 없습니다. 조건을 완화하거나 다른 패턴을 조사해야 합니다.</p>'
+      }
+    </div>
+
+    <p class="caution">
+      이 목록은 과거 조건에 따른 연구 대상입니다.
+      우선 검토나 높은 분석 점수가 실제 당첨확률 상승을 의미하지 않습니다.
+      여러 패턴을 검색하는 과정에서 우연히 높은 관측값이 나올 수 있습니다.
+    </p>
+  `;
+}
+
+window.lnToggleDetected=function(){
+  showOnlyDetected=!showOnlyDetected;
+  renderAutoPanel();
+};
+
+window.lnOpenCandidate=function(n){
+  const target=document.getElementById("lnDetail"+n);
+  if(!target)return;
+
+  if(target.innerHTML){
+    target.innerHTML="";
+    return;
+  }
+
+  const r=ranking.find(x=>x.n===n);
+  if(!r)return;
+
+  const info=evaluateCandidate(r);
+  const evidence=[
+    ...info.supported,
+    ...info.experimental
+  ];
+
+  const selected=evidence.length
+    ?evidence
+    :r.evidence.slice(0,3);
+
+  let html=`
+    <div class="ln-auto-detail">
+      <h3>${n}번이 검색된 이유</h3>
+      <p class="ln-auto-help">
+        현재 ${nextDraw()}회에 해당하는 선행 조건을
+        과거 회차와 비교한 결과입니다.
+      </p>
+  `;
+
+  if(!selected.length){
+    html+="<p>현재 확인된 분석 근거가 충분하지 않습니다.</p>";
+  }
+
+  for(const e of selected.slice(0,4)){
+    const raw=e.wins/e.cases*100;
+    const weak=e.cases<25;
+
+    html+=`
+      <div class="ln-auto-example">
+        <b>${esc(e.label)}</b><br>
+        과거 동일 조건 ${e.cases}회 중
+        ${n}번 출현 ${e.wins}회,
+        미출현 ${e.cases-e.wins}회.<br>
+        관측 비율 ${raw.toFixed(1)}%.
+        ${weak?"<br>⚠ 사례가 적어 추가 검증이 필요합니다.":""}
+      </div>
+    `;
+
+    const featureIndex=labels.indexOf(e.label);
+
+    if(featureIndex>=0){
+      const matches=[];
+
+      for(let i=10;i<draws.length;i++){
+        if(flagsAt(draws,i,n)[featureIndex]){
+          matches.push({
+            result:draws[i],
+            previous:draws[i-1],
+            hit:draws[i].numbers.includes(n)
+          });
+        }
+      }
+
+      const success=matches.filter(x=>x.hit).slice(-2);
+      const failure=matches.filter(x=>!x.hit).slice(-2);
+
+      if(success.length){
+        html+="<p><b>실제 출현 사례</b></p>";
+        for(const x of success){
+          html+=`
+            <p class="ln-auto-help">
+              ${x.result.draw_no}회:
+              직전 ${x.previous.draw_no}회
+              [${x.previous.numbers.join("·")}] →
+              다음 회차 [${x.result.numbers.join("·")}]
+            </p>
+          `;
+        }
+      }
+
+      if(failure.length){
+        html+="<p><b>같은 조건에서 나오지 않은 사례</b></p>";
+        for(const x of failure){
+          html+=`
+            <p class="ln-auto-help">
+              ${x.result.draw_no}회:
+              ${n}번 미출현.
+              대신 [${x.result.numbers.join("·")}] 등장
+            </p>
+          `;
+        }
+      }
+    }
+  }
+
+  const appearances=draws.filter(
+    d=>d.numbers.includes(n)
+  );
+
+  const companion=new Map();
+
+  for(const d of appearances){
+    for(const x of d.numbers){
+      if(x===n)continue;
+      companion.set(x,(companion.get(x)||0)+1);
+    }
+  }
+
+  const common=[...companion.entries()]
+    .sort((a,b)=>b[1]-a[1])
+    .slice(0,5);
+
+  html+=`
+    <h3>과거 동반 출현 번호</h3>
+    <p class="ln-auto-help">
+      ${n}번이 실제 등장한 회차에서
+      함께 출현한 횟수가 많은 번호입니다.
+      동반 출현 기록이 미래 동반 당첨을 보장하지 않습니다.
+    </p>
+    <div class="ln-auto-example">
+      ${common.map(([number,count])=>
+        number+"번 "+count+"회"
+      ).join(" · ")}
+    </div>
+    <h3>이번 회차 판단</h3>
+    <p class="ln-auto-help">
+      이 번호는 <b>${info.type}</b> 대상으로 분류됩니다.
+      다른 후보의 출현 조건과 동반 관계를 추가 비교한 뒤
+      최종 조합 반영 여부를 판단해야 합니다.
+    </p>
+    </div>
+  `;
+
+  target.innerHTML=html;
+};
+
+window.lnApplyCandidates=function(){
+  if(!draws.length)return;
+
+  const nums=detectedNumbers.slice(0,14).map(r=>r.n);
+
+  if(nums.length<6){
+    alert("자동 발견 번호가 6개 미만입니다. 아직 최종 조합을 만들기에 후보가 부족합니다.");
+    return;
+  }
+
+  $("pool").value=nums.sort((a,b)=>a-b).join(",");
+  tab("tickets");
+  makeTickets();
+};
+
+window.lnRefreshData=function(){
+  loadData();
+};
+
+const originalLoadReady=window.loadReady;
+
+window.loadReady=function(data){
+  originalLoadReady(data);
+  autoScan();
+};
+
+if(draws.length && ranking.length){
+  autoScan();
+}
+
+// 앱이 열려 있을 때 30분마다 최신 데이터 확인
+setInterval(function(){
+  if(document.visibilityState==="visible"){
+    loadData();
+  }
+},30*60*1000);
+
+})();
+</script>
+
 </body>
 </html>
