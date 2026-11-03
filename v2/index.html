@@ -120,7 +120,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 <div class="footer">🛡️ LOTTO NOTE · 과거의 패턴은 미래의 당첨을 보장하지 않습니다.<br><a href="https://lotto-note.tistory.com/" target="_blank" rel="noopener">로또 노트 블로그</a></div>
 </main>
 </div>
-<dialog id="detailDialog"><div class="modal-head"><div><div class="eyebrow">NUMBER PATTERN DETAIL</div><h2 style="margin:3px 0" id="modalTitle">번호 분석</h2></div><button class="close" onclick="document.getElementById('detailDialog').close()">닫기 ✕</button></div><div id="modalBody" class="modal-body"></div></dialog>
+<dialog id="detailDialog"><div class="modal-head"><div><div class="eyebrow">NUMBER PATTERN DETAIL</div><h2 style="margin:3px 0" id="modalTitle">번호 분석</h2></div><div class="toolbar"><button class="close" onclick="document.getElementById('detailDialog').scrollTo({top:0,behavior:'smooth'})">↑ 맨 위로</button><button class="close" onclick="document.getElementById('detailDialog').close()">닫기 ✕</button></div></div><div id="modalBody" class="modal-body"></div></dialog>
 <button id="toTop" aria-label="맨 위로 이동" title="맨 위로 이동" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <script>
 "use strict";
@@ -702,7 +702,7 @@ async function runBacktest(){
 }
 $("patternN").addEventListener("change",fillPatternSelect);
 $("detailDialog").addEventListener("click",e=>{if(e.target===$("detailDialog"))$("detailDialog").close();});
-window.addEventListener("scroll",()=>$("toTop").classList.toggle("show",window.scrollY>370),{passive:true});
+window.addEventListener("scroll",()=>$("toTop").classList.toggle("show",window.scrollY>110),{passive:true});
 fillPatternSelect();
 reloadData();
 </script>
