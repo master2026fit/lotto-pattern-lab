@@ -436,7 +436,18 @@ function ruleCard(n,e,ds){
       '회 중 '+e.holdWins+'회 출현('+pct(valRate)+'). 일반적인 한 번호의 출현 비율은 6/45 ≈ 13.3%입니다. 여러 조건을 검색했기 때문에 우연한 편차일 수 있습니다.</p>'+
     '<details><summary class="openmore">▣ 이 조건의 실제 이전 회차 → 다음 회차 PPT 그림 보기</summary>'+
     '<div class="proof">'+proofSVG(ds,n,e)+'</div>'+
-    '<div class="toolbar"><button class="btn small" onclick="saveProofPNG('+n+','+e.rule.id+')">이 항목 PNG 이미지 저장</button></div></details></article>';
+    '<div class="toolbar"><button class="btn small" onclick="saveProofPNG('+n+','+e.rule.id+')">PNG 이미지 저장</button><button class="btn small outline" onclick="saveProofSVG('+n+','+e.rule.id+')">벡터 이미지 저장</button></div></details></article>';
+}
+function saveProofSVG(n,ruleId){
+  const svg=$("proof-"+n+"-"+ruleId);
+  if(!svg){alert("해당 항목의 그림을 먼저 펼쳐 주세요.");return;}
+  const xml=new XMLSerializer().serializeToString(svg);
+  const blob=new Blob([xml],{type:"image/svg+xml;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.download="lotto-"+upcoming(state.draws)+"-"+n+"-pattern-"+ruleId+".svg";
+  a.href=url;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),2000);
 }
 function saveProofPNG(n,ruleId){
   const svg=$("proof-"+n+"-"+ruleId);
