@@ -1,4 +1,4 @@
-const CACHE_NAME="lotto-note-shell-20261104-v1";
+const CACHE_NAME="lotto-note-shell-20261104-v2";
 const SHELL=["./","./index.html","./manifest.webmanifest","./icons/icon-192.png","./icons/icon-512.png"];
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting()));
@@ -21,6 +21,11 @@ self.addEventListener("fetch",event=>{
     return;
   }
   if(url.pathname.endsWith("/sw.js"))return;
+  // 주간 서버 기록은 반드시 네트워크에서 가져온다. 오래된 캐시 재사용 금지.
+  if(url.pathname.endsWith("/data/weekly_scans.json")){
+    event.respondWith(fetch(req,{cache:"no-store"}));
+    return;
+  }
   event.respondWith(caches.match(req,{ignoreSearch:true}).then(cached=>cached||fetch(req).then(res=>{
     if(res.ok&&res.type==="basic"){const copy=res.clone();caches.open(CACHE_NAME).then(cache=>cache.put(req,copy));}
     return res;
