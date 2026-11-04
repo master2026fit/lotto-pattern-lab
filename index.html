@@ -191,6 +191,11 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 .weekly-pattern-review{margin-top:30px;border-top:1px solid #405475;padding-top:20px}
 #weeklyReviewCanvas{margin:14px auto 0;max-width:760px}
 #weeklyReviewCanvas svg{display:block;width:100%;height:auto;border:1px solid #405575;border-radius:14px;box-shadow:0 16px 34px #01081390}
+.backup-summary{border:1px solid #3e6080;background:#102c43;border-radius:12px;color:#dcebf8;padding:15px;line-height:1.75;margin:12px 0}
+.backup-preview{border:1px solid #5b806f;background:#163740;border-radius:12px;padding:16px;margin:14px 0;line-height:1.8}
+.backup-preview .backup-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.backup-preview strong{color:#f2d397}
+#backupSection .caution{line-height:1.7}
 @media(max-width:650px){.top-actions{align-items:flex-start;justify-content:flex-start}.pwa-install-btn{font-size:12px;padding:9px 10px}}
 </style>
 </head>
@@ -245,7 +250,15 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
   <div class="toolbar"><button class="btn secondary" id="weeklyReviewBtn" onclick="showWeeklyPatternReview()">11조건 복기 그림 갱신</button>
   <button class="btn outline" onclick="saveWeeklyPatternPNG()">조건별 PNG 저장</button><button class="btn outline" onclick="saveWeeklyPatternSVG()">조건별 SVG 저장</button></div>
   <p class="hint" id="weeklyReviewStatus">당첨번호를 확인하면 11개 검색조건의 결과를 표시합니다.</p>
-  <div id="weeklyReviewCanvas"></div></div></div><div class="section panel" id="patternAuditSection"><h2>📊 패턴별 성공·실패 누적 검증</h2><p class="hint">각 회차 추첨 이전의 자료로 1~45번을 검사합니다. 기본 상황 8개, 장기 고정간격·사선 2개, 상황 교집합 1개를 전수 비교합니다. 집합 관찰을 포함한 16개 분석 모듈 전체를 당첨 예측 신호로 간주하지 않습니다.</p><div id="fullScanStatus" class="audit-banner">사전 전체 검색 기록을 준비하고 있습니다.</div><div class="toolbar"><label>과거 재현 기간 <select id="patternAuditRounds" class="field"><option value="30">최근 30회</option><option value="60" selected>최근 60회</option><option value="120">최근 120회</option></select></label><button class="btn" id="patternAuditRunBtn" onclick="runPatternAudit()">조건별 실제 적중·실패 검증</button></div><div id="patternAuditResult"><p class="hint">검증 버튼을 누르면 회차별 사전 조건을 복원하고, 앞 절반과 뒤 절반의 출현율을 나눠 비교합니다.</p></div></div><div id="trialHistory"></div></section>
+  <div id="weeklyReviewCanvas"></div></div></div><div class="section panel" id="patternAuditSection"><h2>📊 패턴별 성공·실패 누적 검증</h2><p class="hint">각 회차 추첨 이전의 자료로 1~45번을 검사합니다. 기본 상황 8개, 장기 고정간격·사선 2개, 상황 교집합 1개를 전수 비교합니다. 집합 관찰을 포함한 16개 분석 모듈 전체를 당첨 예측 신호로 간주하지 않습니다.</p><div id="fullScanStatus" class="audit-banner">사전 전체 검색 기록을 준비하고 있습니다.</div><div class="toolbar"><label>과거 재현 기간 <select id="patternAuditRounds" class="field"><option value="30">최근 30회</option><option value="60" selected>최근 60회</option><option value="120">최근 120회</option></select></label><button class="btn" id="patternAuditRunBtn" onclick="runPatternAudit()">조건별 실제 적중·실패 검증</button></div><div id="patternAuditResult"><p class="hint">검증 버튼을 누르면 회차별 사전 조건을 복원하고, 앞 절반과 뒤 절반의 출현율을 나눠 비교합니다.</p></div></div><div id="trialHistory"></div>
+<div class="section panel" id="backupSection"><h2>💾 연구 기록 백업 · 복원</h2>
+<p class="hint">휴대폰을 바꾸거나 브라우저 데이터를 지워도 복기 기록을 되살릴 수 있도록 <strong>1~45 사전검색·5조합 실험·이번 회차 고정수</strong>를 JSON 파일로 저장합니다. 파일은 본인 휴대폰에만 다운로드되며 서버로 전송하지 않습니다.</p>
+<div class="backup-summary" id="backupSummary">이 기기에 보관된 기록을 확인하고 있습니다.</div>
+<div class="toolbar"><button class="btn" onclick="exportResearchBackup()">연구 기록 전체 백업</button>
+<button class="btn secondary" onclick="openBackupPicker()">백업 파일 가져오기</button>
+<input id="backupFileInput" type="file" accept=".json,application/json" style="display:none" onchange="readBackupFile(event)" aria-label="연구 기록 JSON 백업 파일"></div>
+<div id="backupPreview" class="backup-preview" hidden></div>
+<p class="caution">복원은 <strong>기존 기록을 지우지 않고 병합</strong>합니다. 동일 회차 기록이 겹치면 현재 기기 기록을 유지하고, 새 기록만 추가합니다. 삭제한 적 없는 파일을 안전한 곳(예: 휴대폰 파일 또는 개인 클라우드)에 따로 보관하세요.</p></div></section>
 <section id="backtest" class="page"><div class="eyebrow">WALK-FORWARD CHECK</div><h1>과거 검증</h1><p class="lead">현재 최종 5조합에 적용하는 <strong>장기 연결 최대 10수 + 복합 관찰 최대 2수</strong>를 과거 매 회차 시점에서 다시 계산합니다. 같은 12수·5게임의 무작위 기준과 비교하며, 이후 당첨번호를 미리 참조하지 않습니다. 사후 선정 전략의 과거 결과는 미래 당첨확률을 증명하지 않습니다.</p><div class="toolbar"><label>검증할 과거 회차 <select id="backtestRounds" class="field" aria-label="과거 검증 회차 수"><option value="12">최근 12회</option><option value="30">최근 30회</option><option value="60" selected>최근 60회</option><option value="120">최근 120회</option></select></label><button id="runBacktestBtn" class="btn" onclick="runBacktest()">시점별 독립 검증 실행</button></div>
   <p class="hint">① 매 회차 직전까지의 기록만 사용 ② 기본 45개 규칙 × 45개 번호를 같은 기준으로 검증 ③ 당시 통과한 번호와 조합만 실제 결과와 비교합니다. 비교용 조합도 무작위로 선택한 12수에서 같은 방식으로 5게임을 만듭니다. 연결 패턴은 사후 탐색이므로 검증 통과 후보에서 제외됩니다.</p>
   <div id="backtestResult"></div></section>
@@ -349,6 +362,7 @@ async function reloadData(){
   reconcileFullScans();
   if(success)captureFullScan();
   renderFullScanStatus();
+  renderBackupSummary();
   state.lastPatternAudit=null;
   $("patternAuditResult").innerHTML='<p class="hint">새 데이터로 다시 검증할 준비가 됐습니다.</p>';
   fillRecapRounds();
@@ -2523,6 +2537,230 @@ function exportTrialBook(){
   document.body.appendChild(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),1500);
 }
+
+const RESEARCH_BACKUP_FORMAT="LOTTO_NOTE_RESEARCH_BACKUP_V1";
+const BACKUP_SCAN_LIMIT=72;
+const BACKUP_TRIAL_LIMIT=1500;
+function backupPinned(){
+  try{
+    const x=JSON.parse(localStorage.getItem("lotto_pattern_fixed_v2")||"null");
+    if(x&&Number.isInteger(x.round)&&validBackupNumbers(x.pins,null,0,5))
+      return {round:x.round,pins:x.pins.slice()};
+  }catch(_){}
+  return null;
+}
+function validBackupNumbers(a,length,min=0,max=45){
+  return Array.isArray(a)&&(length===null||a.length===length)&&a.length>=min&&a.length<=max&&
+    a.every(n=>Number.isInteger(n)&&n>=1&&n<=45)&&new Set(a).size===a.length;
+}
+function renderBackupSummary(){
+  const el=$("backupSummary");if(!el)return;
+  const scans=fullScanBook(),trials=trialBook(),pin=backupPinned();
+  const completed=scans.filter(r=>r.review).length;
+  el.innerHTML='<strong>이 기기의 기록</strong><p>45수 사전검색 <b>'+scans.length+
+    '회</b> (결과 확인 '+completed+'회) · 5조합 실험 <b>'+trials.length+
+    '건</b> · 이번 회차 고정수 '+(pin?pin.round+'회 / '+pin.pins.join("·"):'없음')+'</p>'+
+    '<span class="hint">백업에는 기기별 사전검색과 실험 기록을 담습니다. 역대 추첨 데이터는 온라인에서 새로 확인합니다.</span>';
+}
+function exportResearchBackup(){
+  try{
+    const payload={
+      format:RESEARCH_BACKUP_FORMAT,version:1,
+      exportedAt:new Date().toISOString(),source:"LOTTO NOTE · PATTERN LAB",
+      records:{fullScans:fullScanBook(),trials:trialBook(),pinned:backupPinned()}
+    };
+    const json=JSON.stringify(payload,null,2);
+    const url=URL.createObjectURL(new Blob([json],{type:"application/json;charset=utf-8"}));
+    const filename="lotto-note-research-"+new Date().toLocaleDateString("sv-SE",{timeZone:"Asia/Seoul"}).replace(/-/g,"")+".json";
+    const a=document.createElement("a");a.href=url;a.download=filename;
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1600);
+    $("backupSummary").innerHTML+='<p class="hint">백업 파일 다운로드를 요청했습니다. 휴대폰의 다운로드 폴더에서 실제 저장 여부를 확인하세요.</p>';
+  }catch(err){alert("연구 기록 백업 실패: "+err.message);}
+}
+function openBackupPicker(){
+  $("backupFileInput").click();
+}
+function backupTrialSignature(x){
+  return x.round+"|"+String(x.mode||"")+"|"+x.pool.join(",")+"|"+x.tickets.map(t=>t.join(",")).join(";");
+}
+function backupReviewShape(x){
+  return x===null||x===undefined||(
+    x&&typeof x==="object"&&validBackupNumbers(x.actual,6)&&
+    Number.isInteger(x.bonus)&&x.bonus>=1&&x.bonus<=45&&!x.actual.includes(x.bonus));
+}
+function validateFullBackupScan(x){
+  if(!x||typeof x!=="object"||!Number.isInteger(x.round)||x.round<1||x.round>5000||
+    x.sourceRound!==x.round-1||!validBackupNumbers(x.candidatePool,12)||
+    !Array.isArray(x.rows)||x.rows.length!==45||!backupReviewShape(x.review))return false;
+  const seen=new Set(),allowed=new Set(PATTERN_AUDIT_AXES.map(x=>x.key));
+  for(const r of x.rows){
+    if(!r||!Number.isInteger(r.n)||r.n<1||r.n>45||seen.has(r.n)||
+      !Number.isInteger(r.basic)||r.basic<0||r.basic>1000||
+      !Number.isInteger(r.connected)||r.connected<0||r.connected>2000||
+      !Array.isArray(r.flags)||r.flags.length>11||
+      r.flags.some(f=>typeof f!=="string"||!allowed.has(f))||
+      new Set(r.flags).size!==r.flags.length||
+      (r.moduleIds!==undefined&&(!Array.isArray(r.moduleIds)||r.moduleIds.length>16||
+        r.moduleIds.some(id=>!Number.isInteger(id)||id<1||id>16))))return false;
+    seen.add(r.n);
+  }
+  return seen.size===45;
+}
+function validateTrialBackup(x){
+  if(!x||typeof x!=="object"||!Number.isInteger(x.round)||x.round<1||x.round>5000||
+    x.sourceRound!==x.round-1||!validBackupNumbers(x.pool,null,6,45)||
+    !Array.isArray(x.tickets)||x.tickets.length<1||x.tickets.length>40||
+    x.tickets.some(t=>!validBackupNumbers(t,6))||
+    !validBackupNumbers(x.pins||[],null,0,5)||!backupReviewShape(x.review))return false;
+  if(typeof x.id!=="string"||x.id.length>150||
+    (x.createdAt!==undefined&&(typeof x.createdAt!=="string"||x.createdAt.length>130))||
+    (x.mode!==undefined&&(typeof x.mode!=="string"||x.mode.length>50)))return false;
+  if(x.contexts!==undefined){
+    if(!x.contexts||typeof x.contexts!=="object"||Array.isArray(x.contexts))return false;
+    const allowed=new Set(PRE_DRAW_CONTEXTS.map(f=>f.key));
+    for(const [key,v] of Object.entries(x.contexts)){
+      const n=Number(key);
+      if(!Number.isInteger(n)||n<1||n>45||!Array.isArray(v)||v.length>8||
+        v.some(f=>!allowed.has(f)))return false;
+    }
+  }
+  if(x.patternSnapshots!==undefined){
+    if(!x.patternSnapshots||typeof x.patternSnapshots!=="object"||Array.isArray(x.patternSnapshots))return false;
+    for(const [key,v] of Object.entries(x.patternSnapshots)){
+      const n=Number(key);
+      if(!Number.isInteger(n)||n<1||n>45||!v||typeof v!=="object"||
+        !Number.isInteger(v.basic)||v.basic<0||v.basic>1000||
+        !Number.isInteger(v.connected)||v.connected<0||v.connected>2000||
+        !Array.isArray(v.highlights)||v.highlights.length>10||
+        v.highlights.some(t=>typeof t!=="string"||t.length>300))return false;
+    }
+  }
+  return true;
+}
+function parseResearchBackup(raw){
+  if(!raw||typeof raw!=="object")throw Error("JSON 백업 형식이 아닙니다.");
+  const legacy=raw.format==="LOTTO_PATTERN_TRIALS_V1";
+  if(!legacy&&(raw.format!==RESEARCH_BACKUP_FORMAT||raw.version!==1))
+    throw Error("이 연구소에서 만든 백업 파일인지 확인해 주세요. 형식 또는 버전이 다릅니다.");
+  const records=legacy?{fullScans:[],trials:raw.records,pinned:null}:raw.records;
+  if(!records||!Array.isArray(records.fullScans)||!Array.isArray(records.trials)||
+    records.fullScans.length>BACKUP_SCAN_LIMIT||records.trials.length>BACKUP_TRIAL_LIMIT||
+    (records.pinned!==null&&records.pinned!==undefined&&(
+      !Number.isInteger(records.pinned.round)||records.pinned.round<1||
+      records.pinned.round>5000||!validBackupNumbers(records.pinned.pins,null,0,5))))
+    throw Error("백업 내 기록 수 또는 고정수 데이터가 유효하지 않습니다.");
+  if(records.fullScans.some(x=>!validateFullBackupScan(x))||
+    records.trials.some(x=>!validateTrialBackup(x)))
+    throw Error("일부 검색·조합 기록이 손상됐습니다. 안전을 위해 파일 전체를 가져오지 않습니다.");
+  const uniqueRounds=new Set(records.fullScans.map(x=>x.round));
+  if(uniqueRounds.size!==records.fullScans.length)
+    throw Error("백업 파일에 중복된 45수 사전검색 회차가 있습니다.");
+  return {legacy,fullScans:records.fullScans.map(x=>({...x,review:null})),
+    trials:records.trials.map(x=>({...x,review:null})),
+    pinned:records.pinned?{round:records.pinned.round,pins:records.pinned.pins.slice()}:null};
+}
+function mergeResearchBackup(parsed){
+  const storedScans=fullScanBook(),storedTrials=trialBook();
+  const scanByRound=new Map(storedScans.map(x=>[x.round,x]));
+  let scanSkipped=0;
+  parsed.fullScans.forEach(x=>{
+    if(scanByRound.has(x.round))scanSkipped++;
+    else scanByRound.set(x.round,x);
+  });
+  const scans=[...scanByRound.values()].sort((a,b)=>a.round-b.round).slice(-BACKUP_SCAN_LIMIT);
+  const trialBySig=new Map(storedTrials.map(x=>[backupTrialSignature(x),x]));
+  let trialSkipped=0;
+  parsed.trials.forEach(x=>{
+    const sig=backupTrialSignature(x);
+    if(trialBySig.has(sig))trialSkipped++;
+    else trialBySig.set(sig,x);
+  });
+  if(trialBySig.size>BACKUP_TRIAL_LIMIT)throw Error("병합 뒤 조합 기록이 너무 많습니다. 데이터를 나누어 복원해 주세요.");
+  const trials=[...trialBySig.values()].sort((a,b)=>a.round-b.round);
+  const current=backupPinned(),target=state.draws.length?upcoming(state.draws):null;
+  const pinned=!current&&parsed.pinned&&target===parsed.pinned.round?parsed.pinned:null;
+  return {scans,trials,pinned,scanSkipped,trialSkipped,
+    scanAdded:scans.filter(x=>!storedScans.some(s=>s.round===x.round)).length,
+    trialAdded:trials.length-storedTrials.length,
+    droppedScans:scanByRound.size-scans.length};
+}
+function backupPreviewError(message){
+  state.pendingBackup=null;
+  $("backupPreview").hidden=false;
+  $("backupPreview").innerHTML='<p class="caution">'+clean(message)+'</p>'+
+    '<button class="btn outline" onclick="cancelBackupImport()">닫기</button>';
+}
+async function readBackupFile(event){
+  const file=event.target.files&&event.target.files[0];
+  event.target.value="";
+  if(!file)return;
+  if(file.size>4*1024*1024)return backupPreviewError("4MB가 넘는 파일은 가져올 수 없습니다.");
+  try{
+    const parsed=parseResearchBackup(JSON.parse(await file.text()));
+    const plan=mergeResearchBackup(parsed);
+    state.pendingBackup={parsed,plan};
+    $("backupPreview").hidden=false;
+    $("backupPreview").innerHTML='<strong>파일 검사 완료 · 복원 전 확인</strong><p>파일: '+
+      clean(file.name.slice(0,100))+'</p><p>사전검색 '+parsed.fullScans.length+
+      '회 · 5조합 실험 '+parsed.trials.length+'건</p>'+
+      '<p><strong>새로 추가할 기록:</strong> 사전검색 '+plan.scanAdded+
+      '회 · 5조합 실험 '+plan.trialAdded+'건</p>'+
+      '<p>중복으로 현재 기록 유지: 사전검색 '+plan.scanSkipped+
+      '회 · 조합 '+plan.trialSkipped+'건'+
+      (plan.droppedScans?' · 오래된 사전검색 '+plan.droppedScans+'회는 보존 한도(72회)에 따라 제외':'')+
+      '</p><p class="hint">'+(parsed.legacy?"기존 5조합 기록 형식입니다. ":"")+
+      '가져온 적중 결과는 그대로 신뢰하지 않고, 확인된 당첨 데이터로 다시 계산합니다. 기존 데이터는 삭제되지 않습니다.</p>'+
+      '<div class="backup-actions"><button class="btn" onclick="acceptBackupImport()">확인하고 병합 복원</button>'+
+      '<button class="btn outline" onclick="cancelBackupImport()">취소</button></div>';
+  }catch(err){backupPreviewError("파일 검증 실패: "+err.message);}
+}
+function cancelBackupImport(){
+  state.pendingBackup=null;
+  $("backupPreview").hidden=true;
+  $("backupPreview").innerHTML="";
+}
+function acceptBackupImport(){
+  const pending=state.pendingBackup;
+  if(!pending)return alert("먼저 백업 파일을 검증해 주세요.");
+  // 저장 중 한 항목이라도 실패하면 두 기록 모두 기존 상태로 되돌립니다.
+  const keys=[FULL_SCAN_KEY,TRIAL_BOOK_KEY];
+  if(pending.plan.pinned)keys.push("lotto_pattern_fixed_v2");
+  const old=new Map(keys.map(k=>[k,localStorage.getItem(k)]));
+  try{
+    localStorage.setItem(FULL_SCAN_KEY,JSON.stringify(pending.plan.scans));
+    localStorage.setItem(TRIAL_BOOK_KEY,JSON.stringify(pending.plan.trials));
+    if(pending.plan.pinned)
+      localStorage.setItem("lotto_pattern_fixed_v2",JSON.stringify(pending.plan.pinned));
+  }catch(err){
+    for(const [key,val] of old){
+      try{if(val===null)localStorage.removeItem(key);else localStorage.setItem(key,val);}catch(_){}
+    }
+    return backupPreviewError("저장 공간이 부족하거나 차단됐습니다. 복원하지 못했습니다: "+err.message);
+  }
+  state.fullScanCache=pending.plan.scans;
+  state.trialBookCache=pending.plan.trials;
+  if(pending.plan.pinned){
+    state.savedPinnedRound=pending.plan.pinned.round;
+    state.locked=pending.plan.pinned.pins.slice();
+    $("lockedInput").value=state.locked.join(", ");
+  }
+  const addedScans=pending.plan.scanAdded,addedTrials=pending.plan.trialAdded;
+  cancelBackupImport();
+  if(state.draws.length){
+    reconcileFullScans();
+    reconcileTrialBook();
+    renderFullScanStatus();
+    fillRecapRounds();
+    if($("tickets").classList.contains("active"))showRecapImage();
+  }
+  renderBackupSummary();
+  $("backupPreview").hidden=false;
+  $("backupPreview").innerHTML='<p><strong>병합 복원 완료!</strong> 사전검색 '+addedScans+
+    '회 · 5조합 실험 '+addedTrials+'건을 추가했습니다. 기존 기록은 유지했습니다.</p>'+
+    '<button class="btn outline" onclick="cancelBackupImport()">닫기</button>';
+}
+
 function renderTrialHistory(){
   const out=$("trialHistory");
   if(!out||!state.draws.length)return;
