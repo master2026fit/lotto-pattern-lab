@@ -2578,6 +2578,1121 @@
       }
     ]
   },
+  "followupReview": {
+    "version": 1,
+    "method": "postdraw-only-first-future-appearance",
+    "horizons": [
+      1,
+      2,
+      3,
+      5,
+      10
+    ],
+    "origin": "historical-retrospective-not-predraw",
+    "caution": "당첨 발표 뒤에만 후속 출현을 기록합니다. 해당 기간이 지나지 않은 번호는 확인 대기이며 실패가 아닙니다. 과거의 반복 출현이나 1~10회 안의 재출현률이 미래 적중력 또는 추가 확률을 입증하지 않습니다.",
+    "rows": [
+      {
+        "key": "neighbor1",
+        "label": "직전 회차 ±1 이웃수 존재",
+        "groups": {
+          "predictedButMissed": [
+            {
+              "horizon": 1,
+              "eligible": 12015,
+              "seen": 1536,
+              "rate": 0.12784,
+              "randomRate": 0.13333,
+              "expected": 1602,
+              "delta": -66
+            },
+            {
+              "horizon": 2,
+              "eligible": 12006,
+              "seen": 2917,
+              "rate": 0.24296,
+              "randomRate": 0.24889,
+              "expected": 2988.16,
+              "delta": -71.16
+            },
+            {
+              "horizon": 3,
+              "eligible": 11996,
+              "seen": 4125,
+              "rate": 0.34386,
+              "randomRate": 0.34904,
+              "expected": 4187.05,
+              "delta": -62.05
+            },
+            {
+              "horizon": 5,
+              "eligible": 11974,
+              "seen": 6093,
+              "rate": 0.50885,
+              "randomRate": 0.51105,
+              "expected": 6119.37,
+              "delta": -26.37
+            },
+            {
+              "horizon": 10,
+              "eligible": 11921,
+              "seen": 9058,
+              "rate": 0.75984,
+              "randomRate": 0.76093,
+              "expected": 9071.07,
+              "delta": -13.07
+            }
+          ],
+          "unpredictedWinner": [
+            {
+              "horizon": 1,
+              "eligible": 5681,
+              "seen": 796,
+              "rate": 0.14012,
+              "randomRate": 0.13333,
+              "expected": 757.47,
+              "delta": 38.53
+            },
+            {
+              "horizon": 2,
+              "eligible": 5677,
+              "seen": 1470,
+              "rate": 0.25894,
+              "randomRate": 0.24889,
+              "expected": 1412.94,
+              "delta": 57.06
+            },
+            {
+              "horizon": 3,
+              "eligible": 5673,
+              "seen": 1995,
+              "rate": 0.35167,
+              "randomRate": 0.34904,
+              "expected": 1980.09,
+              "delta": 14.91
+            },
+            {
+              "horizon": 5,
+              "eligible": 5662,
+              "seen": 2913,
+              "rate": 0.51448,
+              "randomRate": 0.51105,
+              "expected": 2893.59,
+              "delta": 19.41
+            },
+            {
+              "horizon": 10,
+              "eligible": 5636,
+              "seen": 4291,
+              "rate": 0.76136,
+              "randomRate": 0.76093,
+              "expected": 4288.61,
+              "delta": 2.39
+            }
+          ]
+        }
+      },
+      {
+        "key": "neighbor2",
+        "label": "직전 회차 ±2 이웃수 존재",
+        "groups": {
+          "predictedButMissed": [
+            {
+              "horizon": 1,
+              "eligible": 11734,
+              "seen": 1547,
+              "rate": 0.13184,
+              "randomRate": 0.13333,
+              "expected": 1564.53,
+              "delta": -17.53
+            },
+            {
+              "horizon": 2,
+              "eligible": 11727,
+              "seen": 2911,
+              "rate": 0.24823,
+              "randomRate": 0.24889,
+              "expected": 2918.72,
+              "delta": -7.72
+            },
+            {
+              "horizon": 3,
+              "eligible": 11718,
+              "seen": 4057,
+              "rate": 0.34622,
+              "randomRate": 0.34904,
+              "expected": 4090.02,
+              "delta": -33.02
+            },
+            {
+              "horizon": 5,
+              "eligible": 11700,
+              "seen": 5916,
+              "rate": 0.50564,
+              "randomRate": 0.51105,
+              "expected": 5979.34,
+              "delta": -63.34
+            },
+            {
+              "horizon": 10,
+              "eligible": 11655,
+              "seen": 8770,
+              "rate": 0.75247,
+              "randomRate": 0.76093,
+              "expected": 8868.67,
+              "delta": -98.67
+            }
+          ],
+          "unpredictedWinner": [
+            {
+              "horizon": 1,
+              "eligible": 5700,
+              "seen": 784,
+              "rate": 0.13754,
+              "randomRate": 0.13333,
+              "expected": 760,
+              "delta": 24
+            },
+            {
+              "horizon": 2,
+              "eligible": 5697,
+              "seen": 1471,
+              "rate": 0.25821,
+              "randomRate": 0.24889,
+              "expected": 1417.92,
+              "delta": 53.08
+            },
+            {
+              "horizon": 3,
+              "eligible": 5693,
+              "seen": 2002,
+              "rate": 0.35166,
+              "randomRate": 0.34904,
+              "expected": 1987.07,
+              "delta": 14.93
+            },
+            {
+              "horizon": 5,
+              "eligible": 5684,
+              "seen": 2932,
+              "rate": 0.51583,
+              "randomRate": 0.51105,
+              "expected": 2904.83,
+              "delta": 27.17
+            },
+            {
+              "horizon": 10,
+              "eligible": 5664,
+              "seen": 4319,
+              "rate": 0.76254,
+              "randomRate": 0.76093,
+              "expected": 4309.92,
+              "delta": 9.08
+            }
+          ]
+        }
+      },
+      {
+        "key": "ending",
+        "label": "직전 회차 다른 같은 끝수 존재",
+        "groups": {
+          "predictedButMissed": [
+            {
+              "horizon": 1,
+              "eligible": 19761,
+              "seen": 2656,
+              "rate": 0.13441,
+              "randomRate": 0.13333,
+              "expected": 2634.8,
+              "delta": 21.2
+            },
+            {
+              "horizon": 2,
+              "eligible": 19743,
+              "seen": 4904,
+              "rate": 0.24839,
+              "randomRate": 0.24889,
+              "expected": 4913.81,
+              "delta": -9.81
+            },
+            {
+              "horizon": 3,
+              "eligible": 19728,
+              "seen": 6864,
+              "rate": 0.34793,
+              "randomRate": 0.34904,
+              "expected": 6885.8,
+              "delta": -21.8
+            },
+            {
+              "horizon": 5,
+              "eligible": 19699,
+              "seen": 10020,
+              "rate": 0.50866,
+              "randomRate": 0.51105,
+              "expected": 10067.26,
+              "delta": -47.26
+            },
+            {
+              "horizon": 10,
+              "eligible": 19627,
+              "seen": 14908,
+              "rate": 0.75957,
+              "randomRate": 0.76093,
+              "expected": 14934.82,
+              "delta": -26.82
+            }
+          ],
+          "unpredictedWinner": [
+            {
+              "horizon": 1,
+              "eligible": 4437,
+              "seen": 609,
+              "rate": 0.13725,
+              "randomRate": 0.13333,
+              "expected": 591.6,
+              "delta": 17.4
+            },
+            {
+              "horizon": 2,
+              "eligible": 4434,
+              "seen": 1150,
+              "rate": 0.25936,
+              "randomRate": 0.24889,
+              "expected": 1103.57,
+              "delta": 46.43
+            },
+            {
+              "horizon": 3,
+              "eligible": 4430,
+              "seen": 1543,
+              "rate": 0.34831,
+              "randomRate": 0.34904,
+              "expected": 1546.23,
+              "delta": -3.23
+            },
+            {
+              "horizon": 5,
+              "eligible": 4424,
+              "seen": 2249,
+              "rate": 0.50836,
+              "randomRate": 0.51105,
+              "expected": 2260.91,
+              "delta": -11.91
+            },
+            {
+              "horizon": 10,
+              "eligible": 4405,
+              "seen": 3351,
+              "rate": 0.76073,
+              "randomRate": 0.76093,
+              "expected": 3351.91,
+              "delta": -0.91
+            }
+          ]
+        }
+      },
+      {
+        "key": "bonus",
+        "label": "직전 회차 보너스가 해당 번호",
+        "groups": {
+          "predictedButMissed": [
+            {
+              "horizon": 1,
+              "eligible": 1074,
+              "seen": 150,
+              "rate": 0.13966,
+              "randomRate": 0.13333,
+              "expected": 143.2,
+              "delta": 6.8
+            },
+            {
+              "horizon": 2,
+              "eligible": 1073,
+              "seen": 255,
+              "rate": 0.23765,
+              "randomRate": 0.24889,
+              "expected": 267.06,
+              "delta": -12.06
+            },
+            {
+              "horizon": 3,
+              "eligible": 1072,
+              "seen": 366,
+              "rate": 0.34142,
+              "randomRate": 0.34904,
+              "expected": 374.17,
+              "delta": -8.17
+            },
+            {
+              "horizon": 5,
+              "eligible": 1071,
+              "seen": 533,
+              "rate": 0.49767,
+              "randomRate": 0.51105,
+              "expected": 547.34,
+              "delta": -14.34
+            },
+            {
+              "horizon": 10,
+              "eligible": 1068,
+              "seen": 809,
+              "rate": 0.75749,
+              "randomRate": 0.76093,
+              "expected": 812.68,
+              "delta": -3.68
+            }
+          ],
+          "unpredictedWinner": [
+            {
+              "horizon": 1,
+              "eligible": 7304,
+              "seen": 1013,
+              "rate": 0.13869,
+              "randomRate": 0.13333,
+              "expected": 973.87,
+              "delta": 39.13
+            },
+            {
+              "horizon": 2,
+              "eligible": 7298,
+              "seen": 1896,
+              "rate": 0.2598,
+              "randomRate": 0.24889,
+              "expected": 1816.39,
+              "delta": 79.61
+            },
+            {
+              "horizon": 3,
+              "eligible": 7292,
+              "seen": 2576,
+              "rate": 0.35326,
+              "randomRate": 0.34904,
+              "expected": 2545.18,
+              "delta": 30.82
+            },
+            {
+              "horizon": 5,
+              "eligible": 7281,
+              "seen": 3722,
+              "rate": 0.51119,
+              "randomRate": 0.51105,
+              "expected": 3720.99,
+              "delta": 1.01
+            },
+            {
+              "horizon": 10,
+              "eligible": 7253,
+              "seen": 5507,
+              "rate": 0.75927,
+              "randomRate": 0.76093,
+              "expected": 5519.04,
+              "delta": -12.04
+            }
+          ]
+        }
+      },
+      {
+        "key": "carry",
+        "label": "직전 회차 해당 번호 본번호 출현",
+        "groups": {
+          "predictedButMissed": [
+            {
+              "horizon": 1,
+              "eligible": 6446,
+              "seen": 905,
+              "rate": 0.1404,
+              "randomRate": 0.13333,
+              "expected": 859.47,
+              "delta": 45.53
+            },
+            {
+              "horizon": 2,
+              "eligible": 6441,
+              "seen": 1607,
+              "rate": 0.2495,
+              "randomRate": 0.24889,
+              "expected": 1603.09,
+              "delta": 3.91
+            },
+            {
+              "horizon": 3,
+              "eligible": 6436,
+              "seen": 2213,
+              "rate": 0.34385,
+              "randomRate": 0.34904,
+              "expected": 2246.4,
+              "delta": -33.4
+            },
+            {
+              "horizon": 5,
+              "eligible": 6426,
+              "seen": 3256,
+              "rate": 0.50669,
+              "randomRate": 0.51105,
+              "expected": 3284.04,
+              "delta": -28.04
+            },
+            {
+              "horizon": 10,
+              "eligible": 6402,
+              "seen": 4869,
+              "rate": 0.76054,
+              "randomRate": 0.76093,
+              "expected": 4871.49,
+              "delta": -2.49
+            }
+          ],
+          "unpredictedWinner": [
+            {
+              "horizon": 1,
+              "eligible": 6446,
+              "seen": 888,
+              "rate": 0.13776,
+              "randomRate": 0.13333,
+              "expected": 859.47,
+              "delta": 28.53
+            },
+            {
+              "horizon": 2,
+              "eligible": 6441,
+              "seen": 1666,
+              "rate": 0.25866,
+              "randomRate": 0.24889,
+              "expected": 1603.09,
+              "delta": 62.91
+            },
+            {
+              "horizon": 3,
+              "eligible": 6436,
+              "seen": 2279,
+              "rate": 0.3541,
+              "randomRate": 0.34904,
+              "expected": 2246.4,
+              "delta": 32.6
+            },
+            {
+              "horizon": 5,
+              "eligible": 6426,
+              "seen": 3291,
+              "rate": 0.51214,
+              "randomRate": 0.51105,
+              "expected": 3284.04,
+              "delta": 6.96
+            },
+            {
+              "horizon": 10,
+              "eligible": 6402,
+              "seen": 4864,
+              "rate": 0.75976,
+              "randomRate": 0.76093,
+              "expected": 4871.49,
+              "delta": -7.49
+            }
+          ]
+        }
+      },
+      {
+        "key": "miss5",
+        "label": "최근 5회 해당 번호 미출현 중",
+        "groups": {
+          "predictedButMissed": [
+            {
+              "horizon": 1,
+              "eligible": 23804,
+              "seen": 3172,
+              "rate": 0.13325,
+              "randomRate": 0.13333,
+              "expected": 3173.87,
+              "delta": -1.87
+            },
+            {
+              "horizon": 2,
+              "eligible": 23787,
+              "seen": 5896,
+              "rate": 0.24787,
+              "randomRate": 0.24889,
+              "expected": 5920.32,
+              "delta": -24.32
+            },
+            {
+              "horizon": 3,
+              "eligible": 23767,
+              "seen": 8259,
+              "rate": 0.3475,
+              "randomRate": 0.34904,
+              "expected": 8295.56,
+              "delta": -36.56
+            },
+            {
+              "horizon": 5,
+              "eligible": 23728,
+              "seen": 12081,
+              "rate": 0.50915,
+              "randomRate": 0.51105,
+              "expected": 12126.3,
+              "delta": -45.3
+            },
+            {
+              "horizon": 10,
+              "eligible": 23632,
+              "seen": 17894,
+              "rate": 0.75719,
+              "randomRate": 0.76093,
+              "expected": 17982.35,
+              "delta": -88.35
+            }
+          ],
+          "unpredictedWinner": [
+            {
+              "horizon": 1,
+              "eligible": 3827,
+              "seen": 525,
+              "rate": 0.13718,
+              "randomRate": 0.13333,
+              "expected": 510.27,
+              "delta": 14.73
+            },
+            {
+              "horizon": 2,
+              "eligible": 3825,
+              "seen": 1008,
+              "rate": 0.26353,
+              "randomRate": 0.24889,
+              "expected": 952,
+              "delta": 56
+            },
+            {
+              "horizon": 3,
+              "eligible": 3821,
+              "seen": 1369,
+              "rate": 0.35828,
+              "randomRate": 0.34904,
+              "expected": 1333.67,
+              "delta": 35.33
+            },
+            {
+              "horizon": 5,
+              "eligible": 3817,
+              "seen": 1954,
+              "rate": 0.51192,
+              "randomRate": 0.51105,
+              "expected": 1950.69,
+              "delta": 3.31
+            },
+            {
+              "horizon": 10,
+              "eligible": 3800,
+              "seen": 2872,
+              "rate": 0.75579,
+              "randomRate": 0.76093,
+              "expected": 2891.54,
+              "delta": -19.54
+            }
+          ]
+        }
+      },
+      {
+        "key": "neighborTwice",
+        "label": "직전 3회 중 ±1 이웃수 2회 이상",
+        "groups": {
+          "predictedButMissed": [
+            {
+              "horizon": 1,
+              "eligible": 7585,
+              "seen": 1020,
+              "rate": 0.13448,
+              "randomRate": 0.13333,
+              "expected": 1011.33,
+              "delta": 8.67
+            },
+            {
+              "horizon": 2,
+              "eligible": 7578,
+              "seen": 1893,
+              "rate": 0.2498,
+              "randomRate": 0.24889,
+              "expected": 1886.08,
+              "delta": 6.92
+            },
+            {
+              "horizon": 3,
+              "eligible": 7571,
+              "seen": 2647,
+              "rate": 0.34962,
+              "randomRate": 0.34904,
+              "expected": 2642.56,
+              "delta": 4.44
+            },
+            {
+              "horizon": 5,
+              "eligible": 7560,
+              "seen": 3866,
+              "rate": 0.51138,
+              "randomRate": 0.51105,
+              "expected": 3863.57,
+              "delta": 2.43
+            },
+            {
+              "horizon": 10,
+              "eligible": 7525,
+              "seen": 5721,
+              "rate": 0.76027,
+              "randomRate": 0.76093,
+              "expected": 5726.02,
+              "delta": -5.02
+            }
+          ],
+          "unpredictedWinner": [
+            {
+              "horizon": 1,
+              "eligible": 6365,
+              "seen": 877,
+              "rate": 0.13778,
+              "randomRate": 0.13333,
+              "expected": 848.67,
+              "delta": 28.33
+            },
+            {
+              "horizon": 2,
+              "eligible": 6359,
+              "seen": 1643,
+              "rate": 0.25837,
+              "randomRate": 0.24889,
+              "expected": 1582.68,
+              "delta": 60.32
+            },
+            {
+              "horizon": 3,
+              "eligible": 6354,
+              "seen": 2232,
+              "rate": 0.35127,
+              "randomRate": 0.34904,
+              "expected": 2217.78,
+              "delta": 14.22
+            },
+            {
+              "horizon": 5,
+              "eligible": 6344,
+              "seen": 3237,
+              "rate": 0.51025,
+              "randomRate": 0.51105,
+              "expected": 3242.13,
+              "delta": -5.13
+            },
+            {
+              "horizon": 10,
+              "eligible": 6321,
+              "seen": 4813,
+              "rate": 0.76143,
+              "randomRate": 0.76093,
+              "expected": 4809.85,
+              "delta": 3.15
+            }
+          ]
+        }
+      },
+      {
+        "key": "sameSlot",
+        "label": "해당 번호 최근 두 번 같은 자리",
+        "groups": {
+          "predictedButMissed": [
+            {
+              "horizon": 1,
+              "eligible": 18514,
+              "seen": 2467,
+              "rate": 0.13325,
+              "randomRate": 0.13333,
+              "expected": 2468.53,
+              "delta": -1.53
+            },
+            {
+              "horizon": 2,
+              "eligible": 18500,
+              "seen": 4570,
+              "rate": 0.24703,
+              "randomRate": 0.24889,
+              "expected": 4604.44,
+              "delta": -34.44
+            },
+            {
+              "horizon": 3,
+              "eligible": 18483,
+              "seen": 6393,
+              "rate": 0.34589,
+              "randomRate": 0.34904,
+              "expected": 6451.25,
+              "delta": -58.25
+            },
+            {
+              "horizon": 5,
+              "eligible": 18447,
+              "seen": 9347,
+              "rate": 0.50669,
+              "randomRate": 0.51105,
+              "expected": 9427.42,
+              "delta": -80.42
+            },
+            {
+              "horizon": 10,
+              "eligible": 18346,
+              "seen": 13845,
+              "rate": 0.75466,
+              "randomRate": 0.76093,
+              "expected": 13960.06,
+              "delta": -115.06
+            }
+          ],
+          "unpredictedWinner": [
+            {
+              "horizon": 1,
+              "eligible": 4611,
+              "seen": 628,
+              "rate": 0.1362,
+              "randomRate": 0.13333,
+              "expected": 614.8,
+              "delta": 13.2
+            },
+            {
+              "horizon": 2,
+              "eligible": 4608,
+              "seen": 1200,
+              "rate": 0.26042,
+              "randomRate": 0.24889,
+              "expected": 1146.88,
+              "delta": 53.12
+            },
+            {
+              "horizon": 3,
+              "eligible": 4603,
+              "seen": 1612,
+              "rate": 0.35021,
+              "randomRate": 0.34904,
+              "expected": 1606.62,
+              "delta": 5.38
+            },
+            {
+              "horizon": 5,
+              "eligible": 4597,
+              "seen": 2319,
+              "rate": 0.50446,
+              "randomRate": 0.51105,
+              "expected": 2349.32,
+              "delta": -30.32
+            },
+            {
+              "horizon": 10,
+              "eligible": 4584,
+              "seen": 3468,
+              "rate": 0.75654,
+              "randomRate": 0.76093,
+              "expected": 3488.11,
+              "delta": -20.11
+            }
+          ]
+        }
+      },
+      {
+        "key": "fixedCycle",
+        "label": "4단계 이상 고정 회차간격",
+        "groups": {
+          "predictedButMissed": [
+            {
+              "horizon": 1,
+              "eligible": 2249,
+              "seen": 298,
+              "rate": 0.1325,
+              "randomRate": 0.13333,
+              "expected": 299.87,
+              "delta": -1.87
+            },
+            {
+              "horizon": 2,
+              "eligible": 2245,
+              "seen": 554,
+              "rate": 0.24677,
+              "randomRate": 0.24889,
+              "expected": 558.76,
+              "delta": -4.76
+            },
+            {
+              "horizon": 3,
+              "eligible": 2241,
+              "seen": 783,
+              "rate": 0.3494,
+              "randomRate": 0.34904,
+              "expected": 782.19,
+              "delta": 0.81
+            },
+            {
+              "horizon": 5,
+              "eligible": 2236,
+              "seen": 1143,
+              "rate": 0.51118,
+              "randomRate": 0.51105,
+              "expected": 1142.72,
+              "delta": 0.28
+            },
+            {
+              "horizon": 10,
+              "eligible": 2217,
+              "seen": 1696,
+              "rate": 0.765,
+              "randomRate": 0.76093,
+              "expected": 1686.99,
+              "delta": 9.01
+            }
+          ],
+          "unpredictedWinner": [
+            {
+              "horizon": 1,
+              "eligible": 7135,
+              "seen": 1000,
+              "rate": 0.14015,
+              "randomRate": 0.13333,
+              "expected": 951.33,
+              "delta": 48.67
+            },
+            {
+              "horizon": 2,
+              "eligible": 7130,
+              "seen": 1863,
+              "rate": 0.26129,
+              "randomRate": 0.24889,
+              "expected": 1774.58,
+              "delta": 88.42
+            },
+            {
+              "horizon": 3,
+              "eligible": 7125,
+              "seen": 2538,
+              "rate": 0.35621,
+              "randomRate": 0.34904,
+              "expected": 2486.89,
+              "delta": 51.11
+            },
+            {
+              "horizon": 5,
+              "eligible": 7114,
+              "seen": 3658,
+              "rate": 0.5142,
+              "randomRate": 0.51105,
+              "expected": 3635.64,
+              "delta": 22.36
+            },
+            {
+              "horizon": 10,
+              "eligible": 7088,
+              "seen": 5384,
+              "rate": 0.75959,
+              "randomRate": 0.76093,
+              "expected": 5393.49,
+              "delta": -9.49
+            }
+          ]
+        }
+      },
+      {
+        "key": "diagonal",
+        "label": "4단계 이상 사선 연결",
+        "groups": {
+          "predictedButMissed": [
+            {
+              "horizon": 1,
+              "eligible": 17872,
+              "seen": 2319,
+              "rate": 0.12976,
+              "randomRate": 0.13333,
+              "expected": 2382.93,
+              "delta": -63.93
+            },
+            {
+              "horizon": 2,
+              "eligible": 17843,
+              "seen": 4356,
+              "rate": 0.24413,
+              "randomRate": 0.24889,
+              "expected": 4440.92,
+              "delta": -84.92
+            },
+            {
+              "horizon": 3,
+              "eligible": 17820,
+              "seen": 6167,
+              "rate": 0.34607,
+              "randomRate": 0.34904,
+              "expected": 6219.84,
+              "delta": -52.84
+            },
+            {
+              "horizon": 5,
+              "eligible": 17769,
+              "seen": 9069,
+              "rate": 0.51038,
+              "randomRate": 0.51105,
+              "expected": 9080.93,
+              "delta": -11.93
+            },
+            {
+              "horizon": 10,
+              "eligible": 17625,
+              "seen": 13390,
+              "rate": 0.75972,
+              "randomRate": 0.76093,
+              "expected": 13411.43,
+              "delta": -21.43
+            }
+          ],
+          "unpredictedWinner": [
+            {
+              "horizon": 1,
+              "eligible": 4690,
+              "seen": 663,
+              "rate": 0.14136,
+              "randomRate": 0.13333,
+              "expected": 625.33,
+              "delta": 37.67
+            },
+            {
+              "horizon": 2,
+              "eligible": 4687,
+              "seen": 1222,
+              "rate": 0.26072,
+              "randomRate": 0.24889,
+              "expected": 1166.54,
+              "delta": 55.46
+            },
+            {
+              "horizon": 3,
+              "eligible": 4684,
+              "seen": 1660,
+              "rate": 0.3544,
+              "randomRate": 0.34904,
+              "expected": 1634.89,
+              "delta": 25.11
+            },
+            {
+              "horizon": 5,
+              "eligible": 4677,
+              "seen": 2384,
+              "rate": 0.50973,
+              "randomRate": 0.51105,
+              "expected": 2390.2,
+              "delta": -6.2
+            },
+            {
+              "horizon": 10,
+              "eligible": 4665,
+              "seen": 3546,
+              "rate": 0.76013,
+              "randomRate": 0.76093,
+              "expected": 3549.75,
+              "delta": -3.75
+            }
+          ]
+        }
+      },
+      {
+        "key": "context2plus",
+        "label": "직전 상황 2개 이상 교집합",
+        "groups": {
+          "predictedButMissed": [
+            {
+              "horizon": 1,
+              "eligible": 33125,
+              "seen": 4402,
+              "rate": 0.13289,
+              "randomRate": 0.13333,
+              "expected": 4416.67,
+              "delta": -14.67
+            },
+            {
+              "horizon": 2,
+              "eligible": 33099,
+              "seen": 8200,
+              "rate": 0.24774,
+              "randomRate": 0.24889,
+              "expected": 8237.97,
+              "delta": -37.97
+            },
+            {
+              "horizon": 3,
+              "eligible": 33069,
+              "seen": 11439,
+              "rate": 0.34591,
+              "randomRate": 0.34904,
+              "expected": 11542.31,
+              "delta": -103.31
+            },
+            {
+              "horizon": 5,
+              "eligible": 33016,
+              "seen": 16793,
+              "rate": 0.50863,
+              "randomRate": 0.51105,
+              "expected": 16872.97,
+              "delta": -79.97
+            },
+            {
+              "horizon": 10,
+              "eligible": 32874,
+              "seen": 24870,
+              "rate": 0.75652,
+              "randomRate": 0.76093,
+              "expected": 25014.89,
+              "delta": -144.89
+            }
+          ],
+          "unpredictedWinner": [
+            {
+              "horizon": 1,
+              "eligible": 2420,
+              "seen": 348,
+              "rate": 0.1438,
+              "randomRate": 0.13333,
+              "expected": 322.67,
+              "delta": 25.33
+            },
+            {
+              "horizon": 2,
+              "eligible": 2420,
+              "seen": 657,
+              "rate": 0.27149,
+              "randomRate": 0.24889,
+              "expected": 602.31,
+              "delta": 54.69
+            },
+            {
+              "horizon": 3,
+              "eligible": 2417,
+              "seen": 864,
+              "rate": 0.35747,
+              "randomRate": 0.34904,
+              "expected": 843.62,
+              "delta": 20.38
+            },
+            {
+              "horizon": 5,
+              "eligible": 2416,
+              "seen": 1256,
+              "rate": 0.51987,
+              "randomRate": 0.51105,
+              "expected": 1234.71,
+              "delta": 21.29
+            },
+            {
+              "horizon": 10,
+              "eligible": 2408,
+              "seen": 1841,
+              "rate": 0.76453,
+              "randomRate": 0.76093,
+              "expected": 1832.32,
+              "delta": 8.68
+            }
+          ]
+        }
+      }
+    ]
+  },
   "examples": [
     {
       "round": 1241,
@@ -2893,6 +4008,889 @@
           44,
           45
         ]
+      },
+      "followup": {
+        "observedRounds": 7,
+        "axes": {
+          "neighbor1": {
+            "predictedButMissed": [
+              {
+                "n": 10,
+                "firstAfter": 1
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 6
+              },
+              {
+                "n": 18,
+                "firstAfter": 2
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 20,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 6
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 32,
+                "firstAfter": 4
+              },
+              {
+                "n": 45,
+                "firstAfter": 6
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": 3
+              },
+              {
+                "n": 16,
+                "firstAfter": 1
+              },
+              {
+                "n": 23,
+                "firstAfter": 5
+              },
+              {
+                "n": 24,
+                "firstAfter": 2
+              }
+            ]
+          },
+          "neighbor2": {
+            "predictedButMissed": [
+              {
+                "n": 9,
+                "firstAfter": 2
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 2
+              },
+              {
+                "n": 21,
+                "firstAfter": 6
+              },
+              {
+                "n": 22,
+                "firstAfter": 5
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 4
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 16,
+                "firstAfter": 1
+              },
+              {
+                "n": 23,
+                "firstAfter": 5
+              },
+              {
+                "n": 24,
+                "firstAfter": 2
+              },
+              {
+                "n": 43,
+                "firstAfter": 2
+              }
+            ]
+          },
+          "ending": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": 3
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 4,
+                "firstAfter": 1
+              },
+              {
+                "n": 9,
+                "firstAfter": 2
+              },
+              {
+                "n": 10,
+                "firstAfter": 1
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 6
+              },
+              {
+                "n": 21,
+                "firstAfter": 6
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 31,
+                "firstAfter": 1
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 34,
+                "firstAfter": 3
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": 1
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": 3
+              },
+              {
+                "n": 16,
+                "firstAfter": 1
+              }
+            ]
+          },
+          "bonus": {
+            "predictedButMissed": [
+              {
+                "n": 27,
+                "firstAfter": 5
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": 3
+              },
+              {
+                "n": 16,
+                "firstAfter": 1
+              },
+              {
+                "n": 23,
+                "firstAfter": 5
+              },
+              {
+                "n": 24,
+                "firstAfter": 2
+              },
+              {
+                "n": 43,
+                "firstAfter": 2
+              }
+            ]
+          },
+          "carry": {
+            "predictedButMissed": [
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 20,
+                "firstAfter": null
+              },
+              {
+                "n": 31,
+                "firstAfter": 1
+              },
+              {
+                "n": 44,
+                "firstAfter": 2
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 16,
+                "firstAfter": 1
+              },
+              {
+                "n": 23,
+                "firstAfter": 5
+              },
+              {
+                "n": 24,
+                "firstAfter": 2
+              },
+              {
+                "n": 43,
+                "firstAfter": 2
+              }
+            ]
+          },
+          "miss5": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": 3
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 4,
+                "firstAfter": 1
+              },
+              {
+                "n": 5,
+                "firstAfter": 4
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 8,
+                "firstAfter": 6
+              },
+              {
+                "n": 9,
+                "firstAfter": 2
+              },
+              {
+                "n": 14,
+                "firstAfter": 6
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 25,
+                "firstAfter": 4
+              },
+              {
+                "n": 26,
+                "firstAfter": 3
+              },
+              {
+                "n": 27,
+                "firstAfter": 5
+              },
+              {
+                "n": 28,
+                "firstAfter": 4
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": 1
+              },
+              {
+                "n": 45,
+                "firstAfter": 6
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 13,
+                "firstAfter": 3
+              },
+              {
+                "n": 23,
+                "firstAfter": 5
+              }
+            ]
+          },
+          "neighborTwice": {
+            "predictedButMissed": [
+              {
+                "n": 10,
+                "firstAfter": 1
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 6
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 6
+              },
+              {
+                "n": 31,
+                "firstAfter": 1
+              },
+              {
+                "n": 32,
+                "firstAfter": 4
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": 3
+              },
+              {
+                "n": 16,
+                "firstAfter": 1
+              },
+              {
+                "n": 23,
+                "firstAfter": 5
+              },
+              {
+                "n": 24,
+                "firstAfter": 2
+              }
+            ]
+          },
+          "sameSlot": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": 3
+              },
+              {
+                "n": 2,
+                "firstAfter": 1
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 4,
+                "firstAfter": 1
+              },
+              {
+                "n": 5,
+                "firstAfter": 4
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 6
+              },
+              {
+                "n": 25,
+                "firstAfter": 4
+              },
+              {
+                "n": 27,
+                "firstAfter": 5
+              },
+              {
+                "n": 32,
+                "firstAfter": 4
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": 7
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": 1
+              },
+              {
+                "n": 42,
+                "firstAfter": 4
+              },
+              {
+                "n": 44,
+                "firstAfter": 2
+              },
+              {
+                "n": 45,
+                "firstAfter": 6
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 16,
+                "firstAfter": 1
+              },
+              {
+                "n": 23,
+                "firstAfter": 5
+              },
+              {
+                "n": 24,
+                "firstAfter": 2
+              }
+            ]
+          },
+          "fixedCycle": {
+            "predictedButMissed": [
+              {
+                "n": 14,
+                "firstAfter": 6
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 34,
+                "firstAfter": 3
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": 3
+              },
+              {
+                "n": 16,
+                "firstAfter": 1
+              },
+              {
+                "n": 23,
+                "firstAfter": 5
+              },
+              {
+                "n": 43,
+                "firstAfter": 2
+              }
+            ]
+          },
+          "diagonal": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": 3
+              },
+              {
+                "n": 2,
+                "firstAfter": 1
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 4,
+                "firstAfter": 1
+              },
+              {
+                "n": 5,
+                "firstAfter": 4
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 8,
+                "firstAfter": 6
+              },
+              {
+                "n": 9,
+                "firstAfter": 2
+              },
+              {
+                "n": 10,
+                "firstAfter": 1
+              },
+              {
+                "n": 14,
+                "firstAfter": 6
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 2
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 20,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 6
+              },
+              {
+                "n": 25,
+                "firstAfter": 4
+              },
+              {
+                "n": 26,
+                "firstAfter": 3
+              },
+              {
+                "n": 27,
+                "firstAfter": 5
+              },
+              {
+                "n": 28,
+                "firstAfter": 4
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 31,
+                "firstAfter": 1
+              },
+              {
+                "n": 32,
+                "firstAfter": 4
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 34,
+                "firstAfter": 3
+              },
+              {
+                "n": 36,
+                "firstAfter": 7
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 38,
+                "firstAfter": 2
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": 1
+              },
+              {
+                "n": 42,
+                "firstAfter": 4
+              },
+              {
+                "n": 44,
+                "firstAfter": 2
+              },
+              {
+                "n": 45,
+                "firstAfter": 6
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 16,
+                "firstAfter": 1
+              },
+              {
+                "n": 23,
+                "firstAfter": 5
+              },
+              {
+                "n": 24,
+                "firstAfter": 2
+              }
+            ]
+          },
+          "context2plus": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": 3
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 4,
+                "firstAfter": 1
+              },
+              {
+                "n": 5,
+                "firstAfter": 4
+              },
+              {
+                "n": 9,
+                "firstAfter": 2
+              },
+              {
+                "n": 10,
+                "firstAfter": 1
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 6
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 2
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 20,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 6
+              },
+              {
+                "n": 25,
+                "firstAfter": 4
+              },
+              {
+                "n": 27,
+                "firstAfter": 5
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 31,
+                "firstAfter": 1
+              },
+              {
+                "n": 32,
+                "firstAfter": 4
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": 1
+              },
+              {
+                "n": 42,
+                "firstAfter": 4
+              },
+              {
+                "n": 44,
+                "firstAfter": 2
+              },
+              {
+                "n": 45,
+                "firstAfter": 6
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 16,
+                "firstAfter": 1
+              },
+              {
+                "n": 23,
+                "firstAfter": 5
+              }
+            ]
+          }
+        }
       }
     },
     {
@@ -3193,6 +5191,865 @@
           44,
           45
         ]
+      },
+      "followup": {
+        "observedRounds": 6,
+        "axes": {
+          "neighbor1": {
+            "predictedButMissed": [
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 8,
+                "firstAfter": 5
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 5
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 22,
+                "firstAfter": 4
+              },
+              {
+                "n": 23,
+                "firstAfter": 4
+              },
+              {
+                "n": 24,
+                "firstAfter": 1
+              },
+              {
+                "n": 25,
+                "firstAfter": 3
+              },
+              {
+                "n": 42,
+                "firstAfter": 3
+              },
+              {
+                "n": 44,
+                "firstAfter": 1
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 4,
+                "firstAfter": 3
+              },
+              {
+                "n": 10,
+                "firstAfter": null
+              },
+              {
+                "n": 16,
+                "firstAfter": 4
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": null
+              }
+            ]
+          },
+          "neighbor2": {
+            "predictedButMissed": [
+              {
+                "n": 5,
+                "firstAfter": 3
+              },
+              {
+                "n": 9,
+                "firstAfter": 1
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 5
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 1
+              },
+              {
+                "n": 21,
+                "firstAfter": 5
+              },
+              {
+                "n": 22,
+                "firstAfter": 4
+              },
+              {
+                "n": 25,
+                "firstAfter": 3
+              },
+              {
+                "n": 26,
+                "firstAfter": 2
+              },
+              {
+                "n": 45,
+                "firstAfter": 5
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 4,
+                "firstAfter": 3
+              },
+              {
+                "n": 10,
+                "firstAfter": null
+              },
+              {
+                "n": 16,
+                "firstAfter": 4
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              }
+            ]
+          },
+          "ending": {
+            "predictedButMissed": [
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": 2
+              },
+              {
+                "n": 14,
+                "firstAfter": 5
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 23,
+                "firstAfter": 4
+              },
+              {
+                "n": 26,
+                "firstAfter": 2
+              },
+              {
+                "n": 27,
+                "firstAfter": 4
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 34,
+                "firstAfter": 2
+              },
+              {
+                "n": 36,
+                "firstAfter": 6
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 43,
+                "firstAfter": 1
+              },
+              {
+                "n": 44,
+                "firstAfter": 1
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 10,
+                "firstAfter": null
+              },
+              {
+                "n": 16,
+                "firstAfter": 4
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": null
+              }
+            ]
+          },
+          "bonus": {
+            "predictedButMissed": [
+              {
+                "n": 9,
+                "firstAfter": 1
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 4,
+                "firstAfter": 3
+              },
+              {
+                "n": 10,
+                "firstAfter": null
+              },
+              {
+                "n": 16,
+                "firstAfter": 4
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": null
+              }
+            ]
+          },
+          "carry": {
+            "predictedButMissed": [
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": 2
+              },
+              {
+                "n": 23,
+                "firstAfter": 4
+              },
+              {
+                "n": 24,
+                "firstAfter": 1
+              },
+              {
+                "n": 43,
+                "firstAfter": 1
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 4,
+                "firstAfter": 3
+              },
+              {
+                "n": 10,
+                "firstAfter": null
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": null
+              }
+            ]
+          },
+          "miss5": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": 2
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": 3
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 8,
+                "firstAfter": 5
+              },
+              {
+                "n": 9,
+                "firstAfter": 1
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 5
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 5
+              },
+              {
+                "n": 25,
+                "firstAfter": 3
+              },
+              {
+                "n": 26,
+                "firstAfter": 2
+              },
+              {
+                "n": 27,
+                "firstAfter": 4
+              },
+              {
+                "n": 28,
+                "firstAfter": 3
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              },
+              {
+                "n": 45,
+                "firstAfter": 5
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 10,
+                "firstAfter": null
+              },
+              {
+                "n": 16,
+                "firstAfter": 4
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              }
+            ]
+          },
+          "neighborTwice": {
+            "predictedButMissed": [
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 5
+              },
+              {
+                "n": 21,
+                "firstAfter": 5
+              },
+              {
+                "n": 23,
+                "firstAfter": 4
+              },
+              {
+                "n": 32,
+                "firstAfter": 3
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 4,
+                "firstAfter": 3
+              },
+              {
+                "n": 16,
+                "firstAfter": 4
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": null
+              }
+            ]
+          },
+          "sameSlot": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": 2
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": 3
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": 2
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 5
+              },
+              {
+                "n": 24,
+                "firstAfter": 1
+              },
+              {
+                "n": 25,
+                "firstAfter": 3
+              },
+              {
+                "n": 27,
+                "firstAfter": 4
+              },
+              {
+                "n": 32,
+                "firstAfter": 3
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": 6
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 3
+              },
+              {
+                "n": 43,
+                "firstAfter": 1
+              },
+              {
+                "n": 44,
+                "firstAfter": 1
+              },
+              {
+                "n": 45,
+                "firstAfter": 5
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 10,
+                "firstAfter": null
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              }
+            ]
+          },
+          "fixedCycle": {
+            "predictedButMissed": [
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": 2
+              },
+              {
+                "n": 21,
+                "firstAfter": 5
+              },
+              {
+                "n": 23,
+                "firstAfter": 4
+              },
+              {
+                "n": 36,
+                "firstAfter": 6
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 10,
+                "firstAfter": null
+              },
+              {
+                "n": 16,
+                "firstAfter": 4
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": null
+              }
+            ]
+          },
+          "diagonal": {
+            "predictedButMissed": [
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": 3
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 8,
+                "firstAfter": 5
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": 2
+              },
+              {
+                "n": 14,
+                "firstAfter": 5
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 1
+              },
+              {
+                "n": 21,
+                "firstAfter": 5
+              },
+              {
+                "n": 22,
+                "firstAfter": 4
+              },
+              {
+                "n": 23,
+                "firstAfter": 4
+              },
+              {
+                "n": 24,
+                "firstAfter": 1
+              },
+              {
+                "n": 25,
+                "firstAfter": 3
+              },
+              {
+                "n": 27,
+                "firstAfter": 4
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 34,
+                "firstAfter": 2
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 3
+              },
+              {
+                "n": 44,
+                "firstAfter": 1
+              },
+              {
+                "n": 45,
+                "firstAfter": 5
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 41,
+                "firstAfter": null
+              }
+            ]
+          },
+          "context2plus": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": 2
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": 3
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 8,
+                "firstAfter": 5
+              },
+              {
+                "n": 9,
+                "firstAfter": 1
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": 2
+              },
+              {
+                "n": 14,
+                "firstAfter": 5
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 5
+              },
+              {
+                "n": 22,
+                "firstAfter": 4
+              },
+              {
+                "n": 23,
+                "firstAfter": 4
+              },
+              {
+                "n": 24,
+                "firstAfter": 1
+              },
+              {
+                "n": 25,
+                "firstAfter": 3
+              },
+              {
+                "n": 26,
+                "firstAfter": 2
+              },
+              {
+                "n": 27,
+                "firstAfter": 4
+              },
+              {
+                "n": 32,
+                "firstAfter": 3
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": 6
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 3
+              },
+              {
+                "n": 43,
+                "firstAfter": 1
+              },
+              {
+                "n": 44,
+                "firstAfter": 1
+              },
+              {
+                "n": 45,
+                "firstAfter": 5
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 10,
+                "firstAfter": null
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              }
+            ]
+          }
+        }
       }
     },
     {
@@ -3495,6 +6352,876 @@
           43,
           44
         ]
+      },
+      "followup": {
+        "observedRounds": 5,
+        "axes": {
+          "neighbor1": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": 1
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": 2
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 32,
+                "firstAfter": 2
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 2
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 18,
+                "firstAfter": 1
+              },
+              {
+                "n": 24,
+                "firstAfter": 3
+              },
+              {
+                "n": 38,
+                "firstAfter": 1
+              },
+              {
+                "n": 43,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              }
+            ]
+          },
+          "neighbor2": {
+            "predictedButMissed": [
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 4,
+                "firstAfter": 2
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 8,
+                "firstAfter": 4
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 4
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 9,
+                "firstAfter": null
+              },
+              {
+                "n": 24,
+                "firstAfter": 3
+              },
+              {
+                "n": 38,
+                "firstAfter": 1
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              }
+            ]
+          },
+          "ending": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": 1
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 4
+              },
+              {
+                "n": 20,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 4
+              },
+              {
+                "n": 22,
+                "firstAfter": 3
+              },
+              {
+                "n": 26,
+                "firstAfter": 1
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 32,
+                "firstAfter": 2
+              },
+              {
+                "n": 34,
+                "firstAfter": 1
+              },
+              {
+                "n": 36,
+                "firstAfter": 5
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 2
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 9,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 1
+              },
+              {
+                "n": 38,
+                "firstAfter": 1
+              },
+              {
+                "n": 43,
+                "firstAfter": null
+              }
+            ]
+          },
+          "bonus": {
+            "predictedButMissed": [],
+            "unpredictedWinner": [
+              {
+                "n": 18,
+                "firstAfter": 1
+              },
+              {
+                "n": 24,
+                "firstAfter": 3
+              },
+              {
+                "n": 38,
+                "firstAfter": 1
+              },
+              {
+                "n": 43,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              }
+            ]
+          },
+          "carry": {
+            "predictedButMissed": [
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 4,
+                "firstAfter": 2
+              },
+              {
+                "n": 10,
+                "firstAfter": null
+              },
+              {
+                "n": 16,
+                "firstAfter": 3
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 9,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 1
+              },
+              {
+                "n": 24,
+                "firstAfter": 3
+              },
+              {
+                "n": 38,
+                "firstAfter": 1
+              },
+              {
+                "n": 43,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              }
+            ]
+          },
+          "miss5": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": 1
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": 2
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 8,
+                "firstAfter": 4
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 4
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 4
+              },
+              {
+                "n": 25,
+                "firstAfter": 2
+              },
+              {
+                "n": 26,
+                "firstAfter": 1
+              },
+              {
+                "n": 27,
+                "firstAfter": 3
+              },
+              {
+                "n": 28,
+                "firstAfter": 2
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 34,
+                "firstAfter": 1
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 45,
+                "firstAfter": 4
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 18,
+                "firstAfter": 1
+              },
+              {
+                "n": 24,
+                "firstAfter": 3
+              },
+              {
+                "n": 38,
+                "firstAfter": 1
+              },
+              {
+                "n": 43,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              }
+            ]
+          },
+          "neighborTwice": {
+            "predictedButMissed": [
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 4
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 32,
+                "firstAfter": 2
+              },
+              {
+                "n": 42,
+                "firstAfter": 2
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 9,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 1
+              },
+              {
+                "n": 24,
+                "firstAfter": 3
+              },
+              {
+                "n": 38,
+                "firstAfter": 1
+              },
+              {
+                "n": 43,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              }
+            ]
+          },
+          "sameSlot": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": 1
+              },
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": 2
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": 1
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 4
+              },
+              {
+                "n": 25,
+                "firstAfter": 2
+              },
+              {
+                "n": 27,
+                "firstAfter": 3
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 32,
+                "firstAfter": 2
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": 5
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 2
+              },
+              {
+                "n": 45,
+                "firstAfter": 4
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 9,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 1
+              },
+              {
+                "n": 38,
+                "firstAfter": 1
+              }
+            ]
+          },
+          "fixedCycle": {
+            "predictedButMissed": [
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 4
+              },
+              {
+                "n": 16,
+                "firstAfter": 3
+              },
+              {
+                "n": 21,
+                "firstAfter": 4
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 9,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 1
+              },
+              {
+                "n": 24,
+                "firstAfter": 3
+              },
+              {
+                "n": 38,
+                "firstAfter": 1
+              },
+              {
+                "n": 43,
+                "firstAfter": null
+              }
+            ]
+          },
+          "diagonal": {
+            "predictedButMissed": [
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": 2
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 8,
+                "firstAfter": 4
+              },
+              {
+                "n": 10,
+                "firstAfter": null
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": 1
+              },
+              {
+                "n": 14,
+                "firstAfter": 4
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 16,
+                "firstAfter": 3
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 20,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 4
+              },
+              {
+                "n": 22,
+                "firstAfter": 3
+              },
+              {
+                "n": 23,
+                "firstAfter": 3
+              },
+              {
+                "n": 26,
+                "firstAfter": 1
+              },
+              {
+                "n": 27,
+                "firstAfter": 3
+              },
+              {
+                "n": 28,
+                "firstAfter": 2
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 32,
+                "firstAfter": 2
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 34,
+                "firstAfter": 1
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 24,
+                "firstAfter": 3
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              }
+            ]
+          },
+          "context2plus": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": 1
+              },
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 4,
+                "firstAfter": 2
+              },
+              {
+                "n": 5,
+                "firstAfter": 2
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 8,
+                "firstAfter": 4
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 4
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 4
+              },
+              {
+                "n": 25,
+                "firstAfter": 2
+              },
+              {
+                "n": 26,
+                "firstAfter": 1
+              },
+              {
+                "n": 27,
+                "firstAfter": 3
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 32,
+                "firstAfter": 2
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 34,
+                "firstAfter": 1
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": 5
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 2
+              },
+              {
+                "n": 45,
+                "firstAfter": 4
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 18,
+                "firstAfter": 1
+              },
+              {
+                "n": 38,
+                "firstAfter": 1
+              }
+            ]
+          }
+        }
       }
     },
     {
@@ -3772,6 +7499,812 @@
           44,
           45
         ]
+      },
+      "followup": {
+        "observedRounds": 4,
+        "axes": {
+          "neighbor1": {
+            "predictedButMissed": [
+              {
+                "n": 8,
+                "firstAfter": 3
+              },
+              {
+                "n": 10,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 23,
+                "firstAfter": 2
+              },
+              {
+                "n": 25,
+                "firstAfter": 1
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 1
+              },
+              {
+                "n": 43,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              },
+              {
+                "n": 45,
+                "firstAfter": 3
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 1,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 4
+              },
+              {
+                "n": 26,
+                "firstAfter": null
+              },
+              {
+                "n": 34,
+                "firstAfter": null
+              },
+              {
+                "n": 38,
+                "firstAfter": 4
+              }
+            ]
+          },
+          "neighbor2": {
+            "predictedButMissed": [
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 16,
+                "firstAfter": 2
+              },
+              {
+                "n": 20,
+                "firstAfter": null
+              },
+              {
+                "n": 22,
+                "firstAfter": 2
+              },
+              {
+                "n": 36,
+                "firstAfter": 4
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 1
+              },
+              {
+                "n": 45,
+                "firstAfter": 3
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 1,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 4
+              },
+              {
+                "n": 34,
+                "firstAfter": null
+              },
+              {
+                "n": 38,
+                "firstAfter": 4
+              }
+            ]
+          },
+          "ending": {
+            "predictedButMissed": [
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 4,
+                "firstAfter": 1
+              },
+              {
+                "n": 8,
+                "firstAfter": 3
+              },
+              {
+                "n": 14,
+                "firstAfter": 3
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 23,
+                "firstAfter": 2
+              },
+              {
+                "n": 24,
+                "firstAfter": 2
+              },
+              {
+                "n": 28,
+                "firstAfter": 1
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 1,
+                "firstAfter": null
+              },
+              {
+                "n": 26,
+                "firstAfter": null
+              }
+            ]
+          },
+          "bonus": {
+            "predictedButMissed": [
+              {
+                "n": 35,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 1,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 4
+              },
+              {
+                "n": 26,
+                "firstAfter": null
+              },
+              {
+                "n": 34,
+                "firstAfter": null
+              },
+              {
+                "n": 38,
+                "firstAfter": 4
+              }
+            ]
+          },
+          "carry": {
+            "predictedButMissed": [
+              {
+                "n": 9,
+                "firstAfter": null
+              },
+              {
+                "n": 24,
+                "firstAfter": 2
+              },
+              {
+                "n": 43,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 1,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": null
+              },
+              {
+                "n": 26,
+                "firstAfter": null
+              },
+              {
+                "n": 34,
+                "firstAfter": null
+              }
+            ]
+          },
+          "miss5": {
+            "predictedButMissed": [
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": 1
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 8,
+                "firstAfter": 3
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 3
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 3
+              },
+              {
+                "n": 25,
+                "firstAfter": 1
+              },
+              {
+                "n": 27,
+                "firstAfter": 2
+              },
+              {
+                "n": 28,
+                "firstAfter": 1
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 1
+              },
+              {
+                "n": 45,
+                "firstAfter": 3
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 13,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 4
+              },
+              {
+                "n": 38,
+                "firstAfter": 4
+              }
+            ]
+          },
+          "neighborTwice": {
+            "predictedButMissed": [
+              {
+                "n": 8,
+                "firstAfter": 3
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 23,
+                "firstAfter": 2
+              },
+              {
+                "n": 25,
+                "firstAfter": 1
+              },
+              {
+                "n": 42,
+                "firstAfter": 1
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 1,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 4
+              },
+              {
+                "n": 26,
+                "firstAfter": null
+              },
+              {
+                "n": 34,
+                "firstAfter": null
+              },
+              {
+                "n": 38,
+                "firstAfter": 4
+              }
+            ]
+          },
+          "sameSlot": {
+            "predictedButMissed": [
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": 1
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 3
+              },
+              {
+                "n": 25,
+                "firstAfter": 1
+              },
+              {
+                "n": 27,
+                "firstAfter": 2
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 32,
+                "firstAfter": 1
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": 4
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 1
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              },
+              {
+                "n": 45,
+                "firstAfter": 3
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 18,
+                "firstAfter": 4
+              },
+              {
+                "n": 26,
+                "firstAfter": null
+              },
+              {
+                "n": 34,
+                "firstAfter": null
+              },
+              {
+                "n": 38,
+                "firstAfter": 4
+              }
+            ]
+          },
+          "fixedCycle": {
+            "predictedButMissed": [
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 16,
+                "firstAfter": 2
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 1,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 4
+              },
+              {
+                "n": 26,
+                "firstAfter": null
+              },
+              {
+                "n": 34,
+                "firstAfter": null
+              },
+              {
+                "n": 38,
+                "firstAfter": 4
+              }
+            ]
+          },
+          "diagonal": {
+            "predictedButMissed": [
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 8,
+                "firstAfter": 3
+              },
+              {
+                "n": 9,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 3
+              },
+              {
+                "n": 16,
+                "firstAfter": 2
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 3
+              },
+              {
+                "n": 22,
+                "firstAfter": 2
+              },
+              {
+                "n": 23,
+                "firstAfter": 2
+              },
+              {
+                "n": 25,
+                "firstAfter": 1
+              },
+              {
+                "n": 28,
+                "firstAfter": 1
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": 4
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 1,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 4
+              },
+              {
+                "n": 26,
+                "firstAfter": null
+              },
+              {
+                "n": 38,
+                "firstAfter": 4
+              }
+            ]
+          },
+          "context2plus": {
+            "predictedButMissed": [
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": 1
+              },
+              {
+                "n": 8,
+                "firstAfter": 3
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 3
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 3
+              },
+              {
+                "n": 23,
+                "firstAfter": 2
+              },
+              {
+                "n": 24,
+                "firstAfter": 2
+              },
+              {
+                "n": 25,
+                "firstAfter": 1
+              },
+              {
+                "n": 27,
+                "firstAfter": 2
+              },
+              {
+                "n": 28,
+                "firstAfter": 1
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": 4
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 1
+              },
+              {
+                "n": 43,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              },
+              {
+                "n": 45,
+                "firstAfter": 3
+              }
+            ],
+            "unpredictedWinner": []
+          }
+        }
       }
     },
     {
@@ -4076,6 +8609,784 @@
           44,
           45
         ]
+      },
+      "followup": {
+        "observedRounds": 3,
+        "axes": {
+          "neighbor1": {
+            "predictedButMissed": [
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 2
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 27,
+                "firstAfter": 1
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 4,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": null
+              },
+              {
+                "n": 28,
+                "firstAfter": 1
+              },
+              {
+                "n": 32,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 2
+              }
+            ]
+          },
+          "neighbor2": {
+            "predictedButMissed": [
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 16,
+                "firstAfter": 1
+              },
+              {
+                "n": 20,
+                "firstAfter": null
+              },
+              {
+                "n": 24,
+                "firstAfter": 1
+              },
+              {
+                "n": 36,
+                "firstAfter": 3
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 4,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": null
+              },
+              {
+                "n": 25,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 2
+              }
+            ]
+          },
+          "ending": {
+            "predictedButMissed": [
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 8,
+                "firstAfter": 2
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 2
+              },
+              {
+                "n": 16,
+                "firstAfter": 1
+              },
+              {
+                "n": 18,
+                "firstAfter": 3
+              },
+              {
+                "n": 21,
+                "firstAfter": 2
+              },
+              {
+                "n": 23,
+                "firstAfter": 1
+              },
+              {
+                "n": 24,
+                "firstAfter": 1
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": 3
+              },
+              {
+                "n": 38,
+                "firstAfter": 3
+              },
+              {
+                "n": 41,
+                "firstAfter": null
+              },
+              {
+                "n": 43,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 5,
+                "firstAfter": null
+              },
+              {
+                "n": 25,
+                "firstAfter": null
+              },
+              {
+                "n": 32,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 2
+              }
+            ]
+          },
+          "bonus": {
+            "predictedButMissed": [],
+            "unpredictedWinner": [
+              {
+                "n": 4,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": null
+              },
+              {
+                "n": 28,
+                "firstAfter": 1
+              },
+              {
+                "n": 32,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 2
+              }
+            ]
+          },
+          "carry": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 3
+              },
+              {
+                "n": 26,
+                "firstAfter": null
+              },
+              {
+                "n": 34,
+                "firstAfter": null
+              },
+              {
+                "n": 38,
+                "firstAfter": 3
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 4,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": null
+              },
+              {
+                "n": 25,
+                "firstAfter": null
+              },
+              {
+                "n": 28,
+                "firstAfter": 1
+              },
+              {
+                "n": 32,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 2
+              }
+            ]
+          },
+          "miss5": {
+            "predictedButMissed": [
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 8,
+                "firstAfter": 2
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 2
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 2
+              },
+              {
+                "n": 22,
+                "firstAfter": 1
+              },
+              {
+                "n": 27,
+                "firstAfter": 1
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": 3
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 45,
+                "firstAfter": 2
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 4,
+                "firstAfter": null
+              }
+            ]
+          },
+          "neighborTwice": {
+            "predictedButMissed": [
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 4,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": null
+              },
+              {
+                "n": 28,
+                "firstAfter": 1
+              },
+              {
+                "n": 32,
+                "firstAfter": null
+              }
+            ]
+          },
+          "sameSlot": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": null
+              },
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": null
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 2
+              },
+              {
+                "n": 27,
+                "firstAfter": 1
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": 3
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              },
+              {
+                "n": 45,
+                "firstAfter": 2
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 4,
+                "firstAfter": null
+              },
+              {
+                "n": 28,
+                "firstAfter": 1
+              }
+            ]
+          },
+          "fixedCycle": {
+            "predictedButMissed": [
+              {
+                "n": 13,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 5,
+                "firstAfter": null
+              },
+              {
+                "n": 25,
+                "firstAfter": null
+              },
+              {
+                "n": 28,
+                "firstAfter": 1
+              },
+              {
+                "n": 32,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 2
+              }
+            ]
+          },
+          "diagonal": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": null
+              },
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 9,
+                "firstAfter": null
+              },
+              {
+                "n": 10,
+                "firstAfter": null
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 16,
+                "firstAfter": 1
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 3
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 2
+              },
+              {
+                "n": 26,
+                "firstAfter": null
+              },
+              {
+                "n": 27,
+                "firstAfter": 1
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 34,
+                "firstAfter": null
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 38,
+                "firstAfter": 3
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 43,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              },
+              {
+                "n": 45,
+                "firstAfter": 2
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 4,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": null
+              }
+            ]
+          },
+          "context2plus": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": null
+              },
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 8,
+                "firstAfter": 2
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 2
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 16,
+                "firstAfter": 1
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 3
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 2
+              },
+              {
+                "n": 24,
+                "firstAfter": 1
+              },
+              {
+                "n": 27,
+                "firstAfter": 1
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": 3
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 38,
+                "firstAfter": 3
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              },
+              {
+                "n": 45,
+                "firstAfter": 2
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 4,
+                "firstAfter": null
+              }
+            ]
+          }
+        }
       }
     },
     {
@@ -4364,6 +9675,833 @@
           44,
           45
         ]
+      },
+      "followup": {
+        "observedRounds": 2,
+        "axes": {
+          "neighbor1": {
+            "predictedButMissed": [
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 4,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": null
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 26,
+                "firstAfter": null
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": null
+              },
+              {
+                "n": 43,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 16,
+                "firstAfter": 2
+              },
+              {
+                "n": 22,
+                "firstAfter": 1
+              },
+              {
+                "n": 23,
+                "firstAfter": null
+              },
+              {
+                "n": 28,
+                "firstAfter": null
+              }
+            ]
+          },
+          "neighbor2": {
+            "predictedButMissed": [
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 26,
+                "firstAfter": null
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 34,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 16,
+                "firstAfter": 2
+              },
+              {
+                "n": 22,
+                "firstAfter": 1
+              },
+              {
+                "n": 24,
+                "firstAfter": null
+              },
+              {
+                "n": 28,
+                "firstAfter": null
+              }
+            ]
+          },
+          "ending": {
+            "predictedButMissed": [
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": null
+              },
+              {
+                "n": 8,
+                "firstAfter": 1
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 1
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 2
+              },
+              {
+                "n": 25,
+                "firstAfter": null
+              },
+              {
+                "n": 32,
+                "firstAfter": null
+              },
+              {
+                "n": 34,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 38,
+                "firstAfter": 2
+              },
+              {
+                "n": 42,
+                "firstAfter": 1
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              },
+              {
+                "n": 45,
+                "firstAfter": 1
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 16,
+                "firstAfter": 2
+              },
+              {
+                "n": 23,
+                "firstAfter": null
+              },
+              {
+                "n": 27,
+                "firstAfter": 2
+              },
+              {
+                "n": 28,
+                "firstAfter": null
+              }
+            ]
+          },
+          "bonus": {
+            "predictedButMissed": [
+              {
+                "n": 12,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 16,
+                "firstAfter": 2
+              },
+              {
+                "n": 22,
+                "firstAfter": 1
+              },
+              {
+                "n": 23,
+                "firstAfter": null
+              },
+              {
+                "n": 24,
+                "firstAfter": null
+              },
+              {
+                "n": 27,
+                "firstAfter": 2
+              },
+              {
+                "n": 28,
+                "firstAfter": null
+              }
+            ]
+          },
+          "carry": {
+            "predictedButMissed": [
+              {
+                "n": 4,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": null
+              },
+              {
+                "n": 25,
+                "firstAfter": null
+              },
+              {
+                "n": 32,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 1
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 16,
+                "firstAfter": 2
+              },
+              {
+                "n": 22,
+                "firstAfter": 1
+              },
+              {
+                "n": 23,
+                "firstAfter": null
+              },
+              {
+                "n": 24,
+                "firstAfter": null
+              },
+              {
+                "n": 27,
+                "firstAfter": 2
+              }
+            ]
+          },
+          "miss5": {
+            "predictedButMissed": [
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 8,
+                "firstAfter": 1
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 1
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 20,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 1
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": 2
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 45,
+                "firstAfter": 1
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 16,
+                "firstAfter": 2
+              },
+              {
+                "n": 23,
+                "firstAfter": null
+              },
+              {
+                "n": 24,
+                "firstAfter": null
+              },
+              {
+                "n": 28,
+                "firstAfter": null
+              }
+            ]
+          },
+          "neighborTwice": {
+            "predictedButMissed": [
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 25,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              },
+              {
+                "n": 43,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 16,
+                "firstAfter": 2
+              },
+              {
+                "n": 22,
+                "firstAfter": 1
+              },
+              {
+                "n": 23,
+                "firstAfter": null
+              },
+              {
+                "n": 24,
+                "firstAfter": null
+              },
+              {
+                "n": 28,
+                "firstAfter": null
+              }
+            ]
+          },
+          "sameSlot": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": null
+              },
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": null
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 1
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": 2
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 1
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              },
+              {
+                "n": 45,
+                "firstAfter": 1
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 16,
+                "firstAfter": 2
+              },
+              {
+                "n": 22,
+                "firstAfter": 1
+              },
+              {
+                "n": 23,
+                "firstAfter": null
+              },
+              {
+                "n": 24,
+                "firstAfter": null
+              },
+              {
+                "n": 28,
+                "firstAfter": null
+              }
+            ]
+          },
+          "fixedCycle": {
+            "predictedButMissed": [
+              {
+                "n": 13,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 1
+              },
+              {
+                "n": 26,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 22,
+                "firstAfter": 1
+              },
+              {
+                "n": 23,
+                "firstAfter": null
+              },
+              {
+                "n": 24,
+                "firstAfter": null
+              },
+              {
+                "n": 27,
+                "firstAfter": 2
+              },
+              {
+                "n": 28,
+                "firstAfter": null
+              }
+            ]
+          },
+          "diagonal": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": null
+              },
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": null
+              },
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 8,
+                "firstAfter": 1
+              },
+              {
+                "n": 9,
+                "firstAfter": null
+              },
+              {
+                "n": 10,
+                "firstAfter": null
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 1
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 2
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 20,
+                "firstAfter": null
+              },
+              {
+                "n": 25,
+                "firstAfter": null
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 32,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": 2
+              },
+              {
+                "n": 38,
+                "firstAfter": 2
+              },
+              {
+                "n": 41,
+                "firstAfter": null
+              },
+              {
+                "n": 43,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 16,
+                "firstAfter": 2
+              },
+              {
+                "n": 24,
+                "firstAfter": null
+              },
+              {
+                "n": 28,
+                "firstAfter": null
+              }
+            ]
+          },
+          "context2plus": {
+            "predictedButMissed": [
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 4,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": null
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 8,
+                "firstAfter": 1
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": 1
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": 1
+              },
+              {
+                "n": 25,
+                "firstAfter": null
+              },
+              {
+                "n": 26,
+                "firstAfter": null
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 32,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 34,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": 2
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 1
+              },
+              {
+                "n": 43,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              },
+              {
+                "n": 45,
+                "firstAfter": 1
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 16,
+                "firstAfter": 2
+              },
+              {
+                "n": 23,
+                "firstAfter": null
+              },
+              {
+                "n": 28,
+                "firstAfter": null
+              }
+            ]
+          }
+        }
       }
     },
     {
@@ -4665,6 +10803,784 @@
           40,
           44
         ]
+      },
+      "followup": {
+        "observedRounds": 1,
+        "axes": {
+          "neighbor1": {
+            "predictedButMissed": [
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 23,
+                "firstAfter": null
+              },
+              {
+                "n": 24,
+                "firstAfter": null
+              },
+              {
+                "n": 25,
+                "firstAfter": null
+              },
+              {
+                "n": 26,
+                "firstAfter": null
+              },
+              {
+                "n": 27,
+                "firstAfter": 1
+              },
+              {
+                "n": 28,
+                "firstAfter": null
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 8,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 1
+              },
+              {
+                "n": 45,
+                "firstAfter": null
+              }
+            ]
+          },
+          "neighbor2": {
+            "predictedButMissed": [
+              {
+                "n": 18,
+                "firstAfter": 1
+              },
+              {
+                "n": 20,
+                "firstAfter": null
+              },
+              {
+                "n": 24,
+                "firstAfter": null
+              },
+              {
+                "n": 25,
+                "firstAfter": null
+              },
+              {
+                "n": 26,
+                "firstAfter": null
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 8,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 1
+              },
+              {
+                "n": 45,
+                "firstAfter": null
+              }
+            ]
+          },
+          "ending": {
+            "predictedButMissed": [
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 4,
+                "firstAfter": null
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 1
+              },
+              {
+                "n": 26,
+                "firstAfter": null
+              },
+              {
+                "n": 32,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 34,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": 1
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 38,
+                "firstAfter": 1
+              },
+              {
+                "n": 43,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 21,
+                "firstAfter": null
+              },
+              {
+                "n": 22,
+                "firstAfter": null
+              },
+              {
+                "n": 45,
+                "firstAfter": null
+              }
+            ]
+          },
+          "bonus": {
+            "predictedButMissed": [
+              {
+                "n": 6,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 8,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": null
+              },
+              {
+                "n": 22,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 1
+              },
+              {
+                "n": 45,
+                "firstAfter": null
+              }
+            ]
+          },
+          "carry": {
+            "predictedButMissed": [
+              {
+                "n": 16,
+                "firstAfter": 1
+              },
+              {
+                "n": 23,
+                "firstAfter": null
+              },
+              {
+                "n": 24,
+                "firstAfter": null
+              },
+              {
+                "n": 27,
+                "firstAfter": 1
+              },
+              {
+                "n": 28,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 8,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 1
+              },
+              {
+                "n": 45,
+                "firstAfter": null
+              }
+            ]
+          },
+          "miss5": {
+            "predictedButMissed": [
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 20,
+                "firstAfter": null
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": 1
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 22,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 1
+              }
+            ]
+          },
+          "neighborTwice": {
+            "predictedButMissed": [
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 24,
+                "firstAfter": null
+              },
+              {
+                "n": 25,
+                "firstAfter": null
+              },
+              {
+                "n": 26,
+                "firstAfter": null
+              },
+              {
+                "n": 27,
+                "firstAfter": 1
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 8,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": null
+              },
+              {
+                "n": 22,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 1
+              },
+              {
+                "n": 45,
+                "firstAfter": null
+              }
+            ]
+          },
+          "sameSlot": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": null
+              },
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": null
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": 1
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 8,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": null
+              },
+              {
+                "n": 22,
+                "firstAfter": null
+              }
+            ]
+          },
+          "fixedCycle": {
+            "predictedButMissed": [
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 16,
+                "firstAfter": 1
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 27,
+                "firstAfter": 1
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 8,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": null
+              },
+              {
+                "n": 22,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 1
+              },
+              {
+                "n": 45,
+                "firstAfter": null
+              }
+            ]
+          },
+          "diagonal": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": null
+              },
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": null
+              },
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 9,
+                "firstAfter": null
+              },
+              {
+                "n": 10,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": null
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 16,
+                "firstAfter": 1
+              },
+              {
+                "n": 18,
+                "firstAfter": 1
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 23,
+                "firstAfter": null
+              },
+              {
+                "n": 24,
+                "firstAfter": null
+              },
+              {
+                "n": 25,
+                "firstAfter": null
+              },
+              {
+                "n": 26,
+                "firstAfter": null
+              },
+              {
+                "n": 28,
+                "firstAfter": null
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 34,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 38,
+                "firstAfter": 1
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": null
+              },
+              {
+                "n": 43,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 8,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": 1
+              },
+              {
+                "n": 45,
+                "firstAfter": null
+              }
+            ]
+          },
+          "context2plus": {
+            "predictedButMissed": [
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": null
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": 1
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 20,
+                "firstAfter": null
+              },
+              {
+                "n": 23,
+                "firstAfter": null
+              },
+              {
+                "n": 24,
+                "firstAfter": null
+              },
+              {
+                "n": 25,
+                "firstAfter": null
+              },
+              {
+                "n": 26,
+                "firstAfter": null
+              },
+              {
+                "n": 27,
+                "firstAfter": 1
+              },
+              {
+                "n": 28,
+                "firstAfter": null
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": 1
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": []
+          }
+        }
       }
     },
     {
@@ -4945,6 +11861,885 @@
           44,
           45
         ]
+      },
+      "followup": {
+        "observedRounds": 0,
+        "axes": {
+          "neighbor1": {
+            "predictedButMissed": [
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 9,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": null
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 20,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": null
+              },
+              {
+                "n": 22,
+                "firstAfter": null
+              },
+              {
+                "n": 23,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": null
+              },
+              {
+                "n": 43,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 16,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": null
+              },
+              {
+                "n": 27,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": null
+              },
+              {
+                "n": 38,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": null
+              }
+            ]
+          },
+          "neighbor2": {
+            "predictedButMissed": [
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 10,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 20,
+                "firstAfter": null
+              },
+              {
+                "n": 23,
+                "firstAfter": null
+              },
+              {
+                "n": 24,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 43,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 18,
+                "firstAfter": null
+              },
+              {
+                "n": 27,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": null
+              },
+              {
+                "n": 38,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": null
+              }
+            ]
+          },
+          "ending": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": null
+              },
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 4,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": null
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 22,
+                "firstAfter": null
+              },
+              {
+                "n": 24,
+                "firstAfter": null
+              },
+              {
+                "n": 25,
+                "firstAfter": null
+              },
+              {
+                "n": 28,
+                "firstAfter": null
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 32,
+                "firstAfter": null
+              },
+              {
+                "n": 34,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 16,
+                "firstAfter": null
+              },
+              {
+                "n": 27,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": null
+              }
+            ]
+          },
+          "bonus": {
+            "predictedButMissed": [
+              {
+                "n": 24,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 16,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": null
+              },
+              {
+                "n": 27,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": null
+              },
+              {
+                "n": 38,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": null
+              }
+            ]
+          },
+          "carry": {
+            "predictedButMissed": [
+              {
+                "n": 8,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": null
+              },
+              {
+                "n": 22,
+                "firstAfter": null
+              },
+              {
+                "n": 45,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 16,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": null
+              },
+              {
+                "n": 27,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": null
+              },
+              {
+                "n": 38,
+                "firstAfter": null
+              }
+            ]
+          },
+          "miss5": {
+            "predictedButMissed": [
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 10,
+                "firstAfter": null
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 17,
+                "firstAfter": null
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 20,
+                "firstAfter": null
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 39,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 16,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": null
+              },
+              {
+                "n": 27,
+                "firstAfter": null
+              },
+              {
+                "n": 38,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": null
+              }
+            ]
+          },
+          "neighborTwice": {
+            "predictedButMissed": [
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": null
+              },
+              {
+                "n": 22,
+                "firstAfter": null
+              },
+              {
+                "n": 23,
+                "firstAfter": null
+              },
+              {
+                "n": 24,
+                "firstAfter": null
+              },
+              {
+                "n": 26,
+                "firstAfter": null
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": null
+              },
+              {
+                "n": 43,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 16,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": null
+              },
+              {
+                "n": 38,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": null
+              }
+            ]
+          },
+          "sameSlot": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": null
+              },
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": null
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": null
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              },
+              {
+                "n": 45,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 16,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": null
+              },
+              {
+                "n": 27,
+                "firstAfter": null
+              },
+              {
+                "n": 38,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": null
+              }
+            ]
+          },
+          "fixedCycle": {
+            "predictedButMissed": [
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": null
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 26,
+                "firstAfter": null
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 16,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": null
+              },
+              {
+                "n": 27,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": null
+              },
+              {
+                "n": 38,
+                "firstAfter": null
+              },
+              {
+                "n": 42,
+                "firstAfter": null
+              }
+            ]
+          },
+          "diagonal": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": null
+              },
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 5,
+                "firstAfter": null
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 8,
+                "firstAfter": null
+              },
+              {
+                "n": 9,
+                "firstAfter": null
+              },
+              {
+                "n": 10,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 14,
+                "firstAfter": null
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 20,
+                "firstAfter": null
+              },
+              {
+                "n": 22,
+                "firstAfter": null
+              },
+              {
+                "n": 24,
+                "firstAfter": null
+              },
+              {
+                "n": 25,
+                "firstAfter": null
+              },
+              {
+                "n": 28,
+                "firstAfter": null
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 30,
+                "firstAfter": null
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 32,
+                "firstAfter": null
+              },
+              {
+                "n": 34,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": null
+              },
+              {
+                "n": 43,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              },
+              {
+                "n": 45,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 16,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": null
+              },
+              {
+                "n": 27,
+                "firstAfter": null
+              },
+              {
+                "n": 36,
+                "firstAfter": null
+              }
+            ]
+          },
+          "context2plus": {
+            "predictedButMissed": [
+              {
+                "n": 1,
+                "firstAfter": null
+              },
+              {
+                "n": 2,
+                "firstAfter": null
+              },
+              {
+                "n": 3,
+                "firstAfter": null
+              },
+              {
+                "n": 6,
+                "firstAfter": null
+              },
+              {
+                "n": 7,
+                "firstAfter": null
+              },
+              {
+                "n": 10,
+                "firstAfter": null
+              },
+              {
+                "n": 11,
+                "firstAfter": null
+              },
+              {
+                "n": 12,
+                "firstAfter": null
+              },
+              {
+                "n": 13,
+                "firstAfter": null
+              },
+              {
+                "n": 15,
+                "firstAfter": null
+              },
+              {
+                "n": 19,
+                "firstAfter": null
+              },
+              {
+                "n": 20,
+                "firstAfter": null
+              },
+              {
+                "n": 21,
+                "firstAfter": null
+              },
+              {
+                "n": 22,
+                "firstAfter": null
+              },
+              {
+                "n": 23,
+                "firstAfter": null
+              },
+              {
+                "n": 24,
+                "firstAfter": null
+              },
+              {
+                "n": 29,
+                "firstAfter": null
+              },
+              {
+                "n": 31,
+                "firstAfter": null
+              },
+              {
+                "n": 33,
+                "firstAfter": null
+              },
+              {
+                "n": 35,
+                "firstAfter": null
+              },
+              {
+                "n": 37,
+                "firstAfter": null
+              },
+              {
+                "n": 40,
+                "firstAfter": null
+              },
+              {
+                "n": 41,
+                "firstAfter": null
+              },
+              {
+                "n": 43,
+                "firstAfter": null
+              },
+              {
+                "n": 44,
+                "firstAfter": null
+              },
+              {
+                "n": 45,
+                "firstAfter": null
+              }
+            ],
+            "unpredictedWinner": [
+              {
+                "n": 16,
+                "firstAfter": null
+              },
+              {
+                "n": 18,
+                "firstAfter": null
+              },
+              {
+                "n": 27,
+                "firstAfter": null
+              },
+              {
+                "n": 38,
+                "firstAfter": null
+              }
+            ]
+          }
+        }
       }
     }
   ]
