@@ -55,6 +55,16 @@ jobs:
           else
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git commit -m 'data: preserve postdraw 45-number PNG and SVG review'
-            git push
+            git commit -m 'data: publish verified review and cumulative pattern scorecard'
+            for attempt in 1 2 3; do
+              if git push; then
+                exit 0
+              fi
+              if [ "$attempt" -lt 3 ]; then
+                echo "GitHub push failed (attempt $attempt/3); retrying transient server error."
+                sleep $((attempt * 10))
+              fi
+            done
+            echo 'GitHub rejected all three publishing attempts.' >&2
+            exit 1
           fi
