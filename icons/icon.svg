@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#10233b"/>
+  <circle cx="256" cy="251" r="191" fill="#17324e" stroke="#edc67d" stroke-width="7"/>
+  <g fill="#efcb83" stroke="#fce9bf" stroke-width="3">
+    <circle cx="173" cy="182" r="31"/>
+    <circle cx="256" cy="165" r="31"/>
+    <circle cx="339" cy="182" r="31"/>
+  </g>
+  <g fill="#86d6bf" stroke="#c3f1e5" stroke-width="3">
+    <circle cx="173" cy="264" r="31"/>
+    <circle cx="256" cy="247" r="31"/>
+    <circle cx="339" cy="264" r="31"/>
+  </g>
+  <rect x="141" y="323" width="230" height="54" rx="25" fill="#0c192e" stroke="#6b9cb5" stroke-width="2"/>
+  <text x="256" y="358" text-anchor="middle" font-family="Arial, sans-serif" font-weight="800" letter-spacing="4" font-size="27" fill="#f7e3b8">LOTTO</text>
+</svg>

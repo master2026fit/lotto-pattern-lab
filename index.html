@@ -6,6 +6,11 @@
 <meta name="theme-color" content="#0b1425">
 <meta name="description" content="LOTTO NOTE | 회차별 1~45 번호 패턴 자동 탐색 및 검증 연구소">
 <title>LOTTO NOTE · PATTERN LAB 2</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icons/icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
 :root{--bg:#091324;--side:#0d192d;--panel:#12243b;--panel2:#172e4b;--line:#2c4261;--text:#f2f5fa;--muted:#b4c3d7;--gold:#f0c981;--mint:#76dbbf;--red:#ff8c98;--blue:#82b4ff;--shadow:0 18px 50px #01081380}
 *{box-sizing:border-box}
@@ -179,6 +184,14 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 #recapCanvas{margin:16px auto 0;max-width:760px}
 #recapCanvas svg{display:block;width:100%;height:auto;border:1px solid #405575;border-radius:14px;box-shadow:0 18px 36px #01081390;background:#f8fafc}
 #recapSection .toolbar{align-items:flex-end}
+.top-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.pwa-install-btn{background:linear-gradient(120deg,#f6d18b,#e7b865);border:1px solid #fbdea3;color:#1e2f46;border-radius:10px;padding:10px 12px;font-weight:800;cursor:pointer;white-space:nowrap;box-shadow:0 5px 12px #0003}
+.pwa-install-btn:hover{filter:brightness(1.07)}
+.pwa-install-btn:disabled{opacity:.6;cursor:default}
+.weekly-pattern-review{margin-top:30px;border-top:1px solid #405475;padding-top:20px}
+#weeklyReviewCanvas{margin:14px auto 0;max-width:760px}
+#weeklyReviewCanvas svg{display:block;width:100%;height:auto;border:1px solid #405575;border-radius:14px;box-shadow:0 16px 34px #01081390}
+@media(max-width:650px){.top-actions{align-items:flex-start;justify-content:flex-start}.pwa-install-btn{font-size:12px;padding:9px 10px}}
 </style>
 </head>
 <body>
@@ -195,7 +208,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
   <div class="side-foot">LOTTO NOTE RESEARCH<br>기록 데이터 기반 번호 연구 · 회원가입 없음<br>분석 결과는 당첨 확률을 높인다는 뜻이 아닙니다.</div>
 </aside>
 <main class="main">
-<div class="topbar"><div><div class="identity">HISTORICAL NUMBER INTELLIGENCE</div><p>데이터와 과거 사례로 확인하는 로또 연구소</p></div><div class="connection" id="dataStatus">● 데이터 확인 중</div></div>
+<div class="topbar"><div><div class="identity">HISTORICAL NUMBER INTELLIGENCE</div><p>데이터와 과거 사례로 확인하는 로또 연구소</p></div><div class="top-actions"><button type="button" class="pwa-install-btn" id="pwaInstallBtn" onclick="installPWA()">📲 휴대폰 앱 설치</button><div class="connection" id="dataStatus">● 데이터 확인 중</div></div></div>
 <section id="home" class="page active">
   <div class="hero"><div class="eyebrow">WEEKLY AUTO DISCOVERY</div><h1 id="heroTitle">로또 번호별 자동 패턴 분석</h1><p class="lead">1~45번의 기본 조건과 번호별 출현 자리·간격·회차 이동 흐름을 전수 검사합니다. 번호를 누르면 이번 회차의 실제 연결 패턴과 성공·실패 PPT 그림을 확인할 수 있습니다.</p>
     <div class="flex"><button class="btn" onclick="reloadData()">최신 당첨번호 확인</button><button class="btn secondary" onclick="go('tickets')">최종 5조합 만들기</button><span class="tag" id="sourceBadge">조회 준비 중</span></div>
@@ -226,7 +239,13 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 </section>
 <section id="research" class="page"><div class="eyebrow">NUMBER LAB</div><h1>번호 연구소</h1><p class="lead">특정 번호의 출현 흐름과 이번 회차에 적용되는 번호별 패턴을 확인합니다.</p><div class="toolbar"><label>분석 번호 <input id="focusN" class="field" type="number" min="1" max="45" value="39"></label><button class="btn" onclick="showResearch()">번호 조사하기</button></div><div id="researchResult"></div></section>
 <section id="patterns" class="page"><div class="eyebrow">PATTERN EXPLORER</div><h1>패턴 검색</h1><p class="lead">선택한 번호의 이번 회차 출현·자리·간격 기록에서 자동 생성한 연결 패턴과 기본 45종 조건을 따로 살펴봅니다. 조건의 과거 성공·실패 회차를 정확히 비교하세요.</p><div class="toolbar"><label>번호 <input id="patternN" class="field" type="number" min="1" max="45" value="39"></label><label>조건 <select id="patternRule" class="field"></select></label><button class="btn" onclick="showPatternSearch()">역대 패턴 검색</button></div><div id="patternResult"></div></section>
-<section id="tickets" class="page"><div class="eyebrow">FIVE TICKET STUDIO</div><h1>최종 5조합</h1><p class="lead">번호별 연구 결과를 참고해 조합을 만들어 기록합니다. 어떤 조합도 다른 6개 번호 조합보다 1등 당첨확률이 높지는 않습니다.</p><div class="panel"><h3>검색 결과를 반영한 최종 후보</h3><p class="hint"><strong>패턴 연구용 12수</strong>가 기본값입니다. 1~45번 전체를 검사한 뒤 장기 연결 10수와 복합 관찰 최대 2수를 구분하여 선정합니다. 복합 관찰은 소표본·사후 발견이며 당첨 가능성이 더 높다는 뜻이 아닙니다. 중립 분산도 따로 선택할 수 있습니다.</p><textarea id="poolInput" class="field" rows="3" style="width:100%;resize:vertical" oninput="markManualPool()"></textarea><div class="pinned-box"><label for="lockedInput"><strong>5게임 공통 고정수</strong> <small>(최대 5개, 예: 39,44)</small></label><input id="lockedInput" class="field" placeholder="39, 44" autocomplete="off" oninput="markPinsPending()"><div class="toolbar"><button class="btn small secondary" onclick="applyPinned()">고정수 적용</button><span id="lockedStatus" class="hint">고정수는 이번 회차에만 저장하며, 없으면 후보에서 분산합니다.</span></div></div><p class="audit-banner" id="autoPoolExplanation">45개 번호의 간이 검증을 계산하고 있습니다.</p><div class="toolbar"><button class="btn" onclick="makeTickets(false)">최종 5조합 생성</button><button class="btn secondary" onclick="setResearchPool()">패턴 연구용 12수</button><button class="btn secondary" onclick="setAutoPool()">중립 분산 12수</button><button class="btn outline" onclick="saveTicketPNG()">조합 이미지 저장</button></div><div id="candidateAudit"></div></div><div id="ticketsResult"></div><div class="section panel" id="recapSection"><h2>당첨번호 대비 패턴 복기 이미지</h2><p class="hint">확정된 당첨번호 6개와 당시 검색 후보·기본/연결 패턴 개수를 나란히 비교합니다. 이번 회차 결과 발표 전에는 지난 확정 회차를 재현해서 볼 수 있습니다.</p><div class="toolbar"><label>복기 회차 <select id="recapRound" class="field"></select></label><button id="recapGenerateBtn" class="btn" onclick="showRecapImage()">복기 이미지 생성</button><button class="btn secondary" onclick="saveRecapPNG()">PNG 이미지 저장</button><button class="btn outline" onclick="saveRecapSVG()">SVG 저장</button></div><div id="recapStatus" class="hint">최신 확정 회차를 선택해 복기할 수 있습니다.</div><div id="recapCanvas"></div></div><div class="section panel" id="patternAuditSection"><h2>📊 패턴별 성공·실패 누적 검증</h2><p class="hint">각 회차 추첨 이전의 자료로 1~45번을 검사합니다. 기본 상황 8개, 장기 고정간격·사선 2개, 상황 교집합 1개를 전수 비교합니다. 집합 관찰을 포함한 16개 분석 모듈 전체를 당첨 예측 신호로 간주하지 않습니다.</p><div id="fullScanStatus" class="audit-banner">사전 전체 검색 기록을 준비하고 있습니다.</div><div class="toolbar"><label>과거 재현 기간 <select id="patternAuditRounds" class="field"><option value="30">최근 30회</option><option value="60" selected>최근 60회</option><option value="120">최근 120회</option></select></label><button class="btn" id="patternAuditRunBtn" onclick="runPatternAudit()">조건별 실제 적중·실패 검증</button></div><div id="patternAuditResult"><p class="hint">검증 버튼을 누르면 회차별 사전 조건을 복원하고, 앞 절반과 뒤 절반의 출현율을 나눠 비교합니다.</p></div></div><div id="trialHistory"></div></section>
+<section id="tickets" class="page"><div class="eyebrow">FIVE TICKET STUDIO</div><h1>최종 5조합</h1><p class="lead">번호별 연구 결과를 참고해 조합을 만들어 기록합니다. 어떤 조합도 다른 6개 번호 조합보다 1등 당첨확률이 높지는 않습니다.</p><div class="panel"><h3>검색 결과를 반영한 최종 후보</h3><p class="hint"><strong>패턴 연구용 12수</strong>가 기본값입니다. 1~45번 전체를 검사한 뒤 장기 연결 10수와 복합 관찰 최대 2수를 구분하여 선정합니다. 복합 관찰은 소표본·사후 발견이며 당첨 가능성이 더 높다는 뜻이 아닙니다. 중립 분산도 따로 선택할 수 있습니다.</p><textarea id="poolInput" class="field" rows="3" style="width:100%;resize:vertical" oninput="markManualPool()"></textarea><div class="pinned-box"><label for="lockedInput"><strong>5게임 공통 고정수</strong> <small>(최대 5개, 예: 39,44)</small></label><input id="lockedInput" class="field" placeholder="39, 44" autocomplete="off" oninput="markPinsPending()"><div class="toolbar"><button class="btn small secondary" onclick="applyPinned()">고정수 적용</button><span id="lockedStatus" class="hint">고정수는 이번 회차에만 저장하며, 없으면 후보에서 분산합니다.</span></div></div><p class="audit-banner" id="autoPoolExplanation">45개 번호의 간이 검증을 계산하고 있습니다.</p><div class="toolbar"><button class="btn" onclick="makeTickets(false)">최종 5조합 생성</button><button class="btn secondary" onclick="setResearchPool()">패턴 연구용 12수</button><button class="btn secondary" onclick="setAutoPool()">중립 분산 12수</button><button class="btn outline" onclick="saveTicketPNG()">조합 이미지 저장</button></div><div id="candidateAudit"></div></div><div id="ticketsResult"></div><div class="section panel" id="recapSection"><h2>당첨번호 대비 패턴 복기 이미지</h2><p class="hint">확정된 당첨번호 6개와 당시 검색 후보·기본/연결 패턴 개수를 나란히 비교합니다. 이번 회차 결과 발표 전에는 지난 확정 회차를 재현해서 볼 수 있습니다.</p><div class="toolbar"><label>복기 회차 <select id="recapRound" class="field"></select></label><button id="recapGenerateBtn" class="btn" onclick="showRecapImage()">복기 이미지 생성</button><button class="btn secondary" onclick="saveRecapPNG()">PNG 이미지 저장</button><button class="btn outline" onclick="saveRecapSVG()">SVG 저장</button></div><div id="recapStatus" class="hint">최신 확정 회차를 선택해 복기할 수 있습니다.</div><div id="recapCanvas"></div>
+  <div id="weeklyPatternSection" class="weekly-pattern-review"><h3>🔎 검색조건 11개 · 당첨번호와 어긋난 이유</h3>
+  <p class="hint">같은 복기 회차의 1~45번을 전수 비교합니다. 실제 사전 저장이 있으면 그 기록을 사용하고, 없으면 당첨 전 자료만으로 당시 조건을 복원합니다.</p>
+  <div class="toolbar"><button class="btn secondary" id="weeklyReviewBtn" onclick="showWeeklyPatternReview()">11조건 복기 그림 갱신</button>
+  <button class="btn outline" onclick="saveWeeklyPatternPNG()">조건별 PNG 저장</button><button class="btn outline" onclick="saveWeeklyPatternSVG()">조건별 SVG 저장</button></div>
+  <p class="hint" id="weeklyReviewStatus">당첨번호를 확인하면 11개 검색조건의 결과를 표시합니다.</p>
+  <div id="weeklyReviewCanvas"></div></div></div><div class="section panel" id="patternAuditSection"><h2>📊 패턴별 성공·실패 누적 검증</h2><p class="hint">각 회차 추첨 이전의 자료로 1~45번을 검사합니다. 기본 상황 8개, 장기 고정간격·사선 2개, 상황 교집합 1개를 전수 비교합니다. 집합 관찰을 포함한 16개 분석 모듈 전체를 당첨 예측 신호로 간주하지 않습니다.</p><div id="fullScanStatus" class="audit-banner">사전 전체 검색 기록을 준비하고 있습니다.</div><div class="toolbar"><label>과거 재현 기간 <select id="patternAuditRounds" class="field"><option value="30">최근 30회</option><option value="60" selected>최근 60회</option><option value="120">최근 120회</option></select></label><button class="btn" id="patternAuditRunBtn" onclick="runPatternAudit()">조건별 실제 적중·실패 검증</button></div><div id="patternAuditResult"><p class="hint">검증 버튼을 누르면 회차별 사전 조건을 복원하고, 앞 절반과 뒤 절반의 출현율을 나눠 비교합니다.</p></div></div><div id="trialHistory"></div></section>
 <section id="backtest" class="page"><div class="eyebrow">WALK-FORWARD CHECK</div><h1>과거 검증</h1><p class="lead">현재 최종 5조합에 적용하는 <strong>장기 연결 최대 10수 + 복합 관찰 최대 2수</strong>를 과거 매 회차 시점에서 다시 계산합니다. 같은 12수·5게임의 무작위 기준과 비교하며, 이후 당첨번호를 미리 참조하지 않습니다. 사후 선정 전략의 과거 결과는 미래 당첨확률을 증명하지 않습니다.</p><div class="toolbar"><label>검증할 과거 회차 <select id="backtestRounds" class="field" aria-label="과거 검증 회차 수"><option value="12">최근 12회</option><option value="30">최근 30회</option><option value="60" selected>최근 60회</option><option value="120">최근 120회</option></select></label><button id="runBacktestBtn" class="btn" onclick="runBacktest()">시점별 독립 검증 실행</button></div>
   <p class="hint">① 매 회차 직전까지의 기록만 사용 ② 기본 45개 규칙 × 45개 번호를 같은 기준으로 검증 ③ 당시 통과한 번호와 조합만 실제 결과와 비교합니다. 비교용 조합도 무작위로 선택한 12수에서 같은 방식으로 5게임을 만듭니다. 연결 패턴은 사후 탐색이므로 검증 통과 후보에서 제외됩니다.</p>
   <div id="backtestResult"></div></section>
@@ -2057,6 +2076,7 @@ async function showRecapImage(){
     const data=buildRecapData(round);
     $("recapCanvas").innerHTML=recapSVG(data);
     state.recapData=data;
+    await showWeeklyPatternReview();
     $("recapStatus").innerHTML='<strong>'+round+'회 복기 완료:</strong> '+clean(data.origin)+
       ' · 후보 '+data.pool.length+'개 중 정확 적중 '+data.exact.length+'개'+
       ' · 후보 밖 실제 당첨 '+data.omitted.length+'개'+
@@ -2270,6 +2290,169 @@ async function runPatternAudit(){
   }finally{
     btn.disabled=false;state.patternAuditRunning=false;
   }
+}
+
+
+function weeklyPatternReviewData(round){
+  const idx=state.draws.findIndex(x=>x.draw_no===round);
+  if(idx<300)throw Error("이 회차는 비교할 과거 데이터가 부족합니다.");
+  const prior=state.draws.slice(0,idx),result=state.draws[idx];
+  if(!prior.length||latest(prior).draw_no!==round-1)throw Error("직전 회차 연결 기록을 확인할 수 없습니다.");
+  const stored=fullScanBook().find(x=>x.round===round&&x.sourceRound===round-1&&
+    Array.isArray(x.rows)&&x.rows.length===45&&x.review);
+  let rows,pool,origin;
+  if(stored){
+    const byNum=new Map(stored.rows.map(x=>[x.n,x]));
+    rows=Array.from({length:45},(_,i)=>{
+      const n=i+1,r=byNum.get(n);
+      if(!r)throw Error("사전 저장 자료에 "+n+"번이 없습니다.");
+      return {n,basic:r.basic,connected:r.connected,flags:Array.isArray(r.flags)?r.flags:[]};
+    });
+    pool=stored.candidatePool.slice();
+    origin="실제 사전 저장 기록";
+  }else{
+    const profiles=analyzeAll(prior),modules=scanModule16(prior,profiles);
+    pool=researchPoolPlan(profiles,modules).numbers.slice();
+    const map=new Map(profiles.map(p=>[p.n,p]));
+    rows=Array.from({length:45},(_,i)=>{
+      const n=i+1,p=map.get(n);
+      return {n,basic:p.basicCount,connected:p.flowCount,flags:[...patternAuditKeys(prior,prior.length,n)]};
+    });
+    origin="과거 시점 재현 · 실제 저장 기록 아님";
+  }
+  if(pool.length!==12||new Set(pool).size!==12)throw Error("사전 선정 12수 기록이 불완전합니다.");
+  const actual=result.numbers.slice(),hitSet=new Set(actual),poolSet=new Set(pool);
+  rows.forEach(r=>{r.hit=hitSet.has(r.n);r.selected=poolSet.has(r.n);});
+  const missed=actual.filter(n=>!poolSet.has(n));
+  const selectedHit=actual.filter(n=>poolSet.has(n));
+  const axes=PATTERN_AUDIT_AXES.map(a=>{
+    const flagged=rows.filter(r=>r.flags.includes(a.key));
+    const hits=flagged.filter(r=>r.hit).length;
+    return {key:a.key,label:a.label,total:flagged.length,hits,misses:flagged.length-hits};
+  });
+  return {round,sourceRound:round-1,origin,rows,pool,actual,bonus:result.bonus_no,
+    missed,selectedHit,axes};
+}
+function weeklyPatternReviewSVG(d){
+  const H=2215,win=new Set(d.actual),e=x=>clean(String(x)),out=[];
+  const add=s=>out.push(s);
+  const txt=(x,y,value,size=22,color="#eaf3fd",weight=500,extra="")=>
+    add('<text x="'+x+'" y="'+y+'" font-family="Arial, Noto Sans KR, sans-serif" font-size="'+size+
+      '" font-weight="'+weight+'" fill="'+color+'" '+extra+'>'+e(value)+'</text>');
+  const rect=(x,y,w,h,fill,rx=12,stroke="none")=>
+    add('<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+rx+'" fill="'+fill+'" stroke="'+stroke+'"/>');
+  add('<svg id="weeklyReviewSvg" xmlns="http://www.w3.org/2000/svg" width="1080" height="'+H+
+    '" viewBox="0 0 1080 '+H+'" role="img" aria-label="'+d.round+'회 1부터 45 전체 번호와 11개 조건 사후 복기">');
+  rect(0,0,1080,H,"#091626",0);
+  rect(0,0,1080,166,"#183553",0);
+  txt(43,54,"LOTTO NOTE · WEEKLY PATTERN REVIEW",22,"#f0c980",800,'letter-spacing="2"');
+  txt(43,109,d.round+"회 | 검색조건 11개 결과 복기",38,"#ffffff",800);
+  txt(43,147,d.origin+" · 분석 마감: "+d.sourceRound+"회까지",19,"#c0d5e7",500);
+  rect(40,185,1000,140,"#172c45",18,"#355673");
+  txt(64,220,"실제 당첨번호 6개",24,"#ffffff",750);
+  d.actual.forEach((n,i)=>add(recapSvgBall(n,106+i*120,274,29,true,false)));
+  txt(834,258,"보너스",18,"#c9d8e9");
+  add(recapSvgBall(d.bonus,959,273,29,false,false));
+  const cards=[["당시 자동 후보",d.pool.length+"수"],["후보 안 실제 적중",d.selectedHit.length+"개 / 6개"],["후보 밖 당첨",d.missed.length+"개"],["검사한 검색조건","11개"]];
+  cards.forEach((c,i)=>{
+    const x=40+i*254;
+    rect(x,345,238,97,"#19334c",12,"#365474");
+    txt(x+18,379,c[0],18,"#c2d3e6");
+    txt(x+18,422,c[1],29,i===2?"#ffbf9f":"#f7cf86",800);
+  });
+  txt(46,478,"① 1~45번 전체 · 후보와 당첨 구분",28,"#fff",800);
+  const gridY=503;
+  d.rows.forEach((r,i)=>{
+    const x=40+(i%9)*111,y=gridY+Math.floor(i/9)*76;
+    const fill=r.hit&&r.selected?"#dcb364":r.hit?"#258b79":r.selected?"#2e5d87":"#20344c";
+    rect(x,y,104,68,fill,10,"#506a86");
+    txt(x+12,y+31,r.n,26,r.hit&&r.selected?"#17233b":"#ffffff",800);
+    txt(x+12,y+56,"조건 "+r.flags.length,15,r.hit&&r.selected?"#17233b":"#d6e4f3",700);
+  });
+  txt(45,909,"황금: 후보+적중   초록: 후보 밖 당첨   파랑: 후보 선정   회색: 미선정",17,"#afc3da");
+  txt(46,952,"② 실제 당첨 6개는 왜 후보에 포함·제외됐나",29,"#fff",800);
+  txt(46,985,"당첨 후 기준을 바꾼 것이 아니라, 당시 충족한 조건을 그대로 비교합니다.",18,"#adbed0");
+  const byN=new Map(d.rows.map(r=>[r.n,r]));
+  d.actual.forEach((n,i)=>{
+    const r=byN.get(n),y=1005+i*72;
+    rect(40,y,1000,66,i%2?"#1c3148":"#213c53",9);
+    rect(51,y+12,52,42,r.selected?"#cba961":"#278678",10);
+    txt(60,y+42,n,25,"#fff",800);
+    txt(120,y+26,r.selected?"후보 12수 포함":"후보 밖 · 놓친 당첨",21,r.selected?"#e9d29a":"#92e1ca",800);
+    const matching=PATTERN_AUDIT_AXES.filter(x=>r.flags.includes(x.key)).map(x=>x.label);
+    const short=matching.length?matching.slice(0,2).join(" · ")+(matching.length>2?" 외 "+(matching.length-2):""):"사전 조건 일치 없음";
+    txt(120,y+51,short.length>47?short.slice(0,46)+"…":short,15,"#cedceb");
+    txt(785,y+27,"기본 "+r.basic+" · 연결 "+r.connected,18,"#c8d7eb");
+    txt(785,y+52,"검증조건 "+r.flags.length+" / 11",17,"#e0c189",700);
+  });
+  txt(46,1476,"③ 검색조건별 맞은 수와 빗나간 수",29,"#fff",800);
+  txt(46,1507,"조건 해당 수에서 실제 당첨된 수만 적중. 미출현은 비당첨이며 근접수는 포함하지 않습니다.",18,"#b1c5d9");
+  rect(40,1522,1000,43,"#2b4764",8);
+  txt(59,1550,"검색조건",19,"#e6f1fd",800);
+  txt(561,1550,"해당",19,"#e6f1fd",800);
+  txt(677,1550,"당첨",19,"#e6f1fd",800);
+  txt(781,1550,"미출현",19,"#e6f1fd",800);
+  txt(916,1550,"출현율",19,"#e6f1fd",800);
+  d.axes.forEach((a,i)=>{
+    const y=1570+i*51;
+    rect(40,y,1000,47,i%2?"#172b42":"#1e354c",5);
+    txt(59,y+30,a.label.length>26?a.label.slice(0,25)+"…":a.label,19,"#f1f6fc",650);
+    txt(568,y+30,a.total+"수",19,"#e2edf7");
+    txt(681,y+30,a.hits+"수",20,a.hits?"#f5cd87":"#8da5bd",800);
+    txt(781,y+30,a.misses+"수",19,"#b8cce1");
+    txt(907,y+30,a.total?(a.hits*100/a.total).toFixed(1)+"%":"대상 없음",18,"#cce8de",700);
+  });
+  rect(40,2140,1000,58,"#133847",10);
+  txt(59,2165,"판정: 적중 "+d.selectedHit.length+"개 · 후보 밖 "+d.missed.length+
+    "개 | 사전조건의 적중률은 다음 회차 예측확률이 아닙니다.",18,"#d0ede7",700);
+  txt(59,2187,"기준: 당첨 6수만 정답 · 보너스 제외 · 11조건 중복 가능 · 사후 재현과 사전 저장 엄격 분리",16,"#c1d4e1");
+  add("</svg>");
+  return out.join("");
+}
+async function showWeeklyPatternReview(){
+  if(!state.draws.length)return;
+  const round=Number($("recapRound").value),btn=$("weeklyReviewBtn");
+  btn.disabled=true;$("weeklyReviewStatus").textContent="검색조건 11개를 당시 시점으로 확인하고 있습니다…";
+  await new Promise(r=>setTimeout(r,15));
+  try{
+    const data=weeklyPatternReviewData(round);
+    $("weeklyReviewCanvas").innerHTML=weeklyPatternReviewSVG(data);
+    state.weeklyReviewData=data;
+    $("weeklyReviewStatus").innerHTML="<strong>"+round+"회 조건 복기:</strong> "+clean(data.origin)+
+      " · 당시 자동 후보 12수 중 당첨 "+data.selectedHit.length+"개 / 후보 밖 "+data.missed.length+
+      "개 · 조건별 실제 적중·미출현 비교 완료.";
+  }catch(err){
+    $("weeklyReviewCanvas").innerHTML="";
+    $("weeklyReviewStatus").textContent="조건 복기 실패: "+err.message;
+  }finally{btn.disabled=false;}
+}
+function saveWeeklyPatternSVG(){
+  const svg=$("weeklyReviewSvg");
+  if(!svg)return alert("11조건 복기 그림을 먼저 생성해 주세요.");
+  const blob=new Blob([new XMLSerializer().serializeToString(svg)],{type:"image/svg+xml;charset=utf-8"});
+  const url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download=state.weeklyReviewData.round+"회-11조건-패턴복기.svg";
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+function saveWeeklyPatternPNG(){
+  const svg=$("weeklyReviewSvg");
+  if(!svg)return alert("11조건 복기 그림을 먼저 생성해 주세요.");
+  const url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)],{type:"image/svg+xml;charset=utf-8"}));
+  const img=new Image();
+  img.onload=()=>{
+    try{
+      const canvas=document.createElement("canvas"),scale=1.5;
+      canvas.width=1620;canvas.height=Math.round(Number(svg.getAttribute("height"))*scale);
+      const ctx=canvas.getContext("2d");ctx.fillStyle="#091626";
+      ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(img,0,0,canvas.width,canvas.height);
+      const a=document.createElement("a");a.href=canvas.toDataURL("image/png");
+      a.download=state.weeklyReviewData.round+"회-11조건-패턴복기.png";
+      document.body.appendChild(a);a.click();a.remove();
+    }catch(err){alert("PNG 저장에 실패했습니다: "+err.message+". SVG 저장을 이용해 주세요.");}
+    URL.revokeObjectURL(url);
+  };
+  img.onerror=()=>{URL.revokeObjectURL(url);alert("그림 변환 실패. SVG로 저장해 주세요.");};
+  img.src=url;
 }
 
 function trialBook(){
@@ -2591,6 +2774,44 @@ async function runBacktest(){
 $("patternN").addEventListener("change",fillPatternSelect);
 $("detailDialog").addEventListener("click",e=>{if(e.target===$("detailDialog"))$("detailDialog").close();});
 window.addEventListener("scroll",()=>$("toTop").classList.toggle("show",window.scrollY>110),{passive:true});
+
+let deferredPwaInstall=null;
+function installPWA(){
+  const installed=window.matchMedia&&window.matchMedia("(display-mode: standalone)").matches;
+  if(installed||window.navigator.standalone){
+    alert("이미 앱으로 실행 중입니다. 휴대폰 홈 화면의 로또 아이콘을 확인해 주세요.");
+    return;
+  }
+  if(deferredPwaInstall){
+    const event=deferredPwaInstall;deferredPwaInstall=null;
+    event.prompt();
+    Promise.resolve(event.userChoice).then(choice=>{
+      if(choice&&choice.outcome==="accepted"){
+        $("pwaInstallBtn").textContent="📲 설치 확인 중";
+      }
+    }).catch(()=>{});
+    return;
+  }
+  alert("안드로이드 Chrome 브라우저에서 이 주소를 열고, 오른쪽 위 ⋮ 메뉴 → '앱 설치' 또는 '홈 화면에 추가'를 선택하세요.\n설치 항목이 바로 보이지 않으면 페이지를 한 번 새로고침하세요.");
+}
+window.addEventListener("beforeinstallprompt",event=>{
+  event.preventDefault();
+  deferredPwaInstall=event;
+  $("pwaInstallBtn").textContent="📲 앱으로 설치하기";
+});
+window.addEventListener("appinstalled",()=>{
+  deferredPwaInstall=null;
+  $("pwaInstallBtn").textContent="✓ 앱 설치 완료";
+  $("pwaInstallBtn").disabled=true;
+});
+if("serviceWorker" in navigator){
+  window.addEventListener("load",()=>{
+    navigator.serviceWorker.register("./sw.js",{scope:"./"}).catch(err=>{
+      console.warn("설치용 오프라인 파일 준비 실패:",err.message);
+    });
+  });
+}
+
 restorePinned();
 fillPatternSelect();
 reloadData();
