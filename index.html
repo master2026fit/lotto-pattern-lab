@@ -2669,20 +2669,21 @@ function mergeResearchBackup(parsed){
     else scanByRound.set(x.round,x);
   });
   const scans=[...scanByRound.values()].sort((a,b)=>a.round-b.round).slice(-BACKUP_SCAN_LIMIT);
-  const trialBySig=new Map(storedTrials.map(x=>[backupTrialSignature(x),x]));
-  let trialSkipped=0;
+  // 기존 기록에는 과거 버전에서 만들어진 동일 서명 기록이 있을 수 있어 절대 제거하지 않는다.
+  const trials=storedTrials.slice(),trialSignatures=new Set(storedTrials.map(backupTrialSignature));
+  let trialSkipped=0,trialAdded=0;
   parsed.trials.forEach(x=>{
     const sig=backupTrialSignature(x);
-    if(trialBySig.has(sig))trialSkipped++;
-    else trialBySig.set(sig,x);
+    if(trialSignatures.has(sig))trialSkipped++;
+    else{trialSignatures.add(sig);trials.push(x);trialAdded++;}
   });
-  if(trialBySig.size>BACKUP_TRIAL_LIMIT)throw Error("병합 뒤 조합 기록이 너무 많습니다. 데이터를 나누어 복원해 주세요.");
-  const trials=[...trialBySig.values()].sort((a,b)=>a.round-b.round);
+  if(trials.length>BACKUP_TRIAL_LIMIT)throw Error("병합 뒤 조합 기록이 너무 많습니다. 데이터를 나누어 복원해 주세요.");
+  trials.sort((a,b)=>a.round-b.round);
   const current=backupPinned(),target=state.draws.length?upcoming(state.draws):null;
   const pinned=!current&&parsed.pinned&&target===parsed.pinned.round?parsed.pinned:null;
   return {scans,trials,pinned,scanSkipped,trialSkipped,
     scanAdded:scans.filter(x=>!storedScans.some(s=>s.round===x.round)).length,
-    trialAdded:trials.length-storedTrials.length,
+    trialAdded,
     droppedScans:scanByRound.size-scans.length};
 }
 function backupPreviewError(message){
