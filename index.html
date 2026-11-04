@@ -2514,7 +2514,7 @@ async function showWeeklyPatternReview(){
     state.weeklyReviewData=data;
     $("weeklyReviewStatus").innerHTML="<strong>"+round+"회 조건 복기:</strong> "+clean(data.origin)+
       " · 당시 자동 후보 12수 중 당첨 "+data.selectedHit.length+"개 / 후보 밖 "+data.missed.length+
-      "개 · 조건별 실제 적중·미출현 비교 완료.";
+      "개 · 조건별 적중·헛검색·조건 밖 당첨 비교 완료.";
   }catch(err){
     $("weeklyReviewCanvas").innerHTML="";
     $("weeklyReviewStatus").textContent="조건 복기 실패: "+err.message;
