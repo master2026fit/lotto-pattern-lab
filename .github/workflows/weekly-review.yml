@@ -8,6 +8,8 @@ on:
       - 'scripts/generate_weekly_review.test.mjs'
       - 'scripts/build_scorecard.mjs'
       - 'scripts/build_scorecard.test.mjs'
+      - 'scripts/generate_walkforward.mjs'
+      - 'scripts/generate_walkforward.test.mjs'
   # UTC -> Korean time: Sat 21:17, Sun 09:17, Mon 09:17.
   schedule:
     - cron: '17 12 * * 6'
@@ -47,6 +49,10 @@ jobs:
         run: node --test scripts/build_scorecard.test.mjs
       - name: Recalculate prospective condition scorecard
         run: node scripts/build_scorecard.mjs
+      - name: Test chronological reconstruction without future outcomes
+        run: node --test scripts/generate_walkforward.test.mjs
+      - name: Rebuild separate all-history walk-forward report
+        run: node scripts/generate_walkforward.mjs
       - name: Save public image and review summary
         run: |
           git add -A -- data
