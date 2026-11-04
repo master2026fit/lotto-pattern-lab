@@ -6,6 +6,8 @@ on:
       - '.github/workflows/weekly-review.yml'
       - 'scripts/generate_weekly_review.mjs'
       - 'scripts/generate_weekly_review.test.mjs'
+      - 'scripts/build_scorecard.mjs'
+      - 'scripts/build_scorecard.test.mjs'
   # UTC -> Korean time: Sat 21:17, Sun 09:17, Mon 09:17.
   schedule:
     - cron: '17 12 * * 6'
@@ -41,6 +43,10 @@ jobs:
         run: node scripts/generate_weekly_review.mjs --smoke
       - name: Generate verified image after result publication
         run: node scripts/generate_weekly_review.mjs
+      - name: Test matched-size random benchmark
+        run: node --test scripts/build_scorecard.test.mjs
+      - name: Recalculate prospective condition scorecard
+        run: node scripts/build_scorecard.mjs
       - name: Save public image and review summary
         run: |
           git add -A -- data
