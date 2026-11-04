@@ -205,8 +205,11 @@ const FOLLOWUP_TYPES=[
 export function makeFollowupReview(draws,history){
   if(history.length!==draws.length-1)throw Error('후속 출현 복기 이력이 일치하지 않습니다.');
   const totals=new Map();
+  const numberTotals=new Map();
   for(const [axis] of AXES)for(const [type] of FOLLOWUP_TYPES)
     totals.set(axis+'|'+type,FOLLOWUP_HORIZONS.map(horizon=>({horizon,eligible:0,seen:0})));
+  for(const [axis] of AXES)for(const [type] of FOLLOWUP_TYPES)for(let n=1;n<=45;n++)
+    numberTotals.set(axis+'|'+type+'|'+n,FOLLOWUP_HORIZONS.map(horizon=>({horizon,eligible:0,seen:0})));
   for(let i=0;i<history.length;i++){
     const current=history[i],won=new Set(current.actual);
     const observedRounds=Math.min(10,draws.length-current.round);
@@ -225,11 +228,14 @@ export function makeFollowupReview(draws,history){
         traces[type]=cases[type].map(n=>{
           const first=future.findIndex(draw=>draw.numbers.includes(n));
           const firstAfter=first<0?null:first+1;
-          for(const record of rows){
+          const individualRows=numberTotals.get(key+'|'+type+'|'+n);
+          for(let j=0;j<rows.length;j++){
+            const record=rows[j],individual=individualRows[j];
             // 충분한 시간이 지나지 않았다면 '미출현'으로 계산하지 않는다.
             if(observedRounds<record.horizon)continue;
             record.eligible++;
-            if(firstAfter!==null&&firstAfter<=record.horizon)record.seen++;
+            individual.eligible++;
+            if(firstAfter!==null&&firstAfter<=record.horizon){record.seen++;individual.seen++;}
           }
           return {n,firstAfter};
         });
@@ -252,10 +258,21 @@ export function makeFollowupReview(draws,history){
     }
     return {key,label,groups};
   });
+  // 1~45 전 번호에 같은 과거 시점 복기 기준을 적용한다. 번호별 기록도 미래 검색에 사용하지 않는다.
+  const numberRows=Array.from({length:45},(_,index)=>{
+    const n=index+1,axes={};
+    for(const [key] of AXES){
+      const groups={};
+      for(const [type] of FOLLOWUP_TYPES)
+        groups[type]=numberTotals.get(key+'|'+type+'|'+n).map(({horizon,eligible,seen})=>({horizon,eligible,seen}));
+      axes[key]=groups;
+    }
+    return {n,axes};
+  });
   return {version:1,method:'postdraw-only-first-future-appearance',horizons:FOLLOWUP_HORIZONS,
     origin:'historical-retrospective-not-predraw',
     caution:'당첨 발표 뒤에만 후속 출현을 기록합니다. 해당 기간이 지나지 않은 번호는 확인 대기이며 실패가 아닙니다. 과거의 반복 출현이나 1~10회 안의 재출현률이 미래 적중력 또는 추가 확률을 입증하지 않습니다.',
-    rows};
+    rows,numberRows};
 }
 
 export function makeWalkforward(draws){

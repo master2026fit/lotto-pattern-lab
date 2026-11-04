@@ -41,8 +41,26 @@ test('과거 복원은 사전 실전 성적과 분리하며 11개 축/후반 테
   assert.ok(report.environment.rows.every(r=>r.late.pWorseAdjusted>=0&&r.late.pWorseAdjusted<=1));
   assert.equal(report.followupReview.rows.length,11);
   assert.deepEqual(report.followupReview.horizons,[1,2,3,5,10]);
+  assert.equal(report.followupReview.numberRows.length,45);
   assert.equal(report.followupReview.origin,'historical-retrospective-not-predraw');
   assert.equal(report.examples.at(-1).followup.observedRounds,0);
+});
+
+test('1~45번 개별 추적의 표본수와 재등장 건수를 모두 합치면 전체 축 집계와 일치한다',()=>{
+  const report=makeWalkforward(fakeDraws(52)),review=report.followupReview;
+  assert.deepEqual(review.numberRows.map(r=>r.n),Array.from({length:45},(_,i)=>i+1));
+  for(const axis of review.rows){
+    for(const type of ['predictedButMissed','unpredictedWinner']){
+      for(const overall of axis.groups[type]){
+        const records=review.numberRows.map(row=>row.axes[axis.key][type].find(item=>item.horizon===overall.horizon));
+        assert.ok(records.every(r=>r&&r.seen<=r.eligible));
+        assert.equal(records.reduce((total,r)=>total+r.eligible,0),overall.eligible,
+          `${axis.key} ${type} +${overall.horizon} 총 표본수`);
+        assert.equal(records.reduce((total,r)=>total+r.seen,0),overall.seen,
+          `${axis.key} ${type} +${overall.horizon} 재등장 수`);
+      }
+    }
+  }
 });
 
 test('후속 출현은 미당첨 검색수와 검색 밖 실제 당첨수를 별도 추적한다',()=>{

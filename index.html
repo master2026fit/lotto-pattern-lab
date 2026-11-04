@@ -2396,6 +2396,15 @@ function renderHistoricalWalkforward(){
       '<td>'+clean(r.verdict)+'</td></tr>').join("")+
     '</tbody></table></div>'+
     '<p class="hint">무작위 기대는 각 회차의 실제 검출 번호 개수에 맞춘 기준입니다. 뒤 구간 11조건의 유리·불리 22개 비교를 동시에 보정했습니다. 후보 번호 개수를 12수 등으로 제한하지 않았습니다.</p>'+
+    '<div style="margin:24px 0;padding:16px 0;border-top:1px solid rgba(128,148,175,.3);border-bottom:1px solid rgba(128,148,175,.3)">'+
+    '<h3>🔢 1~45번 · 내가 고른 번호의 재등장 복기</h3>'+
+    '<p class="hint">원하는 번호 한 개와 추적 기간을 고르면 11개 검색조건에서 과거에 놓친 뒤 몇 회 안에 다시 나왔는지 같은 기준으로 비교합니다. 9번·34번·37번 등 모든 번호를 선택할 수 있습니다.</p>'+
+    '<div class="toolbar"><label>연구할 번호 <select id="historicalFollowupNumber" class="field" onchange="renderHistoricalNumberReview()">'+
+    Array.from({length:45},(_,i)=>'<option value="'+(i+1)+'">'+(i+1)+'번</option>').join("")+
+    '</select></label><label>재등장 기간 <select id="historicalFollowupHorizon" class="field" onchange="renderHistoricalNumberReview()">'+
+    [1,2,3,5,10].map(n=>'<option value="'+n+'"'+(n===5?' selected':'')+'>'+n+'회 이내</option>').join("")+
+    '</select></label></div><div id="historicalNumberReviewContent">번호별 결과를 확인 중입니다.</div></div>'+
+
     '<div style="margin:24px 0;padding-top:16px;border-top:1px solid rgba(128,148,175,.3)"><h3>🔎 언제 맞고 언제 빗나갔나? · 환경별 비교</h3>'+
     '<p class="hint">직전 회차 합계 · 연속번호 유무 · 해당 번호에 겹친 조건 수, 세 기준을 미리 정해 각각 두 환경으로 나눴습니다. 총 66개 환경의 양·음 132개 비교를 동시에 보정하며, 이 결과로 번호를 자동 제외하지 않습니다.</p>'+
     '<div class="toolbar"><label>검증할 검색조건 <select id="historicalContextAxis" class="field" onchange="renderHistoricalContextReview()">'+
@@ -2410,6 +2419,7 @@ function renderHistoricalWalkforward(){
     '<p class="hint">그림과 다운로드는 방금 고른 회차·검색조건을 반영합니다. 민트=검출·당첨, 파랑=검출·미당첨, 주황=미검출·당첨. 당첨 전 실제로 저장된 예측이 아니라 과거 시점의 복원 실험입니다.</p>';
   renderHistoricalContextReview();
   renderHistoricalWalkforwardRound();
+  renderHistoricalNumberReview();
 }
 function renderHistoricalContextReview(){
   const out=$("historicalContextContent"),p=state.historicalWalkforward;
@@ -2457,6 +2467,39 @@ function renderHistoricalWalkforwardRound(){
   renderHistoricalFollowupReview();
   const preview=$("historicalReviewCanvas");
   if(preview&&preview.style.display!=="none")drawHistoricalReviewCanvas();
+}
+function renderHistoricalNumberReview(){
+  const out=$("historicalNumberReviewContent"),review=state.historicalWalkforward?.followupReview;
+  if(!out)return;
+  if(!review||!Array.isArray(review.numberRows)||review.numberRows.length!==45){
+    out.innerHTML='<p class="hint">번호별 전체 회차 연구 자료 갱신 대기 · 기존 과거 복기와 사전 기록은 정상 유지됩니다.</p>';
+    return;
+  }
+  const n=Number($("historicalFollowupNumber")?.value),window=Number($("historicalFollowupHorizon")?.value);
+  const caseRow=review.numberRows.find(item=>item.n===n);
+  const index=review.horizons.indexOf(window);
+  if(!caseRow||index<0)return;
+  const randomRate=100*(1-Math.pow(39/45,window));
+  const format=row=>{
+    if(!row.eligible)return '기록 없음';
+    const rate=100*row.seen/row.eligible;
+    return rate.toFixed(1)+'% ('+row.seen+'/'+row.eligible+')'+
+      (row.eligible<30?' · 표본 적음':'');
+  };
+  const rows=PATTERN_AUDIT_AXES.map(axis=>{
+    const numbers=caseRow.axes[axis.key],a=numbers?.predictedButMissed[index],b=numbers?.unpredictedWinner[index];
+    if(!a||!b)return '';
+    return '<tr><td>'+clean(axis.label)+'</td><td>'+format(a)+'</td>'+
+      '<td>'+format(b)+'</td></tr>';
+  }).join('');
+  out.innerHTML='<h4>'+n+'번 · 다음 '+window+'회 이내 재등장 기록</h4>'+
+    '<p class="hint">대상: 2~'+state.historicalWalkforward.lastTestRound+'회 과거 복원 · '+window+
+    '회 뒤까지 실제로 확인된 사례만 분모에 포함</p>'+
+    '<div class="tablewrap"><table class="simple-table"><thead><tr><th>검색조건</th>'+
+    '<th>검색됐지만 미당첨한 '+n+'번</th><th>검색 밖에서 당첨된 '+n+'번</th>'+
+    '</tr></thead><tbody>'+rows+'</tbody></table></div>'+
+    '<p class="hint">참고: 번호 하나가 무작위 추첨에서 '+window+'회 이내 다시 등장할 확률은 약 '+
+    randomRate.toFixed(1)+'%입니다. 두 유형·11조건 사이에 중복 사례가 있으므로 합산하지 않습니다. 과거 사후 복기이며 다음 추첨에서 '+n+'번이 유리하거나 불리하다는 뜻은 아닙니다.</p>';
 }
 function renderHistoricalFollowupReview(){
   const out=$("historicalFollowupContent"),p=state.historicalWalkforward,review=p?.followupReview;
