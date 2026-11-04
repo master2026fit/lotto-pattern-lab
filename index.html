@@ -661,7 +661,13 @@ function scanModule16(ds,profiles){
   const modules=MODULE16_META.map(([name,scope,description],i)=>({
     id:i+1,name,scope,description,items:[]
   }));
-  const push=(id,label,detail,n=null)=>modules[id-1].items.push({label,detail,n});
+  const push=(id,label,detail,n=null,audit=null)=>modules[id-1].items.push({label,detail,n,audit});
+  const auditFromDraws=(n,draws)=>historyStats(ds,n,draws.map(d=>({i:ds.indexOf(d)})));
+  const auditByPrior=(n,predicate)=>{
+    const events=[];
+    for(let i=1;i<ds.length;i++)if(predicate(ds[i-1],i))events.push({i});
+    return historyStats(ds,n,events);
+  };
   for(const p of profiles){
     for(const e of p.list){
       const g=e.rule.group;
@@ -672,7 +678,8 @@ function scanModule16(ds,profiles){
       if(!id)continue;
       const indices=e.rule.history?e.rule.history(ds,ds.length,p.n):[];
       const rounds=indices.map(j=>ds[j]&&ds[j].draw_no+"회").filter(Boolean);
-      push(id,labelOf(e,p.n),rounds.length?"실제 선행 회차 "+rounds.join(" → ")+" → "+T+"회 결과 미정":e.rule.why,p.n);
+      push(id,labelOf(e,p.n),rounds.length?"실제 선행 회차 "+rounds.join(" → ")+" → "+T+"회 결과 미정":e.rule.why,p.n,
+        historyStats(ds,p.n,e.events));
     }
   }
 
@@ -703,7 +710,8 @@ function scanModule16(ds,profiles){
         "과거 실제 사례 "+historical+"에서 관찰됐습니다. "+
         (common.length?"해당 과거 사례들의 직전 공통번호 "+common.join("·")+"번; 이번 직전 미해당 "+
           (mismatch.join("·")||"없음")+"번. ":"")+
-        "끝수 45쌍과 45개 번호를 사후 전수 검색한 결과로, 우연한 일치일 수 있으며 예측력은 미검증입니다.",n);
+        "끝수 45쌍과 45개 번호를 사후 전수 검색한 결과로, 우연한 일치일 수 있으며 예측력은 미검증입니다.",n,
+        auditFromDraws(n,cases));
     }
   }
 
@@ -767,14 +775,17 @@ function scanModule16(ds,profiles){
   push(12,"직전 회차 연속번호쌍 "+neighbors.length+"쌍",
     neighbors.length?"연속쌍 뒤쪽 번호 "+neighbors.join("·"):"직전 번호 6개에서 연속쌍 없음");
   for(const n of last.numbers)push(12,n+"번 직전 본번호 → 다음 회차 이월 관찰",
-    "직전 "+last.draw_no+"회 본번호에 실제로 포함됨. 이월 여부는 "+T+"회 결과로 검증합니다.",n);
+    "직전 "+last.draw_no+"회 본번호에 실제로 포함됨. 이월 여부는 "+T+"회 결과로 검증합니다.",n,
+    auditByPrior(n,previous=>previous.numbers.includes(n)));
   push(13,last.draw_no+"회 보너스 "+last.bonus_no+"번",
-    "다음 본번호 출현 여부를 "+T+"회에 검증합니다. 이전 보너스·본번호 전환 기록은 번호 상세에서 확인합니다.",last.bonus_no);
+    "다음 본번호 출현 여부를 "+T+"회에 검증합니다. 이전 보너스·본번호 전환 기록은 번호 상세에서 확인합니다.",last.bonus_no,
+    auditByPrior(last.bonus_no,previous=>previous.bonus_no===last.bonus_no));
   // 모든 번호가 동일한 기준으로 평가되며 특정 숫자를 먼저 지정하지 않습니다.
   for(let n=1;n<=45;n++){
     const near=last.numbers.filter(x=>Math.abs(x-n)<=3&&x!==n);
     if(near.length>=2&&!modules[13].items.some(it=>it.n===n))
-      push(14,n+"번 가까운 선행 번호 "+near.join("·"),"직전 "+last.draw_no+"회 관측. ±1~3 거리 관찰이며 독립 예측 증거 아님.",n);
+      push(14,n+"번 가까운 선행 번호 "+near.join("·"),"직전 "+last.draw_no+"회 관측. ±1~3 거리 관찰이며 독립 예측 증거 아님.",n,
+        auditByPrior(n,previous=>previous.numbers.filter(x=>Math.abs(x-n)<=3&&x!==n).length>=2));
   }
   let similar=[];
   for(let j=0;j<ds.length-1;j++){
@@ -810,7 +821,8 @@ function scanModule16(ds,profiles){
         if(!cases.every(draw=>draw.numbers.includes(n)))continue;
         push(16,n+"번: "+digit+"끝수 2회 공백 + 직전 "+pair.join("·")+"번",
           "과거 동일 조건 "+cases.length+"건 ("+cases.map(x=>x.draw_no+"회").join("·")+
-          ") 모두 "+n+"번 출현. 해당 끝수·직전 2수의 수많은 조합을 사후 탐색한 극소표본이므로 확률 상승 근거가 아닙니다.",n);
+          ") 모두 "+n+"번 출현. 해당 끝수·직전 2수의 수많은 조합을 사후 탐색한 극소표본이므로 확률 상승 근거가 아닙니다.",n,
+          auditFromDraws(n,cases));
       }
     }
   }
@@ -841,7 +853,8 @@ function renderModule16(){
     const intro='<p class="hint">'+clean(m.description)+' <strong>'+clean(m.scope)+'</strong></p>';
     const rows=m.items.map(x=>'<div class="audit-banner" style="margin:6px 0;padding:10px 12px">'+
       (x.n!==null?'<button class="btn small outline" onclick="openDetail('+x.n+')">'+x.n+'번 상세</button> ':'')+
-      '<strong>'+clean(x.label)+'</strong><p class="hint">'+clean(x.detail)+'</p></div>').join("");
+      '<strong>'+clean(x.label)+'</strong><p class="hint">'+clean(x.detail)+'</p>'+
+      (x.audit?historyMarkup(x.audit,true):'')+'</div>').join("");
     return '<details class="rule-card"><summary class="openmore"><strong>'+
       String(m.id).padStart(2,"0")+'. '+clean(m.name)+'</strong> · 관찰 '+m.items.length+
       '건'+(direct?' · 번호 연결 '+direct+'건':' · 집합 기록')+'</summary>'+intro+
@@ -858,7 +871,8 @@ function module16ForNumber(n){
     '<p class="hint">번호 '+n+'에 실제로 연결된 항목만 표시합니다. 끝수·홀짝처럼 집합 전체에 해당하는 항목은 특정 번호의 근거로 중복 계산하지 않습니다.</p>'+
     (found.length?found.map(x=>'<div class="audit-banner" style="margin:8px 0"><strong>'+
       String(x.module).padStart(2,"0")+' '+clean(x.name)+' · '+clean(x.label)+
-      '</strong><p class="hint">'+clean(x.detail)+'</p></div>').join(""):
+      '</strong><p class="hint">'+clean(x.detail)+'</p>'+
+      (x.audit?historyMarkup(x.audit,false):'')+'</div>').join(""):
       '<p class="hint">16모듈의 직접 연결 탐색에서 이번 목표 회차에 해당한 항목이 없습니다. 기본 45개 관찰 규칙의 일치와는 별개입니다.</p>')+
     '</div>';
 }
@@ -1063,6 +1077,94 @@ function evidenceDashboard(n,fixed,flow){
     '<p class="caution">오차 범위·간이 검정과 2,025개 기본 조건 검색에 대한 보수적 보정을 참고합니다. 중복 조건과 사후 선택의 영향이 있어 예측력 입증이나 당첨 보장은 아닙니다.</p></div>';
 }
 
+
+function historyStats(ds,n,events){
+  const hits=[],misses=[],lag=[0,0,0,0,0,0];
+  let follow5=0,neighbor1=0,neighbor2=0,sameEnd=0;
+  for(const ev of events||[]){
+    if(!Number.isInteger(ev.i)||!ds[ev.i])continue;
+    const hit=ds[ev.i].numbers.includes(n);
+    if(hit){hits.push(ev.i);continue;}
+    misses.push(ev.i);
+    const nums=ds[ev.i].numbers;
+    if(nums.some(x=>Math.abs(x-n)===1))neighbor1++;
+    if(nums.some(x=>Math.abs(x-n)===2))neighbor2++;
+    if(nums.some(x=>x!==n&&x%10===n%10))sameEnd++;
+    // 최근 5개 후속 회차가 아직 확정되지 않은 실패 사례는 분모에서 제외.
+    if(ev.i+5>=ds.length)continue;
+    follow5++;
+    let first=0;
+    for(let k=1;k<=5;k++){
+      if(ds[ev.i+k].numbers.includes(n)){first=k;break;}
+    }
+    lag[first]++;
+  }
+  const examples=arr=>arr.slice(-3).reverse().map(i=>ds[i].draw_no+"회 ["+ds[i].numbers.join("·")+"]");
+  return {number:n,cases:hits.length+misses.length,wins:hits.length,misses:misses.length,
+    follow5,lag,neighbor1,neighbor2,sameEnd,winSamples:examples(hits),failSamples:examples(misses),
+    eventIndices:[...(events||[])].map(ev=>ev.i).filter(i=>Number.isInteger(i)&&!!ds[i])};
+}
+function historyMarkup(a,compact=false){
+  if(!a)return "";
+  if(!a.cases)return '<div class="audit-summary-card"><strong>과거 완전히 동일한 조건의 검증 사례가 없습니다.</strong>'+
+    '<p class="hint">현재 탐색된 연결을 과거에 반복 확인한 사례가 0건이므로 성공률·실패율을 계산할 수 없습니다. 이번 회차 결과도 미정입니다.</p></div>';
+  const rate=(a.wins/a.cases*100).toFixed(1)+"%";
+  state.historyAuditCache=state.historyAuditCache||new Map();
+  state.historyAuditSerial=(state.historyAuditSerial||0)+1;
+  const auditKey=state.historyAuditSerial;
+  state.historyAuditCache.set(auditKey,a);
+  const allRows='<details class="audit-group" ontoggle="if(this.open)renderHistoryPage(this,'+auditKey+',0)"><summary class="openmore">과거 동일 조건 '+a.cases+'건 전수 기록 (성공·실패·실패 후 재등장)</summary><div class="history-full"></div></details>';
+  const delayed=a.lag.slice(1).reduce((s,v)=>s+v,0);
+  const caption="과거 동일 조건 "+a.cases+"회 · 바로 다음 회차 출현 "+a.wins+
+    "회 / 미출현 "+a.misses+"회 ("+rate+" 관찰)";
+  const summary='<div class="audit-summary-card"><strong>'+caption+'</strong></div>';
+  if(compact)return summary+'<p class="hint">과거 실패 중 5회 후속 회차까지 확인 가능한 '+a.follow5+
+    '건에서 5회 이내 재등장 '+delayed+'건, 미등장 '+a.lag[0]+
+    '건. 단순한 사후 기록이며 추가 당첨 가능성을 뜻하지 않습니다.</p>'+allRows;
+  const follow='<div class="rule-stats"><div><small>바로 다음 회차 성공</small><b>'+a.wins+'회</b></div>'+
+    '<div><small>바로 다음 회차 실패</small><b>'+a.misses+'회</b></div>'+
+    '<div><small>실패 후 5회 내 재등장</small><b>'+delayed+' / '+a.follow5+'건</b></div>'+
+    '<div><small>5회까지 미등장</small><b>'+a.lag[0]+'건</b></div></div>'+
+    '<p class="hint">재등장 첫 시점: 1회 뒤 '+a.lag[1]+'건 · 2회 뒤 '+a.lag[2]+
+    '건 · 3회 뒤 '+a.lag[3]+'건 · 4회 뒤 '+a.lag[4]+'건 · 5회 뒤 '+a.lag[5]+'건.</p>'+
+    '<p class="hint">바로 다음 회차에 대상 번호가 빠졌을 때 관측된 다른 숫자: ±1 이웃수 '+a.neighbor1+
+    '건 · ±2 이웃수 '+a.neighbor2+'건 · 같은 끝수 '+a.sameEnd+
+    '건. 서로 중복될 수 있고 대체 예측을 의미하지 않습니다.</p>';
+  const example='<details class="audit-group"><summary class="openmore">성공·실패한 실제 회차와 당첨번호 보기</summary>'+
+    '<div class="audit-content"><p><strong>출현 사례</strong> '+clean(a.winSamples.join(" / ")||"없음")+'</p>'+
+    '<p><strong>미출현 사례</strong> '+clean(a.failSamples.join(" / ")||"없음")+'</p></div></details>';
+  return '<div class="section" style="margin:10px 0"><h3>실제 과거 성공·실패 및 지연 재등장</h3>'+
+    summary+follow+example+allRows+
+    '<p class="caution">동일 조건은 이번 회차 자료를 보고 사후 선택한 경우가 많습니다. 과거 관찰률과 지연 재등장 비율은 다음 회차의 당첨확률이 아닙니다. 최신 5개 회차 이내 실패는 지연 통계에서 제외했습니다.</p></div>';
+}
+
+function renderHistoryPage(details,key,page){
+  const output=details.querySelector(".history-full");
+  const audit=state.historyAuditCache&&state.historyAuditCache.get(key),ds=state.draws;
+  if(!output||!audit||!ds.length)return;
+  const indices=audit.eventIndices.slice().reverse();
+  const size=40,count=Math.max(1,Math.ceil(indices.length/size));
+  const index=Math.max(0,Math.min(count-1,page));
+  const rows=indices.slice(index*size,(index+1)*size).map(i=>{
+    const d=ds[i],hit=d.numbers.includes(audit.number);
+    let delay="—";
+    if(!hit){
+      const future=ds.slice(i+1,Math.min(ds.length,i+6));
+      const found=future.find(x=>x.numbers.includes(audit.number));
+      delay=found?found.draw_no+"회 ("+(found.draw_no-d.draw_no)+"회 뒤)":
+        i+5>=ds.length?"5회 미완료":"5회 내 미출현";
+    }
+    return '<tr><td>'+d.draw_no+'회</td><td class="'+(hit?'evidence-good':'evidence-zero')+'">'+
+      (hit?"출현":"미출현")+'</td><td>'+d.numbers.join(" · ")+
+      '</td><td>'+delay+'</td></tr>';
+  }).join("");
+  const back=index>0?'<button class="btn small outline" onclick="renderHistoryPage(this.closest(\'details\'),'+key+','+(index-1)+')">이전 40건</button>':"";
+  const next=index+1<count?'<button class="btn small outline" onclick="renderHistoryPage(this.closest(\'details\'),'+key+','+(index+1)+')">다음 40건</button>':"";
+  output.innerHTML='<p class="hint">가장 최근 회차부터 표시 · '+audit.cases+'건 전체 · '+(index+1)+'/'+count+'쪽. 뒤의 5회가 모두 확정되지 않은 경우는 지연 통계에서 제외합니다.</p>'+
+    '<div class="tablewrap"><table class="simple-table"><thead><tr><th>조건 일치 후 결과 회차</th><th>대상 번호</th><th>실제 당첨번호</th><th>실패 후 첫 재등장</th></tr></thead><tbody>'+
+    rows+'</tbody></table></div><div class="toolbar">'+back+next+'</div>';
+}
+
 function ruleCard(n,e,ds){
   state.proofCache.set(n+":"+e.rule.id,e);
   const failures=e.cases-e.wins;
@@ -1083,7 +1185,7 @@ function ruleCard(n,e,ds){
     '<div><small>전체 관측 비율</small><b>'+pct(rate)+'</b></div>'+
     '<div><small>최근 160회 구간 내 일치 사례</small><b>'+e.holdCases+'회</b></div></div>'+
     '<p class="hint">초기 구간 '+e.trainCases+'회 중 '+e.trainWins+'회 출현. 최근 구간 '+e.holdCases+
-      '회 중 '+e.holdWins+'회 출현('+pct(valRate)+'). 일반적인 한 번호의 출현 비율은 6/45 ≈ 13.3%입니다.</p>'+evidenceBar(e)+
+      '회 중 '+e.holdWins+'회 출현('+pct(valRate)+'). 일반적인 한 번호의 출현 비율은 6/45 ≈ 13.3%입니다.</p>'+evidenceBar(e)+historyMarkup(historyStats(ds,n,e.events))+
     '<details ontoggle="if(this.open)loadProof(this,'+n+','+e.rule.id+')"><summary class="openmore">▣ 이 조건의 실제 이전 회차 → 다음 회차 PPT 그림 보기</summary>'+
     '<div class="proof"></div>'+
     '<div class="toolbar"><button class="btn small" onclick="saveProofPNG('+n+','+e.rule.id+')">PNG 이미지 저장</button><button class="btn small outline" onclick="saveProofSVG('+n+','+e.rule.id+')">벡터 이미지 저장</button></div></details></article>';
