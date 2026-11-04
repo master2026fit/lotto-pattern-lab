@@ -878,7 +878,7 @@ function comparisonMarkup(nums,focus,ds){
       '<button class="tiny-btn" type="button" onclick="openComparedRule('+n+','+r.rule.id+
       ')">'+n+'번 그림</button>').join("");
     return '<tr><td><strong>'+clean(r.rule.group)+'</strong><br>'+
-      clean(r.rule.label.replace("{n}번","해당 번호").replace("{n}","해당 번호"))+'</td>'+
+      clean(r.rule.label.replace("{n}번과","해당 번호와").replace("{n}번이","해당 번호가").replace("{n}번은","해당 번호는").replace("{n}번","해당 번호").replace("{n}","해당 번호"))+'</td>'+
       nums.map((n,j)=>'<td class="'+(r.selected[j]?'yes':'no')+'">'+
         (r.selected[j]?'일치':'—')+'</td>').join("")+
       '<td class="scope">'+r.matched.length+'/45</td><td>'+actions+'</td></tr>';
@@ -934,9 +934,9 @@ function openComparedRule(n,ruleId){
     matches.length+'개 번호가 이번 회차에 동일 규칙을 충족합니다. '+
     '일치한 번호: '+matches.join(" · ")+
     '. 적중률 우위와 무관한 현재 조건 일치 수입니다.</div>'+
-    ruleCard(n,e,state.draws)+
     '<h3>실제 회차별 그림 — 출현·미출현 사례</h3>'+
-    '<div class="proof">'+proofSVG(state.draws,n,e).replace('id="proof-','id="compared-proof-')+'</div>';
+    '<div class="proof">'+proofSVG(state.draws,n,e).replace('id="proof-','id="compared-proof-')+'</div>'+
+    '<h3>해석과 관측 비율</h3>'+ruleCard(n,e,state.draws);
   const dialog=$("detailDialog");
   if(typeof dialog.showModal==="function")dialog.showModal();
   dialog.scrollTop=0;
