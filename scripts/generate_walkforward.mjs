@@ -195,6 +195,69 @@ export function makeContextReview(draws,history,split){
     contexts:CONTEXT_GROUPS.map(([key,label,kind])=>({key,label,kind})),rows};
 }
 
+const FOLLOWUP_HORIZONS=[1,2,3,5,10];
+const FOLLOWUP_TYPES=[
+  ['predictedButMissed','검색됐지만 해당 회차에 당첨되지 않은 번호'],
+  ['unpredictedWinner','검색에서 빠졌지만 해당 회차에 당첨된 번호']
+];
+
+// 후속 회차는 발표 뒤 복기에만 사용한다. 기존 사전 검출 결과나 다음 회차 선정에 되먹이지 않는다.
+export function makeFollowupReview(draws,history){
+  if(history.length!==draws.length-1)throw Error('후속 출현 복기 이력이 일치하지 않습니다.');
+  const totals=new Map();
+  for(const [axis] of AXES)for(const [type] of FOLLOWUP_TYPES)
+    totals.set(axis+'|'+type,FOLLOWUP_HORIZONS.map(horizon=>({horizon,eligible:0,seen:0})));
+  for(let i=0;i<history.length;i++){
+    const current=history[i],won=new Set(current.actual);
+    const observedRounds=Math.min(10,draws.length-current.round);
+    const future=draws.slice(current.round,current.round+observedRounds);
+    const traceAxes={};
+    for(const [key] of AXES){
+      const picked=current.axes[key].selected;
+      const pickedSet=new Set(picked);
+      const cases={
+        predictedButMissed:picked.filter(n=>!won.has(n)),
+        unpredictedWinner:current.actual.filter(n=>!pickedSet.has(n))
+      };
+      const traces={};
+      for(const [type] of FOLLOWUP_TYPES){
+        const rows=totals.get(key+'|'+type);
+        traces[type]=cases[type].map(n=>{
+          const first=future.findIndex(draw=>draw.numbers.includes(n));
+          const firstAfter=first<0?null:first+1;
+          for(const record of rows){
+            // 충분한 시간이 지나지 않았다면 '미출현'으로 계산하지 않는다.
+            if(observedRounds<record.horizon)continue;
+            record.eligible++;
+            if(firstAfter!==null&&firstAfter<=record.horizon)record.seen++;
+          }
+          return {n,firstAfter};
+        });
+      }
+      if(i>=history.length-8)traceAxes[key]=traces;
+    }
+    if(i>=history.length-8)current.followup={observedRounds,axes:traceAxes};
+  }
+  const rows=AXES.map(([key,label])=>{
+    const groups={};
+    for(const [type] of FOLLOWUP_TYPES){
+      groups[type]=totals.get(key+'|'+type).map(item=>{
+        const randomRate=1-Math.pow(39/45,item.horizon);
+        const rate=item.eligible?item.seen/item.eligible:null;
+        return {...item,rate:rate===null?null:Number(rate.toFixed(5)),
+          randomRate:Number(randomRate.toFixed(5)),
+          expected:Number((item.eligible*randomRate).toFixed(2)),
+          delta:item.eligible?Number((item.seen-item.eligible*randomRate).toFixed(2)):null};
+      });
+    }
+    return {key,label,groups};
+  });
+  return {version:1,method:'postdraw-only-first-future-appearance',horizons:FOLLOWUP_HORIZONS,
+    origin:'historical-retrospective-not-predraw',
+    caution:'당첨 발표 뒤에만 후속 출현을 기록합니다. 해당 기간이 지나지 않은 번호는 확인 대기이며 실패가 아닙니다. 과거의 반복 출현이나 1~10회 안의 재출현률이 미래 적중력 또는 추가 확률을 입증하지 않습니다.',
+    rows};
+}
+
 export function makeWalkforward(draws){
   if(!Array.isArray(draws)||draws.length<30)throw Error('30회 이상 필요');
   const history=[];
@@ -234,6 +297,7 @@ export function makeWalkforward(draws){
       '무작위와 구별 어려움';
   }
   const environment=makeContextReview(draws,history,split);
+  const followupReview=makeFollowupReview(draws,history);
   return {version:1,origin:'historical-walkforward-reconstruction-only',
     firstTestRound:history[0].round,lastTestRound:history.at(-1).round,
     totalRounds:history.length,earlyRounds:train.length,lateRounds:late.length,
@@ -242,7 +306,7 @@ export function makeWalkforward(draws){
     policy:'all-available-history-no-candidate-count-cap',
     benchmark:'same-number-count exact hypergeometric 6/45; Holm 22 late tests',
     caution:'과거 결과를 이미 알고 설계된 조건의 시점별 재현입니다. 실제 추첨 전 저장 기록이 아니며 미래 적중력의 증거가 아닙니다.',
-    rows,environment,examples:history.slice(-8)};
+    rows,environment,followupReview,examples:history.slice(-8)};
 }
 
 async function main(){

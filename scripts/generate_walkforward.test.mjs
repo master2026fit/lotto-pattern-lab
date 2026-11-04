@@ -39,6 +39,49 @@ test('과거 복원은 사전 실전 성적과 분리하며 11개 축/후반 테
   assert.ok(report.environment.rows.every(r=>r.early.rounds<=report.earlyRounds&&r.late.rounds<=report.lateRounds));
   assert.ok(report.environment.rows.every(r=>r.late.pBetterAdjusted>=0&&r.late.pBetterAdjusted<=1));
   assert.ok(report.environment.rows.every(r=>r.late.pWorseAdjusted>=0&&r.late.pWorseAdjusted<=1));
+  assert.equal(report.followupReview.rows.length,11);
+  assert.deepEqual(report.followupReview.horizons,[1,2,3,5,10]);
+  assert.equal(report.followupReview.origin,'historical-retrospective-not-predraw');
+  assert.equal(report.examples.at(-1).followup.observedRounds,0);
+});
+
+test('후속 출현은 미당첨 검색수와 검색 밖 실제 당첨수를 별도 추적한다',()=>{
+  const report=makeWalkforward(fakeDraws(52));
+  for(const example of report.examples){
+    const winners=new Set(example.actual);
+    assert.equal(example.followup.observedRounds,Math.min(10,52-example.round));
+    for(const [key,axis] of Object.entries(example.axes)){
+      const searched=new Set(axis.selected);
+      const traces=example.followup.axes[key];
+      assert.deepEqual(traces.predictedButMissed.map(item=>item.n),axis.selected.filter(n=>!winners.has(n)));
+      assert.deepEqual(traces.unpredictedWinner.map(item=>item.n),example.actual.filter(n=>!searched.has(n)));
+      for(const [kind,items] of Object.entries(traces))for(const item of items){
+        assert.ok(item.firstAfter===null||(item.firstAfter>=1&&item.firstAfter<=example.followup.observedRounds),`${key} ${kind} ${item.n}`);
+        if(example.followup.observedRounds===0)assert.equal(item.firstAfter,null);
+      }
+    }
+  }
+  for(const axis of report.followupReview.rows)for(const type of ['predictedButMissed','unpredictedWinner']){
+    const horizons=axis.groups[type];
+    assert.equal(horizons.length,5);
+    for(let i=0;i<horizons.length;i++){
+      const item=horizons[i];
+      assert.ok(item.seen>=0&&item.seen<=item.eligible);
+      assert.ok(Math.abs(item.randomRate-(1-Math.pow(39/45,item.horizon)))<0.00001);
+      if(i>0)assert.ok(item.eligible<=horizons[i-1].eligible);
+    }
+  }
+});
+
+test('미래 추첨 변경은 과거 사전 검출을 수정하지 않고 후속 출현 기록만 바꿀 수 있다',()=>{
+  const d=fakeDraws(52),before=makeWalkforward(d);
+  d[51]={...d[51],numbers:[1,2,3,4,5,6]};
+  const after=makeWalkforward(d);
+  for(const old of before.examples){
+    const updated=after.examples.find(e=>e.round===old.round);
+    assert.ok(updated);
+    for(const key of Object.keys(old.axes))assert.deepEqual(old.axes[key].selected,updated.axes[key].selected);
+  }
 });
 
 test('사전 환경 분류 두 구간은 매 축마다 모든 선택수와 적중을 빠짐없이 나눈다',()=>{

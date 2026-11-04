@@ -2433,6 +2433,7 @@ function renderHistoricalContextReview(){
       '<td>'+clean(r.verdict)+'</td></tr>').join("")+
     '</tbody></table></div>'+
     '<p class="hint">표의 ± 차이는 맞힌 번호 수 − 동일한 선택 개수의 무작위 기대치입니다. 「앞뒤 방향 역전」은 통계적으로 확인된 차이가 아닌 관찰 기록입니다. 적중 패턴의 미래 효과는 아직 검증되지 않았습니다.</p>';
+  renderHistoricalFollowupReview();
   const preview=$("historicalReviewCanvas");
   if(preview&&preview.style.display!=="none")drawHistoricalReviewCanvas();
 }
@@ -2452,9 +2453,59 @@ function renderHistoricalWalkforwardRound(){
       const saved=new Set(x.selected),missed=e.actual.filter(n=>!saved.has(n));
       return '<tr><td>'+clean(a.label)+'</td><td>'+x.selected.length+'개</td>'+
         '<td>'+(x.hits.join(" · ")||"없음")+'</td><td>'+(missed.join(" · ")||"없음")+'</td></tr>';
-    }).join("")+'</tbody></table></div>';
+    }).join("")+'</tbody></table></div><div id="historicalFollowupContent"></div>';
+  renderHistoricalFollowupReview();
   const preview=$("historicalReviewCanvas");
   if(preview&&preview.style.display!=="none")drawHistoricalReviewCanvas();
+}
+function renderHistoricalFollowupReview(){
+  const out=$("historicalFollowupContent"),p=state.historicalWalkforward,review=p?.followupReview;
+  if(!out)return;
+  if(!review||review.version!==1||review.origin!=="historical-retrospective-not-predraw"){
+    out.innerHTML='<p class="hint" style="margin-top:16px">⏳ 1·2·3·5·10회 뒤 재등장 기록 생성 대기 · 다음 주간 복기 갱신에 포함됩니다.</p>';
+    return;
+  }
+  const key=$("historicalContextAxis")?.value,round=Number($("historicalWalkforwardRound")?.value);
+  const summary=review.rows.find(row=>row.key===key);
+  const example=p?.examples?.find(item=>item.round===round);
+  const trace=example?.followup?.axes?.[key];
+  if(!summary||!trace)return;
+  const elapsed=example.followup.observedRounds;
+  const pct=record=>record.eligible?
+    (record.seen/record.eligible*100).toFixed(1)+'% ('+record.seen+'/'+record.eligible+')':'집계 대기';
+  const types=[
+    ["predictedButMissed","검색됐지만 미당첨","선택한 번호가 해당 회차에 나오지 않은 경우"],
+    ["unpredictedWinner","검색 밖 실제 당첨","선택하지 않았지만 해당 회차에 당첨된 경우"]
+  ];
+  const head='<div style="margin:22px 0 10px;padding-top:18px;border-top:1px solid rgba(128,148,175,.3)">'+
+    '<h3>🕒 놓친 번호, 몇 회 뒤 다시 나왔나?</h3>'+
+    '<p class="hint">① 검색됐지만 미당첨 ② 검색 밖 실제 당첨을 구분해 다음 1·2·3·5·10회 내 재등장을 복기합니다. 아래 비율은 <strong>과거 사후 집계</strong>로, 미래 적중 확률 상승의 증거가 아닙니다.</p></div>';
+  const header='<div class="tablewrap"><table class="simple-table"><thead><tr>'+
+    '<th>몇 회 이내</th><th>검색됐지만 미당첨</th><th>검색 밖 실제 당첨</th><th>무작위 번호 기준</th>'+
+    '</tr></thead><tbody>';
+  const records=review.horizons.map((h,i)=>{
+    const a=summary.groups.predictedButMissed[i],b=summary.groups.unpredictedWinner[i];
+    return '<tr><td>+'+h+'회 내</td><td>'+pct(a)+'</td><td>'+pct(b)+'</td>'+
+      '<td>'+(a.randomRate*100).toFixed(1)+'%</td></tr>';
+  }).join("");
+  const table=header+records+'</tbody></table></div>'+
+    '<p class="hint">분모는 이후 추첨이 해당 기간만큼 <strong>모두 완료된 번호</strong>만 집계합니다. 오른쪽은 번호 1개가 무작위 추첨에서 다시 나올 참고 확률입니다. 겹치는 관찰 구간의 통계적 유의성은 판정하지 않습니다.</p>';
+  const chipList=items=>items.length?items.map(item=>{
+    const status=item.firstAfter!==null?
+      '+'+item.firstAfter+'회 ('+(round+item.firstAfter)+'회) 재등장':
+      elapsed<10?'확인 대기 · 이후 '+elapsed+'/10회 확인':'10회 내 미출현';
+    const background=item.firstAfter!==null?'#e1f7ee':elapsed<10?'#edf1f7':'#fff0e1';
+    return '<span style="display:inline-block;margin:4px 4px 4px 0;padding:7px 10px;border-radius:9px;background:'+background+';color:#19304b">'+
+      '<b>'+item.n+'번</b> · '+status+'</span>';
+  }).join(""):'해당 번호 없음';
+  const details=types.map(([type,label,description])=>
+    '<details style="margin:10px 0;padding:12px;border:1px solid rgba(128,148,175,.3);border-radius:12px">'+
+    '<summary style="cursor:pointer;font-weight:700">'+label+' · '+trace[type].length+'개 (번호별 기록 열기)</summary>'+
+    '<p class="hint">'+description+'</p><div>'+chipList(trace[type])+'</div></details>').join("");
+  const pending=elapsed===0?' · 다음 추첨 결과를 기다리는 중':elapsed<10?' · 남은 기간은 계속 확인 대기':' · 10회 추적 완료';
+  out.innerHTML=head+table+'<h4>'+round+'회 번호별 다음 출현 기록</h4>'+
+    '<p class="hint">'+round+'회 이후 발표된 추첨 '+elapsed+'/10회'+pending+
+    '. 아직 지나지 않은 회차는 미출현이나 실패로 세지 않습니다.</p>'+details;
 }
 function drawHistoricalReviewCanvas(){
   const canvas=$("historicalReviewCanvas"),p=state.historicalWalkforward;
