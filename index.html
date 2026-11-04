@@ -280,7 +280,8 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 <input id="backupFileInput" type="file" accept=".json,application/json" style="display:none" onchange="readBackupFile(event)" aria-label="연구 기록 JSON 백업 파일"></div>
 <div id="backupPreview" class="backup-preview" hidden></div>
 <p class="caution">복원은 <strong>기존 기록을 지우지 않고 병합</strong>합니다. 동일 회차 기록이 겹치면 현재 기기 기록을 유지하고, 새 기록만 추가합니다. 삭제한 적 없는 파일을 안전한 곳(예: 휴대폰 파일 또는 개인 클라우드)에 따로 보관하세요.</p></div></section>
-<section id="backtest" class="page"><div class="eyebrow">WALK-FORWARD CHECK</div><h1>과거 검증</h1><p class="lead">현재 최종 5조합에 적용하는 <strong>검출된 후보 전체(가변)</strong>를 과거 매 회차 시점에서 다시 계산합니다. 같은 개수의 무작위 후보·5게임 기준과 비교하며, 이후 당첨번호를 미리 참조하지 않습니다. 사후 선정 전략의 과거 결과는 미래 당첨확률을 증명하지 않습니다.</p><div class="toolbar"><label>검증할 과거 회차 <select id="backtestRounds" class="field" aria-label="과거 검증 회차 수"><option value="12">최근 12회</option><option value="30">최근 30회</option><option value="60" selected>최근 60회</option><option value="120">최근 120회</option></select></label><button id="runBacktestBtn" class="btn" onclick="runBacktest()">시점별 독립 검증 실행</button></div>
+<section id="backtest" class="page"><div class="eyebrow">WALK-FORWARD CHECK</div><h1>과거 검증</h1><p class="lead">현재 최종 5조합에 적용하는 <strong>검출된 후보 전체(가변)</strong>를 과거 매 회차 시점에서 다시 계산합니다. 같은 개수의 무작위 후보·5게임 기준과 비교하며, 이후 당첨번호를 미리 참조하지 않습니다. 사후 선정 전략의 과거 결과는 미래 당첨확률을 증명하지 않습니다.</p><div class="section panel" id="historicalWalkforward"><h2>🧪 전체 회차 시점별 복원 · 11조건 성적표</h2><div id="historicalWalkforwardContent" class="hint">과거 전체 회차의 독립 시점별 검증 자료를 확인 중입니다.</div></div>
+<div class="toolbar"><label>검증할 과거 회차 <select id="backtestRounds" class="field" aria-label="과거 검증 회차 수"><option value="12">최근 12회</option><option value="30">최근 30회</option><option value="60" selected>최근 60회</option><option value="120">최근 120회</option></select></label><button id="runBacktestBtn" class="btn" onclick="runBacktest()">시점별 독립 검증 실행</button></div>
   <p class="hint">① 매 회차 직전까지의 기록만 사용 ② 기본 45개 규칙 × 45개 번호를 같은 기준으로 검증 ③ 당시 통과한 번호와 조합만 실제 결과와 비교합니다. 비교용 조합도 당시 연구 후보와 같은 개수의 무작위 번호로 5게임을 만듭니다. 연결 패턴은 사후 탐색이므로 검증 통과 후보에서 제외됩니다.</p>
   <div id="backtestResult"></div></section>
 <div class="footer">🛡️ LOTTO NOTE · 과거의 패턴은 미래의 당첨을 보장하지 않습니다.<br><a href="https://lotto-note.tistory.com/" target="_blank" rel="noopener">로또 노트 블로그</a></div>
@@ -380,7 +381,7 @@ async function reloadData(){
   if(state.poolMode!=="manual"||!$("poolInput").value.trim())setResearchPool();
   else{invalidateTickets();renderSelectionAudit();}
   reconcileTrialBook();
-  await Promise.all([syncServerFullScans(),syncServerWeeklyReviews(),syncServerScorecard()]);
+  await Promise.all([syncServerFullScans(),syncServerWeeklyReviews(),syncServerScorecard(),syncHistoricalWalkforward()]);
   reconcileFullScans();
   if(success)captureFullScan();
   renderFullScanStatus();
@@ -2351,6 +2352,71 @@ function showServerPredrawNumber(n){
     '<p>기본 조건 '+r.basic+'건 · 연결 탐색 '+r.connected+'건 · 16모듈 중 연결 '+r.moduleIds.length+'개</p>'+
     '<p class="hint">11개 조건 중 일치: '+(labels.join(' / ')||'없음')+'</p>'+
     '<p class="hint">관련 모듈 번호: '+(r.moduleIds.join(' · ')||'없음')+'</p>';
+}
+
+async function syncHistoricalWalkforward(){
+  try{
+    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),9000);
+    let response;
+    try{response=await fetch("./data/historical_walkforward.json",{cache:"no-store",signal:controller.signal});}
+    finally{clearTimeout(timer);}
+    if(!response.ok)throw Error("HTTP "+response.status);
+    const p=await response.json(),keys=new Set(PATTERN_AUDIT_AXES.map(x=>x.key));
+    if(!p||p.version!==1||p.origin!=="historical-walkforward-reconstruction-only"||
+      !Number.isInteger(p.totalRounds)||p.totalRounds<0||
+      !Array.isArray(p.rows)||!Array.isArray(p.examples)||
+      (p.rows.length!==0&&p.rows.length!==11)||p.rows.length>11||
+      p.rows.some(r=>!r||!keys.has(r.key)||!r.early||!r.late||
+        !Number.isFinite(r.early.hits)||!Number.isFinite(r.early.expected)||
+        !Number.isFinite(r.late.hits)||!Number.isFinite(r.late.expected)||
+        !Number.isFinite(r.late.delta)||typeof r.verdict!=="string")||
+      p.examples.length>8||p.examples.some(e=>!e||!Number.isInteger(e.round)||
+        !Array.isArray(e.actual)||e.actual.length!==6||!e.axes))throw Error("과거 검증 자료 형식 불일치");
+    state.historicalWalkforward=p;
+  }catch(e){
+    state.historicalWalkforward=null;
+    console.warn("과거 독립 복원:",e.message);
+  }
+  renderHistoricalWalkforward();
+}
+function renderHistoricalWalkforward(){
+  const out=$("historicalWalkforwardContent"),p=state.historicalWalkforward;
+  if(!out)return;
+  if(!p||!p.rows.length){
+    out.textContent="전체 회차 복원 자료 생성 또는 확인 대기. 기존 사전 실전 성적과는 별개입니다.";
+    return;
+  }
+  out.innerHTML='<p><strong>'+p.firstTestRound+'~'+p.lastTestRound+'회 전체 '+p.totalRounds+'회</strong> · 앞 구간 '+p.earlyRounds+'회 / 최근 뒤 구간 '+p.lateRounds+'회 ('+p.lateRange[0]+'~'+p.lateRange[1]+'회)</p>'+
+    '<p class="caution">여기는 과거 발표번호를 알고 난 뒤 재현한 실험이며 실제 사전 저장 실험이 아닙니다. 따라서 위 누적 성적표의 실전 0회와 합산하지 않습니다. 조건 설계에도 과거 정보를 활용했으므로 미래 당첨확률 상승의 증거가 아닙니다.</p>'+
+    '<div class="tablewrap"><table class="simple-table"><thead><tr><th>검색조건</th><th>앞 구간 적중 / 무작위 기대</th><th>뒤 구간 적중 / 무작위 기대</th><th>뒤 구간 차이</th><th>참고 판정</th></tr></thead><tbody>'+
+    p.rows.map(r=>'<tr><td>'+clean(r.label)+'</td>'+
+      '<td>'+r.early.hits+' / '+r.early.expected.toFixed(1)+'</td>'+
+      '<td>'+r.late.hits+' / '+r.late.expected.toFixed(1)+'</td>'+
+      '<td>'+(r.late.delta>=0?'+':'')+r.late.delta.toFixed(1)+'</td>'+
+      '<td>'+clean(r.verdict)+'</td></tr>').join("")+
+    '</tbody></table></div>'+
+    '<p class="hint">무작위 기대는 각 회차의 실제 검출 번호 개수에 맞춘 기준입니다. 뒤 구간 11조건의 유리·불리 22개 비교를 동시에 보정했습니다. 후보 번호 개수를 12수 등으로 제한하지 않았습니다.</p>'+
+    '<div class="toolbar"><label>최근 8회 복원 상세 <select id="historicalWalkforwardRound" class="field" onchange="renderHistoricalWalkforwardRound()">'+
+    p.examples.slice().reverse().map(e=>'<option value="'+e.round+'">'+e.round+'회</option>').join("")+
+    '</select></label></div><div id="historicalWalkforwardExample"></div>';
+  renderHistoricalWalkforwardRound();
+}
+function renderHistoricalWalkforwardRound(){
+  const out=$("historicalWalkforwardExample"),p=state.historicalWalkforward;
+  if(!out||!p||!p.examples.length)return;
+  const round=Number($("historicalWalkforwardRound").value);
+  const e=p.examples.find(x=>x.round===round);
+  if(!e)return;
+  out.innerHTML='<h3>'+round+'회 당시 조건 복원 · 발표번호 '+e.actual.join(" · ")+'</h3>'+
+    '<p class="hint">검색 당시에는 '+(round-1)+'회까지만 사용합니다. 이후 발표된 6개 본번호와 실제로 어디서 어긋났는지 확인하세요.</p>'+
+    '<div class="tablewrap"><table class="simple-table"><thead><tr><th>사전 조건</th><th>검출수</th><th>맞힌 번호</th><th>놓친 본번호</th></tr></thead><tbody>'+
+    PATTERN_AUDIT_AXES.map(a=>{
+      const x=e.axes[a.key];
+      if(!x||!Array.isArray(x.selected)||!Array.isArray(x.hits))return "";
+      const saved=new Set(x.selected),missed=e.actual.filter(n=>!saved.has(n));
+      return '<tr><td>'+clean(a.label)+'</td><td>'+x.selected.length+'개</td>'+
+        '<td>'+(x.hits.join(" · ")||"없음")+'</td><td>'+(missed.join(" · ")||"없음")+'</td></tr>';
+    }).join("")+'</tbody></table></div>';
 }
 function renderPatternScorecard(){
   const out=$("patternScorecardContent");
