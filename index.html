@@ -180,7 +180,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
     <div class="flex"><button class="btn" onclick="reloadData()">최신 당첨번호 확인</button><button class="btn secondary" onclick="go('tickets')">최종 5조합 만들기</button><span class="tag" id="sourceBadge">조회 준비 중</span></div>
   </div>
   <div class="cards"><div class="stat"><small>연구 대상 회차</small><b id="drawNext">-</b><small>최신 당첨 결과 이후 다음 회차</small></div><div class="stat"><small>번호별 조건 검색</small><b id="ruleCount">-</b><small>45개 기본 규칙과 개별 연결 탐색</small></div><div class="stat"><small>간이 기준 부합 번호</small><b id="focusCount">-</b><small>보수적 비교 결과이며 당첨 확률과 무관</small></div></div>
-  <div class="section"><div class="section-head"><div><h2>이번 회차 자동 검색 결과</h2><div class="sub">번호를 클릭하면 해당 번호만의 조건·출현 및 미출현 사례·이미지가 열립니다.</div></div><div class="flex"><label class="tag"><input type="checkbox" id="showAll" onchange="renderNumbers()"> 전체 45개 보기</label></div></div><div id="candidateGrid" class="number-grid"></div><p class="hint" id="candidateInfo"></p></div>
+  <div class="section"><div class="section-head"><div><h2>이번 회차 자동 검색 결과</h2><div class="sub">번호를 클릭하면 해당 번호만의 조건·출현 및 미출현 사례·이미지가 열립니다.</div></div><div class="flex"><label class="tag"><input type="checkbox" id="showAll" checked onchange="renderNumbers()"> 전체 45개 보기</label></div></div><div id="candidateGrid" class="number-grid"></div><p class="hint" id="candidateInfo"></p></div>
   
 <div class="section panel" id="numberCompare">
   <div class="section-head"><div><h2>🧭 번호별 패턴 차이 비교</h2>
@@ -203,7 +203,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 </section>
 <section id="research" class="page"><div class="eyebrow">NUMBER LAB</div><h1>번호 연구소</h1><p class="lead">특정 번호의 출현 흐름과 이번 회차에 적용되는 번호별 패턴을 확인합니다.</p><div class="toolbar"><label>분석 번호 <input id="focusN" class="field" type="number" min="1" max="45" value="39"></label><button class="btn" onclick="showResearch()">번호 조사하기</button></div><div id="researchResult"></div></section>
 <section id="patterns" class="page"><div class="eyebrow">PATTERN EXPLORER</div><h1>패턴 검색</h1><p class="lead">선택한 번호의 이번 회차 출현·자리·간격 기록에서 자동 생성한 연결 패턴과 기본 45종 조건을 따로 살펴봅니다. 조건의 과거 성공·실패 회차를 정확히 비교하세요.</p><div class="toolbar"><label>번호 <input id="patternN" class="field" type="number" min="1" max="45" value="39"></label><label>조건 <select id="patternRule" class="field"></select></label><button class="btn" onclick="showPatternSearch()">역대 패턴 검색</button></div><div id="patternResult"></div></section>
-<section id="tickets" class="page"><div class="eyebrow">FIVE TICKET STUDIO</div><h1>최종 5조합</h1><p class="lead">번호별 연구 결과를 참고해 조합을 만들어 기록합니다. 어떤 조합도 다른 6개 번호 조합보다 1등 당첨확률이 높지는 않습니다.</p><div class="panel"><h3>사용할 후보 번호</h3><p class="hint">보수적 간이 기준에 부합한 번호만 먼저 넣습니다. 통과 번호가 부족하면 과거 출현 패턴과 무관한 <strong>단순 분산수</strong>로 채웁니다. 이 12수는 추천이 아니며, 직접 번호를 수정할 수 있습니다.</p><textarea id="poolInput" class="field" rows="3" style="width:100%;resize:vertical"></textarea><p class="audit-banner" id="autoPoolExplanation">45개 번호의 간이 검증을 계산하고 있습니다.</p><div class="toolbar"><button class="btn" onclick="makeTickets(false)">최종 5조합 생성</button><button class="btn secondary" onclick="setAutoPool()">자동 후보 다시 적용</button><button class="btn outline" onclick="saveTicketPNG()">조합 이미지 저장</button></div></div><div id="ticketsResult"></div></section>
+<section id="tickets" class="page"><div class="eyebrow">FIVE TICKET STUDIO</div><h1>최종 5조합</h1><p class="lead">번호별 연구 결과를 참고해 조합을 만들어 기록합니다. 어떤 조합도 다른 6개 번호 조합보다 1등 당첨확률이 높지는 않습니다.</p><div class="panel"><h3>사용할 후보 번호</h3><p class="hint">아래에서 <strong>장기 패턴 연구용 12수</strong> 또는 <strong>중립 분산 12수</strong>를 선택하세요. 연구용은 전 번호의 고정 회차간격·사선 연결을 기준으로 선별하며, 높은 당첨확률을 뜻하지 않습니다. 후보 번호는 직접 수정할 수 있습니다.</p><textarea id="poolInput" class="field" rows="3" style="width:100%;resize:vertical"></textarea><p class="audit-banner" id="autoPoolExplanation">45개 번호의 간이 검증을 계산하고 있습니다.</p><div class="toolbar"><button class="btn" onclick="makeTickets(false)">최종 5조합 생성</button><button class="btn secondary" onclick="setResearchPool()">패턴 연구용 12수</button><button class="btn secondary" onclick="setAutoPool()">중립 분산 12수</button><button class="btn outline" onclick="saveTicketPNG()">조합 이미지 저장</button></div></div><div id="ticketsResult"></div></section>
 <section id="backtest" class="page"><div class="eyebrow">WALK-FORWARD CHECK</div><h1>과거 검증</h1><p class="lead">당시 알 수 있었던 정보만으로 번호와 조합을 생성하고, 실제 결과를 같은 12개 번호 규모의 무작위 기준과 비교합니다. 검증 회차를 직접 선택할 수 있습니다. 작은 표본의 검증으로 예측 우위를 입증할 수는 없습니다.</p><div class="toolbar"><label>검증할 과거 회차 <select id="backtestRounds" class="field" aria-label="과거 검증 회차 수"><option value="12">최근 12회</option><option value="30">최근 30회</option><option value="60" selected>최근 60회</option><option value="120">최근 120회</option></select></label><button id="runBacktestBtn" class="btn" onclick="runBacktest()">시점별 독립 검증 실행</button></div>
   <p class="hint">① 매 회차 직전까지의 기록만 사용 ② 기본 45개 규칙 × 45개 번호를 같은 기준으로 검증 ③ 당시 통과한 번호와 조합만 실제 결과와 비교합니다. 비교용 조합도 무작위로 선택한 12수에서 같은 방식으로 5게임을 만듭니다. 연결 패턴은 사후 탐색이므로 검증 통과 후보에서 제외됩니다.</p>
   <div id="backtestResult"></div></section>
@@ -394,6 +394,53 @@ function lastTwoHistory(ds,i,n){return recentPositions(ds,i,n,2).map(p=>p.j);}
 function lastThreeHistory(ds,i,n){return recentPositions(ds,i,n,3).map(p=>p.j);}
 function lastDrawIndex(ds,i){return [i-1];}
 function lastTwoDrawIndices(ds,i){return [i-2,i-1];}
+
+function makeTimelineRules(ds,n){
+  // 전체 1~45번에 동일하게 적용. 현재 후보번호를 사전에 지정하지 않습니다.
+  // '고정 위상'은 실제 연속 출현 간격과 다릅니다: 중간 회차 출현을 금지하지 않습니다.
+  const i=ds.length,round=i+1,rules=[];
+  const contains=(j,v)=>j>=0&&j<ds.length&&ds[j].numbers.includes(v);
+  let serial=0;
+  const make=(group,label,d,step,depth,why)=>{
+    const valueAt=(v,k)=>group==="고정위상"?v:v-k*step;
+    const test=(draws,j,v)=>{
+      for(let k=1;k<=depth;k++){
+        const at=j-k*d,val=valueAt(v,k);
+        if(at<0||val<1||val>45||!draws[at].numbers.includes(val))return false;
+      }
+      return true;
+    };
+    const history=(draws,j)=>Array.from({length:depth},(_,k)=>j-(depth-k)*d);
+    const mark=(v)=>group==="사선" ? Array.from({length:depth},(_,k)=>n-(k+1)*step).includes(v):v===n;
+    rules.push({id:400000+n*100+serial++,dynamic:true,group,label,k:depth,
+      step,d,depth,test,history,mark,why});
+  };
+  for(let d=1;4*d<=i;d++){
+    let fixed=0;
+    while(fixed<8&&(fixed+1)*d<=i&&contains(i-(fixed+1)*d,n))fixed++;
+    if(fixed>=4){
+      make("고정위상",n+"번 "+d+"회 고정 간격 × "+fixed+"단계 → "+round+"회",d,0,
+        Math.min(fixed,8),"과거 같은 번호가 목표 회차로부터 같은 회차 간격의 위치에 반복되었습니다. 그 사이 다른 회차 출현은 허용하며, 미래 출현을 보장하지 않습니다.");
+    }
+    for(const prev of ds[i-d].numbers){
+      const step=n-prev;
+      if(!step)continue;
+      let diagonal=1;
+      while(diagonal<8&&(diagonal+1)*d<=i){
+        const val=n-(diagonal+1)*step;
+        if(val<1||val>45||!contains(i-(diagonal+1)*d,val))break;
+        diagonal++;
+      }
+      if(diagonal>=4){
+        make("사선",n+"번 사선: "+d+"회마다 "+(step>0?"+":"")+step+
+          " 이동 × "+diagonal+"단계 → "+round+"회",d,step,Math.min(diagonal,8),
+          "과거 서로 다른 번호가 같은 회차 간격으로 같은 크기만큼 이동해 이번 목표 번호에 도달합니다. 실제 선행 회차·번호를 그림으로 확인하고, 사후 발견에 의한 우연 일치를 주의합니다.");
+      }
+    }
+  }
+  return rules.sort((a,b)=>b.depth-a.depth||a.d-b.d||a.step-b.step);
+}
+
 function makeFlowRules(ds,n){
   const rules=[],i=ds.length;
   let serial=0;
@@ -471,7 +518,7 @@ function makeFlowRules(ds,n){
       (d,j)=>d[j-2].numbers.includes(beforeNeighbor)&&d[j-1].numbers.includes(afterNeighbor),
       (v)=>v===beforeNeighbor||v===afterNeighbor,"연속 두 회차에 실제로 출현한 이웃수의 번호와 순서를 동시에 비교합니다.",lastTwoDrawIndices);
   }
-  return rules;
+  return rules.concat(makeTimelineRules(ds,n));
 }
 function studyRule(ds,n,rule){
   const currentIndex=ds.length;
@@ -510,34 +557,45 @@ function studyNumber(ds,n){
   // 기존의 탐색 신호는 기록으로 남기되, 자동 선정에는 쓰지 않습니다.
   const supports=unique.filter(x=>x.support);
   const confirmed=unique.filter(x=>!x.rule.dynamic&&evidenceOf(x).confirmed);
-  const status=confirmed.length?"간이 기준 부합":supports.length?"추가 검증":"보류";
-  return {n,list,unique,supports,confirmed,status,flowCount:discovered.length,
+  const timeline=discovered.filter(e=>e.rule.group==="고정위상"||e.rule.group==="사선");
+  const status=confirmed.length?"간이 기준 부합":supports.length?"추가 검증":timeline.length?"장기흐름 관찰":"보류";
+  return {n,list,unique,supports,confirmed,status,timelineCount:timeline.length,flowCount:discovered.length,
           basicCount:fixed.length,groupCount:unique.length,
           score:confirmed.reduce((total,e)=>total+Math.max(0,-Math.log10(Math.max(evidenceOf(e).corrected,1e-30))),0)};
 }
+function researchStrength(p){
+  const long=p.list.filter(e=>e.rule.group==="고정위상"||e.rule.group==="사선");
+  return long.reduce((sum,e)=>sum+20+(e.rule.depth-4)*35+
+    (e.rule.group==="고정위상"?20:0),0);
+}
 function analyzeAll(ds){
   return Array.from({length:45},(_,i)=>studyNumber(ds,i+1))
-    .sort((a,b)=>b.confirmed.length-a.confirmed.length||b.supports.length-a.supports.length||a.n-b.n);
+    .sort((a,b)=>researchStrength(b)-researchStrength(a)||
+      b.confirmed.length-a.confirmed.length||b.supports.length-a.supports.length||a.n-b.n);
 }
 function renderNumbers(){
   if(!state.draws.length)return;
   const all=$("showAll").checked;
-  const verified=state.profiles.filter(p=>p.confirmed.length);
-  const observed=state.profiles.filter(p=>!p.confirmed.length&&p.supports.length);
-  const list=all?state.profiles:[...verified,...observed];
+  const research=state.profiles;
+  const list=all?research:research.filter(p=>p.timelineCount||p.supports.length||p.confirmed.length);
   $("candidateGrid").innerHTML=list.length?list.map(p=>{
-    const top=p.confirmed.length>0;
+    const cycles=p.list.filter(e=>e.rule.group==="고정위상").length;
+    const slopes=p.list.filter(e=>e.rule.group==="사선").length;
+    const discovered=cycles+slopes;
+    const top=discovered>0;
     return '<button class="number-card '+(top?'top':p.supports.length?'detected':'')+
-      '" onclick="openDetail('+p.n+')" title="'+p.n+'번 자세히 보기">'+
+      '" onclick="openDetail('+p.n+')" title="'+p.n+'번의 모든 실제 검색 패턴 보기">'+
       '<span class="n '+(top?'mint':'')+'">'+p.n+'</span>'+
       '<span class="c">'+clean(p.status)+'</span>'+
-      '<span class="c">'+(top?'간이 검증 '+p.confirmed.length+'종':'연결 탐색 '+p.flowCount+'종')+
-      '</span></button>';
-  }).join(""):'<div class="audit-banner">보수적 간이 비교에서 확인된 번호가 없습니다. 아래 45개 전체 표에서 각 번호의 과거 관찰 자료를 살펴볼 수 있습니다.</div>';
-  $("candidateInfo").textContent="1~45번 전체 검사 · 간이 기준 부합 "+verified.length+
-    "개 번호 · 초기 탐색 신호만 있는 번호 "+observed.length+
-    "개 · 나머지 "+(45-verified.length-observed.length)+
-    "개. 초기 탐색 신호와 연결 패턴 개수는 자동 조합 후보 선정에 사용하지 않습니다.";
+      '<span class="c">'+(discovered?'고정간격 '+cycles+' · 사선 '+slopes:
+        '기본 '+p.basicCount+' · 연결 '+p.flowCount)+'</span></button>';
+  }).join(""):'<div class="audit-banner">현재 회차에 해당하는 연구 신호가 없습니다. 전체 45개 보기로 개별 검색 기록을 열어보세요.</div>';
+  const fixed=state.profiles.reduce((s,p)=>s+p.list.filter(e=>e.rule.group==="고정위상").length,0);
+  const diagonal=state.profiles.reduce((s,p)=>s+p.list.filter(e=>e.rule.group==="사선").length,0);
+  const detected=state.profiles.filter(p=>p.timelineCount>0).length;
+  $("candidateInfo").textContent="1~45번 전체 동일 검색 · 이번 회차 고정 회차간격 "+fixed+
+    "건 · 사선 연결 "+diagonal+"건 · 장기흐름 발견 "+detected+
+    "개 번호. 네가 과거 언급한 번호만 검색한 것이 아닙니다. 카드 순서는 연구 기록 우선순위이며 당첨확률 순위가 아닙니다. 기존 기본 45개 조건도 모두 각 번호에서 검사합니다.";
   renderEvidence45();
 }
 function renderEvidence45(){
@@ -1059,6 +1117,14 @@ function autoNumbers(dsProfiles,round){
     chosen.push(pending.shift());
   }
   return chosen.sort((a,b)=>a-b);
+}
+function setResearchPool(){
+  if(!state.profiles.length)return;
+  const ranked=state.profiles.slice().sort((a,b)=>researchStrength(b)-researchStrength(a)||
+    b.supports.length-a.supports.length||a.n-b.n);
+  const selected=ranked.slice(0,12);
+  $("poolInput").value=selected.map(p=>p.n).sort((a,b)=>a-b).join(", ");
+  $("autoPoolExplanation").textContent="패턴 연구용: 이번 회차에 실제 연결된 고정 회차간격·사선 패턴을 1~45번 모두 검사하여 12수를 골랐습니다. 과거 기록을 바탕으로 한 연구 우선순위이며, 높은 당첨확률이 입증된 조합이 아닙니다. 다른 숫자도 번호별 연구 화면에서 확인할 수 있습니다.";
 }
 function setAutoPool(){
   if(!state.profiles.length)return;
