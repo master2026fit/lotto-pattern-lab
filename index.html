@@ -2403,7 +2403,11 @@ function renderHistoricalWalkforward(){
     '</select></label></div><div id="historicalContextContent" class="hint">환경별 과거 복원 자료 대기</div></div>'+
     '<div class="toolbar"><label>최근 8회 복원 상세 <select id="historicalWalkforwardRound" class="field" onchange="renderHistoricalWalkforwardRound()">'+
     p.examples.slice().reverse().map(e=>'<option value="'+e.round+'">'+e.round+'회</option>').join("")+
-    '</select></label></div><div id="historicalWalkforwardExample"></div>';
+    '</select></label></div><div id="historicalWalkforwardExample"></div>'+
+    '<div class="toolbar" style="margin-top:16px"><button type="button" class="btn secondary" onclick="showHistoricalReviewImage()">🖼️ 이 회차 복기 그림 보기</button>'+
+    '<button type="button" class="btn" onclick="downloadHistoricalReviewPNG()">⬇️ 한국어 PPT형 PNG 저장</button></div>'+
+    '<canvas id="historicalReviewCanvas" width="1080" height="1000" aria-label="선택한 회차와 조건의 1~45 전체 복기 그림" style="display:none;width:100%;max-width:700px;height:auto;margin:14px auto;border-radius:14px"></canvas>'+
+    '<p class="hint">그림과 다운로드는 방금 고른 회차·검색조건을 반영합니다. 민트=검출·당첨, 파랑=검출·미당첨, 주황=미검출·당첨. 당첨 전 실제로 저장된 예측이 아니라 과거 시점의 복원 실험입니다.</p>';
   renderHistoricalContextReview();
   renderHistoricalWalkforwardRound();
 }
@@ -2429,6 +2433,8 @@ function renderHistoricalContextReview(){
       '<td>'+clean(r.verdict)+'</td></tr>').join("")+
     '</tbody></table></div>'+
     '<p class="hint">표의 ± 차이는 맞힌 번호 수 − 동일한 선택 개수의 무작위 기대치입니다. 「앞뒤 방향 역전」은 통계적으로 확인된 차이가 아닌 관찰 기록입니다. 적중 패턴의 미래 효과는 아직 검증되지 않았습니다.</p>';
+  const preview=$("historicalReviewCanvas");
+  if(preview&&preview.style.display!=="none")drawHistoricalReviewCanvas();
 }
 function renderHistoricalWalkforwardRound(){
   const out=$("historicalWalkforwardExample"),p=state.historicalWalkforward;
@@ -2447,6 +2453,96 @@ function renderHistoricalWalkforwardRound(){
       return '<tr><td>'+clean(a.label)+'</td><td>'+x.selected.length+'개</td>'+
         '<td>'+(x.hits.join(" · ")||"없음")+'</td><td>'+(missed.join(" · ")||"없음")+'</td></tr>';
     }).join("")+'</tbody></table></div>';
+  const preview=$("historicalReviewCanvas");
+  if(preview&&preview.style.display!=="none")drawHistoricalReviewCanvas();
+}
+function drawHistoricalReviewCanvas(){
+  const canvas=$("historicalReviewCanvas"),p=state.historicalWalkforward;
+  const round=Number($("historicalWalkforwardRound")?.value);
+  const key=$("historicalContextAxis")?.value;
+  const e=p?.examples?.find(item=>item.round===round);
+  const axis=PATTERN_AUDIT_AXES.find(item=>item.key===key);
+  const data=e?.axes?.[key];
+  if(!canvas||!e||!axis||!data||!Array.isArray(data.selected)||!Array.isArray(data.hits))return null;
+  const ctx=canvas.getContext("2d");
+  if(!ctx)return null;
+  const selected=new Set(data.selected),won=new Set(e.actual),missed=e.actual.filter(n=>!selected.has(n));
+  const font='"Noto Sans KR","Malgun Gothic",sans-serif';
+  const box=(x,y,w,h,r,color)=>{
+    ctx.fillStyle=color;ctx.beginPath();
+    ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+    ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+    ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+    ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.fill();
+  };
+  ctx.fillStyle="#f2f5fa";ctx.fillRect(0,0,1080,1000);
+  ctx.fillStyle="#132b4c";ctx.fillRect(0,0,1080,176);
+  ctx.fillStyle="#54dac4";ctx.font="700 22px "+font;ctx.fillText("LOTTO NOTE  |  로또 패턴 연구 기록",52,58);
+  ctx.fillStyle="#fff";ctx.font="800 46px "+font;ctx.fillText(round+"회 · 당첨번호 대비 복기",52,116);
+  ctx.fillStyle="#cbd5e1";ctx.font="20px "+font;
+  ctx.fillText((round-1)+"회까지로 검색한 과거 복원 결과 · 추첨 발표 이후 비교",53,151);
+  box(42,199,996,537,20,"#fff");
+  ctx.fillStyle="#64748b";ctx.font="20px "+font;ctx.fillText("검증할 검색조건",72,251);
+  let size=35;
+  do{ctx.font="800 "+size+"px "+font;if(ctx.measureText(axis.label).width<910)break;size--;}while(size>23);
+  ctx.fillStyle="#132b4c";ctx.fillText(axis.label,72,296);
+  const badges=[
+    {label:"검색 당시 검출",value:selected.size+"개",bg:"#e8f1ff",accent:"#2156a3"},
+    {label:"본번호 적중",value:data.hits.length+"개",bg:"#ddf8f0",accent:"#087d67"},
+    {label:"놓친 본번호",value:missed.length+"개",bg:"#fff0df",accent:"#ac5517"}
+  ];
+  badges.forEach((b,i)=>{
+    const x=71+i*319;box(x,317,300,69,12,b.bg);
+    ctx.fillStyle="#334155";ctx.font="20px "+font;ctx.fillText(b.label,x+17,345);
+    ctx.font="800 29px "+font;ctx.fillStyle=b.accent;ctx.fillText(b.value,x+222,347);
+  });
+  for(let n=1;n<=45;n++){
+    const col=(n-1)%9,row=Math.floor((n-1)/9);
+    const x=100+col*110,y=426+row*66;
+    const hit=won.has(n),picked=selected.has(n);
+    const fill=hit&&picked?"#27bdab":hit?"#f39a3a":picked?"#42679b":"#e6ebf1";
+    ctx.beginPath();ctx.arc(x,y,25,0,Math.PI*2);ctx.fillStyle=fill;ctx.fill();
+    ctx.fillStyle=hit||picked?"#fff":"#64748b";
+    ctx.font="800 21px "+font;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(String(n),x,y+1);
+  }
+  ctx.textAlign="left";ctx.textBaseline="alphabetic";
+  const legends=[
+    ["#27bdab","검출 + 당첨"],["#42679b","검출 · 미당첨"],
+    ["#f39a3a","미검출 + 당첨"],["#e6ebf1","그 외 번호"]
+  ];
+  legends.forEach((entry,i)=>{
+    const x=57+i*257,y=781;
+    ctx.beginPath();ctx.arc(x,y,10,0,Math.PI*2);ctx.fillStyle=entry[0];ctx.fill();
+    ctx.font="20px "+font;ctx.fillStyle="#334155";ctx.fillText(entry[1],x+18,y+7);
+  });
+  box(43,805,994,101,14,"#fff");
+  ctx.font="700 24px "+font;ctx.fillStyle="#132b4c";
+  ctx.fillText("실제 당첨 본번호  "+e.actual.join(" · "),67,845);
+  ctx.fillStyle="#a6511c";ctx.fillText("해당 조건이 놓친 번호  "+(missed.join(" · ")||"없음"),67,884);
+  ctx.font="19px "+font;ctx.fillStyle="#56677e";
+  if(e.environment){
+    ctx.fillText("당시 상황 · 직전 회차 합계 "+e.environment.previousSum+" / 연속번호 "+(e.environment.previousPair?"있음":"없음"),54,941);
+  }
+  ctx.font="18px "+font;
+  ctx.fillText("주의: 과거 시점 재구성 실험 · 실제 사전 저장 예측이 아니며 당첨 가능성 개선의 증거가 아닙니다.",54,975);
+  return canvas;
+}
+function showHistoricalReviewImage(){
+  const canvas=drawHistoricalReviewCanvas();
+  if(!canvas)return;
+  canvas.style.display="block";
+}
+function downloadHistoricalReviewPNG(){
+  const canvas=drawHistoricalReviewCanvas();
+  if(!canvas)return;
+  const round=Number($("historicalWalkforwardRound").value),key=$("historicalContextAxis").value;
+  canvas.toBlob(blob=>{
+    if(!blob){alert("PNG 저장용 이미지를 만들지 못했습니다.");return;}
+    const url=URL.createObjectURL(blob),a=document.createElement("a");
+    a.href=url;a.download="lotto-note-"+round+"-"+key+"-review.png";
+    document.body.append(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),3000);
+  },"image/png");
 }
 function renderPatternScorecard(){
   const out=$("patternScorecardContent");
