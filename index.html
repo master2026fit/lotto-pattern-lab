@@ -1940,8 +1940,17 @@ function buildRecapData(round){
       near:close.n,distance:close.d,
       kind:close.d===1?"1차이":close.d===2?"2차이":pool.some(x=>x%10===n%10)?"같은 끝수":"직접 연결 없음"};
   });
+  const allProfiles=profiles||analyzeAll(prior);
+  const profileMap=new Map(allProfiles.map(p=>[p.n,p]));
+  const selectedMap=new Map(selected.map(x=>[x.n,x]));
+  const allNumbers=Array.from({length:45},(_,i)=>{
+    const n=i+1,p=profileMap.get(n),savedRow=selectedMap.get(n);
+    return {n,basic:savedRow?savedRow.basic:p.basicCount,
+      connected:savedRow?savedRow.connected:p.flowCount,
+      selected:pool.includes(n),hit:wins.includes(n)};
+  });
   return {round,sourceRound:round-1,origin,actual:wins,bonus:actual.bonus_no,
-    pool,selected,omitted,exact,tickets,
+    pool,selected,omitted,allNumbers,exact,tickets,
     oneAway:selected.filter(x=>!x.hit&&x.distance===1).length,
     twoAway:selected.filter(x=>!x.hit&&x.distance===2).length,
     ticketHits:tickets.map(t=>t.filter(n=>wins.includes(n)).length)};
@@ -1955,7 +1964,8 @@ function recapSvgBall(n,cx,cy,r,hit,muted){
 function recapSVG(data){
   const rows=data.selected,omitted=data.omitted,winSet=new Set(data.actual);
   const yBase=565,afterTable=yBase+rows.length*59+28,omitRowsY=afterTable+65;
-  const afterOmitted=omitRowsY+omitted.length*48+32,gameRowsY=afterOmitted+70;
+  const afterOmitted=omitRowsY+omitted.length*48+32;
+  const gridStart=afterOmitted+89,gameHeaderY=gridStart+5*91+48,gameRowsY=gameHeaderY+35;
   const footerY=gameRowsY+data.tickets.length*61+52,H=footerY+118;
   const e=s=>clean(String(s)),svg=[];
   svg.push('<svg id="recapSvg" xmlns="http://www.w3.org/2000/svg" width="1080" height="'+H+'" viewBox="0 0 1080 '+H+'" role="img" aria-label="'+data.round+'회 검색 패턴과 실제 당첨번호 비교 이미지">');
@@ -2007,7 +2017,18 @@ function recapSVG(data){
     svg.push('<text x="194" y="'+(y+29)+'" font-family="Arial,sans-serif" font-size="20" fill="#d5e4f3">당시 기본 '+o.basic+'개 · 연결 '+o.connected+'개</text>');
     svg.push('<text x="725" y="'+(y+29)+'" font-family="Arial,sans-serif" font-size="20" fill="#b1d4fa">근접 후보 '+o.near+'번 · '+o.distance+' 차이</text>');
   });
-  svg.push('<text x="45" y="'+(afterOmitted+24)+'" font-family="Arial,sans-serif" font-size="29" font-weight="800" fill="#ffffff">③ 당시 5게임 · 실제 일치 수</text>');
+  svg.push('<text x="45" y="'+(afterOmitted+24)+'" font-family="Arial,sans-serif" font-size="29" font-weight="800" fill="#ffffff">③ 1~45번 전체 검색 기록 비교</text>');
+  svg.push('<text x="45" y="'+(afterOmitted+55)+'" font-family="Arial,sans-serif" font-size="18" fill="#b7cbdf">황금색: 후보이면서 당첨 · 초록색: 후보 밖 당첨 · 파란색: 후보 선정 · 회색: 미선정</text>');
+  data.allNumbers.forEach((p,i)=>{
+    const x=40+(i%9)*111,y=gridStart+Math.floor(i/9)*91;
+    const fill=p.hit&&p.selected?"#edbf66":p.hit?"#247f70":p.selected?"#2b5887":"#1b2d43";
+    const ink=p.hit&&p.selected?"#17243a":"#eff7ff";
+    svg.push('<rect x="'+x+'" y="'+y+'" width="104" height="84" rx="10" fill="'+fill+'" stroke="#536f8a"/>');
+    svg.push('<text x="'+(x+13)+'" y="'+(y+33)+'" font-family="Arial,sans-serif" font-size="25" font-weight="800" fill="'+ink+'">'+p.n+'</text>');
+    svg.push('<text x="'+(x+12)+'" y="'+(y+56)+'" font-family="Arial,sans-serif" font-size="16" fill="'+ink+'">기본 '+p.basic+'</text>');
+    svg.push('<text x="'+(x+12)+'" y="'+(y+75)+'" font-family="Arial,sans-serif" font-size="15" fill="'+ink+'">연결 '+p.connected+'</text>');
+  });
+  svg.push('<text x="45" y="'+gameHeaderY+'" font-family="Arial,sans-serif" font-size="29" font-weight="800" fill="#ffffff">④ 당시 5게임 · 실제 일치 수</text>');
   data.tickets.forEach((ticket,i)=>{
     const y=gameRowsY+i*61;
     svg.push('<rect x="40" y="'+y+'" width="1000" height="55" rx="8" fill="'+(i%2?"#1b3047":"#253a50")+'"/>');
