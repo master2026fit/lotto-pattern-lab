@@ -369,6 +369,7 @@ async function reloadData(){
   if(state.poolMode!=="manual"||!$("poolInput").value.trim())setResearchPool();
   else{invalidateTickets();renderSelectionAudit();}
   reconcileTrialBook();
+  await syncServerFullScans();
   reconcileFullScans();
   if(success)captureFullScan();
   renderFullScanStatus();
@@ -2193,6 +2194,35 @@ function saveFullScanBook(rows){
   try{localStorage.setItem(FULL_SCAN_KEY,JSON.stringify(state.fullScanCache));}
   catch(_){state.fullScanSaveFailed=true;}
 }
+async function syncServerFullScans(){
+  state.serverScanStatus="서버 기록 확인 중";
+  try{
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),8000);
+    let response;
+    try{response=await fetch("./data/weekly_scans.json",{cache:"no-store",signal:controller.signal});}
+    finally{clearTimeout(timer);}
+    if(!response.ok)throw Error("HTTP "+response.status);
+    const packet=await response.json();
+    if(!packet||packet.version!==1||!Array.isArray(packet.records)||packet.records.length>104)
+      throw Error("서버 기록 형식 불일치");
+    const records=packet.records.filter(x=>{
+      const cutoff=Date.UTC(2002,11,7,11,30)+(x.round-1)*7*24*60*60*1000;
+      return x.captureSource==="scheduled-github-actions"&&
+        x.scope==="all45"&&x.candidatePolicy==="dynamic-unlimited-v2"&&
+        x.review===null&&typeof x.createdAt==="string"&&
+        Number.isFinite(Date.parse(x.createdAt))&&Date.parse(x.createdAt)<cutoff&&
+        validateFullBackupScan(x);
+    });
+    const book=fullScanBook(),seen=new Set(book.map(x=>x.round));
+    const additional=records.filter(x=>!seen.has(x.round));
+    if(additional.length)saveFullScanBook(book.concat(additional).sort((a,b)=>a.round-b.round));
+    state.serverScanStatus="서버 사전기록 "+records.length+"회 확인"+(additional.length?" · 이 기기에 "+additional.length+"회 복원":"");
+  }catch(err){
+    state.serverScanStatus="서버 기록 동기화 대기(기기 저장본 사용)";
+    console.warn("주간 서버 사전기록 불러오기:",err.message);
+  }
+}
 function beforeDrawCutoff(round){
   // 토요일 20:30 KST까지만 '사전 저장'으로 인정. 데이터 발표 지연 중 사후 저장을 피한다.
   const first=Date.UTC(2002,11,7,11,30),week=7*24*60*60*1000;
@@ -2268,7 +2298,8 @@ function renderFullScanStatus(){
     '회 · 결과 확정 '+completed.length+'회 · 발표 대기 '+pending.length+'회'+
     '<p class="hint">현재 '+current+'회 사전 45수 '+(hasCurrent?"저장 완료":
       beforeDrawCutoff(current)?"저장 전(데이터 갱신 시 기록)":"마감")+
-    ' · 완료된 회차 '+clean(recent)+' · 저장 당시 연구후보 중 실제 당첨 '+(expected?hits+'/'+expected+'개':'아직 평가 전')+'</p>'+
+    ' · 완료된 회차 '+clean(recent)+' · 저장 당시 연구후보 중 실제 당첨 '+(expected?hits+'/'+expected+'개':'아직 평가 전')+'</p>'+ 
+    '<p class="hint">'+clean(state.serverScanStatus||"서버 기록 확인 전")+' · 고정수·개인 조합은 기기에만 저장</p>'+
     (oldPolicy?'<p class="caution">이번 회차 사전 45수 기록에는 이전의 12수 선정 설정이 보존돼 있습니다. 당첨 전 기록을 사후 변경하지 않으며, 새 무제한 설정은 현재 화면의 후보·새 조합과 이후 회차 기록에 적용합니다.</p>':'')+
     (completed.length?
       '<details class="audit-group"><summary class="openmore">실제 사전 저장분의 조건별 결과 보기</summary>'+
