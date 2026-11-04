@@ -170,6 +170,11 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 .candidate-review .toolbar{align-items:center}
 .ticket .ball{cursor:pointer}
 .ticket .pin-ball{outline:3px solid var(--gold);outline-offset:2px}
+
+.trial-summary{background:#18334d;border:1px solid #3a5975;border-radius:14px;padding:14px 16px;margin:13px 0}
+.trial-case-won{color:#9ce8d2;font-weight:750}
+.trial-case-missed{color:#f0b5a3}
+.trial-history-block{margin-top:18px}
 </style>
 </head>
 <body>
@@ -217,7 +222,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 </section>
 <section id="research" class="page"><div class="eyebrow">NUMBER LAB</div><h1>번호 연구소</h1><p class="lead">특정 번호의 출현 흐름과 이번 회차에 적용되는 번호별 패턴을 확인합니다.</p><div class="toolbar"><label>분석 번호 <input id="focusN" class="field" type="number" min="1" max="45" value="39"></label><button class="btn" onclick="showResearch()">번호 조사하기</button></div><div id="researchResult"></div></section>
 <section id="patterns" class="page"><div class="eyebrow">PATTERN EXPLORER</div><h1>패턴 검색</h1><p class="lead">선택한 번호의 이번 회차 출현·자리·간격 기록에서 자동 생성한 연결 패턴과 기본 45종 조건을 따로 살펴봅니다. 조건의 과거 성공·실패 회차를 정확히 비교하세요.</p><div class="toolbar"><label>번호 <input id="patternN" class="field" type="number" min="1" max="45" value="39"></label><label>조건 <select id="patternRule" class="field"></select></label><button class="btn" onclick="showPatternSearch()">역대 패턴 검색</button></div><div id="patternResult"></div></section>
-<section id="tickets" class="page"><div class="eyebrow">FIVE TICKET STUDIO</div><h1>최종 5조합</h1><p class="lead">번호별 연구 결과를 참고해 조합을 만들어 기록합니다. 어떤 조합도 다른 6개 번호 조합보다 1등 당첨확률이 높지는 않습니다.</p><div class="panel"><h3>검색 결과를 반영한 최종 후보</h3><p class="hint"><strong>패턴 연구용 12수</strong>가 기본값입니다. 1~45번 전체를 검사한 뒤 장기 연결 10수와 복합 관찰 최대 2수를 구분하여 선정합니다. 복합 관찰은 소표본·사후 발견이며 당첨 가능성이 더 높다는 뜻이 아닙니다. 중립 분산도 따로 선택할 수 있습니다.</p><textarea id="poolInput" class="field" rows="3" style="width:100%;resize:vertical" oninput="markManualPool()"></textarea><div class="pinned-box"><label for="lockedInput"><strong>5게임 공통 고정수</strong> <small>(최대 5개, 예: 39,44)</small></label><input id="lockedInput" class="field" placeholder="39, 44" autocomplete="off" oninput="markPinsPending()"><div class="toolbar"><button class="btn small secondary" onclick="applyPinned()">고정수 적용</button><span id="lockedStatus" class="hint">고정수는 이번 회차에만 저장하며, 없으면 후보에서 분산합니다.</span></div></div><p class="audit-banner" id="autoPoolExplanation">45개 번호의 간이 검증을 계산하고 있습니다.</p><div class="toolbar"><button class="btn" onclick="makeTickets(false)">최종 5조합 생성</button><button class="btn secondary" onclick="setResearchPool()">패턴 연구용 12수</button><button class="btn secondary" onclick="setAutoPool()">중립 분산 12수</button><button class="btn outline" onclick="saveTicketPNG()">조합 이미지 저장</button></div><div id="candidateAudit"></div></div><div id="ticketsResult"></div></section>
+<section id="tickets" class="page"><div class="eyebrow">FIVE TICKET STUDIO</div><h1>최종 5조합</h1><p class="lead">번호별 연구 결과를 참고해 조합을 만들어 기록합니다. 어떤 조합도 다른 6개 번호 조합보다 1등 당첨확률이 높지는 않습니다.</p><div class="panel"><h3>검색 결과를 반영한 최종 후보</h3><p class="hint"><strong>패턴 연구용 12수</strong>가 기본값입니다. 1~45번 전체를 검사한 뒤 장기 연결 10수와 복합 관찰 최대 2수를 구분하여 선정합니다. 복합 관찰은 소표본·사후 발견이며 당첨 가능성이 더 높다는 뜻이 아닙니다. 중립 분산도 따로 선택할 수 있습니다.</p><textarea id="poolInput" class="field" rows="3" style="width:100%;resize:vertical" oninput="markManualPool()"></textarea><div class="pinned-box"><label for="lockedInput"><strong>5게임 공통 고정수</strong> <small>(최대 5개, 예: 39,44)</small></label><input id="lockedInput" class="field" placeholder="39, 44" autocomplete="off" oninput="markPinsPending()"><div class="toolbar"><button class="btn small secondary" onclick="applyPinned()">고정수 적용</button><span id="lockedStatus" class="hint">고정수는 이번 회차에만 저장하며, 없으면 후보에서 분산합니다.</span></div></div><p class="audit-banner" id="autoPoolExplanation">45개 번호의 간이 검증을 계산하고 있습니다.</p><div class="toolbar"><button class="btn" onclick="makeTickets(false)">최종 5조합 생성</button><button class="btn secondary" onclick="setResearchPool()">패턴 연구용 12수</button><button class="btn secondary" onclick="setAutoPool()">중립 분산 12수</button><button class="btn outline" onclick="saveTicketPNG()">조합 이미지 저장</button></div><div id="candidateAudit"></div></div><div id="ticketsResult"></div><div id="trialHistory"></div></section>
 <section id="backtest" class="page"><div class="eyebrow">WALK-FORWARD CHECK</div><h1>과거 검증</h1><p class="lead">현재 최종 5조합에 적용하는 <strong>장기 연결 최대 10수 + 복합 관찰 최대 2수</strong>를 과거 매 회차 시점에서 다시 계산합니다. 같은 12수·5게임의 무작위 기준과 비교하며, 이후 당첨번호를 미리 참조하지 않습니다. 사후 선정 전략의 과거 결과는 미래 당첨확률을 증명하지 않습니다.</p><div class="toolbar"><label>검증할 과거 회차 <select id="backtestRounds" class="field" aria-label="과거 검증 회차 수"><option value="12">최근 12회</option><option value="30">최근 30회</option><option value="60" selected>최근 60회</option><option value="120">최근 120회</option></select></label><button id="runBacktestBtn" class="btn" onclick="runBacktest()">시점별 독립 검증 실행</button></div>
   <p class="hint">① 매 회차 직전까지의 기록만 사용 ② 기본 45개 규칙 × 45개 번호를 같은 기준으로 검증 ③ 당시 통과한 번호와 조합만 실제 결과와 비교합니다. 비교용 조합도 무작위로 선택한 12수에서 같은 방식으로 5게임을 만듭니다. 연결 패턴은 사후 탐색이므로 검증 통과 후보에서 제외됩니다.</p>
   <div id="backtestResult"></div></section>
@@ -317,6 +322,7 @@ async function reloadData(){
   showNumberComparison();
   if(state.poolMode!=="manual"||!$("poolInput").value.trim())setResearchPool();
   else{invalidateTickets();renderSelectionAudit();}
+  reconcileTrialBook();
   if($("research").classList.contains("active"))showResearch();
   if($("patterns").classList.contains("active"))showPatternSearch();
 }
@@ -1096,6 +1102,61 @@ function evidenceDashboard(n,fixed,flow){
 }
 
 
+const PRE_DRAW_CONTEXTS=[
+  {key:"neighbor1",label:"직전 회차 ±1 이웃수 존재",test:(d,i,n)=>i>0&&d[i-1].numbers.some(x=>Math.abs(x-n)===1)},
+  {key:"neighbor2",label:"직전 회차 ±2 이웃수 존재",test:(d,i,n)=>i>0&&d[i-1].numbers.some(x=>Math.abs(x-n)===2)},
+  {key:"ending",label:"직전 회차 다른 같은 끝수 존재",test:(d,i,n)=>i>0&&d[i-1].numbers.some(x=>x!==n&&x%10===n%10)},
+  {key:"bonus",label:"직전 회차 보너스가 해당 번호",test:(d,i,n)=>i>0&&d[i-1].bonus_no===n},
+  {key:"carry",label:"직전 회차 해당 번호 본번호 출현",test:(d,i,n)=>i>0&&d[i-1].numbers.includes(n)},
+  {key:"miss5",label:"최근 5회 해당 번호 미출현 중",test:(d,i,n)=>i>=5&&latestGap(d,i,n)>=5},
+  {key:"neighborTwice",label:"직전 3회 중 ±1 이웃수 2회 이상",test:(d,i,n)=>i>=3&&
+    d.slice(i-3,i).filter(x=>x.numbers.some(v=>Math.abs(v-n)===1)).length>=2},
+  {key:"sameSlot",label:"해당 번호 최근 두 번 같은 자리",test:(d,i,n)=>{
+    const p=recentPositions(d,i,n,2);return p.length===2&&p[0].slot===p[1].slot;
+  }}
+];
+function contextFlags(ds,i,n){
+  return PRE_DRAW_CONTEXTS.filter(f=>f.test(ds,i,n)).map(f=>f.key);
+}
+function conditionReviewHTML(ds,n,eventIndices){
+  const indices=[...new Set(eventIndices||[])].filter(i=>Number.isInteger(i)&&i>=LOOKBACK&&i<ds.length).sort((a,b)=>a-b);
+  if(!indices.length)return '<p class="hint">비교할 실제 과거 결과가 없습니다. 현재 패턴만으로 성공·실패 이유를 판단할 수 없습니다.</p>';
+  const cut=Math.max(300,ds.length-160);
+  const out=PRE_DRAW_CONTEXTS.map(f=>{
+    const group={yes:{cases:0,wins:0,train:0,trainWins:0,hold:0,holdWins:0},
+      no:{cases:0,wins:0,train:0,trainWins:0,hold:0,holdWins:0}};
+    for(const i of indices){
+      const z=f.test(ds,i,n)?group.yes:group.no;
+      const hit=ds[i].numbers.includes(n);
+      z.cases++;if(hit)z.wins++;
+      if(i<cut){z.train++;if(hit)z.trainWins++;}
+      else{z.hold++;if(hit)z.holdWins++;}
+    }
+    const a=group.yes,b=group.no;
+    const pctText=(w,c)=>c?(100*w/c).toFixed(1)+"%":"—";
+    const enough=a.train>=40&&b.train>=40&&a.hold>=12&&b.hold>=12;
+    const early=a.train?a.trainWins/a.train:0,earlyNo=b.train?b.trainWins/b.train:0;
+    const late=a.hold?a.holdWins/a.hold:0,lateNo=b.hold?b.holdWins/b.hold:0;
+    const stable=enough&&Math.abs(early-earlyNo)>=0.05&&Math.abs(late-lateNo)>=0.05&&
+      Math.sign(early-earlyNo)===Math.sign(late-lateNo);
+    const verdict=!enough?"표본 부족":stable?"전후 방향 반복(예측력 미검증)":"일관된 차이 없음";
+    return '<tr><td><strong>'+clean(f.label)+'</strong><small class="hint"> · 이번 '+upcoming(ds)+'회 '+(f.test(ds,ds.length,n)?"해당":"비해당")+'</small></td>'+
+      '<td>'+a.wins+' / '+(a.cases-a.wins)+' ('+pctText(a.wins,a.cases)+')</td>'+
+      '<td>'+b.wins+' / '+(b.cases-b.wins)+' ('+pctText(b.wins,b.cases)+')</td>'+
+      '<td>'+a.holdWins+'/'+a.hold+' vs '+b.holdWins+'/'+b.hold+'</td><td>'+verdict+'</td></tr>';
+  }).join("");
+  return '<p class="hint">성공=대상 번호가 해당 회차 본번호 6개에 출현, 실패=미출현. 대상 패턴이 성립한 회차만 모아, 결과를 보기 전에 알 수 있던 직전 상황 8가지를 똑같이 비교합니다. 「출현/미출현」과 관찰률은 예측확률이 아닙니다.</p>'+
+    '<div class="tablewrap"><table class="simple-table"><thead><tr><th>사전에 확인 가능한 상황</th><th>상황 해당: 출현/미출현</th><th>비해당: 출현/미출현</th><th>최근 160회 해당/비해당 출현</th><th>판정</th></tr></thead><tbody>'+
+    out+'</tbody></table></div><p class="caution">최근 160회는 이전 구간과 나눠 확인했습니다. 상황별 표본이 적거나 차이가 뒤집히면 다음 회차 후보 축소에 사용하지 않습니다. 여러 조건을 동시에 탐색한 결과이므로 「방향 반복」도 확률 상승의 증거가 아닙니다.</p>';
+}
+function renderContextAudit(details,key){
+  const box=details.querySelector(".context-audit-content");
+  const audit=state.historyAuditCache&&state.historyAuditCache.get(key);
+  if(!box||!audit||box.dataset.rendered==="true")return;
+  box.innerHTML=conditionReviewHTML(state.draws,audit.number,audit.eventIndices);
+  box.dataset.rendered="true";
+}
+
 function historyStats(ds,n,events){
   const hits=[],misses=[],lag=[0,0,0,0,0,0];
   let follow5=0,neighbor1=0,neighbor2=0,sameEnd=0;
@@ -1132,13 +1193,14 @@ function historyMarkup(a,compact=false){
   const auditKey=state.historyAuditSerial;
   state.historyAuditCache.set(auditKey,a);
   const allRows='<details class="audit-group" ontoggle="if(this.open)renderHistoryPage(this,'+auditKey+',0)"><summary class="openmore">과거 동일 조건 '+a.cases+'건 전수 기록 (성공·실패·실패 후 재등장)</summary><div class="history-full"></div></details>';
+  const contextRows='<details class="audit-group" ontoggle="if(this.open)renderContextAudit(this,'+auditKey+')"><summary class="openmore">맞았던 때와 틀렸던 때의 직전 상황 8가지 비교</summary><div class="context-audit-content"></div></details>';
   const delayed=a.lag.slice(1).reduce((s,v)=>s+v,0);
   const caption="과거 동일 조건 "+a.cases+"회 · 바로 다음 회차 출현 "+a.wins+
     "회 / 미출현 "+a.misses+"회 ("+rate+" 관찰)";
   const summary='<div class="audit-summary-card"><strong>'+caption+'</strong></div>';
   if(compact)return summary+'<p class="hint">과거 실패 중 5회 후속 회차까지 확인 가능한 '+a.follow5+
     '건에서 5회 이내 재등장 '+delayed+'건, 미등장 '+a.lag[0]+
-    '건. 단순한 사후 기록이며 추가 당첨 가능성을 뜻하지 않습니다.</p>'+allRows;
+    '건. 단순한 사후 기록이며 추가 당첨 가능성을 뜻하지 않습니다.</p>'+allRows+contextRows;
   const follow='<div class="rule-stats"><div><small>바로 다음 회차 성공</small><b>'+a.wins+'회</b></div>'+
     '<div><small>바로 다음 회차 실패</small><b>'+a.misses+'회</b></div>'+
     '<div><small>실패 후 5회 내 재등장</small><b>'+delayed+' / '+a.follow5+'건</b></div>'+
@@ -1152,7 +1214,7 @@ function historyMarkup(a,compact=false){
     '<div class="audit-content"><p><strong>출현 사례</strong> '+clean(a.winSamples.join(" / ")||"없음")+'</p>'+
     '<p><strong>미출현 사례</strong> '+clean(a.failSamples.join(" / ")||"없음")+'</p></div></details>';
   return '<div class="section" style="margin:10px 0"><h3>실제 과거 성공·실패 및 지연 재등장</h3>'+
-    summary+follow+example+allRows+
+    summary+follow+example+allRows+contextRows+
     '<p class="caution">동일 조건은 이번 회차 자료를 보고 사후 선택한 경우가 많습니다. 과거 관찰률과 지연 재등장 비율은 다음 회차의 당첨확률이 아닙니다. 최신 5개 회차 이내 실패는 지연 통계에서 제외했습니다.</p></div>';
 }
 
@@ -1427,6 +1489,14 @@ function compactNumberDifference(n,ds){
     nums.join(' · ')+'번.</p>'+comparisonMarkup(nums,n,ds)+'</div>';
 }
 
+
+function numberContextPanel(n,ds){
+  const records=Array.from({length:Math.max(0,ds.length-LOOKBACK)},(_,k)=>k+LOOKBACK);
+  return '<div class="section panel"><h2>'+n+'번 · 맞았던 때와 틀렸던 때의 선행 상황</h2>'+
+    '<p class="hint">전체 당첨 이력에서 번호 '+n+'의 출현·미출현 사례를 같은 8개 조건으로 비교합니다. 직전 회차에 알 수 있었던 것만 사용하며, 미래 당첨확률은 계산하지 않습니다.</p>'+
+    '<details class="audit-group"><summary class="openmore">8개 상황별 실제 출현/미출현 및 최근 구간 비교 보기</summary>'+
+    conditionReviewHTML(ds,n,records)+'</details></div>';
+}
 function numberReport(n,p,ds){
   const all=p.list;
   const gap=latestGap(ds,ds.length,n);
@@ -1446,7 +1516,7 @@ function numberReport(n,p,ds){
     '<p class="hint">최근 3번 실제 출현 위치: <strong>'+clean(positionTrail||"기록 부족")+'</strong></p>'+
     '<div class="audit-banner"><strong>숫자 해석:</strong> '+gap+'회는 '+n+'번이 마지막으로 나온 뒤 결과가 확정된 회차에서 연속으로 미출현한 횟수입니다. 다음 '+upcoming(ds)+'회 결과는 아직 모릅니다. 기본 '+fixed.length+'종은 미리 정의한 45개 검색 조건 중 이번 회차에 일치한 항목입니다. 별도 연결 '+flow.length+'종은 최근 출현 자리·간격·관련 번호에서 자동 생성한 조건이며 <strong>기본 '+fixed.length+'종 중 확률이 높은 '+flow.length+'종을 뽑은 게 아닙니다.</strong></div>'+ 
     '<p class="caution">모든 조건은 과거 기록에 대한 관찰입니다. 기본 '+fixed.length+'개 가운데 탐색 기준에 부합한 항목 '+fixed.filter(e=>e.support).length+'개, 연결 '+flow.length+'개 가운데 '+flow.filter(e=>e.support).length+'개입니다. 이 개수는 당첨 예측력이 입증됐다는 뜻이 아닙니다. 비슷한 규칙이 서로 중복될 수 있습니다.</p>'+
-    '</div>'+module16ForNumber(n)+compactNumberDifference(n,ds)+evidenceDashboard(n,fixed,flow)+
+    '</div>'+numberContextPanel(n,ds)+module16ForNumber(n)+compactNumberDifference(n,ds)+evidenceDashboard(n,fixed,flow)+
     '<div class="section"><h2>🧩 이번 회차에서 발견한 회차 연결 패턴</h2>'+
     '<p class="hint">이번 회차에 실제 일치한 연결 조건 '+flow.length+'개를 <strong>전부</strong> 표시합니다. 확률 높은 순으로 추린 목록이 아닙니다. 각 조건의 과거 출현·미출현 횟수와 비교 표본을 따로 살펴보세요. 그림은 펼치면 볼 수 있습니다.</p>'+
     (flow.length?flow.map(e=>ruleCard(n,e,ds)).join(""):'<div class="panel">이번 회차에 맞는 연결 조건은 발견됐으나, 비교 가능한 과거 사례가 8회 미만이거나 해당 조건이 없습니다. 빈약한 자료를 근거로 포장하지 않습니다.</div>')+
@@ -1798,6 +1868,142 @@ function ticketBalls(ticket,pins){
     (n<=10?1:n<=20?2:n<=30?3:n<=40?4:5)+(pins.includes(n)?' pin-ball':'')+
     '" onclick="openDetail('+n+')" aria-label="'+n+'번 실제 패턴 상세 보기">'+n+'</button>').join("")+'</div>';
 }
+
+const TRIAL_BOOK_KEY="lotto_pattern_forecast_trials_v1";
+function trialBook(){
+  if(Array.isArray(state.trialBookCache))return state.trialBookCache;
+  try{
+    const raw=JSON.parse(localStorage.getItem(TRIAL_BOOK_KEY)||"[]");
+    state.trialBookCache=Array.isArray(raw)?raw.filter(x=>x&&Number.isInteger(x.round)&&
+      Number.isInteger(x.sourceRound)&&Array.isArray(x.pool)&&Array.isArray(x.tickets)):[];
+  }catch(_){state.trialBookCache=[];}
+  return state.trialBookCache;
+}
+function saveTrialBook(rows){
+  state.trialBookCache=rows.slice();
+  try{localStorage.setItem(TRIAL_BOOK_KEY,JSON.stringify(state.trialBookCache));}
+  catch(_){state.trialStorageFailed=true;}
+}
+function rememberTrial(pool,pins,tickets){
+  if(!state.draws.length)return;
+  const round=upcoming(state.draws),sourceRound=latest(state.draws).draw_no;
+  const id=round+"-"+Date.now()+"-"+(state.nonce||0);
+  const contexts={},patternSnapshots={};
+  for(const n of pool){
+    contexts[n]=contextFlags(state.draws,state.draws.length,n);
+    const p=state.profiles.find(x=>x.n===n);
+    const timeline=p?p.list.filter(e=>e.rule.group==="고정위상"||e.rule.group==="사선"):[];
+    const specials=(state.module16||[]).filter(m=>m.id===4||m.id===16)
+      .flatMap(m=>m.items.filter(x=>x.n===n).map(x=>x.label));
+    patternSnapshots[n]={basic:p?p.basicCount:0,connected:p?p.flowCount:0,
+      highlights:[...timeline.map(e=>labelOf(e,n)),...specials].slice(0,5)};
+  }
+  const entry={id,round,sourceRound,
+    createdAt:new Date().toLocaleString("ko-KR",{timeZone:"Asia/Seoul"}),
+    mode:state.poolMode,pool:pool.slice(),pins:pins.slice(),
+    tickets:tickets.map(t=>t.slice()),contexts,patternSnapshots,review:null};
+  const book=trialBook();
+  const signature=x=>x.round+"|"+x.mode+"|"+x.pool.join(",")+"|"+x.tickets.map(t=>t.join(",")).join(";");
+  if(!book.some(x=>signature(x)===signature(entry))){
+    book.push(entry);saveTrialBook(book);
+  }
+  renderTrialHistory();
+}
+function reconcileTrialBook(){
+  if(!state.draws.length)return;
+  const byRound=new Map(state.draws.map(d=>[d.draw_no,d]));
+  let changed=false;
+  const book=trialBook();
+  for(const item of book){
+    if(item.review||item.sourceRound!==item.round-1)continue;
+    const target=byRound.get(item.round);
+    if(!target)continue;
+    const pool=item.pool.filter(n=>Number.isInteger(n)&&n>=1&&n<=45);
+    const hits=pool.filter(n=>target.numbers.includes(n));
+    const misses=pool.filter(n=>!target.numbers.includes(n));
+    const ticketHits=item.tickets.map(t=>t.filter(n=>target.numbers.includes(n)).length);
+    item.review={actual:target.numbers.slice(),bonus:target.bonus_no,hits,misses,ticketHits};
+    changed=true;
+  }
+  if(changed)saveTrialBook(book);
+  renderTrialHistory();
+}
+function exportTrialBook(){
+  const data=trialBook();
+  if(!data.length)return alert("저장된 실험 기록이 없습니다.");
+  const blob=new Blob([JSON.stringify({format:"LOTTO_PATTERN_TRIALS_V1",records:data},null,2)],
+    {type:"application/json;charset=utf-8"});
+  const url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download="lotto-pattern-trials-"+latest(state.draws).draw_no+".json";
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+function renderTrialHistory(){
+  const out=$("trialHistory");
+  if(!out||!state.draws.length)return;
+  const book=trialBook(),completed=book.filter(x=>x.review),pending=book.filter(x=>!x.review);
+  if(!book.length){
+    out.innerHTML='<div class="section panel trial-history-block"><h2>발표 후 자동 복기 기록장</h2>'+
+      '<p class="hint">아직 이 기기에서 저장한 조합이 없습니다. 5조합을 생성하면 대상 회차·후보·직전 상황을 기록하고, 당첨 결과가 데이터에 들어오면 맞은 번호와 틀린 번호를 자동 비교합니다. 저장은 이 브라우저에만 적용됩니다.</p></div>';
+    return;
+  }
+  const combined=new Map();
+  for(const entry of completed){
+    for(const n of entry.pool){
+      const key=entry.round+":"+n;
+      if(!combined.has(key))combined.set(key,{
+        n,hit:entry.review.hits.includes(n),flags:(entry.contexts||{})[n]||[]
+      });
+    }
+  }
+  const unique=[...combined.values()],hit=unique.filter(x=>x.hit).length;
+  const contextSummary=PRE_DRAW_CONTEXTS.map(f=>{
+    const matched=unique.filter(x=>x.flags.includes(f.key));
+    const wins=matched.filter(x=>x.hit).length;
+    return '<div class="audit-banner" style="margin:6px 0"><strong>'+clean(f.label)+'</strong>'+
+      '<p class="hint">사전에 이 조건에 해당했던 서로 다른 번호·회차 '+matched.length+
+      '건 중 출현 '+wins+'건, 미출현 '+(matched.length-wins)+'건</p></div>';
+  }).join("");
+  const cards=book.slice(-10).reverse().map(entry=>{
+    const reviewed=!!entry.review;
+    const status=reviewed?"복기 완료":"발표 대기";
+    const title=entry.round+"회 · "+status+" · "+clean(entry.mode||"연구")+" · "+clean(entry.createdAt||"");
+    const detail=reviewed?
+      '<p>확정 당첨번호: <strong>'+entry.review.actual.join("·")+'</strong> (보너스 '+entry.review.bonus+')</p>'+
+      '<p class="trial-case-won">후보 중 출현 '+(entry.review.hits.join("·")||"없음")+
+      '</p><p class="trial-case-missed">후보 중 미출현 '+(entry.review.misses.join("·")||"없음")+
+      '</p><p>5게임 적중 수: '+entry.review.ticketHits.join(" · ")+'개</p>':
+      '<p class="hint">이 '+entry.round+'회 당첨 결과는 현재 연결된 자료에서 아직 확인되지 않았습니다. 결과 발표 후 새로고침하면 복기됩니다.</p>';
+    const comparison=entry.pool.map(n=>{
+      const flags=((entry.contexts||{})[n]||[]).map(k=>{
+        const def=PRE_DRAW_CONTEXTS.find(f=>f.key===k);
+        return def?def.label:k;
+      });
+      const didHit=reviewed&&entry.review.hits.includes(n);
+      const snapshot=((entry.patternSnapshots||{})[n]||{});
+      const patt=(snapshot.highlights||[]).slice(0,5).join(" / ")||"특정 장기·복합 연결 기록 없음";
+      return '<tr><td>'+n+'번</td><td class="'+(reviewed?(didHit?"trial-case-won":"trial-case-missed"):"")+'">'+
+        (reviewed?(didHit?"출현":"미출현"):"미확정")+'</td><td>'+clean(patt)+
+        '</td><td>'+clean(flags.join(" / ")||"미리 정한 8개 상황 중 해당 없음")+'</td></tr>';
+    }).join("");
+    return '<details class="audit-group"><summary class="openmore">'+title+'</summary>'+
+      '<p class="hint">생성 당시 확정된 마지막 회차 '+entry.sourceRound+'회 · 당시 후보 '+entry.pool.join("·")+
+      '번 · 공통 고정 '+((entry.pins||[]).join("·")||"없음")+'</p>'+detail+
+      '<div class="tablewrap"><table class="simple-table"><thead><tr><th>후보 번호</th><th>결과</th><th>선정 당시 실제 발견 패턴</th><th>직전 상황(사전 저장)</th></tr></thead><tbody>'+
+      comparison+'</tbody></table></div></details>';
+  }).join("");
+  out.innerHTML='<div class="section panel trial-history-block"><h2>발표 후 자동 복기 기록장</h2>'+
+    '<p class="hint">이 기기에서 조합을 생성한 당시의 번호·상황을 저장합니다. 결과가 확정되면 자동으로 성공·실패를 기록합니다. 다른 기기와 자동 동기화되지는 않습니다.</p>'+
+    '<div class="cards"><div class="stat"><small>저장한 실험</small><b>'+book.length+'회</b></div>'+
+    '<div class="stat"><small>발표 후 복기 완료</small><b>'+completed.length+'회</b></div>'+
+    '<div class="stat"><small>발표 대기</small><b>'+pending.length+'회</b></div>'+
+    '<div class="stat"><small>중복 제외 번호·회차별 실제 출현</small><b>'+hit+'/'+unique.length+'건</b></div></div>'+
+    '<details class="audit-group"><summary class="openmore">누적 8개 상황별 맞음·틀림 비교</summary>'+
+      contextSummary+'<p class="caution">같은 회차·번호가 여러 실험에 등장하면 한 번만 셌습니다. 실험 표본이 적으면 방향을 판단할 수 없으며, 기록 비율은 당첨확률이 아닙니다.</p></details>'+
+    '<div class="toolbar"><button class="btn small outline" onclick="exportTrialBook()">실험 기록 JSON 백업</button></div>'+
+    cards+(book.length>10?'<p class="hint">최근 10개 실험을 표시합니다. 전체 기록은 JSON 백업을 이용하세요.</p>':'')+
+    (state.trialStorageFailed?'<p class="caution">브라우저 저장공간에 기록을 저장하지 못했습니다. JSON 백업을 이용해 주세요.</p>':'')+'</div>';
+}
 function makeTickets(again){
   if(!state.draws.length)return alert("데이터를 먼저 연결해 주세요.");
   let pool,pins;
@@ -1833,6 +2039,7 @@ function makeTickets(again){
     '<div class="toolbar"><button class="btn secondary" onclick="makeTickets(true)">다른 5조합 생성</button>'+
     '<button class="btn outline" onclick="saveTicketPNG()">PPT 이미지 저장</button></div>'+
     '<p class="hint">패턴 연구용은 장기 연결 10수와 별도 복합 관찰 최대 2수를 나눠 고른 탐색 조합입니다. 복합 관찰은 사후 검색이고 우연일 수 있습니다. 중립 분산은 패턴 점수를 사용하지 않습니다. 어떤 방식이든 로또의 1등 당첨확률이 높아지는 것은 아닙니다.</p></div>';
+  rememberTrial(pool,pins,state.tickets);
 }
 function saveTicketPNG(){
   if(!state.tickets.length)return alert("먼저 5조합을 생성하세요.");
