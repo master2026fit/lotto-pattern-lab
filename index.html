@@ -228,6 +228,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
     <div class="flex"><button class="btn" onclick="reloadData()">최신 당첨번호 확인</button><button class="btn secondary" onclick="go('tickets')">최종 5조합 만들기</button><span class="tag" id="sourceBadge">조회 준비 중</span></div>
   </div>
   <div id="drawReviewNotice" class="draw-review-banner" aria-live="polite"></div>
+  <div id="serverReviewGallery" class="section panel" hidden></div>
   <div class="cards"><div class="stat"><small>연구 대상 회차</small><b id="drawNext">-</b><small>최신 당첨 결과 이후 다음 회차</small></div><div class="stat"><small>번호별 조건 검색</small><b id="ruleCount">-</b><small>45개 기본 규칙과 개별 연결 탐색</small></div><div class="stat"><small>간이 기준 부합 번호</small><b id="focusCount">-</b><small>보수적 비교 결과이며 당첨 확률과 무관</small></div></div>
   <div class="section"><div class="section-head"><div><h2>이번 회차 자동 검색 결과</h2><div class="sub">번호를 클릭하면 해당 번호만의 조건·출현 및 미출현 사례·이미지가 열립니다.</div></div><div class="flex"><label class="tag"><input type="checkbox" id="showAll" checked onchange="renderNumbers()"> 전체 45개 보기</label></div></div><div id="candidateGrid" class="number-grid"></div><p class="hint" id="candidateInfo"></p></div>
   
@@ -369,7 +370,7 @@ async function reloadData(){
   if(state.poolMode!=="manual"||!$("poolInput").value.trim())setResearchPool();
   else{invalidateTickets();renderSelectionAudit();}
   reconcileTrialBook();
-  await syncServerFullScans();
+  await Promise.all([syncServerFullScans(),syncServerWeeklyReviews()]);
   reconcileFullScans();
   if(success)captureFullScan();
   renderFullScanStatus();
@@ -2224,6 +2225,58 @@ async function syncServerFullScans(){
     state.serverScanStatus="서버 기록 동기화 대기(기기 저장본 사용)";
     console.warn("주간 서버 사전기록 불러오기:",err.message);
   }
+}
+async function syncServerWeeklyReviews(){
+  state.serverWeeklyReviews=[];
+  try{
+    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),8000);
+    let response;
+    try{response=await fetch("./data/weekly_reviews.json",{cache:"no-store",signal:controller.signal});}
+    finally{clearTimeout(timer);}
+    if(!response.ok)throw Error("HTTP "+response.status);
+    const packet=await response.json();
+    if(!packet||packet.version!==1||!Array.isArray(packet.records)||packet.records.length>104)
+      throw Error("복기 데이터 형식 불일치");
+    state.serverWeeklyReviews=packet.records.filter(x=>{
+      if(!x||!Number.isInteger(x.round)||x.round<1||x.round>5000||
+        x.sourceRound!==x.round-1||x.provenance!=="predraw-snapshot-and-online-draw"||
+        !validBackupNumbers(x.actual,6)||!validBackupNumbers(x.selectedHit,null,0,6)||
+        !validBackupNumbers(x.missed,null,0,6)||
+        !Number.isInteger(x.candidateCount)||x.candidateCount<0||x.candidateCount>45||
+        !Array.isArray(x.axes)||x.axes.length!==11)return false;
+      const won=new Set(x.actual);
+      return x.selectedHit.length+x.missed.length===6&&
+        x.selectedHit.every(n=>won.has(n)&&!x.missed.includes(n))&&
+        x.missed.every(n=>won.has(n))&&
+        x.png==="./data/recaps/"+x.round+".png"&&
+        x.svg==="./data/recaps/"+x.round+".svg";
+    }).sort((a,b)=>a.round-b.round);
+  }catch(err){
+    console.warn("서버 복기 이미지 확인:",err.message);
+  }
+  renderServerReviewGallery();
+}
+function renderServerReviewGallery(){
+  const el=$("serverReviewGallery");
+  if(!el)return;
+  const records=state.serverWeeklyReviews||[];
+  if(!records.length){el.hidden=true;el.innerHTML="";return;}
+  const current=records.at(-1),round=current.round;
+  const png="./data/recaps/"+round+".png",svg="./data/recaps/"+round+".svg";
+  el.hidden=false;
+  el.innerHTML='<h2>📊 추첨 후 자동 복기 이미지 · '+round+'회</h2>'+
+    '<p class="hint">서버가 추첨 전 저장한 45수 검색 기록을 실제 발표번호와 비교했습니다. 사후에 번호를 다시 고르지 않았습니다.</p>'+
+    '<p><strong>사전 연구후보 '+current.candidateCount+'개 중 정확 적중 '+current.selectedHit.length+'개</strong> · 후보 밖 실제 당첨 '+current.missed.length+'개</p>'+
+    '<p class="hint">맞힌 번호: '+(current.selectedHit.join(" · ")||"없음")+
+    ' | 놓친 당첨번호: '+(current.missed.join(" · ")||"없음")+'</p>'+
+    '<div class="toolbar"><a class="btn secondary" href="'+png+'" download="'+round+'회-자동복기.png">복기 PNG 저장</a>'+
+    '<a class="btn outline" href="'+svg+'" download="'+round+'회-자동복기.svg">SVG 원본 저장</a></div>'+
+    '<details class="audit-group"><summary class="openmore">'+round+'회 45수·11조건 복기 이미지 펼치기</summary>'+
+    '<img loading="lazy" src="'+png+'" style="display:block;width:100%;max-width:560px;height:auto;margin:16px auto;border-radius:12px" alt="'+round+'회 전체 45수와 11조건 자동 복기 이미지"></details>'+
+    '<p class="hint">이 그림은 성공·실패를 기록하기 위한 자료이며, 다음 회차 당첨 확률을 보장하지 않습니다.</p>'+
+    (records.length>1?'<details><summary>이전 자동 복기 '+(records.length-1)+'회 보기</summary><p>'+
+      records.slice(0,-1).reverse().map(r=>'<a href="./data/recaps/'+r.round+'.png" target="_blank" rel="noopener">'+r.round+'회 · 후보 '+r.candidateCount+'개 중 '+r.selectedHit.length+'개 적중</a>').join(' · ')+
+      '</p></details>':'');
 }
 function beforeDrawCutoff(round){
   // 토요일 20:30 KST까지만 '사전 저장'으로 인정. 데이터 발표 지연 중 사후 저장을 피한다.
