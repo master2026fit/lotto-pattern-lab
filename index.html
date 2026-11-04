@@ -2207,6 +2207,7 @@ async function syncServerFullScans(){
     if(!packet||packet.version!==1||!Array.isArray(packet.records)||packet.records.length>104)
       throw Error("서버 기록 형식 불일치");
     const records=packet.records.filter(x=>{
+      if(!x||typeof x!=="object"||!Number.isInteger(x.round))return false;
       const cutoff=Date.UTC(2002,11,7,11,30)+(x.round-1)*7*24*60*60*1000;
       return x.captureSource==="scheduled-github-actions"&&
         x.scope==="all45"&&x.candidatePolicy==="dynamic-unlimited-v2"&&
@@ -2214,6 +2215,7 @@ async function syncServerFullScans(){
         Number.isFinite(Date.parse(x.createdAt))&&Date.parse(x.createdAt)<cutoff&&
         validateFullBackupScan(x);
     });
+    state.serverScanLatest=records.slice().sort((a,b)=>a.round-b.round).at(-1)||null;
     const book=fullScanBook(),seen=new Set(book.map(x=>x.round));
     const additional=records.filter(x=>!seen.has(x.round));
     if(additional.length)saveFullScanBook(book.concat(additional).sort((a,b)=>a.round-b.round));
@@ -2300,6 +2302,8 @@ function renderFullScanStatus(){
       beforeDrawCutoff(current)?"저장 전(데이터 갱신 시 기록)":"마감")+
     ' · 완료된 회차 '+clean(recent)+' · 저장 당시 연구후보 중 실제 당첨 '+(expected?hits+'/'+expected+'개':'아직 평가 전')+'</p>'+ 
     '<p class="hint">'+clean(state.serverScanStatus||"서버 기록 확인 전")+' · 고정수·개인 조합은 기기에만 저장</p>'+
+    (state.serverScanLatest?'<details class="audit-group"><summary class="openmore">서버 저장 '+state.serverScanLatest.round+'회 · 45수 검사 · 연구후보 '+state.serverScanLatest.candidatePool.length+'개 모두 보기</summary>'+
+      '<p class="hint">당첨 발표 전에 자동 저장한 공개 기록입니다. 기기의 이전 선정 기록은 변경하지 않습니다.</p><p>'+state.serverScanLatest.candidatePool.map(n=>'<span class="ball b'+(n<=10?1:n<=20?2:n<=30?3:n<=40?4:5)+'">'+n+'</span>').join(' ')+'</p></details>':'')+
     (oldPolicy?'<p class="caution">이번 회차 사전 45수 기록에는 이전의 12수 선정 설정이 보존돼 있습니다. 당첨 전 기록을 사후 변경하지 않으며, 새 무제한 설정은 현재 화면의 후보·새 조합과 이후 회차 기록에 적용합니다.</p>':'')+
     (completed.length?
       '<details class="audit-group"><summary class="openmore">실제 사전 저장분의 조건별 결과 보기</summary>'+
