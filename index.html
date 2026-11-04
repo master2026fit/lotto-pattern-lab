@@ -2396,10 +2396,39 @@ function renderHistoricalWalkforward(){
       '<td>'+clean(r.verdict)+'</td></tr>').join("")+
     '</tbody></table></div>'+
     '<p class="hint">무작위 기대는 각 회차의 실제 검출 번호 개수에 맞춘 기준입니다. 뒤 구간 11조건의 유리·불리 22개 비교를 동시에 보정했습니다. 후보 번호 개수를 12수 등으로 제한하지 않았습니다.</p>'+
+    '<div style="margin:24px 0;padding-top:16px;border-top:1px solid rgba(128,148,175,.3)"><h3>🔎 언제 맞고 언제 빗나갔나? · 환경별 비교</h3>'+
+    '<p class="hint">직전 회차 합계 · 연속번호 유무 · 해당 번호에 겹친 조건 수, 세 기준을 미리 정해 각각 두 환경으로 나눴습니다. 총 66개 환경의 양·음 132개 비교를 동시에 보정하며, 이 결과로 번호를 자동 제외하지 않습니다.</p>'+
+    '<div class="toolbar"><label>검증할 검색조건 <select id="historicalContextAxis" class="field" onchange="renderHistoricalContextReview()">'+
+    PATTERN_AUDIT_AXES.map(a=>'<option value="'+a.key+'">'+clean(a.label)+'</option>').join("")+
+    '</select></label></div><div id="historicalContextContent" class="hint">환경별 과거 복원 자료 대기</div></div>'+
     '<div class="toolbar"><label>최근 8회 복원 상세 <select id="historicalWalkforwardRound" class="field" onchange="renderHistoricalWalkforwardRound()">'+
     p.examples.slice().reverse().map(e=>'<option value="'+e.round+'">'+e.round+'회</option>').join("")+
     '</select></label></div><div id="historicalWalkforwardExample"></div>';
+  renderHistoricalContextReview();
   renderHistoricalWalkforwardRound();
+}
+function renderHistoricalContextReview(){
+  const out=$("historicalContextContent"),p=state.historicalWalkforward;
+  if(!out)return;
+  const environment=p&&p.environment;
+  if(!environment||environment.version!==1||!Array.isArray(environment.rows)||
+     environment.rows.length!==66||environment.correctedComparisons!==132){
+    out.textContent="환경별 세부 검증 자료 생성 대기 · 기존 11조건 성적표는 계속 표시됩니다.";
+    return;
+  }
+  const key=$("historicalContextAxis").value;
+  const rows=environment.rows.filter(r=>r.key===key);
+  const fmt=n=>(n>=0?"+":"")+n.toFixed(1);
+  out.innerHTML='<div class="tablewrap"><table class="simple-table"><thead><tr>'+
+    '<th>당시 사전 환경</th><th>앞 구간 적중 / 기대</th><th>최근 적중 / 기대</th><th>최근 선택수</th><th>최근 차이</th><th>참고 판정</th>'+
+    '</tr></thead><tbody>'+
+    rows.map(r=>'<tr><td>'+clean(r.contextLabel)+'</td>'+
+      '<td>'+r.early.hits+' / '+r.early.expected.toFixed(1)+'</td>'+
+      '<td>'+r.late.hits+' / '+r.late.expected.toFixed(1)+'</td>'+
+      '<td>'+r.late.selected+'개</td><td>'+fmt(r.late.delta)+'</td>'+
+      '<td>'+clean(r.verdict)+'</td></tr>').join("")+
+    '</tbody></table></div>'+
+    '<p class="hint">표의 ± 차이는 맞힌 번호 수 − 동일한 선택 개수의 무작위 기대치입니다. 「앞뒤 방향 역전」은 통계적으로 확인된 차이가 아닌 관찰 기록입니다. 적중 패턴의 미래 효과는 아직 검증되지 않았습니다.</p>';
 }
 function renderHistoricalWalkforwardRound(){
   const out=$("historicalWalkforwardExample"),p=state.historicalWalkforward;
@@ -2409,6 +2438,7 @@ function renderHistoricalWalkforwardRound(){
   if(!e)return;
   out.innerHTML='<h3>'+round+'회 당시 조건 복원 · 발표번호 '+e.actual.join(" · ")+'</h3>'+
     '<p class="hint">검색 당시에는 '+(round-1)+'회까지만 사용합니다. 이후 발표된 6개 본번호와 실제로 어디서 어긋났는지 확인하세요.</p>'+
+    (e.environment?'<p class="hint">당시 확인 가능했던 환경: 직전 회차 합계 '+e.environment.previousSum+' · 연속번호 '+(e.environment.previousPair?'있음':'없음')+' · 3조건 이상 겹친 번호 '+(e.environment.signal3plus.join(" · ")||'없음')+'</p>':'')+
     '<div class="tablewrap"><table class="simple-table"><thead><tr><th>사전 조건</th><th>검출수</th><th>맞힌 번호</th><th>놓친 본번호</th></tr></thead><tbody>'+
     PATTERN_AUDIT_AXES.map(a=>{
       const x=e.axes[a.key];

@@ -34,6 +34,39 @@ test('과거 복원은 사전 실전 성적과 분리하며 11개 축/후반 테
   assert.ok(report.rows.every(r=>r.late.pBetterAdjusted>=0&&r.late.pBetterAdjusted<=1));
   assert.ok(report.rows.every(r=>r.late.pWorseAdjusted>=0&&r.late.pWorseAdjusted<=1));
   assert.equal(report.examples.length,8);
+  assert.equal(report.environment.rows.length,66);
+  assert.equal(report.environment.correctedComparisons,132);
+  assert.ok(report.environment.rows.every(r=>r.early.rounds<=report.earlyRounds&&r.late.rounds<=report.lateRounds));
+  assert.ok(report.environment.rows.every(r=>r.late.pBetterAdjusted>=0&&r.late.pBetterAdjusted<=1));
+  assert.ok(report.environment.rows.every(r=>r.late.pWorseAdjusted>=0&&r.late.pWorseAdjusted<=1));
+});
+
+test('사전 환경 분류 두 구간은 매 축마다 모든 선택수와 적중을 빠짐없이 나눈다',()=>{
+  const report=makeWalkforward(fakeDraws(52));
+  for(const row of report.rows){
+    const group=report.environment.rows.filter(r=>r.key===row.key);
+    for(const kind of ['sum','pair','signal']){
+      const parts=group.filter(r=>r.kind===kind);
+      assert.equal(parts.length,2);
+      for(const period of ['early','late']){
+        assert.equal(parts.reduce((n,p)=>n+p[period].selected,0),row[period].selected,
+          `${row.key} ${kind} ${period} 선택수 분할`);
+        assert.equal(parts.reduce((n,p)=>n+p[period].hits,0),row[period].hits,
+          `${row.key} ${kind} ${period} 적중수 분할`);
+      }
+    }
+  }
+});
+
+test('같은 회차의 발표번호를 바꿔도 사전 환경 검출수는 바뀌지 않는다',()=>{
+  const draws=fakeDraws(52),original=makeWalkforward(draws);
+  draws[51]={...draws[51],numbers:[1,2,3,4,5,6]};
+  const changed=makeWalkforward(draws);
+  for(let i=0;i<original.environment.rows.length;i++){
+    const before=original.environment.rows[i],after=changed.environment.rows[i];
+    assert.equal(before.early.selected,after.early.selected);
+    assert.equal(before.late.selected,after.late.selected);
+  }
 });
 
 test('서버가 저장한 평가축과 복원 결과가 다르면 중단',()=>{

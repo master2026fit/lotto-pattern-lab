@@ -107,6 +107,94 @@ function summarize(items,key){
     pBetterAdjusted:1,pWorseAdjusted:1};
 }
 
+// 사전에 정의한 환경 구간. 모든 값은 목표 회차 이전에 이미 알 수 있다.
+const CONTEXT_GROUPS = [
+  ['sumLow','전회차 번호 합계 134 이하','sum'],
+  ['sumHigh','전회차 번호 합계 135 이상','sum'],
+  ['previousNoPair','전회차 연속번호 없음','pair'],
+  ['previousPair','전회차 연속번호 있음','pair'],
+  ['signalLow','해당 번호의 기본조건 1~2개','signal'],
+  ['signalHigh','해당 번호의 기본조건 3개 이상','signal']
+];
+
+function contextSummary(records){
+  const nonempty=records.filter(r=>r.selected>0);
+  const selected=records.reduce((sum,r)=>sum+r.selected,0);
+  const hits=records.reduce((sum,r)=>sum+r.hits,0);
+  const expected=selected*BASE;
+  const {better,worse}=exactChanceTail(nonempty.map(r=>r.selected),hits);
+  return {rounds:nonempty.length,selected,hits,
+    expected:Number(expected.toFixed(3)),delta:Number((hits-expected).toFixed(3)),
+    hitRate:selected?Number((hits/selected).toFixed(5)):null,
+    pBetter:better,pWorse:worse,pBetterAdjusted:1,pWorseAdjusted:1};
+}
+
+// 매 회차 각 번호의 '조건 겹침'도 이전 기록으로만 계산한다.
+// context2plus는 겹침을 이미 표현하는 파생축이므로 중복 계산하지 않는다.
+export function makeContextReview(draws,history,split){
+  if(history.length!==draws.length-1||split<1||split>=history.length)
+    throw Error('환경 비교를 위한 과거 구간이 올바르지 않습니다.');
+  const records=new Map();
+  for(const [axis] of AXES)for(const [context] of CONTEXT_GROUPS)
+    records.set(axis+'|'+context,[]);
+  for(let i=0;i<history.length;i++){
+    const current=history[i],previous=draws[i],winning=new Set(current.actual);
+    const prevSum=previous.numbers.reduce((a,b)=>a+b,0);
+    const prevPair=previous.numbers.some((n,j)=>j>0&&n===previous.numbers[j-1]+1);
+    const overlap=new Array(46).fill(0);
+    for(const [key] of AXES){
+      if(key==='context2plus')continue;
+      for(const n of current.axes[key].selected)overlap[n]++;
+    }
+    current.environment={previousSum:prevSum,previousPair:prevPair,
+      signal3plus:Array.from({length:45},(_,n)=>n+1).filter(n=>overlap[n]>=3)};
+    const contexts={
+      sumLow:()=>prevSum<=134,sumHigh:()=>prevSum>=135,
+      previousNoPair:()=>!prevPair,previousPair:()=>prevPair,
+      signalLow:n=>overlap[n]<=2,signalHigh:n=>overlap[n]>=3
+    };
+    for(const [key] of AXES){
+      const selected=current.axes[key].selected;
+      for(const [context] of CONTEXT_GROUPS){
+        const qualifying=selected.filter(n=>contexts[context](n));
+        records.get(key+'|'+context).push({selected:qualifying.length,
+          hits:qualifying.filter(n=>winning.has(n)).length});
+      }
+    }
+  }
+  const rows=[];
+  for(const [key,label] of AXES)for(const [context,contextLabel,kind] of CONTEXT_GROUPS){
+    const items=records.get(key+'|'+context);
+    rows.push({key,label,context,contextLabel,kind,
+      early:contextSummary(items.slice(0,split)),
+      late:contextSummary(items.slice(split)),
+      verdict:'무작위와 구별 어려움'});
+  }
+  // 11축 × 6환경 × 양·음 2방향 = 132개 탐색 비교를 동시에 보정한다.
+  // 빈 환경과 선택수가 적은 환경도 탐색 가족에 포함해 유리한 결과만 골라내는 착시를 줄인다.
+  const tests=rows.flatMap(row=>[
+    {value:row.late.pBetter,row,field:'pBetterAdjusted'},
+    {value:row.late.pWorse,row,field:'pWorseAdjusted'}
+  ]).sort((a,b)=>a.value-b.value);
+  let previous=0;
+  tests.forEach((item,i)=>{
+    previous=Math.max(previous,Math.min(1,item.value*(tests.length-i)));
+    item.row.late[item.field]=Number(previous.toFixed(8));
+  });
+  for(const row of rows){
+    row.directionReversed=row.early.selected>=30&&row.late.selected>=30&&
+      row.early.delta*row.late.delta<0;
+    row.verdict=row.late.rounds<30||row.late.selected<30?'표본 부족':
+      row.late.pBetterAdjusted<.05?'후반 초과 관찰 · 미래 재검증':
+      row.late.pWorseAdjusted<.05?'후반 저조 관찰 · 미래 재검증':
+      row.directionReversed?'앞뒤 방향 역전 · 불안정':'무작위와 구별 어려움';
+  }
+  return {version:1,method:'predefined-prior-only-context-buckets',
+    caution:'사전 정의한 환경별 과거 복원입니다. 여러 환경을 뒤져 잘 맞는 조건을 고르는 탐색이므로 실제 추첨 전 성적에 섞거나 자동 제외 근거로 사용할 수 없습니다.',
+    correctedComparisons:tests.length,
+    contexts:CONTEXT_GROUPS.map(([key,label,kind])=>({key,label,kind})),rows};
+}
+
 export function makeWalkforward(draws){
   if(!Array.isArray(draws)||draws.length<30)throw Error('30회 이상 필요');
   const history=[];
@@ -145,6 +233,7 @@ export function makeWalkforward(draws){
       l.pWorseAdjusted<.05&&e.delta<0?'후반 구간 저조 · 실제 사전검증 필요':
       '무작위와 구별 어려움';
   }
+  const environment=makeContextReview(draws,history,split);
   return {version:1,origin:'historical-walkforward-reconstruction-only',
     firstTestRound:history[0].round,lastTestRound:history.at(-1).round,
     totalRounds:history.length,earlyRounds:train.length,lateRounds:late.length,
@@ -153,7 +242,7 @@ export function makeWalkforward(draws){
     policy:'all-available-history-no-candidate-count-cap',
     benchmark:'same-number-count exact hypergeometric 6/45; Holm 22 late tests',
     caution:'과거 결과를 이미 알고 설계된 조건의 시점별 재현입니다. 실제 추첨 전 저장 기록이 아니며 미래 적중력의 증거가 아닙니다.',
-    rows,examples:history.slice(-8)};
+    rows,environment,examples:history.slice(-8)};
 }
 
 async function main(){
