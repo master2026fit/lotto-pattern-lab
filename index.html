@@ -175,6 +175,10 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 .trial-case-won{color:#9ce8d2;font-weight:750}
 .trial-case-missed{color:#f0b5a3}
 .trial-history-block{margin-top:18px}
+
+#recapCanvas{margin:16px auto 0;max-width:760px}
+#recapCanvas svg{display:block;width:100%;height:auto;border:1px solid #405575;border-radius:14px;box-shadow:0 18px 36px #01081390;background:#f8fafc}
+#recapSection .toolbar{align-items:flex-end}
 </style>
 </head>
 <body>
@@ -222,7 +226,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 </section>
 <section id="research" class="page"><div class="eyebrow">NUMBER LAB</div><h1>번호 연구소</h1><p class="lead">특정 번호의 출현 흐름과 이번 회차에 적용되는 번호별 패턴을 확인합니다.</p><div class="toolbar"><label>분석 번호 <input id="focusN" class="field" type="number" min="1" max="45" value="39"></label><button class="btn" onclick="showResearch()">번호 조사하기</button></div><div id="researchResult"></div></section>
 <section id="patterns" class="page"><div class="eyebrow">PATTERN EXPLORER</div><h1>패턴 검색</h1><p class="lead">선택한 번호의 이번 회차 출현·자리·간격 기록에서 자동 생성한 연결 패턴과 기본 45종 조건을 따로 살펴봅니다. 조건의 과거 성공·실패 회차를 정확히 비교하세요.</p><div class="toolbar"><label>번호 <input id="patternN" class="field" type="number" min="1" max="45" value="39"></label><label>조건 <select id="patternRule" class="field"></select></label><button class="btn" onclick="showPatternSearch()">역대 패턴 검색</button></div><div id="patternResult"></div></section>
-<section id="tickets" class="page"><div class="eyebrow">FIVE TICKET STUDIO</div><h1>최종 5조합</h1><p class="lead">번호별 연구 결과를 참고해 조합을 만들어 기록합니다. 어떤 조합도 다른 6개 번호 조합보다 1등 당첨확률이 높지는 않습니다.</p><div class="panel"><h3>검색 결과를 반영한 최종 후보</h3><p class="hint"><strong>패턴 연구용 12수</strong>가 기본값입니다. 1~45번 전체를 검사한 뒤 장기 연결 10수와 복합 관찰 최대 2수를 구분하여 선정합니다. 복합 관찰은 소표본·사후 발견이며 당첨 가능성이 더 높다는 뜻이 아닙니다. 중립 분산도 따로 선택할 수 있습니다.</p><textarea id="poolInput" class="field" rows="3" style="width:100%;resize:vertical" oninput="markManualPool()"></textarea><div class="pinned-box"><label for="lockedInput"><strong>5게임 공통 고정수</strong> <small>(최대 5개, 예: 39,44)</small></label><input id="lockedInput" class="field" placeholder="39, 44" autocomplete="off" oninput="markPinsPending()"><div class="toolbar"><button class="btn small secondary" onclick="applyPinned()">고정수 적용</button><span id="lockedStatus" class="hint">고정수는 이번 회차에만 저장하며, 없으면 후보에서 분산합니다.</span></div></div><p class="audit-banner" id="autoPoolExplanation">45개 번호의 간이 검증을 계산하고 있습니다.</p><div class="toolbar"><button class="btn" onclick="makeTickets(false)">최종 5조합 생성</button><button class="btn secondary" onclick="setResearchPool()">패턴 연구용 12수</button><button class="btn secondary" onclick="setAutoPool()">중립 분산 12수</button><button class="btn outline" onclick="saveTicketPNG()">조합 이미지 저장</button></div><div id="candidateAudit"></div></div><div id="ticketsResult"></div><div id="trialHistory"></div></section>
+<section id="tickets" class="page"><div class="eyebrow">FIVE TICKET STUDIO</div><h1>최종 5조합</h1><p class="lead">번호별 연구 결과를 참고해 조합을 만들어 기록합니다. 어떤 조합도 다른 6개 번호 조합보다 1등 당첨확률이 높지는 않습니다.</p><div class="panel"><h3>검색 결과를 반영한 최종 후보</h3><p class="hint"><strong>패턴 연구용 12수</strong>가 기본값입니다. 1~45번 전체를 검사한 뒤 장기 연결 10수와 복합 관찰 최대 2수를 구분하여 선정합니다. 복합 관찰은 소표본·사후 발견이며 당첨 가능성이 더 높다는 뜻이 아닙니다. 중립 분산도 따로 선택할 수 있습니다.</p><textarea id="poolInput" class="field" rows="3" style="width:100%;resize:vertical" oninput="markManualPool()"></textarea><div class="pinned-box"><label for="lockedInput"><strong>5게임 공통 고정수</strong> <small>(최대 5개, 예: 39,44)</small></label><input id="lockedInput" class="field" placeholder="39, 44" autocomplete="off" oninput="markPinsPending()"><div class="toolbar"><button class="btn small secondary" onclick="applyPinned()">고정수 적용</button><span id="lockedStatus" class="hint">고정수는 이번 회차에만 저장하며, 없으면 후보에서 분산합니다.</span></div></div><p class="audit-banner" id="autoPoolExplanation">45개 번호의 간이 검증을 계산하고 있습니다.</p><div class="toolbar"><button class="btn" onclick="makeTickets(false)">최종 5조합 생성</button><button class="btn secondary" onclick="setResearchPool()">패턴 연구용 12수</button><button class="btn secondary" onclick="setAutoPool()">중립 분산 12수</button><button class="btn outline" onclick="saveTicketPNG()">조합 이미지 저장</button></div><div id="candidateAudit"></div></div><div id="ticketsResult"></div><div class="section panel" id="recapSection"><h2>당첨번호 대비 패턴 복기 이미지</h2><p class="hint">확정된 당첨번호 6개와 당시 검색 후보·기본/연결 패턴 개수를 나란히 비교합니다. 이번 회차 결과 발표 전에는 지난 확정 회차를 재현해서 볼 수 있습니다.</p><div class="toolbar"><label>복기 회차 <select id="recapRound" class="field"></select></label><button id="recapGenerateBtn" class="btn" onclick="showRecapImage()">복기 이미지 생성</button><button class="btn secondary" onclick="saveRecapPNG()">PNG 이미지 저장</button><button class="btn outline" onclick="saveRecapSVG()">SVG 저장</button></div><div id="recapStatus" class="hint">최신 확정 회차를 선택해 복기할 수 있습니다.</div><div id="recapCanvas"></div></div><div id="trialHistory"></div></section>
 <section id="backtest" class="page"><div class="eyebrow">WALK-FORWARD CHECK</div><h1>과거 검증</h1><p class="lead">현재 최종 5조합에 적용하는 <strong>장기 연결 최대 10수 + 복합 관찰 최대 2수</strong>를 과거 매 회차 시점에서 다시 계산합니다. 같은 12수·5게임의 무작위 기준과 비교하며, 이후 당첨번호를 미리 참조하지 않습니다. 사후 선정 전략의 과거 결과는 미래 당첨확률을 증명하지 않습니다.</p><div class="toolbar"><label>검증할 과거 회차 <select id="backtestRounds" class="field" aria-label="과거 검증 회차 수"><option value="12">최근 12회</option><option value="30">최근 30회</option><option value="60" selected>최근 60회</option><option value="120">최근 120회</option></select></label><button id="runBacktestBtn" class="btn" onclick="runBacktest()">시점별 독립 검증 실행</button></div>
   <p class="hint">① 매 회차 직전까지의 기록만 사용 ② 기본 45개 규칙 × 45개 번호를 같은 기준으로 검증 ③ 당시 통과한 번호와 조합만 실제 결과와 비교합니다. 비교용 조합도 무작위로 선택한 12수에서 같은 방식으로 5게임을 만듭니다. 연결 패턴은 사후 탐색이므로 검증 통과 후보에서 제외됩니다.</p>
   <div id="backtestResult"></div></section>
@@ -323,6 +327,8 @@ async function reloadData(){
   if(state.poolMode!=="manual"||!$("poolInput").value.trim())setResearchPool();
   else{invalidateTickets();renderSelectionAudit();}
   reconcileTrialBook();
+  fillRecapRounds();
+  if($("tickets").classList.contains("active"))showRecapImage();
   if($("research").classList.contains("active"))showResearch();
   if($("patterns").classList.contains("active"))showPatternSearch();
 }
@@ -333,6 +339,7 @@ function go(id){
   if(id==="research"&&state.draws.length)showResearch();
   if(id==="patterns"&&state.draws.length)showPatternSearch();
   if(id==="tickets"&&state.draws.length&&!state.tickets.length)makeTickets(false);
+  if(id==="tickets"&&state.draws.length&&!$("recapSvg"))showRecapImage();
 }
 const RULES=[];
 function addRule(group,label,k,test,mark,why){
@@ -1870,6 +1877,197 @@ function ticketBalls(ticket,pins){
 }
 
 const TRIAL_BOOK_KEY="lotto_pattern_forecast_trials_v1";
+
+/* 확정 당첨번호 대비 검색 당시 후보/패턴 이미지 복기 */
+function fillRecapRounds(){
+  const select=$("recapRound");
+  if(!select||!state.draws.length)return;
+  const previous=Number(select.value)||0;
+  const reviewed=new Set(trialBook().filter(x=>x.review).map(x=>x.round));
+  const rounds=new Set([...state.draws.slice(-16).map(x=>x.draw_no),...reviewed]);
+  const rows=state.draws.filter(x=>rounds.has(x.draw_no)).reverse();
+  select.innerHTML=rows.map(d=>'<option value="'+d.draw_no+'">'+d.draw_no+'회 · '+(reviewed.has(d.draw_no)?'사전 저장 실험 있음':'시점 재현')+'</option>').join("");
+  select.value=rows.some(x=>x.draw_no===previous)?String(previous):String(rows[0].draw_no);
+  $("recapStatus").textContent=upcoming(state.draws)+'회 발표 전 · 최근 확정 '+latest(state.draws).draw_no+'회를 이전 회차 데이터만 사용해 복기합니다.';
+}
+function buildRecapData(round){
+  const idx=state.draws.findIndex(x=>x.draw_no===round);
+  if(idx<300)throw Error("이 회차는 복기할 사전 데이터가 부족하거나 당첨 결과가 없습니다.");
+  const prior=state.draws.slice(0,idx),actual=state.draws[idx];
+  if(latest(prior).draw_no!==round-1)throw Error("직전 회차 기록이 연결되지 않았습니다.");
+  const saved=trialBook().filter(e=>e.round===round&&e.review&&e.sourceRound===round-1).slice(-1)[0];
+  let pool,tickets,profiles,snapshots,origin;
+  if(saved){
+    pool=[...new Set(saved.pool)].filter(n=>Number.isInteger(n)&&n>=1&&n<=45).sort((a,b)=>a-b);
+    tickets=saved.tickets.map(t=>t.slice());
+    snapshots=saved.patternSnapshots||{};
+    origin="실제 사전 저장 실험";
+  }else{
+    profiles=analyzeAll(prior);
+    const modules=scanModule16(prior,profiles);
+    pool=researchPoolPlan(profiles,modules).numbers.slice().sort((a,b)=>a-b);
+    if(pool.length!==12)throw Error("당시 12수 연구 후보 구성이 불완전합니다.");
+    const seed=round*76543+pool.reduce((s,n)=>s+n*97,0);
+    tickets=chooseTickets(pool,seed,[]);
+    snapshots={};
+    for(const n of pool){
+      const p=profiles.find(x=>x.n===n);
+      const timeline=p.list.filter(e=>e.rule.group==="고정위상"||e.rule.group==="사선");
+      const specials=modules.filter(m=>m.id===4||m.id===16).flatMap(m=>m.items.filter(x=>x.n===n).map(x=>x.label));
+      snapshots[n]={basic:p.basicCount,connected:p.flowCount,highlights:[...timeline.map(e=>labelOf(e,n)),...specials].slice(0,5)};
+    }
+    origin="과거 시점 재현 · 실제 저장 기록 아님";
+  }
+  if(pool.length<6||tickets.some(t=>t.length!==6))throw Error("저장된 후보/조합 형식이 잘못되었습니다.");
+  const wins=actual.numbers,exact=pool.filter(n=>wins.includes(n));
+  const missing=wins.filter(n=>!pool.includes(n));
+  const nearest=(n,targets)=>{
+    const ordered=targets.map(x=>({n:x,d:Math.abs(x-n)})).sort((a,b)=>a.d-b.d||a.n-b.n);
+    return ordered[0]||null;
+  };
+  const selected=pool.map(n=>{
+    const snap=snapshots[n]||{basic:0,connected:0,highlights:[]};
+    const close=nearest(n,wins);
+    const endMatch=wins.find(x=>x%10===n%10);
+    const kind=wins.includes(n)?"정확 적중":close.d===1?"1차이":close.d===2?"2차이":endMatch?"같은 끝수":"불일치";
+    return {n,basic:snap.basic||0,connected:snap.connected||0,
+      highlight:(snap.highlights||[])[0]||"연결 관찰 없음",kind,near:close.n,distance:close.d,
+      endMatch:endMatch||null,hit:wins.includes(n)};
+  });
+  const omitted=missing.map(n=>{
+    const profile=studyNumber(prior,n),close=nearest(n,pool);
+    return {n,basic:profile.basicCount,connected:profile.flowCount,
+      near:close.n,distance:close.d,
+      kind:close.d===1?"1차이":close.d===2?"2차이":pool.some(x=>x%10===n%10)?"같은 끝수":"직접 연결 없음"};
+  });
+  return {round,sourceRound:round-1,origin,actual:wins,bonus:actual.bonus_no,
+    pool,selected,omitted,exact,tickets,
+    oneAway:selected.filter(x=>!x.hit&&x.distance===1).length,
+    twoAway:selected.filter(x=>!x.hit&&x.distance===2).length,
+    ticketHits:tickets.map(t=>t.filter(n=>wins.includes(n)).length)};
+}
+function recapSvgBall(n,cx,cy,r,hit,muted){
+  const fill=hit?"#e8b85a":muted?"#243750":"#e9f3ff";
+  const ink=hit?"#172235":muted?"#d2dfed":"#14213a";
+  return '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+fill+'" stroke="'+(hit?"#fae3a0":"#6682a3")+'" stroke-width="2"/>'+
+    '<text x="'+cx+'" y="'+(cy+9)+'" text-anchor="middle" font-size="26" font-weight="800" fill="'+ink+'">'+n+'</text>';
+}
+function recapSVG(data){
+  const rows=data.selected,omitted=data.omitted,winSet=new Set(data.actual);
+  const yBase=565,afterTable=yBase+rows.length*59+28,omitRowsY=afterTable+65;
+  const afterOmitted=omitRowsY+omitted.length*48+32,gameRowsY=afterOmitted+70;
+  const footerY=gameRowsY+data.tickets.length*61+52,H=footerY+118;
+  const e=s=>clean(String(s)),svg=[];
+  svg.push('<svg id="recapSvg" xmlns="http://www.w3.org/2000/svg" width="1080" height="'+H+'" viewBox="0 0 1080 '+H+'" role="img" aria-label="'+data.round+'회 검색 패턴과 실제 당첨번호 비교 이미지">');
+  svg.push('<rect width="1080" height="'+H+'" fill="#0c192a"/>');
+  svg.push('<rect x="0" y="0" width="1080" height="192" fill="#142b46"/>');
+  svg.push('<text x="52" y="57" font-family="Arial, sans-serif" font-weight="800" font-size="23" letter-spacing="3" fill="#e8b85a">LOTTO PATTERN REVIEW</text>');
+  svg.push('<text x="52" y="108" font-family="Arial, sans-serif" font-weight="800" font-size="39" fill="#ffffff">'+data.round+'회 · 실제 당첨 대비 검색 복기</text>');
+  svg.push('<text x="52" y="148" font-family="Arial, sans-serif" font-size="22" fill="#baccdf">'+e(data.origin)+' | 검색 기준: '+data.sourceRound+'회까지</text>');
+  svg.push('<rect x="40" y="213" width="1000" height="147" rx="22" fill="#1c324c" stroke="#36506d"/>');
+  svg.push('<text x="66" y="250" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#f6f8fc">실제 당첨번호 6개</text>');
+  data.actual.forEach((n,i)=>svg.push(recapSvgBall(n,105+i*117,307,33,true,false)));
+  svg.push('<text x="811" y="294" font-family="Arial,sans-serif" font-size="21" fill="#aec8e0">보너스</text>');
+  svg.push(recapSvgBall(data.bonus,960,307,33,false,false));
+  const cards=[
+    ["검색 후보",data.pool.length+"수"],
+    ["정확히 맞은 후보",data.exact.length+"수 / 6수"],
+    ["놓친 당첨번호",data.omitted.length+"수"],
+    ["비껴간 후보",data.oneAway+"수(±1) · "+data.twoAway+"수(±2)"]
+  ];
+  cards.forEach((a,i)=>{
+    const x=40+i*255;
+    svg.push('<rect x="'+x+'" y="384" width="235" height="102" rx="15" fill="#1c324c" stroke="#36506d"/>');
+    svg.push('<text x="'+(x+19)+'" y="420" font-family="Arial,sans-serif" font-size="19" fill="#b8c9df">'+e(a[0])+'</text>');
+    svg.push('<text x="'+(x+19)+'" y="458" font-family="Arial,sans-serif" font-size="'+(i===3?22:30)+'" font-weight="800" fill="'+(i===1?"#eac16a":"#ffffff")+'">'+e(a[1])+'</text>');
+  });
+  svg.push('<text x="46" y="534" font-family="Arial,sans-serif" font-size="29" font-weight="800" fill="#ffffff">① 당시 검색 후보 전체 · 실제 결과</text>');
+  svg.push('<rect x="40" y="548" width="1000" height="42" rx="9" fill="#294764"/>');
+  const th=(x,v)=>svg.push('<text x="'+x+'" y="575" font-family="Arial,sans-serif" font-size="19" fill="#e7f1fc">'+v+'</text>');
+  th(64,"번호");th(181,"기본");th(281,"연결");th(387,"당시 대표 검색 패턴");th(867,"실제 결과");
+  rows.forEach((r,i)=>{
+    const y=yBase+i*59;
+    svg.push('<rect x="40" y="'+(y+25)+'" width="1000" height="56" fill="'+(i%2?"#152942":"#20364e")+'"/>');
+    const numY=y+60;
+    svg.push('<text x="67" y="'+numY+'" font-family="Arial,sans-serif" font-size="26" font-weight="800" fill="'+(r.hit?"#f5c66b":"#e5f2ff")+'">'+r.n+'</text>');
+    svg.push('<text x="188" y="'+numY+'" font-family="Arial,sans-serif" font-size="23" fill="#e1efff">'+r.basic+'</text>');
+    svg.push('<text x="289" y="'+numY+'" font-family="Arial,sans-serif" font-size="23" fill="#e1efff">'+r.connected+'</text>');
+    const label=String(r.highlight);
+    const short=label.length>32?label.slice(0,31)+"…":label;
+    svg.push('<text x="387" y="'+numY+'" font-family="Arial,sans-serif" font-size="18" fill="#b8cede">'+e(short)+'</text>');
+    const status=r.hit?"정확 적중":r.distance<=2?r.kind+" · "+r.near+"번":r.kind==="같은 끝수"?"끝수 유사": "미출현";
+    svg.push('<text x="870" y="'+numY+'" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="'+(r.hit?"#f4c46a":r.distance<=2?"#99c6fb":"#a3b3c5")+'">'+e(status)+'</text>');
+  });
+  svg.push('<text x="45" y="'+(afterTable+25)+'" font-family="Arial,sans-serif" font-size="29" font-weight="800" fill="#ffffff">② 놓친 실제 당첨번호 '+omitted.length+'개</text>');
+  svg.push('<text x="46" y="'+(afterTable+56)+'" font-family="Arial,sans-serif" font-size="19" fill="#a9bed3">후보에 없었던 번호 · 근접수는 참고 설명일 뿐 적중이 아닙니다.</text>');
+  omitted.forEach((o,i)=>{
+    const y=omitRowsY+i*48;
+    svg.push('<rect x="40" y="'+y+'" width="1000" height="42" rx="6" fill="'+(i%2?"#1a2d43":"#20364e")+'"/>');
+    svg.push('<text x="66" y="'+(y+30)+'" font-family="Arial,sans-serif" font-size="24" font-weight="800" fill="#efc16d">'+o.n+'번</text>');
+    svg.push('<text x="194" y="'+(y+29)+'" font-family="Arial,sans-serif" font-size="20" fill="#d5e4f3">당시 기본 '+o.basic+'개 · 연결 '+o.connected+'개</text>');
+    svg.push('<text x="725" y="'+(y+29)+'" font-family="Arial,sans-serif" font-size="20" fill="#b1d4fa">근접 후보 '+o.near+'번 · '+o.distance+' 차이</text>');
+  });
+  svg.push('<text x="45" y="'+(afterOmitted+24)+'" font-family="Arial,sans-serif" font-size="29" font-weight="800" fill="#ffffff">③ 당시 5게임 · 실제 일치 수</text>');
+  data.tickets.forEach((ticket,i)=>{
+    const y=gameRowsY+i*61;
+    svg.push('<rect x="40" y="'+y+'" width="1000" height="55" rx="8" fill="'+(i%2?"#1b3047":"#253a50")+'"/>');
+    svg.push('<text x="64" y="'+(y+36)+'" font-family="Arial,sans-serif" font-size="23" fill="#dcecf8">'+(i+1)+'조합</text>');
+    ticket.forEach((n,j)=>svg.push(recapSvgBall(n,234+j*105,y+28,21,winSet.has(n),!winSet.has(n))));
+    svg.push('<text x="880" y="'+(y+35)+'" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="'+(data.ticketHits[i]>=3?"#f6c66a":"#bfd0e1")+'">'+data.ticketHits[i]+'개 적중</text>');
+  });
+  svg.push('<line x1="40" y1="'+(footerY-8)+'" x2="1040" y2="'+(footerY-8)+'" stroke="#46627c"/>');
+  svg.push('<text x="45" y="'+(footerY+23)+'" font-family="Arial,sans-serif" font-size="20" fill="#f2c778">검증 기준: 당첨 6개와 정확히 일치한 번호만 적중으로 집계.</text>');
+  svg.push('<text x="45" y="'+(footerY+55)+'" font-family="Arial,sans-serif" font-size="18" fill="#b4c7d9">기본·연결은 검색 조건의 개수이며 확률이 아닙니다. 근접·끝수도 적중이 아닙니다.</text>');
+  svg.push('<text x="45" y="'+(footerY+84)+'" font-family="Arial,sans-serif" font-size="18" fill="#8eabc5">LOTTO PATTERN LAB · '+data.round+'회 사후 검증</text></svg>');
+  return svg.join("");
+}
+async function showRecapImage(){
+  if(!state.draws.length)return;
+  const round=Number($("recapRound").value),button=$("recapGenerateBtn");
+  button.disabled=true;$("recapStatus").textContent=round+"회 검색 당시 조건을 복원하고 있습니다…";
+  await new Promise(resolve=>setTimeout(resolve,15));
+  try{
+    const data=buildRecapData(round);
+    $("recapCanvas").innerHTML=recapSVG(data);
+    state.recapData=data;
+    $("recapStatus").innerHTML='<strong>'+round+'회 복기 완료:</strong> '+clean(data.origin)+
+      ' · 후보 '+data.pool.length+'개 중 정확 적중 '+data.exact.length+'개'+
+      ' · 후보 밖 실제 당첨 '+data.omitted.length+'개'+
+      ' · ±1 오차 '+data.oneAway+'개 / ±2 오차 '+data.twoAway+'개. 이미지 버튼을 눌러 저장하세요.';
+  }catch(err){
+    $("recapStatus").textContent="복기를 완료하지 못했습니다: "+err.message;
+  }finally{button.disabled=false;}
+}
+function saveRecapSVG(){
+  const el=$("recapSvg");
+  if(!el)return alert("먼저 복기 이미지를 생성해 주세요.");
+  const xml=new XMLSerializer().serializeToString(el);
+  const url=URL.createObjectURL(new Blob([xml],{type:"image/svg+xml;charset=utf-8"}));
+  const a=document.createElement("a");a.href=url;a.download=state.recapData.round+"회-패턴-복기.svg";
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1200);
+}
+function saveRecapPNG(){
+  const el=$("recapSvg");
+  if(!el)return alert("먼저 복기 이미지를 생성해 주세요.");
+  const xml=new XMLSerializer().serializeToString(el);
+  const url=URL.createObjectURL(new Blob([xml],{type:"image/svg+xml;charset=utf-8"}));
+  const img=new Image();
+  img.onload=()=>{
+    try{
+      const canvas=document.createElement("canvas"),scale=1.6;
+      canvas.width=Math.round(Number(el.getAttribute("width"))*scale);
+      canvas.height=Math.round(Number(el.getAttribute("height"))*scale);
+      const ctx=canvas.getContext("2d");ctx.fillStyle="#0c192a";
+      ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(img,0,0,canvas.width,canvas.height);
+      const a=document.createElement("a");a.href=canvas.toDataURL("image/png");
+      a.download=state.recapData.round+"회-패턴-복기.png";document.body.appendChild(a);a.click();a.remove();
+    }catch(err){alert("PNG 저장에 실패했습니다. SVG 저장을 사용해 주세요. ("+err.message+")");}
+    URL.revokeObjectURL(url);
+  };
+  img.onerror=()=>{URL.revokeObjectURL(url);alert("PNG 이미지 변환에 실패했습니다. SVG 저장을 사용해 주세요.");};
+  img.src=url;
+}
+
 function trialBook(){
   if(Array.isArray(state.trialBookCache))return state.trialBookCache;
   try{
