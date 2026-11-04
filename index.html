@@ -229,6 +229,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
   </div>
   <div id="drawReviewNotice" class="draw-review-banner" aria-live="polite"></div>
   <div id="serverReviewGallery" class="section panel" hidden></div>
+  <div id="patternScorecard" class="section panel"><h2>📊 실제 사전 패턴 누적 성적표</h2><div id="patternScorecardContent" class="hint">무작위 기준선과 비교할 기록을 확인하고 있습니다.</div></div>
   <div class="cards"><div class="stat"><small>연구 대상 회차</small><b id="drawNext">-</b><small>최신 당첨 결과 이후 다음 회차</small></div><div class="stat"><small>번호별 조건 검색</small><b id="ruleCount">-</b><small>45개 기본 규칙과 개별 연결 탐색</small></div><div class="stat"><small>간이 기준 부합 번호</small><b id="focusCount">-</b><small>보수적 비교 결과이며 당첨 확률과 무관</small></div></div>
   <div class="section"><div class="section-head"><div><h2>이번 회차 자동 검색 결과</h2><div class="sub">번호를 클릭하면 해당 번호만의 조건·출현 및 미출현 사례·이미지가 열립니다.</div></div><div class="flex"><label class="tag"><input type="checkbox" id="showAll" checked onchange="renderNumbers()"> 전체 45개 보기</label></div></div><div id="candidateGrid" class="number-grid"></div><p class="hint" id="candidateInfo"></p></div>
   
@@ -370,7 +371,7 @@ async function reloadData(){
   if(state.poolMode!=="manual"||!$("poolInput").value.trim())setResearchPool();
   else{invalidateTickets();renderSelectionAudit();}
   reconcileTrialBook();
-  await Promise.all([syncServerFullScans(),syncServerWeeklyReviews()]);
+  await Promise.all([syncServerFullScans(),syncServerWeeklyReviews(),syncServerScorecard()]);
   reconcileFullScans();
   if(success)captureFullScan();
   renderFullScanStatus();
@@ -2277,6 +2278,51 @@ function renderServerReviewGallery(){
     (records.length>1?'<details><summary>이전 자동 복기 '+(records.length-1)+'회 보기</summary><p>'+
       records.slice(0,-1).reverse().map(r=>'<a href="./data/recaps/'+r.round+'.png" target="_blank" rel="noopener">'+r.round+'회 · 후보 '+r.candidateCount+'개 중 '+r.selectedHit.length+'개 적중</a>').join(' · ')+
       '</p></details>':'');
+}
+async function syncServerScorecard(){
+  try{
+    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),8000);
+    let response;
+    try{response=await fetch("./data/pattern_scorecard.json",{cache:"no-store",signal:controller.signal});}
+    finally{clearTimeout(timer);}
+    if(!response.ok)throw Error("HTTP "+response.status);
+    const p=await response.json();
+    const keys=new Set(["researchPool",...PATTERN_AUDIT_AXES.map(a=>a.key)]);
+    if(!p||p.version!==1||p.policy!=="prospective-unaltered-v1"||
+      !Number.isInteger(p.verifiedRounds)||p.verifiedRounds<0||p.verifiedRounds>104||
+      p.minimumRoundsForInterpretation!==30||!Array.isArray(p.rows)||p.rows.length>12||
+      (p.rows.length!==0&&p.rows.length!==12)||new Set(p.rows.map(r=>r.key)).size!==p.rows.length||
+      p.rows.some(r=>!r||!keys.has(r.key)||typeof r.label!=="string"||!Number.isFinite(r.deltaHits)||
+        !Number.isInteger(r.selected)||r.selected<0||
+        !Number.isInteger(r.hits)||r.hits<0||r.hits>r.selected||
+        !Number.isFinite(r.expectedHits)||r.expectedHits<0||
+        typeof r.verdict!=="string"))throw Error("성적표 형식 불일치");
+    state.patternScorecard=p;
+  }catch(err){
+    state.patternScorecard=null;
+    console.warn("누적 성적표 동기화:",err.message);
+  }
+  renderPatternScorecard();
+}
+function renderPatternScorecard(){
+  const out=$("patternScorecardContent");
+  if(!out)return;
+  const p=state.patternScorecard;
+  if(!p){
+    out.textContent="서버 누적 검증 자료 확인 대기 · 기존 사전기록은 유지됩니다.";
+    return;
+  }
+  const roundCount=p.verifiedRounds,need=p.minimumRoundsForInterpretation;
+  const pool=p.rows.find(r=>r.key==="researchPool");
+  out.innerHTML='<p><strong>실제 발표까지 확인된 사전 저장 실험 '+roundCount+'회 / 최소 관찰 '+need+'회</strong> · '+(roundCount<need?"패턴 유리·불리 판정 보류":"조건별 무작위 비교 결과 갱신")+'</p>'+
+    '<p class="hint">비교 기준: 매 회차 동일 개수의 번호를 무작위로 고를 때 예상되는 적중. 후보 개수는 고정하지 않습니다. 45개 전부 고르면 6개가 맞는 것은 당연하므로 우수한 패턴으로 판정하지 않습니다.</p>'+
+    (pool?'<p>연구후보 전체 · 실제 적중 <b>'+pool.hits+'개</b> / 같은 개수 무작위 기대 <b>'+pool.expectedHits.toFixed(1)+'개</b> · 차이 <b>'+(pool.deltaHits>=0?'+':'')+pool.deltaHits.toFixed(1)+'개</b> · '+clean(pool.verdict)+'</p>':
+      '<p class="hint">실제 추첨 결과가 쌓이면 성적표가 자동 계산됩니다.</p>')+
+    (p.rows.length?'<details class="audit-group"><summary class="openmore">11개 검색조건까지 전부 비교하기</summary>'+
+      '<div class="tablewrap"><table class="simple-table"><thead><tr><th>사전 검색조건</th><th>조건에 걸린 번호</th><th>실제 당첨</th><th>무작위 기대</th><th>차이</th><th>판정</th></tr></thead><tbody>'+
+      p.rows.map(r=>'<tr><td>'+clean(r.label)+'</td><td>'+r.selected+'건</td><td>'+r.hits+'건</td><td>'+r.expectedHits.toFixed(1)+'건</td><td>'+(r.deltaHits>=0?'+':'')+r.deltaHits.toFixed(1)+'</td><td>'+clean(r.verdict)+'</td></tr>').join("")+
+      '</tbody></table></div><p class="hint">적중 건수는 동일 번호가 서로 다른 조건에 겹칠 수 있습니다. 12개 항목의 양방향 비교는 통계적 중복 검정 보정을 적용합니다.</p></details>':'')+
+    '<p class="caution">당첨 전 서버에 기록한 회차만 실전 성적표에 넣습니다. 최소 '+need+'회가 쌓여도 우연과 다른 가능성이 보인다는 뜻이지 미래 당첨을 보장하지는 않습니다. 성적표만으로 번호를 자동 제외하지 않습니다.</p>';
 }
 function beforeDrawCutoff(round){
   // 토요일 20:30 KST까지만 '사전 저장'으로 인정. 데이터 발표 지연 중 사후 저장을 피한다.
