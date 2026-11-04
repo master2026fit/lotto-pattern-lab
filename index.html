@@ -158,6 +158,18 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 .compare-example{margin-top:18px}
 .compare-example .proof{margin:12px 0}
 @media(max-width:650px){.compare-summary{grid-template-columns:1fr 1fr}.compare-grid{min-width:700px}}
+
+.pinned-box{background:#172b43;border:1px solid #405776;border-radius:13px;padding:14px;margin:12px 0}
+.pinned-box input{width:100%;margin-top:8px;min-height:46px}
+.candidate-selected{color:var(--mint);font-weight:750}
+.candidate-locked{color:var(--gold);font-weight:750}
+.candidate-excluded{color:var(--muted)}
+.candidate-review{margin-top:18px}
+.candidate-review details{margin-top:12px}
+.candidate-review .small-note{font-size:.88rem;color:var(--muted)}
+.candidate-review .toolbar{align-items:center}
+.ticket .ball{cursor:pointer}
+.ticket .pin-ball{outline:3px solid var(--gold);outline-offset:2px}
 </style>
 </head>
 <body>
@@ -205,8 +217,8 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 </section>
 <section id="research" class="page"><div class="eyebrow">NUMBER LAB</div><h1>번호 연구소</h1><p class="lead">특정 번호의 출현 흐름과 이번 회차에 적용되는 번호별 패턴을 확인합니다.</p><div class="toolbar"><label>분석 번호 <input id="focusN" class="field" type="number" min="1" max="45" value="39"></label><button class="btn" onclick="showResearch()">번호 조사하기</button></div><div id="researchResult"></div></section>
 <section id="patterns" class="page"><div class="eyebrow">PATTERN EXPLORER</div><h1>패턴 검색</h1><p class="lead">선택한 번호의 이번 회차 출현·자리·간격 기록에서 자동 생성한 연결 패턴과 기본 45종 조건을 따로 살펴봅니다. 조건의 과거 성공·실패 회차를 정확히 비교하세요.</p><div class="toolbar"><label>번호 <input id="patternN" class="field" type="number" min="1" max="45" value="39"></label><label>조건 <select id="patternRule" class="field"></select></label><button class="btn" onclick="showPatternSearch()">역대 패턴 검색</button></div><div id="patternResult"></div></section>
-<section id="tickets" class="page"><div class="eyebrow">FIVE TICKET STUDIO</div><h1>최종 5조합</h1><p class="lead">번호별 연구 결과를 참고해 조합을 만들어 기록합니다. 어떤 조합도 다른 6개 번호 조합보다 1등 당첨확률이 높지는 않습니다.</p><div class="panel"><h3>사용할 후보 번호</h3><p class="hint">아래에서 <strong>장기 패턴 연구용 12수</strong> 또는 <strong>중립 분산 12수</strong>를 선택하세요. 연구용은 전 번호의 고정 회차간격·사선 연결을 기준으로 선별하며, 높은 당첨확률을 뜻하지 않습니다. 후보 번호는 직접 수정할 수 있습니다.</p><textarea id="poolInput" class="field" rows="3" style="width:100%;resize:vertical" oninput="markManualPool()"></textarea><p class="audit-banner" id="autoPoolExplanation">45개 번호의 간이 검증을 계산하고 있습니다.</p><div class="toolbar"><button class="btn" onclick="makeTickets(false)">최종 5조합 생성</button><button class="btn secondary" onclick="setResearchPool()">패턴 연구용 12수</button><button class="btn secondary" onclick="setAutoPool()">중립 분산 12수</button><button class="btn outline" onclick="saveTicketPNG()">조합 이미지 저장</button></div></div><div id="ticketsResult"></div></section>
-<section id="backtest" class="page"><div class="eyebrow">WALK-FORWARD CHECK</div><h1>과거 검증</h1><p class="lead">당시 알 수 있었던 정보만으로 번호와 조합을 생성하고, 실제 결과를 같은 12개 번호 규모의 무작위 기준과 비교합니다. 검증 회차를 직접 선택할 수 있습니다. 작은 표본의 검증으로 예측 우위를 입증할 수는 없습니다.</p><div class="toolbar"><label>검증할 과거 회차 <select id="backtestRounds" class="field" aria-label="과거 검증 회차 수"><option value="12">최근 12회</option><option value="30">최근 30회</option><option value="60" selected>최근 60회</option><option value="120">최근 120회</option></select></label><button id="runBacktestBtn" class="btn" onclick="runBacktest()">시점별 독립 검증 실행</button></div>
+<section id="tickets" class="page"><div class="eyebrow">FIVE TICKET STUDIO</div><h1>최종 5조합</h1><p class="lead">번호별 연구 결과를 참고해 조합을 만들어 기록합니다. 어떤 조합도 다른 6개 번호 조합보다 1등 당첨확률이 높지는 않습니다.</p><div class="panel"><h3>검색 결과를 반영한 최종 후보</h3><p class="hint"><strong>패턴 연구용 12수</strong>가 기본값입니다. 1~45번 전체를 검사한 뒤 장기 연결 10수와 복합 관찰 최대 2수를 구분하여 선정합니다. 복합 관찰은 소표본·사후 발견이며 당첨 가능성이 더 높다는 뜻이 아닙니다. 중립 분산도 따로 선택할 수 있습니다.</p><textarea id="poolInput" class="field" rows="3" style="width:100%;resize:vertical" oninput="markManualPool()"></textarea><div class="pinned-box"><label for="lockedInput"><strong>5게임 공통 고정수</strong> <small>(최대 5개, 예: 39,44)</small></label><input id="lockedInput" class="field" placeholder="39, 44" autocomplete="off" oninput="markPinsPending()"><div class="toolbar"><button class="btn small secondary" onclick="applyPinned()">고정수 적용</button><span id="lockedStatus" class="hint">고정수는 이번 회차에만 저장하며, 없으면 후보에서 분산합니다.</span></div></div><p class="audit-banner" id="autoPoolExplanation">45개 번호의 간이 검증을 계산하고 있습니다.</p><div class="toolbar"><button class="btn" onclick="makeTickets(false)">최종 5조합 생성</button><button class="btn secondary" onclick="setResearchPool()">패턴 연구용 12수</button><button class="btn secondary" onclick="setAutoPool()">중립 분산 12수</button><button class="btn outline" onclick="saveTicketPNG()">조합 이미지 저장</button></div><div id="candidateAudit"></div></div><div id="ticketsResult"></div></section>
+<section id="backtest" class="page"><div class="eyebrow">WALK-FORWARD CHECK</div><h1>과거 검증</h1><p class="lead">현재 최종 5조합에 적용하는 <strong>장기 연결 최대 10수 + 복합 관찰 최대 2수</strong>를 과거 매 회차 시점에서 다시 계산합니다. 같은 12수·5게임의 무작위 기준과 비교하며, 이후 당첨번호를 미리 참조하지 않습니다. 사후 선정 전략의 과거 결과는 미래 당첨확률을 증명하지 않습니다.</p><div class="toolbar"><label>검증할 과거 회차 <select id="backtestRounds" class="field" aria-label="과거 검증 회차 수"><option value="12">최근 12회</option><option value="30">최근 30회</option><option value="60" selected>최근 60회</option><option value="120">최근 120회</option></select></label><button id="runBacktestBtn" class="btn" onclick="runBacktest()">시점별 독립 검증 실행</button></div>
   <p class="hint">① 매 회차 직전까지의 기록만 사용 ② 기본 45개 규칙 × 45개 번호를 같은 기준으로 검증 ③ 당시 통과한 번호와 조합만 실제 결과와 비교합니다. 비교용 조합도 무작위로 선택한 12수에서 같은 방식으로 5게임을 만듭니다. 연결 패턴은 사후 탐색이므로 검증 통과 후보에서 제외됩니다.</p>
   <div id="backtestResult"></div></section>
 <div class="footer">🛡️ LOTTO NOTE · 과거의 패턴은 미래의 당첨을 보장하지 않습니다.<br><a href="https://lotto-note.tistory.com/" target="_blank" rel="noopener">로또 노트 블로그</a></div>
@@ -220,7 +232,7 @@ const DATA_URL="https://smok95.github.io/lotto/results/all.json";
 const BASE=6/45;
 const LOOKBACK=15;
 const $=id=>document.getElementById(id);
-const state={draws:[],source:"",profiles:[],tickets:[],nonce:0,loading:false,cache:new Map(),proofCache:new Map(),module16:null,poolMode:"neutral"};
+const state={draws:[],source:"",profiles:[],tickets:[],nonce:0,loading:false,cache:new Map(),proofCache:new Map(),module16:null,poolMode:"research",locked:[]};
 function clean(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function pct(v){return Number.isFinite(v)?(v*100).toFixed(1)+"%":"—";}
 function ball(n){return '<span class="ball b'+(n<=10?1:n<=20?2:n<=30?3:n<=40?4:5)+'">'+n+'</span>';}
@@ -293,12 +305,18 @@ async function reloadData(){
   await new Promise(r=>setTimeout(r,15));
   state.profiles=analyzeAll(state.draws);
   state.module16=scanModule16(state.draws,state.profiles);
+  if(state.savedPinnedRound&&state.savedPinnedRound!==upcoming(state.draws)){
+    $("lockedInput").value="";state.locked=[];state.savedPinnedRound=null;
+    try{localStorage.removeItem("lotto_pattern_fixed_v2");}catch(_){}
+    state.poolMode="research";
+  }
   renderModule16();
   fillPatternSelect();
   $("focusCount").textContent=state.profiles.filter(p=>p.confirmed.length).length+"개";
   renderNumbers();
   showNumberComparison();
-  setAutoPool();
+  if(state.poolMode!=="manual"||!$("poolInput").value.trim())setResearchPool();
+  else{invalidateTickets();renderSelectionAudit();}
   if($("research").classList.contains("active"))showResearch();
   if($("patterns").classList.contains("active"))showPatternSearch();
 }
@@ -1521,24 +1539,181 @@ function autoNumbers(dsProfiles,round){
   }
   return chosen.sort((a,b)=>a-b);
 }
-function markManualPool(){state.poolMode="manual";}
+
+function readPinned(){
+  const values=$("lockedInput").value.trim().split(/[\s,;]+/).filter(Boolean).map(Number);
+  if(values.some(n=>!Number.isInteger(n)||n<1||n>45))throw Error("고정수는 1~45번 정수만 입력해 주세요.");
+  const pins=[...new Set(values)].sort((a,b)=>a-b);
+  if(pins.length>5)throw Error("서로 다른 조합 5개를 위해 고정수는 최대 5개까지 입력하세요.");
+  return pins;
+}
+function restorePinned(){
+  try{
+    const saved=JSON.parse(localStorage.getItem("lotto_pattern_fixed_v2")||"null");
+    if(saved&&Number.isInteger(saved.round)&&Array.isArray(saved.pins)){
+      state.savedPinnedRound=saved.round;
+      $("lockedInput").value=saved.pins.join(", ");
+    }
+  }catch(_){}
+}
+function rememberPinned(pins){
+  try{
+    state.savedPinnedRound=upcoming(state.draws);
+    localStorage.setItem("lotto_pattern_fixed_v2",JSON.stringify({round:state.savedPinnedRound,pins}));
+  }catch(_){}
+}
+function researchPoolPlan(profiles=state.profiles,modules=state.module16){
+  const ordered=profiles.slice().sort((a,b)=>researchStrength(b)-researchStrength(a)||
+    b.supports.length-a.supports.length||a.n-b.n);
+  const selected=[],reasons=new Map();
+  // 선행 번호 연속 연결을 먼저 정하고, 별개의 복합 관찰 분류에 최대 두 자리만 배정한다.
+  // 복합 관찰은 다중검색의 사후 발견이다. 높은 예측력의 증거로 계산하지 않는다.
+  const primary=ordered.filter(p=>researchStrength(p)>0).slice(0,10);
+  for(const p of primary){
+    selected.push(p.n);
+    const n=p.list.filter(e=>e.rule.group==="고정위상"||e.rule.group==="사선").length;
+    reasons.set(p.n,"장기 회차연결 "+n+"개 · 연구 순서 "+(selected.length)+"번");
+  }
+  const eligible=(modules||[]).filter(m=>m.id===4||m.id===16).flatMap(m=>
+    m.items.filter(x=>x.n!==null&&x.audit&&x.audit.cases>=3&&x.audit.wins===x.audit.cases)
+      .map(x=>({n:x.n,id:m.id,cases:x.audit.cases,detail:x.label})));
+  const best=new Map();
+  for(const e of eligible){
+    if(!best.has(e.n)||e.cases>best.get(e.n).cases)best.set(e.n,e);
+  }
+  const cross=[...best.values()].sort((a,b)=>b.cases-a.cases||a.n-b.n);
+  let crossUsed=0;
+  for(const e of cross){
+    if(selected.includes(e.n)||crossUsed>=2)continue;
+    selected.push(e.n);crossUsed++;
+    reasons.set(e.n,"복합 관찰 "+e.cases+"/"+e.cases+" (사후 발견·검증 부족)");
+  }
+  for(const p of ordered){
+    if(selected.length>=12)break;
+    if(selected.includes(p.n))continue;
+    selected.push(p.n);
+    reasons.set(p.n,researchStrength(p)>0?"장기 회차연결 보충":"관찰분류 보충 (검증 우위 미확인)");
+  }
+  return {numbers:selected.slice(0,12),reasons,crossUsed};
+}
+function withPinned(pool,pins,limit){
+  const chosen=pool.slice();
+  for(const pin of pins){
+    if(chosen.includes(pin))continue;
+    if(chosen.length>=limit){
+      let remove=-1;
+      for(let i=chosen.length-1;i>=0;i--)if(!pins.includes(chosen[i])){remove=i;break;}
+      if(remove<0)throw Error("고정수 자리가 부족합니다.");
+      chosen.splice(remove,1);
+    }
+    chosen.push(pin);
+  }
+  return [...new Set(chosen)].sort((a,b)=>a-b);
+}
+function invalidateTickets(){
+  state.tickets=[];
+  const output=$("ticketsResult");
+  if(output)output.innerHTML='<p class="hint">후보 또는 고정수가 변경됐습니다. 「최종 5조합 생성」을 눌러 새 결과를 확인하세요.</p>';
+}
+function renderSelectionAudit(){
+  const target=$("candidateAudit");
+  if(!target||!state.profiles.length)return;
+  let pool;
+  try{
+    pool=[...new Set($("poolInput").value.split(/[\s,;]+/).filter(Boolean).map(Number)
+      .filter(n=>Number.isInteger(n)&&n>=1&&n<=45))].sort((a,b)=>a-b);
+  }catch(_){pool=[];}
+  const poolSet=new Set(pool),pins=new Set(state.locked||[]);
+  const plan=researchPoolPlan();
+  const byN=new Map(state.profiles.map(p=>[p.n,p]));
+  const labelOfN=n=>{
+    const p=byN.get(n);
+    const timeline=p.list.filter(e=>e.rule.group==="고정위상"||e.rule.group==="사선");
+    const direct=(state.module16||[]).flatMap(m=>m.items.filter(it=>it.n===n&&it.audit&&
+      (m.id===4||m.id===16)).map(it=>({m:m.id,label:it.label,cases:it.audit.cases,wins:it.audit.wins})));
+    if(direct.length)return direct.map(x=>x.label+" ("+x.wins+"/"+x.cases+")").slice(0,2).join(" / ");
+    if(timeline.length)return timeline.slice(0,2).map(e=>labelOf(e,n)).join(" / ");
+    return p.flowCount?"그 외 번호 직접 연결 "+p.flowCount+"개":"현재 연결 탐색이 없는 번호";
+  };
+  const selected=pool.map(n=>'<span class="tag">'+n+'번'+(pins.has(n)?" [고정]":"")+'</span>').join(" ");
+  const all=Array.from({length:45},(_,i)=>i+1).map(n=>{
+    const p=byN.get(n),included=poolSet.has(n),fixed=pins.has(n);
+    const origin=fixed?"고정수 (모든 게임 포함)":
+      included?(state.poolMode==="research"?(plan.reasons.get(n)||"고정수 반영으로 포함"):
+        state.poolMode==="neutral"?"중립 분산 선택": "사용자 입력으로 포함"):
+      state.poolMode==="manual"?"사용자가 입력한 후보에 없음":
+      state.poolMode==="neutral"?"중립 분산 12수 밖":
+      plan.reasons.has(n)?"고정수 추가로 기존 연구 12수에서 교체됨":
+      researchStrength(p)>0?"장기 연결은 있지만 12수 선정 밖":
+      (state.module16||[]).some(m=>m.items.some(it=>it.n===n))?
+        "관련 관찰은 있지만 장기·복합 선정 기준 밖":"연구용 12수의 선정 조건 미해당";
+    return '<tr><td><button class="btn small outline" onclick="openDetail('+n+')">'+n+'번</button></td>'+
+      '<td class="'+(fixed?"candidate-locked":included?"candidate-selected":"candidate-excluded")+'">'+
+      (fixed?"고정":included?"포함":"제외")+'</td><td>'+clean(origin)+'</td>'+
+      '<td class="small-note">'+clean(labelOfN(n))+'</td>'+
+      '<td><button class="btn small outline" onclick="togglePinned('+n+')">'+
+      (fixed?"고정 해제":"5게임 고정")+'</button></td></tr>';
+  }).join("");
+  target.innerHTML='<div class="candidate-review"><h3>이번 '+upcoming(state.draws)+'회 실제 후보·제외 이유</h3>'+
+    '<p class="hint">현재 후보 '+pool.length+'개 / 고정 '+pins.size+'개. 조합에 안 들어간 번호도 검색은 되며, 제외는 당첨 가능성이 낮다는 뜻이 아닙니다.</p>'+
+    '<div class="toolbar">'+selected+'</div>'+
+    '<details class="audit-group"><summary class="openmore">1~45번 전체 후보 포함·제외 사유 확인 및 고정수 선택</summary>'+
+    '<p class="hint">장기 연결은 고정 간격·사선, 복합 관찰은 작은 과거 사례를 전수 검색한 분류입니다. 후보는 최대 12개로 제한되어 다른 관찰이 빠질 수 있습니다.</p>'+
+    '<div class="tablewrap"><table class="simple-table"><thead><tr><th>번호</th><th>상태</th><th>선정/제외 이유</th><th>실제 관찰</th><th>고정 선택</th></tr></thead>'+
+    '<tbody>'+all+'</tbody></table></div></details></div>';
+}
+function markManualPool(){
+  state.poolMode="manual";
+  invalidateTickets();
+  renderSelectionAudit();
+}
+function markPinsPending(){
+  $("lockedStatus").textContent="고정수를 변경했습니다. 적용 버튼을 누르거나 조합을 생성하면 반영됩니다.";
+  invalidateTickets();
+}
+function applyPinned(){
+  let pins;
+  try{pins=readPinned();}catch(e){alert(e.message);return false;}
+  state.locked=pins;
+  rememberPinned(pins);
+  if(state.poolMode==="research")setResearchPool();
+  else if(state.poolMode==="neutral")setAutoPool();
+  else{
+    const base=$("poolInput").value.split(/[\s,;]+/).filter(Boolean).map(Number);
+    if(base.every(n=>Number.isInteger(n)&&n>=1&&n<=45)&&base.length>=7)
+      $("poolInput").value=[...new Set(base.concat(pins))].sort((a,b)=>a-b).join(", ");
+    invalidateTickets();renderSelectionAudit();
+  }
+  $("lockedStatus").textContent=pins.length?"고정수 "+pins.join("·")+"번: 생성하는 모든 5게임에 각각 포함합니다.":
+    "고정수 없음. 후보를 골고루 분산합니다.";
+  return true;
+}
+function togglePinned(n){
+  let pins;
+  try{pins=readPinned();}catch(e){alert(e.message);return;}
+  pins=pins.includes(n)?pins.filter(x=>x!==n):pins.concat(n).sort((a,b)=>a-b);
+  if(pins.length>5)return alert("고정수는 최대 5개입니다.");
+  $("lockedInput").value=pins.join(", ");
+  applyPinned();
+}
 function setResearchPool(){
   if(!state.profiles.length)return;
-  state.poolMode="research";
-  const ranked=state.profiles.slice().sort((a,b)=>researchStrength(b)-researchStrength(a)||
-    b.supports.length-a.supports.length||a.n-b.n);
-  const selected=ranked.slice(0,12);
-  $("poolInput").value=selected.map(p=>p.n).sort((a,b)=>a-b).join(", ");
-  $("autoPoolExplanation").textContent="패턴 연구용: 이번 회차에 실제 연결된 고정 회차간격·사선 패턴을 1~45번 모두 검사하여 12수를 골랐습니다. 과거 기록을 바탕으로 한 연구 우선순위이며, 높은 당첨확률이 입증된 조합이 아닙니다. 다른 숫자도 번호별 연구 화면에서 확인할 수 있습니다.";
+  const pins=readPinned();
+  state.locked=pins;state.poolMode="research";
+  const plan=researchPoolPlan(),chosen=withPinned(plan.numbers,pins,12);
+  $("poolInput").value=chosen.join(", ");
+  $("autoPoolExplanation").textContent="1~45번을 같은 기준으로 분석: 장기 간격·사선 연결 최대 10수 + 사후 복합 관찰 최대 2수(현재 "+plan.crossUsed+"수). "+
+    "복합 관찰은 소표본·다중검색에 따른 우연일 수 있습니다. 고정수를 선택하면 연구 후보 12수 안에서 우선 반영합니다. 당첨확률 순위는 아닙니다.";
+  invalidateTickets();renderSelectionAudit();
 }
 function setAutoPool(){
   if(!state.profiles.length)return;
-  state.poolMode="neutral";
-  const strong=state.profiles.filter(p=>p.confirmed.length).length;
-  $("poolInput").value=autoNumbers(state.profiles,upcoming(state.draws)).join(", ");
-  $("autoPoolExplanation").textContent=strong?
-    "간이 기준 부합 번호 "+strong+"개를 우선 넣고, 부족한 자리는 과거 신호와 무관한 단순 분산수로 채웠습니다. 간이 기준도 미래 확률을 높인다는 뜻은 아닙니다.":
-    "현재 보수적 간이 검증을 통과한 번호가 없어, 12수는 과거 패턴 점수와 무관한 단순 분산 예시로 구성했습니다. '추가 검증' 번호도 우선 반영하지 않습니다.";
+  const pins=readPinned();
+  state.locked=pins;state.poolMode="neutral";
+  $("poolInput").value=withPinned(autoNumbers(state.profiles,upcoming(state.draws)),pins,12).join(", ");
+  $("autoPoolExplanation").textContent="중립 분산 12수는 패턴 점수를 사용하지 않습니다. 고정수를 입력하면 그 번호만 우선 포함합니다. "+
+    "이 모드는 연구 결과와 별개로 선택하는 비교용 조합입니다.";
+  invalidateTickets();renderSelectionAudit();
 }
 function parsePool(){
   const values=$("poolInput").value.split(/[\s,;]+/).filter(Boolean).map(Number);
@@ -1574,44 +1749,90 @@ function pickSix(pool,random){
   }
   return bag.slice(0,6).sort((a,b)=>a-b);
 }
-function chooseTickets(pool,seed){
+
+function possibleTicketCount(free,need){
+  if(need<0||need>free)return 0;
+  let result=1;
+  for(let i=1;i<=need;i++)result=result*(free-need+i)/i;
+  return result;
+}
+function chooseTickets(pool,seed,pins=[]){
   const random=seededRandom(seed);
+  const locked=[...new Set(pins)].sort((a,b)=>a-b);
+  if(locked.some(n=>!pool.includes(n)))throw Error("고정수가 후보 번호에 포함되지 않았습니다.");
+  const free=pool.filter(n=>!locked.includes(n)),needed=6-locked.length;
+  if(possibleTicketCount(free.length,needed)<5)throw Error(
+    "지금 고정수와 후보 수로 서로 다른 5게임을 만들 수 없습니다. 후보 번호를 더 추가하거나 고정수를 줄여주세요.");
   const candidates=new Map();
-  for(let i=0;i<Math.min(1500,Math.max(250,pool.length*30));i++){
-    const c=pickSix(pool,random);
-    candidates.set(c.join(","),c);
-  }
-  const taken=[],seen=new Map();
-  const source=[...candidates.values()];
+  const add=part=>{
+    const c=locked.concat(part).sort((a,b)=>a-b);
+    if(c.length===6)candidates.set(c.join(","),c);
+  };
+  for(let i=0;i<Math.min(4800,Math.max(1600,pool.length*100));i++)
+    add(pickSix(free,random).slice(0,needed));
+  const taken=[],seen=new Map(),source=[...candidates.values()];
   for(let k=0;k<5;k++){
+    // 다음 게임의 빈자리에는 아직 한 번도 사용하지 않은 후보를 먼저 배분한다.
+    const key=free.map(n=>({n,tie:random()}));
+    key.sort((a,b)=>(seen.get(a.n)||0)-(seen.get(b.n)||0)||a.tie-b.tie);
+    add(key.slice(0,needed).map(x=>x.n));
     let best=null,bestScore=-Infinity;
-    for(const c of source){
+    for(const c of candidates.values()){
       if(taken.some(t=>t.join(",")===c.join(",")))continue;
+      const missing=c.filter(n=>!seen.has(n)).length;
       let overlap=0;
       for(const t of taken)overlap=Math.max(overlap,intersectionCount(c,t));
       const fresh=c.reduce((s,n)=>s+1/(1+(seen.get(n)||0)),0);
-      const score=fresh*3-overlap*1.5+random()*.001;
+      const score=missing*1000+fresh*4-overlap*1.5+random()*.0001;
       if(score>bestScore){best=c;bestScore=score;}
     }
     if(!best)break;
     taken.push(best);
     for(const n of best)seen.set(n,(seen.get(n)||0)+1);
   }
+  if(taken.length!==5)throw Error("서로 다른 5조합을 만들지 못했습니다. 후보 수를 늘려 다시 시도해 주세요.");
   return taken;
+}
+function ticketBalls(ticket,pins){
+  return '<div class="ballset">'+ticket.map(n=>'<button type="button" class="ball b'+
+    (n<=10?1:n<=20?2:n<=30?3:n<=40?4:5)+(pins.includes(n)?' pin-ball':'')+
+    '" onclick="openDetail('+n+')" aria-label="'+n+'번 실제 패턴 상세 보기">'+n+'</button>').join("")+'</div>';
 }
 function makeTickets(again){
   if(!state.draws.length)return alert("데이터를 먼저 연결해 주세요.");
-  let pool;
-  try{pool=parsePool();}catch(e){alert(e.message);return;}
-  if(again)state.nonce++;
-  const seed=upcoming(state.draws)*76543+pool.reduce((s,n)=>s+n*97,0)+state.nonce*313;
-  state.tickets=chooseTickets(pool,seed);
+  let pool,pins;
+  try{
+    pins=readPinned();
+    if(pins.join(",")!==(state.locked||[]).join(",")){
+      if(!applyPinned())return;
+    }
+    pool=parsePool();
+    if(pins.some(n=>!pool.includes(n)))throw Error("고정 번호가 후보 번호에 없습니다. 먼저 「고정수 적용」을 눌러주세요.");
+    const seed=upcoming(state.draws)*76543+pool.reduce((s,n)=>s+n*97,0)+
+      pins.reduce((s,n)=>s+n*331,0)+(again?state.nonce+1:state.nonce)*313;
+    const result=chooseTickets(pool,seed,pins);
+    if(again)state.nonce++;
+    state.tickets=result;
+    state.lastTicketPool=pool.slice();
+    state.lastTicketPinned=pins.slice();
+  }catch(e){alert(e.message);return;}
+  const used=new Set(state.tickets.flat()),unused=pool.filter(n=>!used.has(n));
+  const counts=pool.map(n=>({n,count:state.tickets.filter(t=>t.includes(n)).length}));
+  const fixedSummary=pins.length?
+    "공통 고정 "+pins.join("·")+"번: 모두 5/5게임 포함":"공통 고정수 없음";
+  const coverageMessage="후보 "+pool.length+"수 중 실제 사용 "+used.size+"수 · 미사용 "+
+    unused.length+"수"+(unused.length?" ("+unused.join("·")+"번)":" (전체 반영)");
+  const modeLabel=state.poolMode==="research"?"패턴 연구용":
+    state.poolMode==="neutral"?"중립 분산":"사용자 수정";
   $("ticketsResult").innerHTML='<div class="section"><div class="section-head"><h2>'+upcoming(state.draws)+
-    '회 · 연구용 5조합</h2><span class="tag">입력 번호 '+pool.length+'개에서 생성</span></div>'+
-    state.tickets.map((t,i)=>'<div class="ticket"><strong>'+(i+1)+'게임</strong>'+balls(t)+'</div>').join("")+
+    '회 · '+modeLabel+' 5조합</h2><span class="tag">후보 '+pool.length+'개 · 고정 '+pins.length+'개</span></div>'+
+    '<div class="audit-banner"><strong>조합 반영 검증:</strong> '+coverageMessage+'<p>'+fixedSummary+'</p></div>'+
+    state.tickets.map((t,i)=>'<div class="ticket"><strong>'+(i+1)+'게임</strong>'+ticketBalls(t,pins)+'</div>').join("")+
+    '<p class="hint">게임의 숫자를 누르면 해당 번호에 실제 적용된 패턴·과거 성공 및 실패 기록을 볼 수 있습니다. 금색 테두리는 사용자가 지정한 5게임 공통 고정수입니다.</p>'+    '<details class="audit-group"><summary class="openmore">후보별 5게임 사용 횟수 전부 확인</summary>'+
+    '<div class="toolbar">'+counts.map(x=>'<span class="tag">'+x.n+'번 '+x.count+'/5게임</span>').join(" ")+'</div></details>'+
     '<div class="toolbar"><button class="btn secondary" onclick="makeTickets(true)">다른 5조합 생성</button>'+
     '<button class="btn outline" onclick="saveTicketPNG()">PPT 이미지 저장</button></div>'+
-    '<p class="hint">'+(state.poolMode==='manual'?'사용자가 직접 수정한 후보 번호로 생성한 조합입니다. 패턴 수나 과거 출현 기록이 당첨확률을 보장하지 않습니다.':state.poolMode==='research'?'이번 조합은 1~45번 전체의 고정 회차간격·사선 관찰을 참고한 연구용 12수에서 만들어졌습니다. 검증된 당첨확률 우위는 없습니다.':state.profiles.some(p=>p.confirmed.length)?'간이 기준 부합 번호와 중립 분산수를 섞었습니다. 간이 기준을 통과해도 미래 당첨 확률이 높아지는 것은 아닙니다.':'간이 기준 부합 번호가 없어, 과거 패턴 점수를 반영하지 않은 중립 분산수만 사용했습니다. 이 조합은 다른 조합보다 유리하지 않습니다.')+'</p></div>';
+    '<p class="hint">패턴 연구용은 장기 연결 10수와 별도 복합 관찰 최대 2수를 나눠 고른 탐색 조합입니다. 복합 관찰은 사후 검색이고 우연일 수 있습니다. 중립 분산은 패턴 점수를 사용하지 않습니다. 어떤 방식이든 로또의 1등 당첨확률이 높아지는 것은 아닙니다.</p></div>';
 }
 function saveTicketPNG(){
   if(!state.tickets.length)return alert("먼저 5조합을 생성하세요.");
@@ -1619,9 +1840,9 @@ function saveTicketPNG(){
   const x=c.getContext("2d");
   x.fillStyle="#f9fbff";x.fillRect(0,0,c.width,c.height);
   x.fillStyle="#163e79";x.font="bold 47px Malgun Gothic,sans-serif";
-  x.fillText("LOTTO NOTE · "+upcoming(state.draws)+"회 연구 5조합",70,105);
+  x.fillText("LOTTO NOTE · "+upcoming(state.draws)+"회 최종 5조합",70,105);
   x.fillStyle="#567198";x.font="25px Malgun Gothic,sans-serif";
-  x.fillText("선택 후보 번호를 분산한 연구용 조합",72,151);
+  x.fillText("후보 "+(state.lastTicketPool||[]).length+"수 · 공통 고정 "+((state.lastTicketPinned||[]).join("·")||"없음"),72,151);
   const cols=["#e7b449","#4a92d0","#cf697c","#748294","#4faf8d"];
   state.tickets.forEach((ticket,i)=>{
     const y=220+i*109;
@@ -1686,6 +1907,7 @@ function historicalSignalCounts(ds,index,i){
   }
   return summary.sort((a,b)=>b.confirmed.length-a.confirmed.length||a.n-b.n);
 }
+
 async function runBacktest(){
   if(!state.draws.length)return alert("데이터를 먼저 연결해 주세요.");
   if(state.backtestRunning)return;
@@ -1693,67 +1915,74 @@ async function runBacktest(){
   const btn=$("runBacktestBtn"),output=$("backtestResult");
   btn.disabled=true;
   const count=Math.max(12,Math.min(120,Number($("backtestRounds").value)||60));
-  const ds=state.draws,results=[];
+  const ds=state.draws,results=[],all45=Array.from({length:45},(_,i)=>i+1);
   const progress=message=>output.innerHTML='<div class="panel backtest-progress">'+clean(message)+'</div>';
   try{
-    progress("검증 준비 중…");
-    const records=state.backtestIndex||await historyRuleIndex(ds,progress);
-    state.backtestIndex=records;
-    const all45=Array.from({length:45},(_,k)=>k+1);
-    for(let i=ds.length-count;i<ds.length;i++){
-      if(i<300)continue;
-      const profiles=historicalSignalCounts(ds,records,i);
-      const verified=profiles.filter(p=>p.confirmed.length).map(p=>p.n);
-      const pool=autoNumbers(profiles,ds[i].draw_no);
-      const tickets=chooseTickets(pool,ds[i].draw_no*76543+pool.reduce((sum,n)=>sum+n*97,0));
-      const randomPool=randomTwelve(all45,ds[i].draw_no);
-      const randomTickets=chooseTickets(randomPool,ds[i].draw_no*76543+randomPool.reduce((sum,n)=>sum+n*97,0));
+    progress("실제 1~45번 패턴을 각 과거 시점에서 다시 계산하고 있습니다...");
+    for(let i=Math.max(300,ds.length-count);i<ds.length;i++){
+      const before=ds.slice(0,i),round=ds[i].draw_no;
+      if(before[before.length-1].draw_no!==round-1)throw Error("검증 시점 데이터에 결손이 있습니다.");
+      const historicalProfiles=all45.map(n=>({
+        n,list:makeTimelineRules(before,n).map(rule=>({rule})),supports:[]
+      }));
+      const historicalModules=scanModule16(before,historicalProfiles);
+      const plan=researchPoolPlan(historicalProfiles,historicalModules);
+      const pool=plan.numbers.slice().sort((a,b)=>a-b);
+      if(pool.length!==12||new Set(pool).size!==12)
+        throw Error(round+"회 연구 후보 12수가 구성되지 않았습니다.");
+      const researchSeed=round*76543+pool.reduce((s,n)=>s+n*97,0);
+      const tickets=chooseTickets(pool,researchSeed);
+      const randomPool=randomTwelve(all45,round);
+      const randomSeed=round*76543+randomPool.reduce((s,n)=>s+n*97,0);
+      const randomTickets=chooseTickets(randomPool,randomSeed);
       const actual=ds[i].numbers;
-      const maxHit=ts=>Math.max(0,...ts.map(t=>intersectionCount(t,actual)));
-      const verifiedHits=verified.filter(n=>actual.includes(n)).length;
-      results.push({round:ds[i].draw_no,actual:actual.join(" · "),selected:verified.length,
-        verifiedHits,best:maxHit(tickets),randomBest:maxHit(randomTickets)});
+      const best=ts=>Math.max(...ts.map(t=>intersectionCount(t,actual)));
+      results.push({round,actual:actual.join(" · "),pool:pool.join(" · "),
+        selectedHits:pool.filter(n=>actual.includes(n)).length,
+        randomHits:randomPool.filter(n=>actual.includes(n)).length,
+        best:best(tickets),randomBest:best(randomTickets)});
       if(results.length%5===0){
-        progress("실제 당첨 결과와 비교 중: "+results.length+"/"+count+"회차");
+        progress("검증 완료 "+results.length+"/"+count+"회 · 이번 결과 회차 "+round+
+          "회까지 계산 (실제 당첨번호는 비교할 때만 사용)");
         await new Promise(resolve=>setTimeout(resolve,0));
       }
     }
-    const avg=(xs,fn)=>(xs.reduce((sum,x)=>sum+fn(x),0)/Math.max(1,xs.length)).toFixed(2);
-    const signalRounds=results.filter(x=>x.selected>0).length;
-    const selectedTotal=results.reduce((sum,x)=>sum+x.selected,0);
-    const hitTotal=results.reduce((sum,x)=>sum+x.verifiedHits,0);
-    const matchingOurs=results.filter(x=>x.best>=3).length;
-    const matchingRandom=results.filter(x=>x.randomBest>=3).length;
-    const line=(label,value,kind)=>'<div class="stat"><small>'+label+'</small><b'+(kind?' style="color:#9ce8d2"':'')+'>'+value+'</b></div>';
-    const example=selectedTotal?
-      '당시 간이 기준을 통과한 번호가 총 '+selectedTotal+'번 선택됐고 실제로 '+hitTotal+
-      '번 출현했습니다. 무작위 번호의 같은 선택 건수에 대한 평균 기대 출현은 '+(selectedTotal*BASE).toFixed(1)+
-      '번입니다. 이 차이는 표본과 중복 조건을 고려하여 신중하게 해석해야 합니다.':
-      '이 구간에서 보수적 간이 기준을 통과한 번호가 한 번도 없었습니다. 따라서 이 구간의 자동 5조합은 과거 패턴 우위 신호가 아닌 중립 분산으로만 만들었습니다.';
-    output.innerHTML='<div class="section panel"><h2>최근 '+results.length+'회 시점별 검증 결과</h2>'+
-      '<p class="hint">평가 회차를 미리 정한 뒤, 각 회차 이전 기록만 계산에 사용했습니다. 해당 회차의 실제 번호는 평가할 때만 사용했습니다.</p>'+
-      '<div class="cards">'+line("실제로 비교한 회차",results.length+"회")+
-      line("간이 기준 부합 신호 발생",signalRounds+"회")+
-      line("연구 5게임 최고 적중 평균",avg(results,x=>x.best)+"개")+
-      line("무작위 12수·5게임 적중 평균",avg(results,x=>x.randomBest)+"개")+
-      line("연구 5게임에서 3개 이상",matchingOurs+"회")+
-      line("무작위 12수 5게임에서 3개 이상",matchingRandom+"회")+'</div>'+
+    const avg=(f)=>(results.reduce((s,x)=>s+f(x),0)/Math.max(1,results.length)).toFixed(2);
+    const avgSelected=avg(x=>x.selectedHits),avgRandomSelected=avg(x=>x.randomHits);
+    const avgBest=avg(x=>x.best),avgRandomBest=avg(x=>x.randomBest);
+    const triples=results.filter(x=>x.best>=3).length;
+    const randomTriples=results.filter(x=>x.randomBest>=3).length;
+    const stat=(label,value)=>'<div class="stat"><small>'+label+'</small><b>'+value+'</b></div>';
+    output.innerHTML='<div class="section panel"><h2>과거 '+results.length+'회 · 실제 조합 로직 독립 검증</h2>'+
+      '<p class="hint">매 회차 ① 이전까지 확정된 회차로 16분류의 직접 조건을 검색 ② 장기 연결 최대 10수와 사후 복합 관찰 최대 2수 선정 ③ 12수로 5게임 생성 ④ 그 회차 실제 당첨번호와 비교. 같은 크기의 무작위 12수·5게임도 동일하게 비교했습니다. 현재 사용자가 선택한 고정수는 이 자동 연구 방식의 과거 검증에 적용하지 않습니다.</p>'+
+      '<div class="cards">'+
+      stat("독립 검증 회차",results.length+"회")+
+      stat("연구 12수 중 당첨 평균",avgSelected+"개")+
+      stat("무작위 12수 중 당첨 평균",avgRandomSelected+"개")+
+      stat("연구 5게임 최고 적중 평균",avgBest+"개")+
+      stat("무작위 5게임 최고 적중 평균",avgRandomBest+"개")+
+      stat("연구 5게임 3개 이상",triples+"회")+
+      stat("무작위 5게임 3개 이상",randomTriples+"회")+'</div>'+
       '<div class="backtest-bars">'+
-      '<div class="backtest-barrow"><strong>연구 조합</strong><span><i style="width:'+Math.min(100,100*Number(avg(results,x=>x.best))/6)+'%;background:#69c6b5"></i></span><b>'+avg(results,x=>x.best)+'개</b></div>'+
-      '<div class="backtest-barrow"><strong>무작위 조합</strong><span><i style="width:'+Math.min(100,100*Number(avg(results,x=>x.randomBest))/6)+'%;background:#f3be71"></i></span><b>'+avg(results,x=>x.randomBest)+'개</b></div></div>'+
-      '<div class="audit-banner"><strong>간이 검증 번호의 실제 결과:</strong> '+example+'</div>'+
-      '<div class="tablewrap backtest-table"><table class="simple-table"><thead><tr><th>회차</th><th>실제 당첨번호</th><th>간이 신호 번호 수</th><th>그중 적중</th><th>연구 5게임 최고</th><th>무작위 12수 5게임 최고</th></tr></thead><tbody>'+
-      results.map(r=>'<tr><td>'+r.round+'회</td><td>'+r.actual+'</td><td>'+r.selected+'개</td><td>'+r.verifiedHits+'개</td><td>'+r.best+'개</td><td>'+r.randomBest+'개</td></tr>').reverse().join("")+
-      '</tbody></table></div><p class="caution">통과한 신호가 없거나 횟수가 적다면 예측력이 증명되지 않은 것입니다. 연구·무작위 조합의 비교도 표본 변동에 영향을 받으며, 1등 확률이 달라지는 것은 아닙니다.</p></div>';
+      '<div class="backtest-barrow"><strong>연구 조합</strong><span><i style="width:'+(100*Number(avgBest)/6).toFixed(1)+'%;background:#69c6b5"></i></span><b>'+avgBest+'개</b></div>'+
+      '<div class="backtest-barrow"><strong>무작위 조합</strong><span><i style="width:'+(100*Number(avgRandomBest)/6).toFixed(1)+'%;background:#f3be71"></i></span><b>'+avgRandomBest+'개</b></div></div>'+
+      '<div class="tablewrap backtest-table"><table class="simple-table"><thead><tr><th>검증 회차</th><th>실제 당첨번호</th><th>당시 연구 후보 12수</th><th>연구 12수 적중</th><th>무작위 12수 적중</th><th>연구 5게임 최고</th><th>무작위 5게임 최고</th></tr></thead><tbody>'+
+      results.slice().reverse().map(x=>'<tr><td>'+x.round+'회</td><td>'+x.actual+
+        '</td><td>'+x.pool+'</td><td>'+x.selectedHits+'개</td><td>'+x.randomHits+
+        '개</td><td>'+x.best+'개</td><td>'+x.randomBest+'개</td></tr>').join("")+
+      '</tbody></table></div>'+
+      '<p class="caution">주의: 장기 연결·복합 관찰 규칙 자체는 과거 자료를 연구하며 설계한 것이므로 이 검증도 완전한 미래 실험이 아닙니다. 후보 12개에는 상위 6개 당첨번호가 무작위로 들어갈 평균 1.6개가 기대됩니다. 비교 수치가 높거나 낮아도 다음 회차의 당첨확률이 높아졌다는 뜻은 아닙니다.</p></div>';
   }catch(error){
-    progress("검증 중 오류가 발생했습니다. 잠시 후 다시 실행해 주세요. ("+error.message+")");
+    progress("검증을 완료하지 못했습니다. ("+error.message+")");
   }finally{
     state.backtestRunning=false;btn.disabled=false;
   }
 }
+
 $("patternN").addEventListener("change",fillPatternSelect);
 $("detailDialog").addEventListener("click",e=>{if(e.target===$("detailDialog"))$("detailDialog").close();});
 window.addEventListener("scroll",()=>$("toTop").classList.toggle("show",window.scrollY>110),{passive:true});
+restorePinned();
 fillPatternSelect();
 reloadData();
 </script>
