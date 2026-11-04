@@ -982,11 +982,11 @@ function makeTickets(again){
   const seed=upcoming(state.draws)*76543+pool.reduce((s,n)=>s+n*97,0)+state.nonce*313;
   state.tickets=chooseTickets(pool,seed);
   $("ticketsResult").innerHTML='<div class="section"><div class="section-head"><h2>'+upcoming(state.draws)+
-    '회 · 연구용 5조합</h2><span class="tag">후보 '+pool.length+'개에서 생성</span></div>'+
+    '회 · 연구용 5조합</h2><span class="tag">입력 번호 '+pool.length+'개에서 생성</span></div>'+
     state.tickets.map((t,i)=>'<div class="ticket"><strong>'+(i+1)+'게임</strong>'+balls(t)+'</div>').join("")+
     '<div class="toolbar"><button class="btn secondary" onclick="makeTickets(true)">다른 5조합 생성</button>'+
     '<button class="btn outline" onclick="saveTicketPNG()">PPT 이미지 저장</button></div>'+
-    '<p class="hint">분석 통과 후보와 보조 분산수를 섞어 조합을 다양하게 구성했습니다. 보조수의 근거는 검증 기준 미달이며, 이 배열이 무작위 조합보다 1등에 유리하다는 뜻은 아닙니다.</p></div>';
+    '<p class="hint">'+(state.profiles.some(p=>p.confirmed.length)?'간이 기준 부합 번호와 중립 분산수를 섞었습니다. 간이 기준을 통과해도 미래 당첨 확률이 높아지는 것은 아닙니다.':'간이 기준 부합 번호가 없어, 과거 패턴 점수를 반영하지 않은 중립 분산수만 사용했습니다. 이 조합은 다른 조합보다 유리하지 않습니다.')+'</p></div>';
 }
 function saveTicketPNG(){
   if(!state.tickets.length)return alert("먼저 5조합을 생성하세요.");
