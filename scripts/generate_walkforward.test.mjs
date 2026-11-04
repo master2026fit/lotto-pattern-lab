@@ -42,8 +42,41 @@ test('과거 복원은 사전 실전 성적과 분리하며 11개 축/후반 테
   assert.equal(report.followupReview.rows.length,11);
   assert.deepEqual(report.followupReview.horizons,[1,2,3,5,10]);
   assert.equal(report.followupReview.numberRows.length,45);
+  assert.equal(report.followupReview.caseIndex.numbers.length,45);
   assert.equal(report.followupReview.origin,'historical-retrospective-not-predraw');
   assert.equal(report.examples.at(-1).followup.observedRounds,0);
+});
+
+test('과거 전체 1~45번 사례 색인은 당시 검색 비트·당첨·최초 재등장을 원본과 일치시킨다',()=>{
+  const draws=fakeDraws(52),review=makeWalkforward(draws).followupReview;
+  const index=review.caseIndex;
+  assert.equal(index.version,1);
+  assert.equal(index.axisKeys.length,11);
+  for(const item of index.numbers){
+    assert.ok(item.n>=1&&item.n<=45);
+    const cases=new Map(item.cases.map(c=>[c[0],c]));
+    assert.equal(cases.size,item.cases.length);
+    for(let round=2;round<=52;round++){
+      const flags=priorFlags(draws.slice(0,round-1),item.n);
+      const mask=index.axisKeys.reduce((v,key,i)=>flags.includes(key)?v|(1<<i):v,0);
+      const won=draws[round-1].numbers.includes(item.n)?1:0;
+      const record=cases.get(round);
+      if(!mask&&!won){assert.equal(record,undefined);continue;}
+      const next=draws.slice(round,round+10).findIndex(d=>d.numbers.includes(item.n));
+      assert.deepEqual(record,[round,mask,won,next<0?null:next+1],`${item.n}번 ${round}회`);
+    }
+    for(const [axisBit,key] of index.axisKeys.entries())for(const type of ['predictedButMissed','unpredictedWinner']){
+      for(const row of review.numberRows[item.n-1].axes[key][type]){
+        const relevant=item.cases.filter(([round,mask,won])=>{
+          if(round>52-row.horizon)return false;
+          const picked=!!(mask&(1<<axisBit));
+          return type==='predictedButMissed'?picked&&!won:!picked&&!!won;
+        });
+        assert.equal(row.eligible,relevant.length);
+        assert.equal(row.seen,relevant.filter(c=>c[3]!==null&&c[3]<=row.horizon).length);
+      }
+    }
+  }
 });
 
 test('1~45번 개별 추적의 표본수와 재등장 건수를 모두 합치면 전체 축 집계와 일치한다',()=>{

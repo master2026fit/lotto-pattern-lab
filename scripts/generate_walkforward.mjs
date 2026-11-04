@@ -5,6 +5,7 @@ import { exactChanceTail } from './build_scorecard.mjs';
 
 const SOURCE = 'https://smok95.github.io/lotto/results/all.json';
 const OUTPUT = path.resolve('data/historical_walkforward.json');
+const CASES_OUTPUT = path.resolve('data/historical_cases.json');
 const SCANS = path.resolve('data/weekly_scans.json');
 const BASE = 6 / 45;
 const AXES = [
@@ -206,6 +207,7 @@ export function makeFollowupReview(draws,history){
   if(history.length!==draws.length-1)throw Error('후속 출현 복기 이력이 일치하지 않습니다.');
   const totals=new Map();
   const numberTotals=new Map();
+  const caseNumbers=Array.from({length:45},(_,index)=>({n:index+1,cases:[]}));
   for(const [axis] of AXES)for(const [type] of FOLLOWUP_TYPES)
     totals.set(axis+'|'+type,FOLLOWUP_HORIZONS.map(horizon=>({horizon,eligible:0,seen:0})));
   for(const [axis] of AXES)for(const [type] of FOLLOWUP_TYPES)for(let n=1;n<=45;n++)
@@ -242,6 +244,18 @@ export function makeFollowupReview(draws,history){
       }
       if(i>=history.length-8)traceAxes[key]=traces;
     }
+    // 모든 추첨 당시의 11개 조건 선택 여부를 11비트로 압축한다.
+    // [회차, 당시 선택 조건 비트, 해당 회차 실제 당첨(0/1), 이후 10회 내 최초 재등장 간격]
+    const selectedMasks=new Uint16Array(46);
+    AXES.forEach(([key],index)=>{
+      for(const n of current.axes[key].selected)selectedMasks[n]|=1<<index;
+    });
+    for(let n=1;n<=45;n++){
+      const mask=selectedMasks[n],hit=won.has(n)?1:0;
+      if(!mask&&!hit)continue;
+      const found=future.findIndex(draw=>draw.numbers.includes(n));
+      caseNumbers[n-1].cases.push([current.round,mask,hit,found<0?null:found+1]);
+    }
     if(i>=history.length-8)current.followup={observedRounds,axes:traceAxes};
   }
   const rows=AXES.map(([key,label])=>{
@@ -272,7 +286,9 @@ export function makeFollowupReview(draws,history){
   return {version:1,method:'postdraw-only-first-future-appearance',horizons:FOLLOWUP_HORIZONS,
     origin:'historical-retrospective-not-predraw',
     caution:'당첨 발표 뒤에만 후속 출현을 기록합니다. 해당 기간이 지나지 않은 번호는 확인 대기이며 실패가 아닙니다. 과거의 반복 출현이나 1~10회 안의 재출현률이 미래 적중력 또는 추가 확률을 입증하지 않습니다.',
-    rows,numberRows};
+    rows,numberRows,caseIndex:{version:1,method:'postdraw-only-packed-all-history',
+      columns:['round','selectedAxesBitmask','won','firstAfter'],
+      axisKeys:AXES.map(([key])=>key),numbers:caseNumbers}};
 }
 
 export function makeWalkforward(draws){
@@ -337,6 +353,9 @@ async function main(){
     console.log(`${latest.round}회 사전 저장 45수/11축과 역사 복원 알고리즘 100% 일치`);
   }
   const report=makeWalkforward(draws);
+  const {caseIndex}=report.followupReview;
+  fs.writeFileSync(CASES_OUTPUT,JSON.stringify({...caseIndex,latestRound:report.lastTestRound})+'\n','utf8');
+  delete report.followupReview.caseIndex;
   fs.writeFileSync(OUTPUT,JSON.stringify(report,null,2)+'\n','utf8');
   console.log(`과거 전 구간 복원 완료: ${report.totalRounds}회, 최근 ${report.lateRounds}회 별도 검증, 사전 실전 0회와 분리`);
 }
