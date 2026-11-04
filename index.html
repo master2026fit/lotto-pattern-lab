@@ -173,8 +173,8 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 <section id="research" class="page"><div class="eyebrow">NUMBER LAB</div><h1>번호 연구소</h1><p class="lead">특정 번호의 출현 흐름과 이번 회차에 적용되는 번호별 패턴을 확인합니다.</p><div class="toolbar"><label>분석 번호 <input id="focusN" class="field" type="number" min="1" max="45" value="39"></label><button class="btn" onclick="showResearch()">번호 조사하기</button></div><div id="researchResult"></div></section>
 <section id="patterns" class="page"><div class="eyebrow">PATTERN EXPLORER</div><h1>패턴 검색</h1><p class="lead">선택한 번호의 이번 회차 출현·자리·간격 기록에서 자동 생성한 연결 패턴과 기본 45종 조건을 따로 살펴봅니다. 조건의 과거 성공·실패 회차를 정확히 비교하세요.</p><div class="toolbar"><label>번호 <input id="patternN" class="field" type="number" min="1" max="45" value="39"></label><label>조건 <select id="patternRule" class="field"></select></label><button class="btn" onclick="showPatternSearch()">역대 패턴 검색</button></div><div id="patternResult"></div></section>
 <section id="tickets" class="page"><div class="eyebrow">FIVE TICKET STUDIO</div><h1>최종 5조합</h1><p class="lead">번호별 연구 결과를 참고해 조합을 만들어 기록합니다. 어떤 조합도 다른 6개 번호 조합보다 1등 당첨확률이 높지는 않습니다.</p><div class="panel"><h3>사용할 후보 번호</h3><p class="hint">보수적 간이 기준에 부합한 번호만 먼저 넣습니다. 통과 번호가 부족하면 과거 출현 패턴과 무관한 <strong>단순 분산수</strong>로 채웁니다. 이 12수는 추천이 아니며, 직접 번호를 수정할 수 있습니다.</p><textarea id="poolInput" class="field" rows="3" style="width:100%;resize:vertical"></textarea><p class="audit-banner" id="autoPoolExplanation">45개 번호의 간이 검증을 계산하고 있습니다.</p><div class="toolbar"><button class="btn" onclick="makeTickets(false)">최종 5조합 생성</button><button class="btn secondary" onclick="setAutoPool()">자동 후보 다시 적용</button><button class="btn outline" onclick="saveTicketPNG()">조합 이미지 저장</button></div></div><div id="ticketsResult"></div></section>
-<section id="backtest" class="page"><div class="eyebrow">WALK-FORWARD CHECK</div><h1>과거 검증</h1><p class="lead">당시 알 수 있었던 정보만으로 번호와 조합을 생성하고, 실제 결과를 무작위 기준과 비교합니다. 검증 회차를 직접 선택할 수 있습니다. 작은 표본의 검증으로 예측 우위를 입증할 수는 없습니다.</p><div class="toolbar"><label>검증할 과거 회차 <select id="backtestRounds" class="field" aria-label="과거 검증 회차 수"><option value="12">최근 12회</option><option value="30">최근 30회</option><option value="60" selected>최근 60회</option><option value="120">최근 120회</option></select></label><button id="runBacktestBtn" class="btn" onclick="runBacktest()">시점별 독립 검증 실행</button></div>
-  <p class="hint">① 매 회차 직전까지의 기록만 사용 ② 기본 45개 규칙 × 45개 번호를 같은 기준으로 검증 ③ 당시 통과한 번호와 조합만 실제 결과와 비교합니다. 연결 패턴은 사후 탐색이므로 검증 통과 후보에서 제외됩니다.</p>
+<section id="backtest" class="page"><div class="eyebrow">WALK-FORWARD CHECK</div><h1>과거 검증</h1><p class="lead">당시 알 수 있었던 정보만으로 번호와 조합을 생성하고, 실제 결과를 같은 12개 번호 규모의 무작위 기준과 비교합니다. 검증 회차를 직접 선택할 수 있습니다. 작은 표본의 검증으로 예측 우위를 입증할 수는 없습니다.</p><div class="toolbar"><label>검증할 과거 회차 <select id="backtestRounds" class="field" aria-label="과거 검증 회차 수"><option value="12">최근 12회</option><option value="30">최근 30회</option><option value="60" selected>최근 60회</option><option value="120">최근 120회</option></select></label><button id="runBacktestBtn" class="btn" onclick="runBacktest()">시점별 독립 검증 실행</button></div>
+  <p class="hint">① 매 회차 직전까지의 기록만 사용 ② 기본 45개 규칙 × 45개 번호를 같은 기준으로 검증 ③ 당시 통과한 번호와 조합만 실제 결과와 비교합니다. 비교용 조합도 무작위로 선택한 12수에서 같은 방식으로 5게임을 만듭니다. 연결 패턴은 사후 탐색이므로 검증 통과 후보에서 제외됩니다.</p>
   <div id="backtestResult"></div></section>
 <div class="footer">🛡️ LOTTO NOTE · 과거의 패턴은 미래의 당첨을 보장하지 않습니다.<br><a href="https://lotto-note.tistory.com/" target="_blank" rel="noopener">로또 노트 블로그</a></div>
 </main>
@@ -953,6 +953,14 @@ function seededRandom(seed){
     return ((t^t>>>14)>>>0)/4294967296;
   };
 }
+function randomTwelve(pool,round){
+  const bag=pool.slice(),random=seededRandom(round*8999+317);
+  for(let i=bag.length-1;i>0;i--){
+    const j=Math.floor(random()*(i+1));
+    [bag[i],bag[j]]=[bag[j],bag[i]];
+  }
+  return bag.slice(0,12).sort((a,b)=>a-b);
+}
 function pickSix(pool,random){
   const bag=pool.slice();
   for(let i=bag.length-1;i>0;i--){
@@ -1093,7 +1101,8 @@ async function runBacktest(){
       const verified=profiles.filter(p=>p.confirmed.length).map(p=>p.n);
       const pool=autoNumbers(profiles,ds[i].draw_no);
       const tickets=chooseTickets(pool,ds[i].draw_no*76543+pool.reduce((sum,n)=>sum+n*97,0));
-      const randomTickets=chooseTickets(all45,ds[i].draw_no*8999);
+      const randomPool=randomTwelve(all45,ds[i].draw_no);
+      const randomTickets=chooseTickets(randomPool,ds[i].draw_no*76543+randomPool.reduce((sum,n)=>sum+n*97,0));
       const actual=ds[i].numbers;
       const maxHit=ts=>Math.max(0,...ts.map(t=>intersectionCount(t,actual)));
       const verifiedHits=verified.filter(n=>actual.includes(n)).length;
@@ -1121,14 +1130,14 @@ async function runBacktest(){
       '<div class="cards">'+line("실제로 비교한 회차",results.length+"회")+
       line("간이 기준 부합 신호 발생",signalRounds+"회")+
       line("연구 5게임 최고 적중 평균",avg(results,x=>x.best)+"개")+
-      line("무작위 5게임 최고 적중 평균",avg(results,x=>x.randomBest)+"개")+
+      line("무작위 12수·5게임 적중 평균",avg(results,x=>x.randomBest)+"개")+
       line("연구 5게임에서 3개 이상",matchingOurs+"회")+
-      line("무작위 5게임에서 3개 이상",matchingRandom+"회")+'</div>'+
+      line("무작위 12수 5게임에서 3개 이상",matchingRandom+"회")+'</div>'+
       '<div class="backtest-bars">'+
       '<div class="backtest-barrow"><strong>연구 조합</strong><span><i style="width:'+Math.min(100,100*Number(avg(results,x=>x.best))/6)+'%;background:#69c6b5"></i></span><b>'+avg(results,x=>x.best)+'개</b></div>'+
       '<div class="backtest-barrow"><strong>무작위 조합</strong><span><i style="width:'+Math.min(100,100*Number(avg(results,x=>x.randomBest))/6)+'%;background:#f3be71"></i></span><b>'+avg(results,x=>x.randomBest)+'개</b></div></div>'+
       '<div class="audit-banner"><strong>간이 검증 번호의 실제 결과:</strong> '+example+'</div>'+
-      '<div class="tablewrap backtest-table"><table class="simple-table"><thead><tr><th>회차</th><th>실제 당첨번호</th><th>간이 신호 번호 수</th><th>그중 적중</th><th>연구 5게임 최고</th><th>무작위 5게임 최고</th></tr></thead><tbody>'+
+      '<div class="tablewrap backtest-table"><table class="simple-table"><thead><tr><th>회차</th><th>실제 당첨번호</th><th>간이 신호 번호 수</th><th>그중 적중</th><th>연구 5게임 최고</th><th>무작위 12수 5게임 최고</th></tr></thead><tbody>'+
       results.map(r=>'<tr><td>'+r.round+'회</td><td>'+r.actual+'</td><td>'+r.selected+'개</td><td>'+r.verifiedHits+'개</td><td>'+r.best+'개</td><td>'+r.randomBest+'개</td></tr>').reverse().join("")+
       '</tbody></table></div><p class="caution">통과한 신호가 없거나 횟수가 적다면 예측력이 증명되지 않은 것입니다. 연구·무작위 조합의 비교도 표본 변동에 영향을 받으며, 1등 확률이 달라지는 것은 아닙니다.</p></div>';
   }catch(error){
