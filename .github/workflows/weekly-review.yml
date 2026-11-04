@@ -1,0 +1,54 @@
+name: Automatic postdraw pattern image review
+
+on:
+  push:
+    paths:
+      - '.github/workflows/weekly-review.yml'
+      - 'scripts/generate_weekly_review.mjs'
+      - 'scripts/generate_weekly_review.test.mjs'
+  # UTC -> Korean time: Sat 21:17, Sun 09:17, Mon 09:17.
+  schedule:
+    - cron: '17 12 * * 6'
+    - cron: '17 0 * * 0'
+    - cron: '17 0 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: weekly-postdraw-pattern-images
+  cancel-in-progress: false
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser and Korean fonts
+        run: |
+          npm install --no-save playwright@1.64.1
+          npx playwright install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+      - name: Check review integrity
+        run: node --test scripts/generate_weekly_review.test.mjs
+      - name: Test image rendering against a past round (not a saved prediction)
+        run: node scripts/generate_weekly_review.mjs --smoke
+      - name: Generate verified image after result publication
+        run: node scripts/generate_weekly_review.mjs
+      - name: Save public image and review summary
+        run: |
+          git add -A -- data
+          if git diff --cached --quiet; then
+            echo 'No confirmed new draw to review yet.'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git commit -m 'data: preserve postdraw 45-number PNG and SVG review'
+            git push
+          fi
