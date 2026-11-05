@@ -2417,11 +2417,16 @@ function renderHistoricalWalkforward(){
     '<div style="margin:24px 0;padding:16px 0;border-top:1px solid rgba(128,148,175,.3);border-bottom:1px solid rgba(128,148,175,.3)">'+
     '<h3>🔢 1~45번 · 내가 고른 번호의 재등장 복기</h3>'+
     '<p class="hint">원하는 번호 한 개와 추적 기간을 고르면 11개 검색조건에서 과거에 놓친 뒤 몇 회 안에 다시 나왔는지 같은 기준으로 비교합니다. 9번·34번·37번 등 모든 번호를 선택할 수 있습니다.</p>'+
-    '<div class="toolbar"><label>연구할 번호 <select id="historicalFollowupNumber" class="field" onchange="renderHistoricalNumberReview();renderHistoricalNumberCases(true)">'+
+    '<div class="toolbar"><label>연구할 번호 <select id="historicalFollowupNumber" class="field" onchange="renderHistoricalNumberReview();renderHistoricalNumberCases(true);renderHistoricalNumberOdds()">'+
     Array.from({length:45},(_,i)=>'<option value="'+(i+1)+'">'+(i+1)+'번</option>').join("")+
     '</select></label><label>재등장 기간 <select id="historicalFollowupHorizon" class="field" onchange="renderHistoricalNumberReview()">'+
     [1,2,3,5,10].map(n=>'<option value="'+n+'"'+(n===5?' selected':'')+'>'+n+'회 이내</option>').join("")+
     '</select></label></div><div id="historicalNumberReviewContent">번호별 결과를 확인 중입니다.</div>'+
+    '<div style="margin:18px 0;padding:15px 0;border-top:1px dashed rgba(128,148,175,.3)"><h4>📊 번호별 검색조건 적중률 · 무작위 비교</h4>'+
+    '<p class="hint">번호를 고르면 각 조건에 걸린 횟수·당첨률·검출되지 않았을 때의 당첨률을 같은 기간의 무작위 기준과 비교합니다.</p>'+
+    '<div class="toolbar"><label>비교 기간 <select id="historicalOddsPeriod" class="field" onchange="renderHistoricalNumberOdds()">'+
+    '<option value="all">전체 과거 회차</option><option value="late">최근 250회</option></select></label></div>'+
+    '<div id="historicalNumberOddsContent">조건별 비교표를 확인 중입니다.</div></div>'+
     '<div style="margin-top:16px;padding-top:14px;border-top:1px dashed rgba(128,148,175,.3)"><h4>📚 이 번호의 실제 과거 회차 찾기</h4>'+
     '<p class="hint">2회부터 최신 확인 회차까지 당시의 검색 여부·당첨·이후 재등장 기록을 찾아봅니다. 회차를 입력하거나 조건을 고르세요.</p>'+
     '<div class="toolbar"><label>검색조건 <select id="historicalCaseAxis" class="field" onchange="renderHistoricalNumberCases(true)">'+
@@ -2450,6 +2455,7 @@ function renderHistoricalWalkforward(){
   renderHistoricalWalkforwardRound();
   renderHistoricalNumberReview();
   renderHistoricalNumberCases(true);
+  renderHistoricalNumberOdds();
 }
 function renderHistoricalContextReview(){
   const out=$("historicalContextContent"),p=state.historicalWalkforward;
@@ -2497,6 +2503,53 @@ function renderHistoricalWalkforwardRound(){
   renderHistoricalFollowupReview();
   const preview=$("historicalReviewCanvas");
   if(preview&&preview.style.display!=="none")drawHistoricalReviewCanvas();
+}
+function renderHistoricalNumberOdds(){
+  const out=$("historicalNumberOddsContent"),p=state.historicalWalkforward,index=state.historicalCaseIndex;
+  if(!out)return;
+  if(!p||!index||!Array.isArray(index.numbers)||index.numbers.length!==45){
+    out.innerHTML='<p class="hint">번호별 실제 회차 색인을 불러오면 비교표가 표시됩니다.</p>';
+    return;
+  }
+  const n=Number($("historicalFollowupNumber")?.value);
+  const item=index.numbers.find(row=>row.n===n);
+  if(!item)return;
+  const period=$("historicalOddsPeriod")?.value==="late"?"late":"all";
+  const first=period==="late"?p.lateRange[0]:p.firstTestRound;
+  const last=period==="late"?p.lateRange[1]:p.lastTestRound;
+  const rounds=last-first+1;
+  const cases=item.cases.filter(c=>c[0]>=first&&c[0]<=last);
+  const wins=cases.reduce((count,c)=>count+(c[2]?1:0),0);
+  const rate=(hits,count)=>count?100*hits/count:null;
+  const formatRate=v=>v===null?"—":v.toFixed(1)+"%";
+  const baseline=100*BASE;
+  const axes=[{label:"11조건 중 하나라도",picked:mask=>mask!==0}]
+    .concat(PATTERN_AUDIT_AXES.map((a,i)=>({label:a.label,picked:mask=>!!(mask&(1<<i))})));
+  const rows=axes.map((axis,j)=>{
+    let selected=0,hits=0;
+    for(const c of cases){
+      if(axis.picked(c[1])){selected++;if(c[2])hits++;}
+    }
+    const unselected=rounds-selected,unselectedHits=wins-hits;
+    const selectedRate=rate(hits,selected),otherRate=rate(unselectedHits,unselected);
+    const diff=selectedRate===null?null:selectedRate-baseline;
+    const observed=selectedRate===null?0:Math.min(100,selectedRate/30*100);
+    const bar=selected?'<div title="막대: 검출 시 적중률 / 세로선: 무작위 13.3%" style="position:relative;height:8px;min-width:90px;border-radius:6px;background:#e5ebf3;margin-top:5px">'+
+      '<span style="position:absolute;left:0;top:0;bottom:0;width:'+observed.toFixed(1)+'%;background:#4f88b9;border-radius:6px"></span>'+
+      '<span style="position:absolute;top:-3px;bottom:-3px;left:'+(baseline/30*100).toFixed(1)+'%;width:2px;background:#ba773a"></span></div>':'';
+    return '<tr'+(j===0?' style="font-weight:700;background:rgba(79,136,185,.07)"':'')+'><td>'+clean(axis.label)+'</td>'+
+      '<td>'+selected+'회</td><td>'+formatRate(selectedRate)+' ('+hits+'/'+selected+')'+bar+
+      (selected>0&&selected<30?'<small style="display:block">표본 30회 미만</small>':'')+'</td>'+
+      '<td>'+formatRate(otherRate)+' ('+unselectedHits+'/'+unselected+')</td>'+
+      '<td>'+baseline.toFixed(1)+'% ('+(selected*BASE).toFixed(1)+'회 기대)</td>'+
+      '<td>'+(diff===null?"—":(diff>=0?"+":"")+diff.toFixed(1)+"%p")+'</td></tr>';
+  }).join("");
+  out.innerHTML='<p class="hint"><b>'+n+'번 · '+first+'~'+last+'회, 총 '+rounds+'회</b> · 실제 당첨 '+wins+
+    '회 ('+formatRate(rate(wins,rounds))+') · 번호 하나의 무작위 당첨률 6/45 = '+baseline.toFixed(1)+'%</p>'+
+    '<div class="tablewrap"><table class="simple-table"><thead><tr>'+
+    '<th>과거 검색조건</th><th>검출 횟수</th><th>검출 시 당첨률</th><th>미검출 시 당첨률</th><th>무작위 기준 / 기대</th><th>차이</th>'+
+    '</tr></thead><tbody>'+rows+'</tbody></table></div>'+
+    '<p class="hint">파란 막대는 검출 시 당첨률, 주황 세로선은 무작위 기준 13.3%입니다. 차이는 퍼센트포인트(%p)이며, 11개 검색조건은 서로 중복됩니다. 최근 250회도 독립 실전 시험이 아닌 과거 재현입니다. 여러 번호·조건을 동시에 비교하면 우연한 큰 차이가 나타날 수 있으므로, 이 수치로 유리한 번호를 확정하거나 자동 제외하지 않습니다.</p>';
 }
 function renderHistoricalNumberCases(reset=false){
   const out=$("historicalNumberCasesContent"),p=state.historicalWalkforward,caseIndex=state.historicalCaseIndex;
