@@ -224,6 +224,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
     <button class="active" data-tab="home" onclick="go('home')">◈ 자동 발견</button>
     <button data-tab="research" onclick="go('research')">◎ 번호 연구소</button>
     <button data-tab="patterns" onclick="go('patterns')">▤ 패턴 검색</button>
+    <button data-tab="watch" onclick="go('watch')">★ 중요패턴 추적</button>
     <button data-tab="tickets" onclick="go('tickets')">◉ 최종 5조합</button>
     <button data-tab="backtest" onclick="go('backtest')">◷ 과거 검증</button>
     <button data-tab="exclusions" onclick="go('exclusions')">🚫 제외수 연구실</button>
@@ -266,6 +267,102 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 </section>
 <section id="research" class="page"><div class="eyebrow">NUMBER LAB</div><h1>번호 연구소</h1><p class="lead">특정 번호의 출현 흐름과 이번 회차에 적용되는 번호별 패턴을 확인합니다.</p><div class="toolbar"><label>분석 번호 <input id="focusN" class="field" type="number" min="1" max="45" value="39"></label><button class="btn" onclick="showResearch()">번호 조사하기</button></div><div id="researchResult"></div></section>
 <section id="patterns" class="page"><div class="eyebrow">PATTERN EXPLORER</div><h1>패턴 검색</h1><p class="lead">선택한 번호의 이번 회차 출현·자리·간격 기록에서 자동 생성한 연결 패턴과 기본 45종 조건을 따로 살펴봅니다. 조건의 과거 성공·실패 회차를 정확히 비교하세요.</p><div class="toolbar"><label>번호 <input id="patternN" class="field" type="number" min="1" max="45" value="39"></label><label>조건 <select id="patternRule" class="field"></select></label><button class="btn" onclick="showPatternSearch()">역대 패턴 검색</button></div><div id="patternResult"></div></section>
+<section id="watch" class="page" aria-label="당번 동반 패턴 추적 연구실">
+  <div class="eyebrow">PATTERN WATCH · HISTORICAL AUDIT</div>
+  <h1>★ 중요패턴 추적</h1>
+  <p class="lead">추첨 전 검색된 패턴 번호를 회차별로 기록하고, 당첨·미당첨을 같은 기준으로 복기합니다. 추적 표시는 고정수·제외수를 자동으로 변경하지 않습니다.</p>
+<section id="ln-pattern-watch-v1" class="lnpw" aria-label="로또 당번 동반 패턴 추적">
+  <style>
+    #ln-pattern-watch-v1{display:block;font-family:Arial,'Malgun Gothic',sans-serif;box-sizing:border-box;max-width:920px;margin:24px auto;padding:20px;border:1px solid #d9e2ef;border-radius:16px;background:#fff;color:#18283d;box-shadow:0 8px 22px rgba(31,46,74,.055)}
+    #ln-pattern-watch-v1 *{box-sizing:border-box}
+    #ln-pattern-watch-v1 .lnpw-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    #ln-pattern-watch-v1 h2{margin:0 0 5px;font-size:21px;line-height:1.3;color:#203753}
+    #ln-pattern-watch-v1 .lnpw-sub{margin:0;font-size:13px;color:#67768b;line-height:1.65}
+    #ln-pattern-watch-v1 .lnpw-button{padding:8px 12px;background:#f5f8fc;border:1px solid #cbd7e6;border-radius:9px;font-weight:700;color:#304868;cursor:pointer}
+    #ln-pattern-watch-v1 .lnpw-state{margin:16px 0 11px;font-size:13px;color:#4f647f;line-height:1.5}
+    #ln-pattern-watch-v1 .lnpw-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:12px 0}
+    #ln-pattern-watch-v1 .lnpw-stat{background:#f7f9fc;border-radius:12px;padding:11px 12px;min-width:0}
+    #ln-pattern-watch-v1 .lnpw-stat small{display:block;font-size:12px;color:#65758c}
+    #ln-pattern-watch-v1 .lnpw-stat strong{display:block;font-size:22px;line-height:1.35;margin-top:3px;font-variant-numeric:tabular-nums}
+    #ln-pattern-watch-v1 .lnpw-stat.focus{background:#fff3df;color:#9c5f11}
+    #ln-pattern-watch-v1 h3{margin:19px 0 9px;font-size:16px;color:#203753}
+    #ln-pattern-watch-v1 .lnpw-pills{display:flex;flex-wrap:wrap;gap:7px}
+    #ln-pattern-watch-v1 .lnpw-pill{display:inline-flex;align-items:center;gap:5px;padding:8px 10px;border:1px solid #dae3ef;border-radius:12px;background:#f9fbfd;min-width:0}
+    #ln-pattern-watch-v1 .lnpw-pill b{font-size:16px;min-width:22px;text-align:center}
+    #ln-pattern-watch-v1 .lnpw-pill small{font-size:11px;color:#687991}
+    #ln-pattern-watch-v1 .lnpw-pill.focus{background:#fff5e4;border-color:#edc078;color:#925f18}
+    #ln-pattern-watch-v1 .lnpw-pill.focus small{color:#966a37}
+    #ln-pattern-watch-v1 .lnpw-note{margin:12px 0;font-size:12px;line-height:1.7;color:#66758a}
+    #ln-pattern-watch-v1 details{margin-top:15px;border-top:1px solid #e8edf4;padding-top:12px}
+    #ln-pattern-watch-v1 summary{cursor:pointer;font-weight:700;font-size:14px;color:#304d74}
+    #ln-pattern-watch-v1 .lnpw-table-wrap{overflow-x:auto;max-height:460px;overflow-y:auto;margin-top:10px}
+    #ln-pattern-watch-v1 table{width:100%;border-collapse:collapse;font-size:12px;min-width:390px}
+    #ln-pattern-watch-v1 th{position:sticky;top:0;background:#e9eff6;text-align:center;color:#40566f;padding:9px 7px;white-space:nowrap}
+    #ln-pattern-watch-v1 td{padding:8px 6px;border-bottom:1px solid #edf1f6;text-align:center;white-space:nowrap}
+    #ln-pattern-watch-v1 td.lnpw-text{text-align:left;white-space:normal}
+    #ln-pattern-watch-v1 .lnpw-winner{color:#9a3412;font-weight:800}
+    #ln-pattern-watch-v1 .lnpw-legend{color:#5f7189;font-size:12px;line-height:1.75;margin:9px 0 0}
+    #ln-pattern-watch-v1 .lnpw-hide{display:none}
+    @media(max-width:560px){#ln-pattern-watch-v1{padding:15px;margin:18px 2px}#ln-pattern-watch-v1 h2{font-size:18px}#ln-pattern-watch-v1 .lnpw-stat{padding:9px}#ln-pattern-watch-v1 .lnpw-stat strong{font-size:19px}}
+  </style>
+  <div class="lnpw-head">
+    <div><h2>⭐ 당번 동반 패턴 추적</h2><p class="lnpw-sub">과거에 실제 당첨번호가 포함됐던 패턴을 기록하고, 재등장·중복 신호를 자동으로 표시합니다.</p></div>
+    <button type="button" class="lnpw-button" data-ln-watch-refresh>새 회차 확인</button>
+  </div>
+  <p class="lnpw-state" data-ln-watch-state aria-live="polite">당첨번호 기록을 불러오는 중입니다.</p>
+  <div class="lnpw-summary">
+    <div class="lnpw-stat"><small>연구 대상 회차</small><strong data-ln-watch-target>—</strong></div>
+    <div class="lnpw-stat"><small>패턴 후보 전체</small><strong data-ln-watch-total>—</strong></div>
+    <div class="lnpw-stat focus"><small>★ 집중관찰</small><strong data-ln-watch-flagged>—</strong></div>
+  </div>
+  <h3>★ 집중관찰 번호</h3>
+  <div class="lnpw-pills" data-ln-watch-focus><span class="lnpw-sub">분석 중…</span></div>
+  <h3>그 외 패턴 추적 번호</h3>
+  <div class="lnpw-pills" data-ln-watch-other><span class="lnpw-sub">분석 중…</span></div>
+  <p class="lnpw-note">★는 <b>여러 패턴이 겹쳤거나 직전 회차에도 검색된 번호</b>라는 관찰 표시입니다. 당첨 유력 표시가 아니며, 조합기의 고정수·제외수는 자동 변경하지 않습니다.</p>
+  <p class="lnpw-state" data-ln-watch-last-result></p>
+  <p class="lnpw-note" data-ln-watch-focus-rate></p>
+  <details>
+    <summary>⭐ 중요표시 적중·미적중 전체 추적 <span data-ln-watch-focus-history-count></span></summary>
+    <p class="lnpw-note">★ 번호가 실제 당첨됐던 경우와 틀렸던 경우를 모두 기록합니다. 어느 쪽 기록도 지우지 않습니다.</p>
+    <div class="lnpw-table-wrap"><table>
+      <thead><tr><th>회차</th><th>중요번호</th><th>표시 이유</th><th>실제 결과</th></tr></thead>
+      <tbody data-ln-watch-focus-history></tbody>
+    </table></div>
+  </details>
+  <details>
+    <summary>📒 실제 당첨번호가 포함됐던 패턴 기록 <span data-ln-watch-history-count></span></summary>
+    <p class="lnpw-note">901회부터 현재 최신 확정 회차까지, 각 회차 <em>추첨 이전 정보</em>로 지목한 번호가 실제 당첨됐던 사례만 모았습니다.</p>
+    <div class="lnpw-table-wrap"><table>
+      <thead><tr><th>회차</th><th>당첨번호</th><th>당번 동반 패턴</th><th>당시 관찰 표시</th></tr></thead>
+      <tbody data-ln-watch-history></tbody>
+    </table></div>
+  </details>
+  <details>
+    <summary>🔍 전체 패턴별 당첨 포함 비율</summary>
+    <div class="lnpw-table-wrap"><table>
+      <thead><tr><th>패턴</th><th>검색 횟수</th><th>실제 당번 포함</th><th>비율</th></tr></thead>
+      <tbody data-ln-watch-rules></tbody>
+    </table></div>
+    <p class="lnpw-legend">임의 번호의 본번호 포함 확률은 6/45 = 13.3%입니다. 패턴에 당첨 사례가 있다는 사실만으로 예측력이 생기지는 않습니다.</p>
+  </details>
+  <p class="lnpw-legend">F 정간격 4회 · D 건너뛰기 사선 5점 · R 직전 3회 사선 · G 간격 반복 · N 양옆 번호 · B 보너스 전환 · A 정렬위치 ABA<br>자료: 공개 로또 추첨 기록. 방문·새로고침 시 새 회차를 확인하며, 데이터 공급이 지연되면 마지막 저장 기록을 사용합니다.</p>
+</section>
+  <style>
+    #watch #ln-pattern-watch-v1{max-width:none;margin:18px 0;padding:18px;background:#101f33;border:1px solid #355171;color:#e7edf6;box-shadow:none}
+    #watch #ln-pattern-watch-v1 h2,#watch #ln-pattern-watch-v1 h3{color:#e7f0ff}
+    #watch #ln-pattern-watch-v1 .lnpw-sub,#watch #ln-pattern-watch-v1 .lnpw-state,#watch #ln-pattern-watch-v1 .lnpw-note,#watch #ln-pattern-watch-v1 .lnpw-legend{color:#b2c3d9}
+    #watch #ln-pattern-watch-v1 .lnpw-stat,#watch #ln-pattern-watch-v1 .lnpw-button{background:#182d45;color:#e7f0ff;border-color:#355171}
+    #watch #ln-pattern-watch-v1 .lnpw-stat.focus,#watch #ln-pattern-watch-v1 .lnpw-pill.focus{background:#40301d;color:#f9d89a;border-color:#8c6929}
+    #watch #ln-pattern-watch-v1 .lnpw-pill{background:#16283f;border-color:#355171}
+    #watch #ln-pattern-watch-v1 .lnpw-pill small{color:#b8c8df}
+    #watch #ln-pattern-watch-v1 .lnpw-pill.focus small{color:#f1c882}
+    #watch #ln-pattern-watch-v1 details{border-color:#355171}
+    #watch #ln-pattern-watch-v1 summary{color:#c5dcff}
+    #watch #ln-pattern-watch-v1 th{background:#203650;color:#dce9fb}
+    #watch #ln-pattern-watch-v1 td{border-color:#2d435c}
+  </style>
+</section>
 <section id="tickets" class="page"><div class="eyebrow">FIVE TICKET STUDIO</div><h1>최종 5조합</h1><p class="lead">번호별 연구 결과를 참고해 조합을 만들어 기록합니다. 어떤 조합도 다른 6개 번호 조합보다 1등 당첨확률이 높지는 않습니다.</p><div class="panel"><h3>검색 결과를 반영한 최종 후보</h3><p class="hint"><strong>1~45번 전체 검색 → 장기 연결·복합 연구조건의 검출 번호 전부</strong>가 기본값입니다. 12개로 자르거나 억지로 채우지 않습니다. 필요하면 아래에 최대 후보 수(7~45)를 입력해 제한할 수 있고, 입력창에서 직접 번호를 수정할 수도 있습니다. 검색조건의 적중이 당첨 가능성을 높인다는 뜻은 아닙니다.</p><div class="toolbar"><label>자동 후보 최대 개수 (선택) <input id="candidateLimit" class="field" type="number" min="7" max="45" placeholder="제한 없음" onchange="onCandidateLimitChange()" aria-label="자동 후보 수 제한"></label><span class="hint">빈칸이면 검출 후보 전체 · 10, 12, 15, 18 등 자유 선택 · 강제 보충 없음</span></div><textarea id="poolInput" class="field" rows="3" style="width:100%;resize:vertical" oninput="markManualPool()"></textarea><div class="pinned-box"><label for="lockedInput"><strong>5게임 공통 고정수</strong> <small>(최대 5개, 예: 39,44)</small></label><input id="lockedInput" class="field" placeholder="39, 44" autocomplete="off" oninput="markPinsPending()"><div class="toolbar"><button class="btn small secondary" onclick="applyPinned()">고정수 적용</button><span id="lockedStatus" class="hint">고정수는 이번 회차에만 저장하며, 없으면 후보에서 분산합니다.</span></div></div><p class="audit-banner" id="autoPoolExplanation">45개 번호의 간이 검증을 계산하고 있습니다.</p><div class="toolbar"><button class="btn" onclick="makeTickets(false)">최종 5조합 생성</button><button class="btn secondary" onclick="setResearchPool()">검출 후보 적용</button><button class="btn secondary" onclick="setAutoPool()">중립 분산 비교</button><button class="btn outline" onclick="useAllNumbers()">1~45수 직접 사용</button><button class="btn outline" onclick="saveTicketPNG()">조합 이미지 저장</button></div><div id="candidateAudit"></div></div><div id="ticketsResult"></div><div class="section panel" id="recapSection"><h2>당첨번호 대비 패턴 복기 이미지</h2><p class="hint">확정된 당첨번호 6개와 당시 검색 후보·기본/연결 패턴 개수를 나란히 비교합니다. 이번 회차 결과 발표 전에는 지난 확정 회차를 재현해서 볼 수 있습니다.</p><div class="toolbar"><label>복기 회차 <select id="recapRound" class="field"></select></label><button id="recapGenerateBtn" class="btn" onclick="showRecapImage()">복기 이미지 생성</button><button class="btn secondary" onclick="saveRecapPNG()">PNG 이미지 저장</button><button class="btn outline" onclick="saveRecapSVG()">SVG 저장</button></div><div id="recapStatus" class="hint">최신 확정 회차를 선택해 복기할 수 있습니다.</div><div id="recapCanvas"></div>
   <div id="weeklyPatternSection" class="weekly-pattern-review"><h3>🔎 검색조건 11개 · 당첨번호와 어긋난 이유</h3>
   <p class="hint">같은 복기 회차의 1~45번을 전수 비교합니다. 실제 사전 저장이 있으면 그 기록을 사용하고, 없으면 당첨 전 자료만으로 당시 조건을 복원합니다.</p>
@@ -293,6 +390,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 <button id="toTop" aria-label="맨 위로 이동" title="맨 위로 이동" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <script src="./exclusion_lab.js"></script>
 <script src="./exclusion_ui.js"></script>
+<script src="./pattern_watch.js"></script>
 <script>
 "use strict";
 const DATA_URL="https://smok95.github.io/lotto/results/all.json";
