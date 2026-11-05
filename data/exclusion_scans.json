@@ -1,0 +1,266 @@
+{
+  "version": 1,
+  "records": [
+    {
+      "version": 1,
+      "policy": "two-period-below-base-overlap-2-3-v1",
+      "round": 1249,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-05T08:52:20.090Z",
+      "predrawScanAt": "2026-11-04T09:20:07.476Z",
+      "weakSignals": [
+        {
+          "key": "neighbor1",
+          "label": "직전 회차 ±1 이웃수 존재",
+          "earlySelected": 11050,
+          "earlyHits": 1455,
+          "lateSelected": 2771,
+          "lateHits": 340,
+          "lateAdjustedP": 0.69806736
+        },
+        {
+          "key": "neighbor2",
+          "label": "직전 회차 ±2 이웃수 존재",
+          "earlySelected": 10801,
+          "earlyHits": 1426,
+          "lateSelected": 2720,
+          "lateHits": 351,
+          "lateAdjustedP": 1
+        },
+        {
+          "key": "neighborTwice",
+          "label": "직전 3회 중 ±1 이웃수 2회 이상",
+          "earlySelected": 7013,
+          "earlyHits": 896,
+          "lateSelected": 1693,
+          "lateHits": 216,
+          "lateAdjustedP": 1
+        },
+        {
+          "key": "context2plus",
+          "label": "직전 상황 2개 이상 교집합",
+          "earlySelected": 30534,
+          "earlyHits": 4056,
+          "lateSelected": 7675,
+          "lateHits": 1002,
+          "lateAdjustedP": 1
+        }
+      ],
+      "significantSignals": [],
+      "variants": [
+        {
+          "overlap": 2,
+          "candidates": [
+            {
+              "n": 15,
+              "signals": [
+                "neighbor1",
+                "neighborTwice",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 17,
+              "signals": [
+                "neighbor1",
+                "neighborTwice",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 26,
+              "signals": [
+                "neighbor1",
+                "neighborTwice",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 28,
+              "signals": [
+                "neighbor1",
+                "neighborTwice",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 41,
+              "signals": [
+                "neighbor1",
+                "neighborTwice",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 43,
+              "signals": [
+                "neighbor1",
+                "neighborTwice",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 16,
+              "signals": [
+                "neighbor2",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 18,
+              "signals": [
+                "neighbor2",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 19,
+              "signals": [
+                "neighbor1",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 20,
+              "signals": [
+                "neighbor2",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 21,
+              "signals": [
+                "neighborTwice",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 22,
+              "signals": [
+                "neighborTwice",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 29,
+              "signals": [
+                "neighbor2",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 35,
+              "signals": [
+                "neighbor1",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 36,
+              "signals": [
+                "neighbor2",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 37,
+              "signals": [
+                "neighbor1",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 38,
+              "signals": [
+                "neighbor2",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 39,
+              "signals": [
+                "neighbor1",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 40,
+              "signals": [
+                "neighbor2",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 44,
+              "signals": [
+                "neighbor2",
+                "context2plus"
+              ]
+            }
+          ],
+          "count": 20,
+          "remaining": 25,
+          "expectedExcludedHits": 2.6666666666666665,
+          "allSixRemainRandom": 0.021743240688220835
+        },
+        {
+          "overlap": 3,
+          "candidates": [
+            {
+              "n": 15,
+              "signals": [
+                "neighbor1",
+                "neighborTwice",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 17,
+              "signals": [
+                "neighbor1",
+                "neighborTwice",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 26,
+              "signals": [
+                "neighbor1",
+                "neighborTwice",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 28,
+              "signals": [
+                "neighbor1",
+                "neighborTwice",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 41,
+              "signals": [
+                "neighbor1",
+                "neighborTwice",
+                "context2plus"
+              ]
+            },
+            {
+              "n": 43,
+              "signals": [
+                "neighbor1",
+                "neighborTwice",
+                "context2plus"
+              ]
+            }
+          ],
+          "count": 6,
+          "remaining": 39,
+          "expectedExcludedHits": 0.8,
+          "allSixRemainRandom": 0.40056463672459136
+        }
+      ]
+    }
+  ]
+}

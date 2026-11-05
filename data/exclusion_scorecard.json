@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "policy": "prospective-exclusion-shadow-only-v1",
+  "minimumRoundsForInterpretation": 30,
+  "verifiedRounds": 0,
+  "lastReviewedRound": null,
+  "generatedFrom": null,
+  "benchmark": "matched-size hypergeometric lower tail; Holm correction for 2 preregistered overlaps",
+  "rows": [
+    {
+      "overlap": 2,
+      "verifiedRounds": 0,
+      "excluded": 0,
+      "excludedWinningNumbers": 0,
+      "randomExpectedExcludedWinners": 0,
+      "delta": 0,
+      "fullySurvivedRounds": 0,
+      "randomExpectedFullySurvivedRounds": 0,
+      "pFewer": 1,
+      "pFewerAdjusted": 1,
+      "verdict": "표본 부족",
+      "rounds": []
+    },
+    {
+      "overlap": 3,
+      "verifiedRounds": 0,
+      "excluded": 0,
+      "excludedWinningNumbers": 0,
+      "randomExpectedExcludedWinners": 0,
+      "delta": 0,
+      "fullySurvivedRounds": 0,
+      "randomExpectedFullySurvivedRounds": 0,
+      "pFewer": 1,
+      "pFewerAdjusted": 1,
+      "verdict": "표본 부족",
+      "rounds": []
+    }
+  ]
+}

@@ -226,6 +226,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
     <button data-tab="patterns" onclick="go('patterns')">▤ 패턴 검색</button>
     <button data-tab="tickets" onclick="go('tickets')">◉ 최종 5조합</button>
     <button data-tab="backtest" onclick="go('backtest')">◷ 과거 검증</button>
+    <button data-tab="exclusions" onclick="go('exclusions')">🚫 제외수 연구실</button>
   </nav>
   <div class="side-foot">LOTTO NOTE RESEARCH<br>기록 데이터 기반 번호 연구 · 회원가입 없음<br>분석 결과는 당첨 확률을 높인다는 뜻이 아닙니다.</div>
 </aside>
@@ -284,11 +285,14 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 <div class="toolbar"><label>검증할 과거 회차 <select id="backtestRounds" class="field" aria-label="과거 검증 회차 수"><option value="12">최근 12회</option><option value="30">최근 30회</option><option value="60" selected>최근 60회</option><option value="120">최근 120회</option></select></label><button id="runBacktestBtn" class="btn" onclick="runBacktest()">시점별 독립 검증 실행</button></div>
   <p class="hint">① 매 회차 직전까지의 기록만 사용 ② 기본 45개 규칙 × 45개 번호를 같은 기준으로 검증 ③ 당시 통과한 번호와 조합만 실제 결과와 비교합니다. 비교용 조합도 당시 연구 후보와 같은 개수의 무작위 번호로 5게임을 만듭니다. 연결 패턴은 사후 탐색이므로 검증 통과 후보에서 제외됩니다.</p>
   <div id="backtestResult"></div></section>
+<section id="exclusions" class="page"><div class="eyebrow">EXCLUSION SHADOW RESEARCH</div><h1>🚫 제외수 연구실</h1><p class="lead">반복해서 낮은 적중률을 보였던 검색조건을 찾아 <strong>제외 후보라는 가설</strong>로만 검증합니다. 후보가 실제 당첨번호를 얼마나 버렸는지 무작위 기준과 비교합니다. 기존 조합에는 자동 적용하지 않습니다.</p><div id="exclusionLabContent" class="hint">사전 저장 원장과 과거 성적표를 연결하고 있습니다.</div></section>
 <div class="footer">🛡️ LOTTO NOTE · 과거의 패턴은 미래의 당첨을 보장하지 않습니다.<br><a href="https://lotto-note.tistory.com/" target="_blank" rel="noopener">로또 노트 블로그</a></div>
 </main>
 </div>
 <dialog id="detailDialog"><div class="modal-head"><div><div class="eyebrow">NUMBER PATTERN DETAIL</div><h2 style="margin:3px 0" id="modalTitle">번호 분석</h2></div><div class="toolbar"><button class="close" onclick="document.getElementById('detailDialog').scrollTo({top:0,behavior:'smooth'})">↑ 맨 위로</button><button class="close" onclick="document.getElementById('detailDialog').close()">닫기 ✕</button></div></div><div id="modalBody" class="modal-body"></div></dialog>
 <button id="toTop" aria-label="맨 위로 이동" title="맨 위로 이동" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script src="./exclusion_lab.js"></script>
+<script src="./exclusion_ui.js"></script>
 <script>
 "use strict";
 const DATA_URL="https://smok95.github.io/lotto/results/all.json";
@@ -382,6 +386,7 @@ async function reloadData(){
   else{invalidateTickets();renderSelectionAudit();}
   reconcileTrialBook();
   await Promise.all([syncServerFullScans(),syncServerWeeklyReviews(),syncServerScorecard(),syncHistoricalWalkforward()]);
+  await syncExclusionStudies();
   reconcileFullScans();
   if(success)captureFullScan();
   renderFullScanStatus();
@@ -400,6 +405,7 @@ function go(id){
   document.querySelectorAll(".nav button").forEach(e=>e.classList.toggle("active",e.dataset.tab===id));
   window.scrollTo({top:0,behavior:"smooth"});
   if(id==="research"&&state.draws.length)showResearch();
+  if(id==="exclusions"&&state.draws.length)renderExclusionLab();
   if(id==="patterns"&&state.draws.length)showPatternSearch();
   if(id==="tickets"&&state.draws.length&&!state.tickets.length&&
     $("poolInput").value.split(/[\s,;]+/).filter(Boolean).length>=7)makeTickets(false);
