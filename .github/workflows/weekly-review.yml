@@ -13,6 +13,8 @@ on:
       - 'scripts/build_exclusion_scorecard.mjs'
       - 'scripts/build_exclusion_snapshot.mjs'
       - 'scripts/build_exclusion_snapshot.test.mjs'
+      - 'scripts/build_exclusion_backtest.mjs'
+      - 'scripts/build_exclusion_backtest.test.mjs'
   # UTC -> Korean time: Sat 21:17, Sun 09:17, Mon 09:17.
   schedule:
     - cron: '17 12 * * 6'
@@ -60,6 +62,10 @@ jobs:
         run: node --test scripts/build_exclusion_snapshot.test.mjs
       - name: Score exclusions against actual winning numbers
         run: node scripts/build_exclusion_scorecard.mjs
+      - name: Test deterministic historical exclusion tickets
+        run: node --test scripts/build_exclusion_backtest.test.mjs
+      - name: Reconstruct 5/10-game retrospective exclusion backtest
+        run: node scripts/build_exclusion_backtest.mjs
       - name: Save public image and review summary
         run: |
           git add -A -- data
