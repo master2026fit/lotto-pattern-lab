@@ -1,5 +1,5 @@
-const CACHE_NAME="lotto-note-shell-20261106-v30";
-const SHELL=["./","./index.html","./exclusion_lab.js","./exclusion_ui.js","./pattern_watch_explained.js","./diagonal_survival_watch.js","./pattern_survival_visual_v6.js","./manifest.webmanifest","./icons/icon-192.png","./icons/icon-512.png"];
+const CACHE_NAME="lotto-note-shell-20261106-v31";
+const SHELL=["./","./index.html","./exclusion_lab.js","./exclusion_ui.js","./pattern_watch_explained.js","./diagonal_survival_watch.js","./pattern_survival_visual_v7.js","./manifest.webmanifest","./icons/icon-192.png","./icons/icon-512.png"];
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting()));
 });
