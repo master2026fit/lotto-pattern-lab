@@ -2417,7 +2417,7 @@ function renderHistoricalWalkforward(){
     '<div style="margin:24px 0;padding:16px 0;border-top:1px solid rgba(128,148,175,.3);border-bottom:1px solid rgba(128,148,175,.3)">'+
     '<h3>🔢 1~45번 · 내가 고른 번호의 재등장 복기</h3>'+
     '<p class="hint">원하는 번호 한 개와 추적 기간을 고르면 11개 검색조건에서 과거에 놓친 뒤 몇 회 안에 다시 나왔는지 같은 기준으로 비교합니다. 9번·34번·37번 등 모든 번호를 선택할 수 있습니다.</p>'+
-    '<div class="toolbar"><label>연구할 번호 <select id="historicalFollowupNumber" class="field" onchange="renderHistoricalNumberReview();renderHistoricalNumberCases(true);renderHistoricalNumberOdds()">'+
+    '<div class="toolbar"><label>연구할 번호 <select id="historicalFollowupNumber" class="field" onchange="renderHistoricalNumberReview();renderHistoricalNumberCases(true);renderHistoricalNumberOdds();renderHistoricalNumberConsistency()">'+
     Array.from({length:45},(_,i)=>'<option value="'+(i+1)+'">'+(i+1)+'번</option>').join("")+
     '</select></label><label>재등장 기간 <select id="historicalFollowupHorizon" class="field" onchange="renderHistoricalNumberReview()">'+
     [1,2,3,5,10].map(n=>'<option value="'+n+'"'+(n===5?' selected':'')+'>'+n+'회 이내</option>').join("")+
@@ -2427,6 +2427,13 @@ function renderHistoricalWalkforward(){
     '<div class="toolbar"><label>비교 기간 <select id="historicalOddsPeriod" class="field" onchange="renderHistoricalNumberOdds()">'+
     '<option value="all">전체 과거 회차</option><option value="late">최근 250회</option></select></label></div>'+
     '<div id="historicalNumberOddsContent">조건별 비교표를 확인 중입니다.</div></div>'+
+    '<div style="margin:18px 0;padding:15px 0;border-top:1px dashed rgba(128,148,175,.3)"><h4>📈 앞 구간 vs 최근 구간 · 검색조건 일관성 복기</h4>'+
+    '<p class="hint">같은 번호·조건을 과거 앞쪽과 최근 250회로 나눠 비교합니다. 이 분류는 당시 관찰한 방향이며 미래 적중 가능성 순위가 아닙니다.</p>'+
+    '<div class="toolbar"><label>관찰 유형 <select id="historicalConsistencyView" class="field" onchange="renderHistoricalNumberConsistency()">'+
+    '<option value="all">전체 조건</option><option value="same">두 구간 같은 방향</option>'+
+    '<option value="flip">기준 방향 반전</option><option value="near">기준 근처</option>'+
+    '<option value="low">표본 부족</option></select></label></div>'+
+    '<div id="historicalConsistencyContent">앞·뒤 구간 비교 자료를 확인 중입니다.</div></div>'+
     '<div style="margin-top:16px;padding-top:14px;border-top:1px dashed rgba(128,148,175,.3)"><h4>📚 이 번호의 실제 과거 회차 찾기</h4>'+
     '<p class="hint">2회부터 최신 확인 회차까지 당시의 검색 여부·당첨·이후 재등장 기록을 찾아봅니다. 회차를 입력하거나 조건을 고르세요.</p>'+
     '<div class="toolbar"><label>검색조건 <select id="historicalCaseAxis" class="field" onchange="renderHistoricalNumberCases(true)">'+
@@ -2456,6 +2463,7 @@ function renderHistoricalWalkforward(){
   renderHistoricalNumberReview();
   renderHistoricalNumberCases(true);
   renderHistoricalNumberOdds();
+  renderHistoricalNumberConsistency();
 }
 function renderHistoricalContextReview(){
   const out=$("historicalContextContent"),p=state.historicalWalkforward;
@@ -2503,6 +2511,63 @@ function renderHistoricalWalkforwardRound(){
   renderHistoricalFollowupReview();
   const preview=$("historicalReviewCanvas");
   if(preview&&preview.style.display!=="none")drawHistoricalReviewCanvas();
+}
+function renderHistoricalNumberConsistency(){
+  const out=$("historicalConsistencyContent"),p=state.historicalWalkforward,index=state.historicalCaseIndex;
+  if(!out)return;
+  if(!p||!index||!Array.isArray(index.numbers)||index.numbers.length!==45){
+    out.innerHTML='<p class="hint">앞·뒤 구간 비교에 필요한 과거 사례 색인을 불러오는 중입니다.</p>';
+    return;
+  }
+  const n=Number($("historicalFollowupNumber")?.value),item=index.numbers.find(row=>row.n===n);
+  if(!item)return;
+  const earlyStart=p.firstTestRound,earlyEnd=p.lateRange[0]-1;
+  const lateStart=p.lateRange[0],lateEnd=p.lateRange[1];
+  const baseline=100*BASE,periodCases=item.cases;
+  const axes=[{label:"11조건 중 하나라도",picked:mask=>mask!==0}]
+    .concat(PATTERN_AUDIT_AXES.map((a,i)=>({label:a.label,picked:mask=>!!(mask&(1<<i))})));
+  const stat=(first,last,picked)=>{
+    let count=0,hits=0;
+    for(const c of periodCases){
+      if(c[0]<first||c[0]>last||!picked(c[1]))continue;
+      count++;
+      if(c[2])hits++;
+    }
+    return {count,hits,rate:count?100*hits/count:null};
+  };
+  const group=(a,b)=>{
+    if(a.count<30||b.count<30)return {key:"low",label:"표본 적음"};
+    if(Math.abs(a.rate-baseline)<1||Math.abs(b.rate-baseline)<1)return {key:"near",label:"기준 근처"};
+    if((a.rate>baseline)===(b.rate>baseline))
+      return {key:"same",label:a.rate>baseline?"두 구간 모두 기준 위":"두 구간 모두 기준 아래"};
+    return {key:"flip",label:"기준 방향 반전"};
+  };
+  const cards=axes.map(axis=>{
+    const early=stat(earlyStart,earlyEnd,axis.picked),late=stat(lateStart,lateEnd,axis.picked);
+    return {label:axis.label,early,late,status:group(early,late)};
+  });
+  const filter=$("historicalConsistencyView")?.value||"all";
+  const visible=cards.filter(row=>filter==="all"||row.status.key===filter);
+  const fmtRate=record=>record.rate===null?"—":record.rate.toFixed(1)+"%";
+  const fmtDiff=value=>(value>=0?"+":"")+value.toFixed(1)+"%p";
+  const fmtPart=record=>fmtRate(record)+' ('+record.hits+'/'+record.count+')'+
+    (record.count>0&&record.count<30?'<small style="display:block">표본 30회 미만</small>':'');
+  const rows=visible.map(({label,early,late,status})=>{
+    const diff=early.rate===null||late.rate===null?null:late.rate-early.rate;
+    return '<tr><td>'+clean(label)+'</td><td>'+fmtPart(early)+'</td><td>'+fmtPart(late)+'</td>'+
+      '<td>'+(diff===null?"—":fmtDiff(diff))+'</td><td>'+status.label+'</td></tr>';
+  }).join("");
+  const flips=cards.filter(x=>x.status.key==="flip").length;
+  const lows=cards.filter(x=>x.status.key==="low").length;
+  out.innerHTML='<p class="hint"><b>'+n+'번 · 앞 '+(earlyEnd-earlyStart+1)+'회 ('+earlyStart+'~'+earlyEnd+
+    '회) vs 최근 '+(lateEnd-lateStart+1)+'회 ('+lateStart+'~'+lateEnd+'회)</b></p>'+
+    '<p class="hint">총 12개 비교 중 기준 방향 반전 '+flips+'개 · 표본 적음 '+lows+
+    '개. 무작위 기준 '+baseline.toFixed(1)+'%와 관찰값의 방향만 분류합니다.</p>'+
+    '<div class="tablewrap"><table class="simple-table"><thead><tr><th>검색조건</th>'+
+    '<th>앞 구간 적중률</th><th>최근 구간 적중률</th><th>최근−앞 변화</th><th>관찰 분류</th>'+
+    '</tr></thead><tbody>'+(rows||'<tr><td colspan="5">선택한 분류에 해당하는 사례가 없습니다.</td></tr>')+
+    '</tbody></table></div>'+
+    '<p class="hint">분류 기준: 두 기간 각각 30회 이상 검출되어야 비교하며, 어느 쪽이든 무작위 기준과 차이가 1%p 미만이면 ‘기준 근처’로 표시합니다. 이 표는 통계적 유의성 또는 미래 예측력을 판정하지 않습니다. 사후 선택한 45개 번호×11조건 비교는 우연한 차이를 키울 수 있습니다.</p>';
 }
 function renderHistoricalNumberOdds(){
   const out=$("historicalNumberOddsContent"),p=state.historicalWalkforward,index=state.historicalCaseIndex;
