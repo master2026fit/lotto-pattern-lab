@@ -1,4 +1,4 @@
-const CACHE_NAME="lotto-note-shell-20261105-v20";
+const CACHE_NAME="lotto-note-shell-20261105-v21";
 const SHELL=["./","./index.html","./exclusion_lab.js","./exclusion_ui.js","./pattern_watch.js","./manifest.webmanifest","./icons/icon-192.png","./icons/icon-512.png"];
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting()));

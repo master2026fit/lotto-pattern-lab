@@ -93,6 +93,41 @@
   var root=document.getElementById(ROOT_ID);if(!root)return;
   var $=function(selector){return root.querySelector(selector);};
   var setText=function(selector,value){var el=$(selector);if(el)el.textContent=String(value);};
+  // Keep the meaning of every observation flag directly beside the numbers.
+  // All examples are refreshed for the current research round.
+  var guide=document.createElement('div');
+  guide.className='lnpw-guide';
+  guide.setAttribute('aria-label','중요표시와 패턴 약어 설명');
+  guide.innerHTML=''
+    +'<div class="lnpw-guide-title">ℹ️ 이 표시, 어떻게 읽나요?</div>'
+    +'<p><strong>다중패턴</strong>은 같은 번호가 <b>서로 다른 검색 규칙 2개 이상</b>에 동시에 걸린 경우입니다. <span data-ln-guide-multi></span></p>'
+    +'<p><strong>연속검색</strong>은 같은 번호가 <b>직전 회차를 위한 사전 검색에도</b> 걸렸다는 뜻입니다. <span data-ln-guide-repeat></span> <em>연속 당첨이라는 뜻은 아닙니다.</em></p>'
+    +'<p><strong>★ 중요표시</strong>는 위 두 가지 중 하나라도 해당할 때 붙습니다. 두 조건이 겹칠 수도 있습니다. ★가 당첨 가능성이 높다는 뜻은 아닙니다.</p>'
+    +'<details class="lnpw-guide-detail"><summary>🔎 F·D·R·G·N·B·A, 7가지 패턴 뜻 보기</summary>'
+    +'<dl>'
+    +'<div><dt>F · 정간격 4회</dt><dd>같은 번호가 일정한 회차 간격으로 과거 4번 나타난 뒤, 다음 간격 위치를 검색합니다.</dd></div>'
+    +'<div><dt>D · 긴 사선 5점</dt><dd>회차 간격과 번호 변화폭이 일정한 과거 5개 지점을 사선으로 연결한 뒤 다음 번호를 검색합니다.</dd></div>'
+    +'<div><dt>R · 최근 3회 사선</dt><dd>직전 3회에서 같은 폭으로 올라가거나 내려가는 번호 배열을 한 칸 더 연장합니다.</dd></div>'
+    +'<div><dt>G · 간격 반복</dt><dd>해당 번호가 마지막 3번 등장한 간격이 같을 때, 그 간격이 다시 이어지는 위치를 검색합니다.</dd></div>'
+    +'<div><dt>N · 양옆 번호</dt><dd>직전 회차 본번호에 해당 번호의 양옆 숫자(−1과 +1)가 모두 있을 때 가운데 번호를 검색합니다.</dd></div>'
+    +'<div><dt>B · 보너스 전환</dt><dd>직전 회차 보너스 번호가 그전 2개 회차의 본번호에도 나왔던 경우를 추적합니다.</dd></div>'
+    +'<div><dt>A · 정렬위치 ABA</dt><dd>3회 전과 직전 회차의 같은 정렬 자리가 동일하면, 가운데 회차의 같은 자리 번호를 검색합니다.</dd></div>'
+    +'</dl><p>패턴 코드는 <b>검색에 사용한 규칙</b>을 표시합니다. 여러 코드가 겹쳐도 예측력이 검증됐다는 뜻은 아닙니다.</p></details>';
+  var guideStyle=document.createElement('style');
+  guideStyle.textContent='#ln-pattern-watch-v1 .lnpw-guide{border:1px solid #426382;background:#142940;border-radius:12px;padding:13px 15px;margin:16px 0;color:#dae6f7;font-size:13px;line-height:1.65}'
+    +'#ln-pattern-watch-v1 .lnpw-guide-title{font-size:16px;font-weight:850;color:#ffe0a1;margin-bottom:8px}'
+    +'#ln-pattern-watch-v1 .lnpw-guide p{margin:6px 0}'
+    +'#ln-pattern-watch-v1 .lnpw-guide strong{color:#ffda8a}'
+    +'#ln-pattern-watch-v1 .lnpw-guide em{color:#b4c6dc;font-style:normal}'
+    +'#ln-pattern-watch-v1 .lnpw-guide-detail{margin-top:10px;padding-top:10px;border-top:1px solid #426382}'
+    +'#ln-pattern-watch-v1 .lnpw-guide-detail summary{color:#cbe2ff;font-size:13px}'
+    +'#ln-pattern-watch-v1 .lnpw-guide-detail dl{margin:10px 0;display:grid;gap:8px}'
+    +'#ln-pattern-watch-v1 .lnpw-guide-detail dl>div{border:1px solid #345471;border-radius:8px;padding:9px 11px;background:#10243a}'
+    +'#ln-pattern-watch-v1 .lnpw-guide-detail dt{font-weight:800;color:#f6d28c}'
+    +'#ln-pattern-watch-v1 .lnpw-guide-detail dd{margin:4px 0 0;color:#cfdef0}';
+  guide.appendChild(guideStyle);
+  var overview=root.querySelector('.lnpw-summary');
+  if(overview)overview.after(guide);
   var refreshButton=$('[data-ln-watch-refresh]');
   var busy=false,checkedAt=0;
   function pill(row,focused){
@@ -104,6 +139,10 @@
   }
   function render(res){
     var items=res.current.items,flagged=items.filter(function(x){return x.important;});
+    var multi=flagged.find(function(x){return x.signal.length>=2;});
+    var repeat=flagged.find(function(x){return x.continued&&x.signal.length===1;});
+    setText('[data-ln-guide-multi]',multi?'예: '+res.target+'회 '+multi.n+'번 ('+multi.signal.map(function(k){return NAMES[k][0];}).join('+')+')':'이번 회차 해당 사례 없음');
+    setText('[data-ln-guide-repeat]',repeat?'예: '+res.target+'회 '+repeat.n+'번 ('+repeat.signal.map(function(k){return NAMES[k][0];}).join('+')+')':'이번 회차 단일패턴 반복 사례 없음');
     setText('[data-ln-watch-target]',res.target+'회');
     setText('[data-ln-watch-total]',items.length+'개');
     setText('[data-ln-watch-flagged]',flagged.length+'개');
