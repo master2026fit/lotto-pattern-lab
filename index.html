@@ -2352,6 +2352,9 @@ function showServerPredrawNumber(n){
   const labels=PATTERN_AUDIT_AXES.filter(a=>r.flags.includes(a.key)).map(a=>clean(a.label));
   out.innerHTML='<p><strong>'+n+'번 · '+(scan.candidatePool.includes(n)?'사전 연구후보':'사전 후보 밖')+'</strong></p>'+
     '<p>기본 조건 '+r.basic+'건 · 연결 탐색 '+r.connected+'건 · 16모듈 중 연결 '+r.moduleIds.length+'개</p>'+
+    (Array.isArray(r.slotTrail)&&r.slotTrail.length===3?
+      '<p class="hint"><b>사전 고정된 최근 출현 자리:</b> '+r.slotTrail.map(x=>x.round+'회 '+x.slot+'구').join(' → ')+'</p>':
+      '<p class="hint">이전에 저장된 회차에는 자리 흐름 증거가 포함되지 않았습니다. 기존 기록을 사후에 수정하지 않습니다.</p>')+
     '<p class="hint">11개 조건 중 일치: '+(labels.join(' / ')||'없음')+'</p>'+
     '<p class="hint">관련 모듈 번호: '+(r.moduleIds.join(' · ')||'없음')+'</p>';
 }
@@ -2419,7 +2422,7 @@ function renderHistoricalWalkforward(){
     '<div style="margin:24px 0;padding:16px 0;border-top:1px solid rgba(128,148,175,.3);border-bottom:1px solid rgba(128,148,175,.3)">'+
     '<h3>🔢 1~45번 · 내가 고른 번호의 재등장 복기</h3>'+
     '<p class="hint">원하는 번호 한 개와 추적 기간을 고르면 11개 검색조건에서 과거에 놓친 뒤 몇 회 안에 다시 나왔는지 같은 기준으로 비교합니다. 9번·34번·37번 등 모든 번호를 선택할 수 있습니다.</p>'+
-    '<div class="toolbar"><label>연구할 번호 <select id="historicalFollowupNumber" class="field" onchange="renderHistoricalNumberReview();renderHistoricalNumberCases(true);renderHistoricalNumberOdds();renderHistoricalNumberConsistency();renderHistoricalFlowTrace();renderHistoricalComposite()">'+
+    '<div class="toolbar"><label>연구할 번호 <select id="historicalFollowupNumber" class="field" onchange="renderHistoricalNumberReview();renderHistoricalNumberCases(true);renderHistoricalNumberOdds();renderHistoricalNumberConsistency();renderHistoricalFlowTrace();renderHistoricalComposite();renderHistoricalSlotChain()">'+
     Array.from({length:45},(_,i)=>'<option value="'+(i+1)+'">'+(i+1)+'번</option>').join("")+
     '</select></label><label>재등장 기간 <select id="historicalFollowupHorizon" class="field" onchange="renderHistoricalNumberReview()">'+
     [1,2,3,5,10].map(n=>'<option value="'+n+'"'+(n===5?' selected':'')+'>'+n+'회 이내</option>').join("")+
@@ -2453,6 +2456,25 @@ function renderHistoricalWalkforward(){
     '</select></label><label>기간 <select id="historicalCompositePeriod" class="field" onchange="renderHistoricalComposite()">'+
     '<option value="all">전체 과거 회차</option><option value="late">최근 250회</option></select></label></div>'+
     '<div id="historicalCompositeContent">교집합 기록 계산 중입니다.</div></div>'+
+    '<div style="margin:18px 0;padding:16px 0;border-top:1px dashed rgba(128,148,175,.3)"><h4>🧩 1구~6구 자리 흐름 · 동일 번호 3~6단계 전수 연구</h4>'+
+    '<p class="hint">구=당첨번호를 오름차순으로 놓았을 때의 위치(1구=가장 작은 번호, 6구=가장 큰 번호). 한 번호가 실제 당첨될 때마다 차지한 위치의 순서이며, 숫자가 매주 연속 당첨됐다는 뜻이 아닙니다.</p>'+
+    '<div class="toolbar"><label>자리 순서 <select id="historicalSlotPattern" class="field" onchange="renderHistoricalSlotChain()">'+
+    '<option value="6,3,1">6구 → 3구 → 1구</option>'+
+    '<option value="6,4,2">6구 → 4구 → 2구</option>'+
+    '<option value="5,5,5">5구 → 5구 → 5구</option>'+
+    '<option value="6,5,3">6구 → 5구 → 3구</option>'+
+    '<option value="6,3,1,6,3,1">6→3→1→6→3→1 반복</option>'+
+    '<option value="custom">직접 입력한 세 자리</option></select></label>'+
+    '<label>대상 <select id="historicalSlotScope" class="field" onchange="renderHistoricalSlotChain()">'+
+    '<option value="all">전체 45개 번호</option><option value="selected">위에서 선택한 번호</option></select></label>'+
+    '<label>① <select id="historicalSlotA" class="field" onchange="renderHistoricalSlotChain()">'+
+    Array.from({length:6},(_,i)=>'<option value="'+(i+1)+'"'+(i===5?' selected':'')+'>'+(i+1)+'구</option>').join("")+'</select></label>'+
+    '<label>② <select id="historicalSlotB" class="field" onchange="renderHistoricalSlotChain()">'+
+    Array.from({length:6},(_,i)=>'<option value="'+(i+1)+'"'+(i===2?' selected':'')+'>'+(i+1)+'구</option>').join("")+'</select></label>'+
+    '<label>③ <select id="historicalSlotC" class="field" onchange="renderHistoricalSlotChain()">'+
+    Array.from({length:6},(_,i)=>'<option value="'+(i+1)+'"'+(i===0?' selected':'')+'>'+(i+1)+'구</option>').join("")+'</select></label></div>'+
+    '<p class="hint">①②③ 자리 입력은 「직접 입력한 세 자리」를 선택했을 때 적용됩니다. 6단계 반복은 실제로 동일한 번호가 여섯 번 출현한 순서만 검사합니다.</p>'+
+    '<div id="historicalSlotChainContent">자리별 실제 회차 흐름을 검사하고 있습니다.</div></div>'+
     '<div style="margin-top:16px;padding-top:14px;border-top:1px dashed rgba(128,148,175,.3)"><h4>📚 이 번호의 실제 과거 회차 찾기</h4>'+
     '<p class="hint">2회부터 최신 확인 회차까지 당시의 검색 여부·당첨·이후 재등장 기록을 찾아봅니다. 회차를 입력하거나 조건을 고르세요.</p>'+
     '<div class="toolbar"><label>검색조건 <select id="historicalCaseAxis" class="field" onchange="renderHistoricalNumberCases(true)">'+
@@ -2485,6 +2507,7 @@ function renderHistoricalWalkforward(){
   renderHistoricalNumberConsistency();
   renderHistoricalFlowTrace();
   renderHistoricalComposite();
+  renderHistoricalSlotChain();
 }
 function renderHistoricalContextReview(){
   const out=$("historicalContextContent"),p=state.historicalWalkforward;
@@ -2608,6 +2631,119 @@ function openHistoricalCompositeCase(round){
   axisInput.value=axis;kind.value="all";roundInput.value=String(round);
   renderHistoricalNumberCases(true);
   $("historicalNumberCasesContent")?.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function analyzeHistoricalSlotChains(draws,pattern,selectedNumber=0){
+  if(!Array.isArray(draws)||!draws.length||!Array.isArray(pattern)||
+    pattern.length<3||pattern.length>6||pattern.some(x=>!Number.isInteger(x)||x<1||x>6)||
+    !Number.isInteger(selectedNumber)||selectedNumber<0||selectedNumber>45)
+    throw Error("자리 흐름 연구 입력 형식 불일치");
+  const obsByNumber=Array.from({length:46},()=>[]);
+  for(const draw of draws){
+    if(!Number.isInteger(draw.draw_no)||!Array.isArray(draw.numbers)||draw.numbers.length!==6)throw Error("회차 번호 오류");
+    draw.numbers.forEach((n,i)=>{if(Number.isInteger(n)&&n>=1&&n<=45)
+      obsByNumber[n].push({round:draw.draw_no,slot:i+1});});
+  }
+  const lastRound=draws.at(-1).draw_no,prefix=[],completed=[],repeated=[];
+  const numbers=selectedNumber?[selectedNumber]:Array.from({length:45},(_,i)=>i+1);
+  const check=(appearances,end,slots)=>{
+    if(end<slots.length-1)return false;
+    return slots.every((slot,i)=>appearances[end-(slots.length-1-i)].slot===slot);
+  };
+  for(const n of numbers){
+    const items=obsByNumber[n],prefixSlots=pattern.slice(0,-1);
+    for(let i=0;i<items.length;i++){
+      if(check(items,i,prefixSlots)){
+        const next=items[i+1]||null;
+        prefix.push({n,chain:items.slice(i-prefixSlots.length+1,i+1),next});
+      }
+      if(check(items,i,pattern)){
+        completed.push({n,chain:items.slice(i-pattern.length+1,i+1),next:items[i+1]||null});
+      }
+      if(pattern.length===3&&check(items,i,pattern.concat(pattern))){
+        repeated.push({n,chain:items.slice(i-5,i+1),next:items[i+1]||null});
+      }
+    }
+  }
+  const byLatest=(a,b)=>b.chain.at(-1).round-a.chain.at(-1).round||a.n-b.n;
+  prefix.sort(byLatest);completed.sort(byLatest);repeated.sort(byLatest);
+  const prefixKnown=prefix.filter(x=>x.next);
+  const prefixSucceeded=prefixKnown.filter(x=>x.next.slot===pattern.at(-1));
+  const afterOne=completed.filter(x=>x.chain.at(-1).round<lastRound);
+  const nextDrawHits=afterOne.filter(x=>x.next?.round===x.chain.at(-1).round+1);
+  const fiveEligible=completed.filter(x=>x.chain.at(-1).round+5<=lastRound);
+  const returned5=fiveEligible.filter(x=>x.next&&x.next.round-x.chain.at(-1).round<=5);
+  return {lastRound,numbers,pattern,prefix,completed,repeated,prefixKnown,prefixSucceeded,
+    afterOne,nextDrawHits,fiveEligible,returned5};
+}
+function historicalSlotChainSVG(item){
+  const chain=item.chain,includeNext=!!item.next;
+  const points=includeNext?chain.concat([item.next]):chain;
+  const box=97,stride=128,w=36+(points.length-1)*stride+box;
+  const shapes=points.map((p,i)=>{
+    const x=18+i*stride,isNext=i===chain.length,previous=i?points[i-1]:null;
+    const arrow=previous?'<path d="M '+(x-stride+box+3)+' 55 L '+(x-10)+' 55" stroke="#647e9d" stroke-width="2.5" fill="none"/>'+
+      '<path d="M '+(x-17)+' 49 L '+(x-9)+' 55 L '+(x-17)+' 61 Z" fill="#647e9d"/>':'';
+    return arrow+'<rect x="'+x+'" y="15" width="'+box+'" height="93" rx="10" stroke="'+(isNext?'#18816e':'#3e70a5')+'" stroke-width="1.4" fill="'+(isNext?'#d8f6e9':'#e8f2fd')+'"/>'+
+      '<text x="'+(x+box/2)+'" y="39" font-size="12" text-anchor="middle" fill="#34506b">'+p.round+'회</text>'+
+      '<text x="'+(x+box/2)+'" y="68" font-size="22" font-weight="800" text-anchor="middle" fill="#16395a">'+item.n+'번</text>'+
+      '<text x="'+(x+box/2)+'" y="91" font-size="13" font-weight="700" text-anchor="middle" fill="'+(isNext?'#087d67':'#365b83')+'">'+p.slot+'구'+(isNext?' (다음)':'')+'</text>';
+  }).join("");
+  return '<figure style="margin:10px 0;padding:6px;background:rgba(244,248,253,.9);border-radius:9px;overflow-x:auto">'+
+    '<svg viewBox="0 0 '+w+' 126" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+item.n+
+    '번 실제 당첨 위치 흐름" style="display:block;width:100%;max-width:860px;min-width:'+Math.min(340,w)+'px;margin:auto">'+shapes+'</svg>'+
+    '<figcaption class="hint" style="text-align:center;margin:0">같은 '+item.n+'번의 실제 출현만 연결 · 회차 사이 공백 허용</figcaption></figure>';
+}
+function openHistoricalSlotChainCase(n,round){
+  const picker=$("historicalFollowupNumber"),axis=$("historicalCaseAxis"),
+    kind=$("historicalCaseKind"),roundField=$("historicalCaseRound");
+  if(!picker||!axis||!kind||!roundField||!Number.isInteger(n)||!Number.isInteger(round))return;
+  picker.value=String(n);axis.value="all";kind.value="all";roundField.value=String(round);
+  renderHistoricalNumberReview();renderHistoricalNumberOdds();renderHistoricalNumberConsistency();
+  renderHistoricalFlowTrace();renderHistoricalComposite();renderHistoricalSlotChain();
+  renderHistoricalNumberCases(true);
+  $("historicalNumberCasesContent")?.scrollIntoView({behavior:"smooth",block:"start"});
+}
+function renderHistoricalSlotChain(){
+  const out=$("historicalSlotChainContent"),ds=state.draws;
+  if(!out)return;
+  if(!ds||ds.length<30){out.textContent="당첨 회차 데이터 연결 대기";return;}
+  const selected=$("historicalSlotPattern")?.value||"6,3,1";
+  const pattern=selected==="custom"?["A","B","C"].map(x=>Number($("historicalSlot"+x)?.value)):
+    selected.split(",").map(Number);
+  const scope=$("historicalSlotScope")?.value==="selected"?
+    Number($("historicalFollowupNumber")?.value):0;
+  let r;
+  try{r=analyzeHistoricalSlotChains(ds,pattern,scope);}
+  catch(err){out.textContent="자리 흐름 계산 실패: "+err.message;return;}
+  const formatRate=(won,count)=>count?(100*won/count).toFixed(1)+"%":"—";
+  const patternName=pattern.map(x=>x+"구").join(" → ");
+  const latest=r.completed.slice(0,8);
+  const textNext=row=>row.next?
+    row.next.round+"회 "+row.next.slot+"구 (+"+(row.next.round-row.chain.at(-1).round)+"회)":
+    "다음 출현 관찰 중";
+  const first=pattern.length===3?pattern.slice(0,2).join("→")+"구":pattern.slice(0,-1).join("→")+"구";
+  out.innerHTML='<p class="hint"><b>전체 '+r.lastRound+'회까지 · '+r.numbers.length+'개 번호 검사 · '+clean(patternName)+'</b> (같은 번호의 연속 출현 위치, 회차가 연속될 필요는 없음)</p>'+
+    '<div class="tablewrap"><table class="simple-table"><thead><tr><th>관찰 기준</th><th>사례</th><th>실제 결과</th><th>해석</th></tr></thead><tbody>'+
+    '<tr><td>앞 '+(pattern.length-1)+'단계 완성</td><td>'+r.prefix.length+'건</td><td>다음 출현자리 확인 '+r.prefixKnown.length+'건</td><td>관찰 중인 사례 제외</td></tr>'+
+    '<tr><td>다음 출현으로 마지막 자리까지 완성</td><td>'+r.prefixKnown.length+'건</td><td>'+r.prefixSucceeded.length+'건 · '+formatRate(r.prefixSucceeded.length,r.prefixKnown.length)+'</td><td>해당 자리 출현 비율, 당첨 확률 아님</td></tr>'+
+    '<tr><td>전체 '+pattern.length+'단계 동일 자리 순서</td><td>'+r.completed.length+'건</td><td>다음 회차 당첨 '+r.nextDrawHits.length+'/'+r.afterOne.length+'건</td><td>동일 개수 무작위 기대 '+(r.afterOne.length*6/45).toFixed(1)+'건</td></tr>'+
+    '<tr><td>완성 후 5회 이내 재등장</td><td>'+r.fiveEligible.length+'건</td><td>'+r.returned5.length+'건 · '+formatRate(r.returned5.length,r.fiveEligible.length)+'</td><td>5회 관찰 완료된 사례만 분모</td></tr>'+
+    (pattern.length===3?'<tr><td>자리 순서 2번 연속 ('+clean(patternName)+' 반복)</td><td>'+r.repeated.length+'건</td><td colspan="2">총 6번의 같은 번호 출현 위치가 정확히 이어진 사례</td></tr>':'')+
+    '</tbody></table></div>'+
+    '<p class="caution">같은 번호라도 1구~6구 위치가 될 가능성은 번호 크기에 따라 다릅니다. 위의 완성 비율을 1/6이나 번호 당첨확률 상승으로 해석할 수 없습니다. 패턴을 여러 개 골라본 사후 기록이며 실전 사전 검증 성적과 분리합니다.</p>'+
+    (r.completed.length<30?'<p class="hint">완성된 사례 '+r.completed.length+'건: 표본이 적어 우위·열위 판정 불가</p>':
+      '<p class="hint">30건 이상이어도 과거를 보고 고른 흐름이며, 독립된 미래 실험과 다중 비교 보정 없이 유리하다고 판정하지 않습니다.</p>')+
+    '<details class="audit-group"><summary class="openmore">실제 자리 흐름 최근 '+latest.length+'건 · 회차/번호 증거 펼치기</summary>'+
+    (latest.length?latest.map(row=>{
+      const end=row.chain.at(-1).round,chainLabel=row.chain.map(x=>x.round+"회 "+x.slot+"구").join(" → ");
+      return '<section style="border:1px solid rgba(128,148,175,.22);padding:10px;margin:8px 0;border-radius:10px">'+
+        '<strong>'+row.n+'번 · '+clean(chainLabel)+'</strong>'+
+        historicalSlotChainSVG(row)+
+        '<p class="hint">이후 첫 재등장: '+textNext(row)+'</p>'+
+        '<button type="button" class="btn secondary" onclick="openHistoricalSlotChainCase('+row.n+','+end+')">원본 '+end+'회 상세 보기</button></section>';
+    }).join(""):'<p class="hint">이 자리 순서가 실제로 반복된 사례가 아직 없습니다.</p>')+'</details>'+
+    '<p class="hint">검색은 매 번호가 실제로 나타난 시점의 오름차순 위치만 사용합니다. 다음 출현이 아직 관찰되지 않은 사례는 성공 또는 실패로 확정하지 않습니다.</p>';
 }
 function renderHistoricalComposite(){
   const out=$("historicalCompositeContent"),p=state.historicalWalkforward,index=state.historicalCaseIndex;
@@ -3146,12 +3282,15 @@ function captureFullScan(){
     if(timelines.some(x=>x.rule.group==="고정위상"))flags.push("fixedCycle");
     if(timelines.some(x=>x.rule.group==="사선"))flags.push("diagonal");
     if(contexts.length>=2)flags.push("context2plus");
-    return {n,basic:p.basicCount,connected:p.flowCount,flags,
+    const slotTrail=recentPositions(state.draws,state.draws.length,n,3)
+      .map(item=>({round:state.draws[item.j].draw_no,slot:item.slot}));
+    return {n,basic:p.basicCount,connected:p.flowCount,flags,slotTrail,
       moduleIds:[...(byN.get(n)||[])].sort((a,b)=>a-b)};
   });
   const candidatePool=researchPoolPlan(state.profiles,state.module16).numbers.slice().sort((a,b)=>a-b);
   book.push({round,sourceRound:round-1,createdAt:new Date().toISOString(),
-    scope:"all45",candidatePolicy:"dynamic-unlimited-v2",candidatePool,rows,review:null});
+    scope:"all45",candidatePolicy:"dynamic-unlimited-v2",
+    slotTrailPolicy:"same-number-3-last-positions-v1",candidatePool,rows,review:null});
   saveFullScanBook(book);
 }
 function reconcileFullScans(){
@@ -3639,6 +3778,7 @@ function validateFullBackupScan(x){
     x.sourceRound!==x.round-1||!validBackupNumbers(x.candidatePool,null,0,45)||
     !Array.isArray(x.rows)||x.rows.length!==45||!backupReviewShape(x.review))return false;
   const seen=new Set(),allowed=new Set(PATTERN_AUDIT_AXES.map(x=>x.key));
+  if(x.slotTrailPolicy!==undefined&&x.slotTrailPolicy!=="same-number-3-last-positions-v1")return false;
   for(const r of x.rows){
     if(!r||!Number.isInteger(r.n)||r.n<1||r.n>45||seen.has(r.n)||
       !Number.isInteger(r.basic)||r.basic<0||r.basic>1000||
@@ -3648,6 +3788,12 @@ function validateFullBackupScan(x){
       new Set(r.flags).size!==r.flags.length||
       (r.moduleIds!==undefined&&(!Array.isArray(r.moduleIds)||r.moduleIds.length>16||
         r.moduleIds.some(id=>!Number.isInteger(id)||id<1||id>16))))return false;
+    if(x.slotTrailPolicy){
+      if(!Array.isArray(r.slotTrail)||r.slotTrail.length!==3||
+        r.slotTrail.some((p,i)=>!p||!Number.isInteger(p.round)||p.round<1||
+          p.round>x.sourceRound||!Number.isInteger(p.slot)||p.slot<1||p.slot>6||
+          (i>0&&p.round<=r.slotTrail[i-1].round)))return false;
+    }
     seen.add(r.n);
   }
   return seen.size===45;

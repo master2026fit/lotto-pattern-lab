@@ -17,6 +17,8 @@ export function validateSnapshot(record, currentRound) {
     (currentRound !== undefined && record.round !== currentRound) ||
     record.scope !== 'all45' ||
     record.candidatePolicy !== 'dynamic-unlimited-v2' ||
+    (record.slotTrailPolicy !== undefined &&
+      record.slotTrailPolicy !== 'same-number-3-last-positions-v1') ||
     typeof record.createdAt !== 'string' || !Number.isFinite(Date.parse(record.createdAt)) ||
     !numberSet(record.candidatePool, 0, 45) ||
     !Array.isArray(record.rows) || record.rows.length !== 45 ||
@@ -30,6 +32,13 @@ export function validateSnapshot(record, currentRound) {
       !Array.isArray(row.flags) || row.flags.length > 11 ||
       row.flags.some(flag => typeof flag !== 'string' || flag.length > 50) ||
       new Set(row.flags).size !== row.flags.length ||
+      (record.slotTrailPolicy === 'same-number-3-last-positions-v1' &&
+        (!Array.isArray(row.slotTrail) || row.slotTrail.length !== 3 ||
+          row.slotTrail.some((point, i) =>
+            !point || !Number.isInteger(point.round) ||
+            point.round < 1 || point.round > record.sourceRound ||
+            !Number.isInteger(point.slot) || point.slot < 1 || point.slot > 6 ||
+            (i > 0 && point.round <= row.slotTrail[i-1].round)))) ||
       !Array.isArray(row.moduleIds) || row.moduleIds.length > 16 ||
       row.moduleIds.some(id => !Number.isInteger(id) || id < 1 || id > 16)) return false;
     numbers.add(row.n);
