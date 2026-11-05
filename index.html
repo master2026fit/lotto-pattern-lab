@@ -2540,7 +2540,8 @@ function renderHistoricalNumberOdds(){
     return '<tr'+(j===0?' style="font-weight:700;background:rgba(79,136,185,.07)"':'')+'><td>'+clean(axis.label)+'</td>'+
       '<td>'+selected+'회</td><td>'+formatRate(selectedRate)+' ('+hits+'/'+selected+')'+bar+
       (selected>0&&selected<30?'<small style="display:block">표본 30회 미만</small>':'')+'</td>'+
-      '<td>'+formatRate(otherRate)+' ('+unselectedHits+'/'+unselected+')</td>'+
+      '<td>'+formatRate(otherRate)+' ('+unselectedHits+'/'+unselected+')'+
+      (unselected>0&&unselected<30?'<small style="display:block">표본 30회 미만</small>':'')+'</td>'+
       '<td>'+baseline.toFixed(1)+'% ('+(selected*BASE).toFixed(1)+'회 기대)</td>'+
       '<td>'+(diff===null?"—":(diff>=0?"+":"")+diff.toFixed(1)+"%p")+'</td></tr>';
   }).join("");
