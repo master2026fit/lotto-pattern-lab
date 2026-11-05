@@ -42,6 +42,11 @@
       #${ID} .lnall-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;margin-top:10px}
       #${ID} .lnall-card{border:1px solid #496680;background:#1a354f;border-radius:12px;padding:12px}
       #${ID} .lnall-card strong{color:#ffdb93}#${ID} .lnall-card small{color:#b5cae2;display:block;margin-top:6px;line-height:1.7}
+      #${ID} .lnall-matrix{width:100%;min-width:810px}#${ID} .lnall-matrix td{font-size:12px}
+      #${ID} .lnall-matrix .lnall-matrix-rule{text-align:left;font-weight:700;min-width:165px}
+      #${ID} .lnall-matrix .lnall-hit{color:#85f4bd;font-weight:800}#${ID} .lnall-matrix .lnall-miss{color:#fc9c97}
+      #${ID} .lnall-filter{display:flex;flex-wrap:wrap;gap:7px;margin:9px 0}
+      #${ID} .lnall-filter button[aria-pressed=true]{background:#7a4c1c;border-color:#edb969;color:#fff4d6}
       @media(max-width:560px){#${ID}{padding:13px}#${ID} h2{font-size:19px}#${ID} .lnall-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
     </style>
     <div class="lnall-head"><div><h2>🧬 전체 검색패턴 생존·중단 비교</h2>
@@ -54,6 +59,17 @@
       <div class="lnall-tile"><small>분석 모듈 비교</small><b>16 / 16</b></div>
       <div class="lnall-tile"><small>실제 연결 4점 이상</small><b data-lnall-struct>—</b></div>
     </div>
+    <h3>한눈에: 모든 검색규칙 생존·중단 이력</h3>
+    <p>아래는 대각선뿐 아니라 <b>7개 검색 · 기본 45개 · 현재 발동한 동적 검색 · 16개 모듈</b>을 한 표로 나열한 것입니다. 각 회차의 ✅는 그 패턴 후보에 실제 당번이 포함된 경우, ✖는 후보가 있었지만 맞지 않은 경우, —는 후보나 회차별 결과가 없는 경우입니다. <b>3회 이상 연속 ✅은 🔥, 직전 ✅은 ★, 직전 ✖는 끊김</b>으로 표시합니다. 다만 후보가 많은 규칙일수록 ✅가 쉬워집니다.</p>
+    <div class="lnall-filter" data-lnall-filters>
+      <button type="button" data-lnall-filter="all" aria-pressed="true">전체</button>
+      <button type="button" data-lnall-filter="alive" aria-pressed="false">🔥 연속 생존</button>
+      <button type="button" data-lnall-filter="recent" aria-pressed="false">★ 직전 당번</button>
+      <button type="button" data-lnall-filter="stopped" aria-pressed="false">✖ 끊김</button>
+      <button type="button" data-lnall-filter="untracked" aria-pressed="false">— 미추적</button>
+    </div>
+    <p data-lnall-matrix-count>패턴 자료를 취합 중입니다…</p>
+    <div class="lnall-scroll"><table class="lnall-matrix"><thead><tr><th>분류</th><th>검색패턴</th><th data-lnall-r="0">직전 5회</th><th data-lnall-r="1">직전 4회</th><th data-lnall-r="2">직전 3회</th><th data-lnall-r="3">직전 2회</th><th data-lnall-r="4">직전 회차</th><th data-lnall-target>이번 회차 후보</th><th>생존 상태</th></tr></thead><tbody data-lnall-matrix></tbody></table></div>
     <h3>① 실제 당첨으로 이어진 구조적 연결 · 전체</h3>
     <p>★는 4점까지 실제 당첨으로 이어져 5번째를 기다리는 연결, 🔥는 5점 이상까지 이어진 연결입니다. 같은 번호의 정간격(F)과 서로 다른 번호의 사선(D·R)을 모두 검색합니다. G(실제 출현 간격 반복)는 아래 7패턴에서 별도 판정합니다.</p>
     <div data-lnall-struct-list class="lnall-cards"></div>
@@ -174,7 +190,7 @@
     return {watch,basic};
   }
 
-  let busy=false,last=0,completed=-1;
+  let busy=false,last=0,completed=-1,matrixFilter='all',matrixData=[];
   function addCells(tr,values){values.forEach((value,j)=>{
     const td=document.createElement('td');td.textContent=value;
     if(j===0)td.className='left';if(j===1)td.className='nums';
@@ -286,6 +302,78 @@
     });
   }
 
+  function renderMatrixRows(){
+    const body=$('[data-lnall-matrix]');body.textContent='';
+    const filtered=matrixData.filter(x=>matrixFilter==='all'||x.kind===matrixFilter);
+    const rank={alive:0,recent:1,stopped:2,untracked:3};
+    filtered.sort((a,b)=>rank[a.kind]-rank[b.kind]||a.familyOrder-b.familyOrder||a.name.localeCompare(b.name,'ko'));
+    const fragment=document.createDocumentFragment();
+    filtered.forEach(x=>{
+      const tr=document.createElement('tr');const vals=[x.family,x.name,...x.history,x.candidates,x.label];
+      vals.forEach((v,j)=>{
+        const td=document.createElement('td');td.textContent=String(v);if(j===1)td.className='lnall-matrix-rule';
+        if(j>=2&&j<=6)td.classList.add(v.startsWith('✅')?'lnall-hit':v.startsWith('✖')?'lnall-miss':'lnall-muted');
+        tr.append(td);
+      });
+      tr.title=x.note||'';fragment.append(tr);
+    });body.append(fragment);
+    const totals={alive:0,recent:0,stopped:0,untracked:0};matrixData.forEach(x=>totals[x.kind]++);
+    put('[data-lnall-matrix-count]',`전체 ${matrixData.length}개 규칙 중 🔥 연속 ${totals.alive}개 · ★ 직전 당번 ${totals.recent}개 · ✖ 끊김 ${totals.stopped}개 · — 미발동·회차 미추적 ${totals.untracked}개 · 현재 표시 ${filtered.length}개`);
+    $('[data-lnall-filters]').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lnallFilter===matrixFilter)));
+  }
+
+  function renderMatrix(target,baseRules,baseCurrent,current,profiles,modules,history){
+    const rounds=Array.from({length:5},(_,i)=>target-5+i);
+    host.querySelectorAll('[data-lnall-r]').forEach((th,i)=>{th.textContent=rounds[i]+'회';});
+    put('[data-lnall-target]',target+'회 후보');
+    const data=[];
+    const classify=(last,streak)=>{
+      if(last?.candidates>0&&streak>=3)return ['alive','🔥 '+streak+'회 연속'];
+      if(last?.hits>0)return ['recent','★ '+streak+'회 동반'];
+      if(last?.candidates>0)return ['stopped','✖ 직전 끊김'];
+      return ['untracked','— 직전 미발동'];
+    };
+    const snapshot=st=>{
+      const records=st.history.slice(-5),last=records[records.length-1];
+      const cells=records.map(e=>e.candidates>0?(e.hits>0?'✅ '+e.hits:'✖'):'—');
+      return {cells,...{last},...{streak:st.streak}};
+    };
+    CODES.forEach(([code,key,name,meaning],i)=>{
+      const st=history.watch[i],recent=snapshot(st),[kind,label]=classify(recent.last,recent.streak);
+      data.push({family:'기존 7',familyOrder:0,name:code+' · '+name,history:recent.cells,candidates:current[key].size+'수',kind,label,note:meaning});
+    });
+    baseRules.forEach((rule,i)=>{
+      const st=history.basic[i],recent=snapshot(st),[kind,label]=classify(recent.last,recent.streak);
+      data.push({family:'기본 45',familyOrder:1,name:rule.group+' · '+rule.label.replace('{n}','번호'),history:recent.cells,candidates:baseCurrent[i].length+'수',kind,label,note:rule.why||''});
+    });
+    const dm=new Map();
+    profiles.forEach(p=>(p.list||[]).forEach(e=>{
+      if(!e.rule.dynamic)return;
+      let x=dm.get(e.rule.group);if(!x){x={numbers:new Set(),events:new Map()};dm.set(e.rule.group,x);}
+      x.numbers.add(p.n);
+      (e.events||[]).forEach(ev=>{
+        const r=Number(ev.i)+1;if(!Number.isInteger(r))return;
+        let item=x.events.get(r);if(!item){item={candidates:new Set(),wins:new Set()};x.events.set(r,item);}
+        item.candidates.add(p.n);if(ev.hit)item.wins.add(p.n);
+      });
+    }));
+    dm.forEach((x,name)=>{
+      const lastFive=rounds.map(r=>x.events.get(r));const cells=lastFive.map(e=>e?.candidates.size?(e.wins.size?'✅ '+e.wins.size:'✖'):'—');
+      let streak=0,r=target-1;while(x.events.get(r)?.wins.size){streak++;r--;}
+      const latest=lastFive[lastFive.length-1];const [kind,raw]=classify(latest?{candidates:latest.candidates.size,hits:latest.wins.size}:null,streak);
+      data.push({family:'동적 · 사후',familyOrder:2,name,history:cells,candidates:x.numbers.size+'수',kind,label:raw,note:'현재 발견한 규칙을 과거에 대조한 사후검색. 사전 예측 검증과 구분해야 합니다.'});
+    });
+    modules.forEach((mod,i)=>{
+      const nums=uniq(mod.items.filter(x=>Number.isInteger(x.n)&&x.n>=1&&x.n<=45).map(x=>x.n));
+      data.push({family:'분석 16',familyOrder:3,name:(i+1)+'. '+mod.name,history:['—','—','—','—','—'],candidates:nums.length?nums.length+'수':'집합',kind:'untracked',label:'— 회차별 추적 없음',note:'모듈의 사례별 사후 감사와 회차별 사전 후보 연속 성공은 다릅니다.'});
+    });
+    matrixData=data;renderMatrixRows();
+  }
+  $('[data-lnall-filters]').addEventListener('click',ev=>{
+    const b=ev.target.closest('button[data-lnall-filter]');if(!b)return;
+    matrixFilter=b.dataset.lnallFilter;renderMatrixRows();
+  });
+
   async function load(force){
     if(busy)return;
     if(!force&&Date.now()-last<1800000){
@@ -311,6 +399,7 @@
       put('[data-lnall-status]',ds.length+'회까지 확인 · '+target+'회 현재 후보 · 구조적 연결 '+paths.length+'건 · 과거 모든 조건의 실제 당첨 복기 계산 중…');
       const history=await replay(ds,baseRules,(done,total)=>put('[data-lnall-status]',done+' / '+total+'회 · 7패턴 + 기본 45조건 복기 중…'));
       renderSeven(current,history,ds);renderBase(baseRules,basicCurrent,history);
+      renderMatrix(target,baseRules,basicCurrent,current,profiles,modules,history);
       put('[data-lnall-status]',ds.length+'회까지 전체 비교 완료 · '+target+'회 사전 검색 · 7패턴·45기본조건의 과거 당첨 포함 기록 계산 완료 · 16모듈·현재 동적 규칙 목록 확인');
       last=Date.now();completed=target;
     }catch(e){put('[data-lnall-status]','전체 패턴 분석 중 오류: '+e.message);}
