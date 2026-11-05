@@ -119,7 +119,8 @@ export function buildExclusionBacktest(caseIndex, rawDraws, options = {}) {
     for (const item of entry.cases) {
       const [round, bitmask, won] = item;
       if (!Number.isInteger(round) || round < 2 || round > max ||
-          !Number.isInteger(bitmask) || bitmask < 1 || bitmask >= 1 << 11 ||
+          // Winning numbers without a pattern are also stored with mask=0.
+          !Number.isInteger(bitmask) || bitmask < 0 || bitmask >= 1 << 11 ||
           (won !== 0 && won !== 1) || Number(draws[round - 1].numbers.includes(entry.n)) !== won)
         throw new Error('패턴 기록과 실제 본번호가 일치하지 않습니다.');
       masks[round][entry.n] = bitmask;

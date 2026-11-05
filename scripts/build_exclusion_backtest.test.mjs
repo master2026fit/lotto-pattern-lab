@@ -43,6 +43,9 @@ test('one-round backtest returns two exclusions and both 5/10-arm benchmarks', (
   const cases = { version: 1, method: 'postdraw-only-packed-all-history',
     latestRound: 501, axisKeys: keys,
     numbers: Array.from({ length: 45 }, (_, i) => ({ n: i + 1, cases: [] })) };
+  // The packed historical ledger includes winning numbers with zero pattern flags.
+  const winningWithoutFlags = draws.at(-1).numbers[0];
+  cases.numbers[winningWithoutFlags - 1].cases.push([501, 0, 1, null]);
   const report = buildExclusionBacktest(cases, draws, { replications: 4, keep: 1 });
   assert.equal(report.asOfDraw, 501);
   assert.equal(report.rounds.length, 1);
