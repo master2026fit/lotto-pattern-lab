@@ -2327,7 +2327,7 @@ function renderServerPredrawLedger(){
   const stamp=new Intl.DateTimeFormat("ko-KR",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit",weekday:"short",hour:"2-digit",minute:"2-digit",hour12:false}).format(new Date(scan.createdAt));
   out.innerHTML='<p><strong>'+scan.round+'회 · 추첨 전에 저장된 연구후보 '+count+'개</strong> / 후보 밖 '+(45-count)+'개 · 전체 45수 검사</p>'+
     '<p class="hint">● 초록색: 사전 연구후보 · ○ 회색: 후보 밖 · 원본 생성 '+clean(stamp)+' (한국시간)</p>'+
-    '<p class="hint">자동 실행 일정(한국시간): 사전 45수 저장 금요일 12:13 · 토요일 14:13/18:13, 발표 후 복기 토요일 21:17 · 일요일 09:17 · 월요일 09:17. GitHub 예약 실행은 지연될 수 있으며 실패 시 다음 예약 때 재시도합니다.</p>'+
+    '<p class="hint">자동 실행 일정(한국시간): 사전 45수 저장 금요일 12:13 · 토요일 14:13/18:13, 발표 후 복기 토요일 21:17 · 일요일 09:17 · 월요일 09:17. GitHub 예약 실행은 지연될 수 있으며 추첨 전 다음 예약 실행에서 재시도하며, 사후 소급 기록은 만들지 않습니다.</p>'+
 
     '<p class="hint">사전 연구후보 전체: '+scan.candidatePool.slice().sort((a,b)=>a-b).join(' · ')+'</p>'+ 
     '<div class="predraw-ledger-grid" role="group" aria-label="사전 기록 1~45 전체">'+
@@ -2651,7 +2651,7 @@ function renderHistoricalComposite(){
     '<details class="audit-group"><summary class="openmore">실제 교집합 회차 최근 '+recent.length+'건 보기</summary>'+
     (recent.length?'<div class="tablewrap"><table class="simple-table"><thead><tr><th>회차</th><th>실제 결과</th><th>이후 첫 재등장</th><th>전체 근거</th></tr></thead><tbody>'+
       recent.map(c=>'<tr><td>'+c[0]+'회</td><td>'+(c[2]?'당첨':'미당첨')+'</td><td>'+
-        (c[3]===null?'10회 이내 확인 안 됨':c[3]+'회 뒤')+'</td><td><button type="button" class="btn secondary" onclick="openHistoricalCompositeCase('+c[0]+')">회차 보기</button></td></tr>').join("")+
+        (c[3]===null?(c[0]+10>p.lastTestRound?'10회 관찰 진행 중':'10회 이내 미출현'):c[3]+'회 뒤')+'</td><td><button type="button" class="btn secondary" onclick="openHistoricalCompositeCase('+c[0]+')">회차 보기</button></td></tr>').join("")+
       '</tbody></table></div>':'<p class="hint">선택 조건이 동시에 검출된 회차가 없습니다.</p>')+'</details>'+
     '<p class="hint">교집합이 개별 조건보다 좋아 보이는 것은 작은 표본·조건 조합을 여러 번 골라본 영향일 수 있습니다. 과거 재구성 자료이며 실제 사전 저장 실험과 합산하지 않습니다.</p>';
 }
