@@ -2417,7 +2417,7 @@ function renderHistoricalWalkforward(){
     '<div style="margin:24px 0;padding:16px 0;border-top:1px solid rgba(128,148,175,.3);border-bottom:1px solid rgba(128,148,175,.3)">'+
     '<h3>🔢 1~45번 · 내가 고른 번호의 재등장 복기</h3>'+
     '<p class="hint">원하는 번호 한 개와 추적 기간을 고르면 11개 검색조건에서 과거에 놓친 뒤 몇 회 안에 다시 나왔는지 같은 기준으로 비교합니다. 9번·34번·37번 등 모든 번호를 선택할 수 있습니다.</p>'+
-    '<div class="toolbar"><label>연구할 번호 <select id="historicalFollowupNumber" class="field" onchange="renderHistoricalNumberReview();renderHistoricalNumberCases(true);renderHistoricalNumberOdds();renderHistoricalNumberConsistency()">'+
+    '<div class="toolbar"><label>연구할 번호 <select id="historicalFollowupNumber" class="field" onchange="renderHistoricalNumberReview();renderHistoricalNumberCases(true);renderHistoricalNumberOdds();renderHistoricalNumberConsistency();renderHistoricalFlowTrace()">'+
     Array.from({length:45},(_,i)=>'<option value="'+(i+1)+'">'+(i+1)+'번</option>').join("")+
     '</select></label><label>재등장 기간 <select id="historicalFollowupHorizon" class="field" onchange="renderHistoricalNumberReview()">'+
     [1,2,3,5,10].map(n=>'<option value="'+n+'"'+(n===5?' selected':'')+'>'+n+'회 이내</option>').join("")+
@@ -2434,6 +2434,11 @@ function renderHistoricalWalkforward(){
     '<option value="flip">기준 방향 반전</option><option value="near">기준 근처</option>'+
     '<option value="low">표본 부족</option></select></label></div>'+
     '<div id="historicalConsistencyContent">앞·뒤 구간 비교 자료를 확인 중입니다.</div></div>'+
+    '<div style="margin:18px 0;padding:15px 0;border-top:1px dashed rgba(128,148,175,.3)"><h4>🔍 적중률 변화의 실제 회차 · 당시 번호 흐름</h4>'+
+    '<p class="hint">앞·최근 구간에서 같은 조건으로 검출된 회차를 눌러 직전 번호와 실제 발표번호, 검색조건의 근거를 확인합니다.</p>'+
+    '<div class="toolbar"><label>추적 검색조건 <select id="historicalTraceAxis" class="field" onchange="renderHistoricalFlowTrace()">'+
+    PATTERN_AUDIT_AXES.map(a=>'<option value="'+a.key+'">'+clean(a.label)+'</option>').join("")+
+    '</select></label></div><div id="historicalFlowTraceContent">당시 번호 흐름을 불러오는 중입니다.</div></div>'+
     '<div style="margin-top:16px;padding-top:14px;border-top:1px dashed rgba(128,148,175,.3)"><h4>📚 이 번호의 실제 과거 회차 찾기</h4>'+
     '<p class="hint">2회부터 최신 확인 회차까지 당시의 검색 여부·당첨·이후 재등장 기록을 찾아봅니다. 회차를 입력하거나 조건을 고르세요.</p>'+
     '<div class="toolbar"><label>검색조건 <select id="historicalCaseAxis" class="field" onchange="renderHistoricalNumberCases(true)">'+
@@ -2464,6 +2469,7 @@ function renderHistoricalWalkforward(){
   renderHistoricalNumberCases(true);
   renderHistoricalNumberOdds();
   renderHistoricalNumberConsistency();
+  renderHistoricalFlowTrace();
 }
 function renderHistoricalContextReview(){
   const out=$("historicalContextContent"),p=state.historicalWalkforward;
@@ -2511,6 +2517,131 @@ function renderHistoricalWalkforwardRound(){
   renderHistoricalFollowupReview();
   const preview=$("historicalReviewCanvas");
   if(preview&&preview.style.display!=="none")drawHistoricalReviewCanvas();
+}
+function openHistoricalTraceCase(round){
+  const axis=$("historicalTraceAxis")?.value;
+  if(!axis||!Number.isInteger(round))return;
+  const axisInput=$("historicalCaseAxis"),kind=$("historicalCaseKind"),roundInput=$("historicalCaseRound");
+  if(!axisInput||!kind||!roundInput)return;
+  axisInput.value=axis;
+  kind.value="all";
+  roundInput.value=String(round);
+  renderHistoricalNumberCases(true);
+  $("historicalNumberCasesContent")?.scrollIntoView({behavior:"smooth",block:"start"});
+}
+function renderHistoricalFlowTrace(){
+  const out=$("historicalFlowTraceContent"),p=state.historicalWalkforward,index=state.historicalCaseIndex;
+  if(!out)return;
+  if(!p||!index||!Array.isArray(index.numbers)||index.numbers.length!==45){
+    out.innerHTML='<p class="hint">과거 회차별 검출 기록을 불러오고 있습니다.</p>';
+    return;
+  }
+  const n=Number($("historicalFollowupNumber")?.value),key=$("historicalTraceAxis")?.value||"neighbor1";
+  const position=index.axisKeys.indexOf(key),item=index.numbers.find(row=>row.n===n);
+  if(!item||position<0){out.textContent="번호와 검색조건을 다시 선택해 주세요.";return;}
+  const draws=state.draws||[],drawMap=new Map(draws.map(row=>[row.draw_no,row]));
+  const previous=r=>drawMap.get(r);
+  const found=(arr,match)=>arr.filter(match).join(" · ");
+  const witness=(round,mask)=>{
+    const before=previous(round-1);
+    if(!before)return "직전 회차의 당첨 이력이 준비되지 않았습니다.";
+    let nums,parts;
+    if(key==="neighbor1"){
+      nums=found(before.numbers,v=>Math.abs(v-n)===1);
+      return nums?"직전 "+(round-1)+"회 ±1 이웃수: "+nums+"번":"이웃수 검출 근거 확인 대기";
+    }
+    if(key==="neighbor2"){
+      nums=found(before.numbers,v=>Math.abs(v-n)===2);
+      return nums?"직전 "+(round-1)+"회 ±2 이웃수: "+nums+"번":"이웃수 검출 근거 확인 대기";
+    }
+    if(key==="ending"){
+      nums=found(before.numbers,v=>v!==n&&v%10===n%10);
+      return nums?"직전 "+(round-1)+"회 같은 끝수: "+nums+"번":"끝수 검출 근거 확인 대기";
+    }
+    if(key==="bonus")return "직전 "+(round-1)+"회 보너스 번호: "+before.bonus_no+"번";
+    if(key==="carry")return "직전 "+(round-1)+"회에 "+n+"번 본번호 출현";
+    if(key==="miss5")return (round-5)+"~"+(round-1)+"회, "+n+"번 본번호 5회 연속 미출현";
+    if(key==="neighborTwice"){
+      parts=[];
+      for(let r=Math.max(1,round-3);r<round;r++){
+        const draw=previous(r);
+        if(draw){
+          const adjacent=draw.numbers.filter(v=>Math.abs(v-n)===1);
+          if(adjacent.length)parts.push(r+"회 "+adjacent.join("·")+"번");
+        }
+      }
+      return parts.length>=2?"직전 3회 중 이웃수 반복: "+parts.join(", "):"3회 반복 근거 확인 대기";
+    }
+    if(key==="sameSlot"){
+      parts=[];
+      for(let r=round-1;r>=1&&parts.length<2;r--){
+        const draw=previous(r);
+        if(draw&&draw.numbers.includes(n))parts.push({round:r,slot:draw.numbers.indexOf(n)+1});
+      }
+      return parts.length===2&&parts[0].slot===parts[1].slot?
+        "최근 두 출현 "+parts.map(x=>x.round+"회 "+x.slot+"번째 자리").join(", "):
+        "동일 자리 근거 확인 대기";
+    }
+    if(key==="fixedCycle"){
+      for(let gap=1;gap*4<=round-1;gap++){
+        const rounds=[1,2,3,4].map(k=>round-gap*k);
+        if(rounds.every(r=>previous(r)?.numbers.includes(n)))
+          return "간격 "+gap+"회 고정 연결: "+rounds.slice().reverse().map(r=>r+"회").join(" → ")+" · 모두 "+n+"번";
+      }
+      return "고정간격 연결 근거 확인 대기";
+    }
+    if(key==="diagonal"){
+      for(let gap=1;gap*4<=round-1;gap++){
+        const nearDraw=previous(round-gap);
+        if(!nearDraw)continue;
+        for(const v of nearDraw.numbers){
+          const step=n-v;
+          if(!step)continue;
+          const chain=[n-4*step,n-3*step,n-2*step,v,n];
+          if(chain.slice(0,4).some(x=>x<1||x>45))continue;
+          if([4,3,2].every((m,i)=>previous(round-gap*m)?.numbers.includes(chain[i])))
+            return "사선 연결: "+chain.map((v,i)=>i===4?round+"회 "+v+"번 후보":(round-gap*(4-i))+"회 "+v+"번").join(" → ");
+        }
+      }
+      return "사선 연결 근거 확인 대기";
+    }
+    if(key==="context2plus"){
+      parts=PATTERN_AUDIT_AXES.filter((axis,j)=>!["fixedCycle","diagonal","context2plus"].includes(axis.key)&&
+        (mask&(1<<j))).map(axis=>axis.label);
+      return parts.length>=2?"겹친 직전 조건 "+parts.length+"개: "+parts.slice(0,3).join(" · "):"직전 조건 중복 근거 확인 대기";
+    }
+    return "해당 조건의 과거 시점 검출 기록";
+  };
+  const emphasis=(numbers)=>numbers.map(v=>v===n?'<strong style="color:#087d67;background:rgba(20,160,130,.1);padding:2px 5px;border-radius:5px">'+v+'</strong>':v).join(" · ");
+  const axisLabel=PATTERN_AUDIT_AXES.find(axis=>axis.key===key)?.label||key;
+  const drawCase=(c)=>{
+    const round=c[0],mask=c[1],won=!!c[2],draw=previous(round),before=previous(round-1);
+    const result=won?"적중":"미적중";
+    const evidence=draw&&before?witness(round,mask):"당첨번호 이력이 준비되지 않아 조건 근거는 확인 대기";
+    return '<details style="border:1px solid rgba(128,148,175,.22);border-radius:9px;margin:8px 0;padding:10px">'+
+      '<summary style="cursor:pointer"><strong>'+round+'회</strong> · '+result+' · '+clean(evidence.slice(0,48))+(evidence.length>48?'…':'')+'</summary>'+
+      '<p class="hint" style="margin:10px 0 4px"><b>당시 검출 근거</b> · '+clean(evidence)+'</p>'+
+      '<p style="margin:5px 0">직전 '+(round-1)+'회: '+(before?emphasis(before.numbers):"데이터 대기")+'</p>'+
+      '<p style="margin:5px 0">발표 '+round+'회: '+(draw?emphasis(draw.numbers):"데이터 대기")+'</p>'+
+      '<button type="button" class="btn secondary" style="margin-top:8px" onclick="openHistoricalTraceCase('+round+')">이 회차 전체 검출 보기</button>'+
+      '</details>';
+  };
+  const makePanel=(label,from,to)=>{
+    const all=item.cases.filter(c=>c[0]>=from&&c[0]<=to&&(c[1]&(1<<position)));
+    const winners=all.filter(c=>c[2]),misses=all.filter(c=>!c[2]);
+    const samples=winners.slice(-3).concat(misses.slice(-3)).sort((a,b)=>b[0]-a[0]);
+    const rate=all.length?(100*winners.length/all.length).toFixed(1)+"%":"—";
+    return '<section style="border:1px solid rgba(128,148,175,.25);border-radius:12px;padding:12px;min-width:0">'+
+      '<h5 style="margin:0 0 7px">'+label+' ('+from+'~'+to+'회)</h5>'+
+      '<p class="hint"><b>검출 '+all.length+'회 중 적중 '+winners.length+'회 · '+rate+'</b></p>'+
+      (samples.length?samples.map(drawCase).join(""):
+      '<p class="hint">이 기간에 해당 조건으로 검출된 회차가 없습니다.</p>')+'</section>';
+  };
+  out.innerHTML='<p class="hint"><b>'+n+'번 · '+clean(axisLabel)+'</b> · 각 기간별 가장 최근 적중 3건과 미적중 3건을 보여줍니다. 사례를 눌러 직전 번호와 실제 발표번호를 확인하세요.</p>'+
+    '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:12px">'+
+    makePanel("앞 구간",p.firstTestRound,p.lateRange[0]-1)+
+    makePanel("최근 구간",p.lateRange[0],p.lateRange[1])+'</div>'+
+    '<p class="hint">이 사례는 적중·미적중을 각각 뽑은 최신 예시로 전체를 대표하지 않습니다. 검출 조건은 해당 회차 이전 번호만 사용한 과거 복원이며, 실제 사전 저장 예측이나 인과관계 검증이 아닙니다.</p>';
 }
 function renderHistoricalNumberConsistency(){
   const out=$("historicalConsistencyContent"),p=state.historicalWalkforward,index=state.historicalCaseIndex;
