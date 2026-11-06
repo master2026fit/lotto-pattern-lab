@@ -134,5 +134,5 @@
   for(const control of panel.querySelectorAll('input,select'))control.addEventListener('input',()=>{visible=20;render();});
   $('[data-lncl-more]').addEventListener('click',()=>{visible+=20;render();});
   window.addEventListener('lncs:schedule-ready',load);
-  if(!root.hidden)load();
+  load(); // Start the server ledger even if its parent was initially hidden.
 })();
