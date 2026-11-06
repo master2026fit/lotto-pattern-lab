@@ -41,6 +41,9 @@
     ROOT+' .lnpg-win{background:#3b9365;border-color:#f8df86}',
     ROOT+' .lnpg-unknown{background:#1e4256;color:#6c97a6}',
     ROOT+' .lnpg-failed{background:#613f4b;border-color:#f0a5ad}',
+    ROOT+' .lnpg-next-target{grid-column:span 6;display:flex;flex-direction:column;gap:1px;justify-content:center;min-height:50px;border:2px solid #ffcc84;border-radius:8px;background:linear-gradient(110deg,#a21b35,#ed4959);box-shadow:0 0 0 2px #ffedb827,0 0 18px #ed495977;color:#fffef4;font-weight:950}',
+    ROOT+' .lnpg-next-target strong{font-size:22px;line-height:1.2;letter-spacing:.25px}',
+    ROOT+' .lnpg-next-target small{font-size:10px;color:#fff3d5;font-weight:750}',
     ROOT+' .lnpg-trail{margin:8px 0 0;padding:7px;border-radius:7px;background:#194052;color:#daf6e6;font-size:11px;line-height:1.6;overflow-wrap:anywhere}',
     ROOT+' .lnpg-intro-button{display:block;max-width:320px;width:100%;margin:6px 0 12px;border:1px solid #83bfb0;background:#1d5261;color:#e0ffef;border-radius:8px;padding:9px;font-weight:850;cursor:pointer}',
     '@media(max-width:550px){'+ROOT+' .lnwf{padding:10px}'+ROOT+' .lnpg-card{padding:7px}'+ROOT+' .lnpg-grid{gap:2px;grid-template-columns:minmax(43px,1.02fr) repeat(6,minmax(0,1fr))}'+ROOT+' .lnpg-cell{min-height:36px;font-size:12px}'+ROOT+' .lnpg-head{font-size:10px;min-height:25px}'+ROOT+' .lnpg-path{font-size:13px}'+ROOT+' .lnpg-round{font-size:10px}'+ROOT+' .lnwf-chip strong{font-size:16px}}'
@@ -88,6 +91,12 @@
           const type=highlighted?(isTarget?'lnpg-win lnpg-path':'lnpg-path'):'';
           grid.append(byClass('div','lnpg-cell '+type,actualNumbers[i]));
         }
+      }else if(isTarget){
+        // The target number is known; its 1~6 slot is not known before the draw.
+        const candidate=byClass('div','lnpg-next-target');
+        candidate.append(byClass('strong','', '🎯 '+predicted+'번 연결 대상'));
+        candidate.append(byClass('small','',round+'회 출현 여부·1~6구 자리 검증 대기'));
+        grid.append(candidate);
       }else{
         for(let i=0;i<6;i++)grid.append(byClass('div','lnpg-cell lnpg-unknown','—'));
       }
