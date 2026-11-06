@@ -9,6 +9,9 @@ on:
       - 'scripts/build_exclusion_snapshot.mjs'
       - 'scripts/build_exclusion_snapshot.test.mjs'
       - 'exclusion_lab.js'
+      - 'scripts/connection_ledger.mjs'
+      - 'scripts/connection_ledger.test.mjs'
+      - 'scripts/capture_connections.mjs'
   # UTC: Friday 12:13, Saturday 14:13 and 18:13 in Korea.
   schedule:
     - cron: '13 3 * * 5'
@@ -40,13 +43,17 @@ jobs:
         run: node --test scripts/capture_weekly.test.mjs
       - name: Capture verified predraw scan
         run: node scripts/capture_weekly.mjs
+      - name: Validate immutable connection forecast logic
+        run: node --test scripts/connection_ledger.test.mjs
+      - name: Capture prospective connection forecasts
+        run: node scripts/capture_connections.mjs
       - name: Validate exclusion shadow research
         run: node --test scripts/build_exclusion_snapshot.test.mjs
       - name: Freeze exclusion research separately before draw
         run: node scripts/build_exclusion_snapshot.mjs
       - name: Save public scan history
         run: |
-          git add -- data/weekly_scans.json data/exclusion_scans.json
+          git add -- data/weekly_scans.json data/exclusion_scans.json data/connection_forecasts.json
           if git diff --cached --quiet; then
             echo 'No new valid predraw snapshot.'
           else
