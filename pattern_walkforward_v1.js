@@ -44,6 +44,19 @@
     ROOT+' .lnpg-target-candidate{background:#b63545;color:#fffdf2;border:2px solid #ffcb80;font-size:15px;font-weight:950}',
     ROOT+' .lnpg-target-empty{background:#153349;color:#557588;border:1px dashed #35556b}',
     ROOT+' .lnpg-trail{margin:8px 0 0;padding:7px;border-radius:7px;background:#194052;color:#daf6e6;font-size:11px;line-height:1.6;overflow-wrap:anywhere}',
+    ROOT+' .lnwf-move-controls{display:flex;flex-wrap:wrap;gap:9px;align-items:end;margin:10px 0}',
+    ROOT+' .lnwf-move-controls label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:#d8ecf8}',
+    ROOT+' .lnwf-move-controls input,'+ROOT+' .lnwf-move-controls select{max-width:220px;min-height:36px;background:#eaf8ff;color:#18364b;border:1px solid #8ebdd0;border-radius:7px;padding:7px;font-size:13px;font-weight:800}',
+    ROOT+' .lnwf-move-list{display:grid;grid-template-columns:1fr;gap:8px;margin:9px 0}',
+    ROOT+' .lnwf-move-card{border:1px solid #5b879e;border-radius:10px;background:#1a3c53;padding:11px}',
+    ROOT+' .lnwf-move-card strong{font-size:16px;color:#ffe1a1;letter-spacing:.2px}',
+    ROOT+' .lnwf-move-card p{color:#cfdfed;margin:5px 0;font-size:12px}',
+    ROOT+' .lnwf-move-card .lnwf-move-info{display:flex;flex-wrap:wrap;gap:5px 12px;margin:8px 0}',
+    ROOT+' .lnwf-move-card .lnwf-move-info span{font-size:11px;color:#cbe7e9}',
+    ROOT+' .lnwf-move-actions{display:flex;flex-wrap:wrap;gap:6px}',
+    ROOT+' .lnwf-move-actions button{min-height:33px}',
+    ROOT+' .lnwf-move-alert{color:#ffc2a3;font-size:11px;font-weight:700}',
+    '@media(min-width:860px){'+ROOT+' .lnwf-move-list{grid-template-columns:repeat(2,minmax(0,1fr))}}',
     ROOT+' .lnpg-intro-button{display:block;max-width:320px;width:100%;margin:6px 0 12px;border:1px solid #83bfb0;background:#1d5261;color:#e0ffef;border-radius:8px;padding:9px;font-weight:850;cursor:pointer}',
     '@media(max-width:550px){'+ROOT+' .lnwf{padding:10px}'+ROOT+' .lnpg-card{padding:7px}'+ROOT+' .lnpg-grid{gap:2px;grid-template-columns:minmax(43px,1.02fr) repeat(6,minmax(0,1fr))}'+ROOT+' .lnpg-cell{min-height:36px;font-size:12px}'+ROOT+' .lnpg-head{font-size:10px;min-height:25px}'+ROOT+' .lnpg-path{font-size:13px}'+ROOT+' .lnpg-round{font-size:10px}'+ROOT+' .lnwf-chip strong{font-size:16px}}'
   ].join('\n');
@@ -170,6 +183,14 @@
     '<h6>성공·실패 실제 사례와 1~6구 자리</h6>'+
     '<div class="lnwf-example-actions"><button type="button" data-lnwf-success>✓ 성공한 연결 그림</button><button type="button" data-lnwf-failure>× 실패한 연결 그림</button></div>'+
     '<div class="lnwf-example" data-lnwf-example></div>'+
+    '<h6>🧭 1~6구 자리 이동 4단계 · 실제 다음 결과</h6>'+
+    '<p>연결이 성공한 <b>직전 4개 회차의 실제 자리 순서</b>를 모았습니다. 이어지는 회차의 번호 출현과 실제 다음 자리를 별도 기록합니다. 우연에 의한 반복을 예측 신호로 확정하지 않습니다.</p>'+
+    '<div class="lnwf-move-controls"><label>자리 이동 검색 (예: 6-4-3-1)<input data-lnwf-move-search placeholder="6-4-3-1" inputmode="numeric" autocomplete="off"></label>'+
+    '<label>최소 과거 관찰<select data-lnwf-move-min><option value="30">30건 이상</option><option value="10">10건 이상</option><option value="0">전체 (소표본 포함)</option></select></label></div>'+
+    '<div class="lnwf-status" data-lnwf-move-status>자리 이동 흐름 계산 준비 중…</div>'+
+    '<div class="lnwf-move-list" data-lnwf-move-list></div>'+
+    '<button type="button" data-lnwf-move-more hidden>자리 이동 더 보기</button>'+
+    '<div class="lnwf-example" data-lnwf-move-example></div>'+
     '<p class="lnwf-note">⚠️ 단순 과거 적중률이 낮다고 자동 제외수로 확정할 수 없습니다. 제외 후 남은 번호의 실제 미래 성적까지 별도로 검증해야 하므로 자동 제외 기능은 적용하지 않습니다.</p>';
   const master=main.querySelector('[data-lncm-master]');
   if(master)master.after(panel);else main.prepend(panel);
@@ -192,8 +213,43 @@
     const entry={target:path.target,next:path.next,gap:path.gap,shift:path.shift,count:path.count};
     if(hit)row.success=entry;else row.failure=entry;
   }
+  const newMove=()=>({
+    training:{paths:0,hits:0,slots:[0,0,0,0,0,0]},
+    recent:{paths:0,hits:0,slots:[0,0,0,0,0,0]},
+    success:null,failure:null
+  });
+  function getMove(map,name){
+    if(!map.has(name))map.set(name,newMove());
+    return map.get(name);
+  }
+  function slotFlow(path,draws){
+    if(!path.steps||path.steps.length<4)return null;
+    const slots=path.steps.slice(-4).map(step=>{
+      const row=drawAt(draws,step.round);
+      return row?row.numbers.indexOf(step.num)+1:0;
+    });
+    return slots.every(n=>n>=1&&n<=6)?slots.join('-'):null;
+  }
+  function futureRoutes(model,draws){
+    const pending=new Map();
+    for(const [target,paths] of model.due){
+      for(const p of paths){
+        const flow=slotFlow(p,draws);if(!flow)continue;
+        const family=p.shift===0?'fixed':'diagonal';
+        for(const mode of ['all',family])for(const min of mins){
+          if(p.count<min)continue;
+          const name=key(mode,min)+'|'+flow;
+          let entry=pending.get(name);
+          if(!entry){entry={count:0,first:null};pending.set(name,entry);}
+          entry.count++;
+          if(!entry.first||target<entry.first.target)entry.first={target:p.target,next:p.next,gap:p.gap,shift:p.shift,count:p.count};
+        }
+      }
+    }
+    return pending;
+  }
   async function calculate(model,last){
-    const all=new Map(),gaps=new Map(),byDraw=model.byDraw;
+    const all=new Map(),gaps=new Map(),moves=new Map(),byDraw=model.byDraw;
     const threshold=last-200;
     let count=0;
     for(let target=5;target<=last;target++){
@@ -202,12 +258,19 @@
       const seen=new Map(),paths=window.LNConnectionSchedule.buildPaths(target,byDraw);
       for(const p of paths){
         const hit=actual.has(p.next),family=p.shift===0?'fixed':'diagonal';
+        const flow=slotFlow(p,state.draws);
+        const actualSlot=hit?drawAt(state.draws,target)?.numbers.indexOf(p.next)+1:0;
         for(const mode of ['all',family])for(const min of mins){
           if(p.count<min)continue;
           const k=key(mode,min),group=get(all,k),byGap=get(gaps,k+'|'+p.gap);
           group[period].paths++;if(hit)group[period].hits++;
           byGap[period].paths++;if(hit)byGap[period].hits++;
           recordSample(group,p,hit);recordSample(byGap,p,hit);
+          if(flow){
+            const move=getMove(moves,k+'|'+flow),part=move[period];
+            part.paths++;if(hit){part.hits++;if(actualSlot>=1&&actualSlot<=6)part.slots[actualSlot-1]++;}
+            recordSample(move,p,hit);
+          }
           if(!seen.has(k))seen.set(k,new Set());seen.get(k).add(p.next);
         }
       }
@@ -222,13 +285,74 @@
         await new Promise(resolve=>setTimeout(resolve,0));
       }
     }
-    return {all,gaps,last,checked:count,holdoutStart:threshold+1};
+    return {all,gaps,moves,pending:futureRoutes(model,state.draws),last,checked:count,holdoutStart:threshold+1};
   }
   function showExample(path){
     const zone=pick('[data-lnwf-example]');zone.textContent='';
     if(!path){zone.append(byClass('p','', '해당 조건에는 아직 표시할 사례가 없습니다.'));return;}
     zone.append(createPositionGrid(path,state.draws));
     zone.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+  let visibleMoves=12;
+  function moveExample(path,label){
+    const area=pick('[data-lnwf-move-example]');area.textContent='';
+    if(!path){area.append(byClass('p','', '이 조건에는 표시할 사례가 없습니다.'));return;}
+    const back=byClass('button','','↩ 자리 이동 목록으로 돌아가기');
+    back.type='button';back.addEventListener('click',()=>pick('[data-lnwf-move-list]').scrollIntoView({behavior:'smooth',block:'start'}));
+    area.append(byClass('div','lnpg-description',label),back,createPositionGrid(path,state.draws));
+    area.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function renderMoves(){
+    if(!result)return;
+    const mode=pick('[data-lnwf-family]').value,min=Number(pick('[data-lnwf-min]').value),k=key(mode,min);
+    const search=pick('[data-lnwf-move-search]').value,term=(search.match(/[1-6]/g)||[]).join('-');
+    const minCases=term?0:Number(pick('[data-lnwf-move-min]').value);
+    const list=pick('[data-lnwf-move-list]');list.textContent='';
+    const matching=[...result.moves].filter(([name])=>name.startsWith(k+'|'))
+      .map(([name,item])=>({flow:name.slice(k.length+1),item,
+        total:item.training.paths+item.recent.paths}))
+      .filter(x=>x.total>=minCases&&(!term||x.flow.includes(term)))
+      .sort((a,b)=>b.total-a.total||a.flow.localeCompare(b.flow));
+    const reference=result.moves.get(k+'|6-4-3-1');
+    const refTotal=(reference?.training.paths||0)+(reference?.recent.paths||0);
+    const refHits=(reference?.training.hits||0)+(reference?.recent.hits||0);
+    pick('[data-lnwf-move-status]').textContent=
+      '검증된 4자리 흐름 '+matching.length+'종 표시'+(term?' · 검색 '+term+' (건수 제한 해제)':' · '+minCases+'건 이상')+
+      ' | 예시 6→4→3→1: '+number(refTotal)+'건 중 '+number(refHits)+'건 적중 ('+percent(refHits,refTotal)+')'+
+      (refTotal<30?' · 표본이 적어 판단 보류':'');
+    for(const {flow,item,total} of matching.slice(0,visibleMoves)){
+      const card=byClass('article','lnwf-move-card');
+      card.append(byClass('strong','',flow.split('-').map(n=>n+'구').join('→')));
+      const allHits=item.training.hits+item.recent.hits;
+      const pending=result.pending.get(k+'|'+flow);
+      card.append(byClass('p','', '과거 '+number(total)+'건 → 실제 다음 번호 출현 '+number(allHits)+'건 ('+percent(allHits,total)+')'));
+      const stats=byClass('div','lnwf-move-info');
+      stats.append(byClass('span','', '최근 200회: '+number(item.recent.paths)+'건 · '+number(item.recent.hits)+'적중 ('+percent(item.recent.hits,item.recent.paths)+')'));
+      const byPosition=item.training.slots.map((n,i)=>({slot:i+1,count:n+item.recent.slots[i]}))
+        .sort((a,b)=>b.count-a.count||a.slot-b.slot);
+      const actualSlots=byPosition.filter(v=>v.count>0).slice(0,3);
+      stats.append(byClass('span','',actualSlots.length?
+        '성공 시 다음 자리: '+actualSlots.map(v=>v.slot+'구 '+v.count+'건').join(' · '):
+        '성공 시 다음 자리: 기록 없음'));
+      stats.append(byClass('span','',pending?
+        '현재 대기 '+number(pending.count)+'건 · 가장 빠른 '+pending.first.target+'회 '+pending.first.next+'번':
+        '현재 예정 연결 없음'));
+      card.append(stats);
+      if(total<30)card.append(byClass('div','lnwf-move-alert','⚠ 표본 30건 미만 · 해석 주의'));
+      const actions=byClass('div','lnwf-move-actions');
+      const button=(text,path,caption)=>{
+        const b=byClass('button','',text);b.type='button';b.disabled=!path;
+        if(path)b.addEventListener('click',()=>moveExample(path,caption));
+        actions.append(b);
+      };
+      button('✓ 실제 적중 그림',item.success,'과거 다음 번호 적중 사례 · '+flow);
+      button('× 미적중 그림',item.failure,'과거 다음 번호 미출현 사례 · '+flow);
+      if(pending)button('⏳ 다음 목표 그림',pending.first,'현재 연결 예정 · '+flow);
+      card.append(actions);list.append(card);
+    }
+    if(!matching.length)list.append(byClass('p','', '선택한 자리 흐름의 실제 검증 기록이 없습니다. 필터를 줄이거나 최소 건수를 낮춰 보세요.'));
+    const more=pick('[data-lnwf-move-more]');more.hidden=matching.length<=visibleMoves;
+    more.textContent='자리 이동 '+Math.min(12,matching.length-visibleMoves)+'개 더 보기 ('+Math.min(visibleMoves,matching.length)+'/'+matching.length+')';
   }
   function render(){
     if(!result)return;
@@ -268,6 +392,7 @@
     const preview=pick('[data-lnwf-example]');preview.textContent='';
     if(stats.success||stats.failure)preview.append(createPositionGrid(stats.success||stats.failure,state.draws));
     else preview.append(byClass('p','', '선택 조건의 과거 연결 사례가 없습니다.'));
+    renderMoves();
   }
   function start(){
     const model=window.LNConnectionSchedule?.getModel();
@@ -284,8 +409,11 @@
       running=false;if(rerun){rerun=false;start();}
     });
   }
-  pick('[data-lnwf-family]').addEventListener('change',()=>{visibleGaps=15;render();});
-  pick('[data-lnwf-min]').addEventListener('change',()=>{visibleGaps=15;render();});
+  pick('[data-lnwf-family]').addEventListener('change',()=>{visibleGaps=15;visibleMoves=12;render();});
+  pick('[data-lnwf-min]').addEventListener('change',()=>{visibleGaps=15;visibleMoves=12;render();});
+  pick('[data-lnwf-move-search]').addEventListener('input',()=>{visibleMoves=12;renderMoves();});
+  pick('[data-lnwf-move-min]').addEventListener('change',()=>{visibleMoves=12;renderMoves();});
+  pick('[data-lnwf-move-more]').addEventListener('click',()=>{visibleMoves+=12;renderMoves();});
   pick('[data-lnwf-more]').addEventListener('click',()=>{visibleGaps+=15;render();});
   window.addEventListener('lncs:schedule-ready',()=>{enhanceVisuals();start();});
   enhanceVisuals();start();
