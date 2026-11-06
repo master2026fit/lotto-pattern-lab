@@ -9,7 +9,6 @@
   style.textContent=`
     ${ROOT} .lncs-visual{border:1px solid #587792;border-radius:12px;background:#112943;margin:10px 0 4px;overflow:hidden}
     ${ROOT} .lncs-visual-hint{padding:6px 9px;background:#1b3b55;color:#c8e0f0;font-size:11px}
-    ${ROOT} .lncs-next-spotlight{margin:8px 9px 3px;padding:11px;border:2px solid #ffe093;border-radius:10px;background:linear-gradient(110deg,#af223d,#e44859);box-shadow:0 0 16px #f25a6660;color:#fffdf2;font-size:17px;font-weight:950;line-height:1.5;text-align:center}
     ${ROOT} .lncs-visual-scroll{overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
     ${ROOT} .lncs-visual svg{display:block;width:100%;min-width:690px;height:auto}
     ${ROOT} .lncs-visual-caption{padding:6px 9px;color:#bfd4e9;font-size:11px;line-height:1.6}
@@ -38,11 +37,6 @@
     const wrap=document.createElement('div');wrap.className='lncs-visual';
     const hint=document.createElement('div');hint.className='lncs-visual-hint';
     hint.textContent='📱 그림은 좌우로 밀어서 보세요 · 선마다 회차 간격 표시';wrap.append(hint);
-    if(status==='대기'){
-      const next=document.createElement('div');next.className='lncs-next-spotlight';
-      next.textContent='🎯 '+p.target+'회 다음 연결 목표 · '+p.next+'번  |  1~6구 자리는 추첨 후 확인';
-      wrap.append(next);
-    }
     const scroll=document.createElement('div');scroll.className='lncs-visual-scroll';
     const shown=Math.min(p.count,4),pts=[];
     for(let i=shown-1;i>=0;i--)pts.push({r:p.round-i*p.gap,n:p.num-i*p.shift});
