@@ -15,6 +15,9 @@ on:
       - 'scripts/build_exclusion_snapshot.test.mjs'
       - 'scripts/build_exclusion_backtest.mjs'
       - 'scripts/build_exclusion_backtest.test.mjs'
+      - 'scripts/connection_ledger.mjs'
+      - 'scripts/connection_ledger.test.mjs'
+      - 'scripts/review_connections.mjs'
   # UTC -> Korean time: Sat 21:17, Sun 09:17, Mon 09:17.
   schedule:
     - cron: '17 12 * * 6'
@@ -50,6 +53,10 @@ jobs:
         run: node scripts/generate_weekly_review.mjs --smoke
       - name: Generate verified image after result publication
         run: node scripts/generate_weekly_review.mjs
+      - name: Validate prospective connection ledger
+        run: node --test scripts/connection_ledger.test.mjs
+      - name: Grade confirmed connection targets separately
+        run: node scripts/review_connections.mjs
       - name: Test matched-size random benchmark
         run: node --test scripts/build_scorecard.test.mjs
       - name: Recalculate prospective condition scorecard
