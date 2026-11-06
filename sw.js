@@ -1,5 +1,5 @@
-const CACHE_NAME="lotto-note-shell-20261106-v43";
-const SHELL=["./","./index.html","./exclusion_lab.js","./exclusion_ui.js","./pattern_watch_explained.js","./diagonal_survival_watch.js","./pattern_survival_visual_v8.js","./pattern_survival_stage_audit_v1.js","./pattern_connection_schedule_v3.js","./pattern_connection_visual_v1.js","./pattern_connection_table_v5.js","./pattern_connection_master_v1.js","./manifest.webmanifest","./icons/icon-192.png","./icons/icon-512.png"];
+const CACHE_NAME="lotto-note-shell-20261106-v44";
+const SHELL=["./","./index.html","./exclusion_lab.js","./exclusion_ui.js","./pattern_watch_explained.js","./diagonal_survival_watch.js","./pattern_survival_visual_v8.js","./pattern_survival_stage_audit_v1.js","./pattern_connection_schedule_v3.js","./pattern_connection_visual_v1.js","./pattern_connection_table_v6.js","./pattern_connection_master_v2.js","./manifest.webmanifest","./icons/icon-192.png","./icons/icon-512.png"];
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting()));
 });
@@ -26,7 +26,7 @@ self.addEventListener("fetch",event=>{
     event.respondWith(fetch(req,{cache:"no-store"}));
     return;
   }
-  event.respondWith(caches.match(req,{ignoreSearch:true}).then(cached=>cached||fetch(req).then(res=>{
+  event.respondWith(caches.match(req).then(cached=>cached||fetch(req).then(res=>{
     if(res.ok&&res.type==="basic"){const copy=res.clone();caches.open(CACHE_NAME).then(cache=>cache.put(req,copy));}
     return res;
   })));
