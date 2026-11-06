@@ -27,6 +27,7 @@
     #ln-connection-schedule-v1 .lncm-master button{cursor:pointer;border-radius:8px;border:1px solid #73baa7;background:#215b69;color:#e1ffe8;padding:9px 7px;font-size:12px;font-weight:900;min-height:39px}
     #ln-connection-schedule-v1 .lncm-master button:focus-visible{outline:3px solid #ffdc8b;outline-offset:2px}
     #ln-connection-schedule-v1 .lncm-target{font-size:15px;color:#ffdfaa;font-weight:900}
+    #ln-connection-schedule-v1 .lncm-date{display:block;font-size:11px!important;white-space:nowrap;letter-spacing:-.35px;font-variant-numeric:tabular-nums}
     #ln-connection-schedule-v1 .lncm-detail{background:#0e324b;border:1px solid #638b98;padding:9px;border-radius:10px;margin:5px 0 12px}
     #ln-connection-schedule-v1 .lncm-detail-title{color:#d7f7e8;font-weight:850;margin:2px 0 7px;font-size:13px}
     #ln-connection-schedule-v1 .lncm-path-table tr.lncm-picked td{background:#365b6b;border-color:#f4bf63}
@@ -41,7 +42,7 @@
   const panel=document.createElement('section');panel.className='lncm-master';panel.dataset.lncmMaster='1';
   panel.innerHTML=`
     <h5>🧭 전체 생존 패턴 · 회차별 검증표</h5>
-    <p class="lncm-note">가장 최근 회차뿐 아니라 과거 모든 회차의 <b>실제 4점 이상 연결</b>을 모읍니다. 아직 결과가 나오지 않은 다음 연결 회차부터 정렬합니다.</p>
+    <p class="lncm-note">가장 최근 회차뿐 아니라 과거 모든 회차의 <b>실제 4점 이상 연결</b>을 모읍니다. 아직 결과가 나오지 않은 다음 연결 회차부터 정렬합니다. 날짜는 매주 토요일 기준 추첨 예정일입니다.</p>
     <div class="lncm-status" data-lncm-status>전체 연결 일정 불러오는 중…</div>
     <div class="lncm-stats" data-lncm-stats></div>
     <div class="lncm-filters">
@@ -62,6 +63,11 @@
   const numberList=paths=>[...new Set(paths.map(p=>p.next))].sort((a,b)=>a-b);
   const labelNums=nums=>nums.slice(0,6).join(' · ')+(nums.length>6?' 외 '+(nums.length-6)+'수':'');
   const cell=(value)=>{const td=document.createElement('td');if(typeof value==='string')td.textContent=value;else td.append(value);return td;};
+  // 제1245회 공식 추첨일(2026-10-10) 기준 예정 추첨일.
+  function drawDate(round){
+    const d=new Date(Date.UTC(2026,9,10)+(Number(round)-1245)*7*86400000);
+    return d.getUTCFullYear()+'.'+String(d.getUTCMonth()+1).padStart(2,'0')+'.'+String(d.getUTCDate()).padStart(2,'0');
+  }
   const key=p=>[p.target,p.next,p.gap,p.shift].join('|');
   function makeGroup(target,paths){
     const holder=document.createElement('div');holder.className='lncm-group';
@@ -69,7 +75,9 @@
     const table=document.createElement('table');const cols=document.createElement('colgroup');
     [20,36,24,20].forEach(n=>{const col=document.createElement('col');col.style.width=n+'%';cols.append(col);});table.append(cols);
     const tbody=document.createElement('tbody'),tr=document.createElement('tr');
-    const round=document.createElement('strong');round.className='lncm-target';round.textContent=target+'회';tr.append(cell(round));
+    const round=document.createElement('span'),date=document.createElement('strong'),roundNo=document.createElement('small');
+    date.className='lncm-date';date.textContent=drawDate(target);
+    roundNo.textContent=target+'회';round.append(date,roundNo);tr.append(cell(round));
     const nums=numberList(paths),numSpan=document.createElement('span');numSpan.textContent=labelNums(nums);tr.append(cell(numSpan));
     const stats=document.createElement('span');const strong=document.createElement('strong');strong.textContent=paths.length+'건';
     const small=document.createElement('small');small.textContent='5점↑ '+paths.filter(p=>p.count>=5).length+' · 6점↑ '+paths.filter(p=>p.count>=6).length;
@@ -82,7 +90,7 @@
   }
   function makeDetail(target,paths){
     const area=document.createElement('div');area.className='lncm-detail';
-    const intro=document.createElement('div');intro.className='lncm-detail-title';intro.textContent=target+'회 실제 연결 도전 · '+paths.length+'건 (많이 이어진 패턴 먼저)';area.append(intro);
+    const intro=document.createElement('div');intro.className='lncm-detail-title';intro.textContent=target+'회 · '+drawDate(target)+'(토) 예정 · 실제 연결 도전 '+paths.length+'건 (많이 이어진 패턴 먼저)';area.append(intro);
     const wrap=document.createElement('div');wrap.className='lncm-scroll';
     const table=document.createElement('table');table.className='lncm-path-table';
     const cols=document.createElement('colgroup');[28,29,25,18].forEach(n=>{const col=document.createElement('col');col.style.width=n+'%';cols.append(col);});table.append(cols);
