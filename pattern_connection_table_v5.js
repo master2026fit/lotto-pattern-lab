@@ -17,6 +17,7 @@
     #ln-connection-schedule-v1 .lnct-table td:first-child{border-left:1px solid #496d85;border-radius:9px 0 0 9px}
     #ln-connection-schedule-v1 .lnct-table td:last-child{border-right:1px solid #496d85;border-radius:0 9px 9px 0}
     #ln-connection-schedule-v1 .lnct-table strong{color:#ffe0a5;display:block;font-size:14px;font-weight:900}
+    #ln-connection-schedule-v1 .lnct-table .lnct-date{font-size:12px;white-space:nowrap;letter-spacing:-.3px;font-variant-numeric:tabular-nums}
     #ln-connection-schedule-v1 .lnct-table small{color:#bcd2e5;font-size:11px}
     #ln-connection-schedule-v1 .lnct-table tr:hover td{background:#275371}
     #ln-connection-schedule-v1 .lnct-table tr.lnct-selected td{background:#31566b;border-top-color:#ffd27c;border-bottom-color:#ffd27c}
@@ -32,7 +33,7 @@
     #ln-connection-schedule-v1 .lnct-panel{scroll-margin-top:75px}
     #ln-connection-schedule-v1 .lnct-panel.lnct-returned{outline:3px solid #ffda8c;outline-offset:3px}
     #ln-connection-schedule-v1 .lncs-target-highlight{outline:3px solid #ffcf73;outline-offset:3px;border-radius:9px;background:#294b5c!important;scroll-margin-top:95px;scroll-margin-bottom:115px}
-    @media(max-width:560px){#ln-connection-schedule-v1 .lnct-panel{padding:8px}#ln-connection-schedule-v1 .lnct-table{font-size:11px}#ln-connection-schedule-v1 .lnct-table td{padding:9px 2px}#ln-connection-schedule-v1 .lnct-table strong{font-size:12px}#ln-connection-schedule-v1 .lnct-go{font-size:10px}#ln-connection-schedule-v1 .lnct-back{min-height:38px;padding:8px 10px;font-size:12px}}
+    @media(max-width:560px){#ln-connection-schedule-v1 .lnct-table .lnct-date{font-size:11px}#ln-connection-schedule-v1 .lnct-panel{padding:8px}#ln-connection-schedule-v1 .lnct-table{font-size:11px}#ln-connection-schedule-v1 .lnct-table td{padding:9px 2px}#ln-connection-schedule-v1 .lnct-table strong{font-size:12px}#ln-connection-schedule-v1 .lnct-go{font-size:10px}#ln-connection-schedule-v1 .lnct-back{min-height:38px;padding:8px 10px;font-size:12px}}
   `;
   root.append(css);
   const panel=document.createElement('section');panel.className='lnct-panel';panel.dataset.lnctTable='1';
@@ -119,7 +120,18 @@
     seek();
   }
   function td(content){const cell=document.createElement('td');if(typeof content==='string')cell.textContent=content;else cell.append(content);return cell;}
+  // 제1245회 공식 추첨일(2026-10-10) 기준 매주 토요일의 예정일을 UTC로 계산합니다.
+  function drawDate(round){
+    const d=new Date(Date.UTC(2026,9,10)+(Number(round)-1245)*7*86400000);
+    return d.getUTCFullYear()+'.'+String(d.getUTCMonth()+1).padStart(2,'0')+'.'+String(d.getUTCDate()).padStart(2,'0');
+  }
   function rich(primary,secondary){const box=document.createElement('span');const b=document.createElement('strong');b.textContent=primary;const small=document.createElement('small');small.textContent=secondary;box.append(b,small);return box;}
+  function targetLabel(item){
+    const label=document.createElement('span'),date=document.createElement('strong'),detail=document.createElement('small');
+    date.className='lnct-date';date.textContent=drawDate(item.target);
+    detail.textContent=item.target+'회 · '+item.next+'번 대상';
+    label.append(date,detail);return label;
+  }
   function render(){
     const round=Number(sourceInput.value),min=Number(minSelect.value)||4;
     if(!round||typeof state==='undefined'||!state.draws?.length)return;
@@ -128,13 +140,13 @@
       limit=18;lastKey=key;selectedRowKey='';
       rows=dataRows(round).filter(x=>x.count>=min).sort((a,b)=>a.target-b.target||a.next-b.next||a.sourceNum-b.sourceNum||b.count-a.count||a.gap-b.gap||a.shift-b.shift);
     }
-    meta.textContent=`${round}회 실제 연결 성공 ${rows.length}건 · 검증 예정 회차 빠른 순 · 행의 '그림'을 누르면 해당 연결 그림으로 이동합니다.`;
+    meta.textContent=`${round}회 실제 연결 성공 ${rows.length}건 · 가까운 검증 회차부터 정렬 · 날짜는 매주 토요일 기준 추첨 예정일 · '그림'을 누르면 해당 연결 그림으로 이동합니다.`;
     tbody.textContent='';
     const fragment=document.createDocumentFragment();
     rows.slice(0,limit).forEach(item=>{
       const tr=document.createElement('tr');
       tr.dataset.lnctKey=rowKey(item);
-      tr.append(td(rich(item.target+'회',item.next+'번 대상')));
+      tr.append(td(targetLabel(item)));
       tr.append(td(rich(item.sourceRound+'회',item.sourceNum+'번 성공')));
       tr.append(td(rich('+'+item.gap+'회',`번호 ${item.shift>=0?'+':''}${item.shift} · ${item.count}→${item.count+1}점`)));
       const go=document.createElement('button');go.type='button';go.className='lnct-go';go.textContent='그림 ↘';go.setAttribute('aria-label',`${item.target}회 ${item.next}번 연결 그림 보기`);
