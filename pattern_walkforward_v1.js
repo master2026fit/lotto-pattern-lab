@@ -41,9 +41,8 @@
     ROOT+' .lnpg-win{background:#3b9365;border-color:#f8df86}',
     ROOT+' .lnpg-unknown{background:#1e4256;color:#6c97a6}',
     ROOT+' .lnpg-failed{background:#613f4b;border-color:#f0a5ad}',
-    ROOT+' .lnpg-next-target{grid-column:span 6;display:flex;flex-direction:column;gap:1px;justify-content:center;min-height:50px;border:2px solid #ffcc84;border-radius:8px;background:linear-gradient(110deg,#a21b35,#ed4959);box-shadow:0 0 0 2px #ffedb827,0 0 18px #ed495977;color:#fffef4;font-weight:950}',
-    ROOT+' .lnpg-next-target strong{font-size:22px;line-height:1.2;letter-spacing:.25px}',
-    ROOT+' .lnpg-next-target small{font-size:10px;color:#fff3d5;font-weight:750}',
+    ROOT+' .lnpg-target-candidate{background:#b63545;color:#fffdf2;border:2px solid #ffcb80;font-size:15px;font-weight:950}',
+    ROOT+' .lnpg-target-empty{background:#153349;color:#557588;border:1px dashed #35556b}',
     ROOT+' .lnpg-trail{margin:8px 0 0;padding:7px;border-radius:7px;background:#194052;color:#daf6e6;font-size:11px;line-height:1.6;overflow-wrap:anywhere}',
     ROOT+' .lnpg-intro-button{display:block;max-width:320px;width:100%;margin:6px 0 12px;border:1px solid #83bfb0;background:#1d5261;color:#e0ffef;border-radius:8px;padding:9px;font-weight:850;cursor:pointer}',
     '@media(max-width:550px){'+ROOT+' .lnwf{padding:10px}'+ROOT+' .lnpg-card{padding:7px}'+ROOT+' .lnpg-grid{gap:2px;grid-template-columns:minmax(43px,1.02fr) repeat(6,minmax(0,1fr))}'+ROOT+' .lnpg-cell{min-height:36px;font-size:12px}'+ROOT+' .lnpg-head{font-size:10px;min-height:25px}'+ROOT+' .lnpg-path{font-size:13px}'+ROOT+' .lnpg-round{font-size:10px}'+ROOT+' .lnwf-chip strong{font-size:16px}}'
@@ -65,11 +64,35 @@
     const indexed=draws[round-1];
     return indexed&&Number(indexed.draw_no)===round?indexed:null;
   };
+  const combination=(n,k)=>{
+    if(k<0||k>n)return 0;
+    let result=1;
+    for(let i=1;i<=k;i++)result=result*(n-i+1)/i;
+    return result;
+  };
+  // For a number that is drawn, calculate which ordered slot (1~6구) it can occupy.
+  // The smallest contiguous interval covering at least 80% of that conditional
+  // distribution gives 5 => 1~2구, 19 => 2~4구, 39 => 5~6구.
+  function likelySlots(num){
+    if(!Number.isInteger(num)||num<1||num>45)return [];
+    const denom=combination(44,5);
+    const probabilities=Array.from({length:6},(_,i)=>combination(num-1,i)*combination(45-num,5-i)/denom);
+    let best=null;
+    for(let width=1;width<=6; width++){
+      for(let from=0;from+width<=6;from++){
+        const coverage=probabilities.slice(from,from+width).reduce((sum,p)=>sum+p,0);
+        if(coverage<.8-1e-10)continue;
+        if(!best||width<best.width||(width===best.width&&coverage>best.coverage))best={from,width,coverage};
+      }
+      if(best)break;
+    }
+    return best?Array.from({length:best.width},(_,i)=>best.from+i+1):[];
+  }
   function createPositionGrid(path,draws){
     const wrap=byClass('section','lnpg-card');
     const source=path.target-path.gap,sourceNo=path.next-path.shift;
     wrap.append(byClass('div','lnpg-heading','📐 1~6구 자리별 연결 · '+source+'회 '+sourceNo+'번 → '+path.target+'회 '+path.next+'번'));
-    wrap.append(byClass('div','lnpg-description','가로: 당첨번호 오름차순 1~6구 · 세로: 실제 회차 · 초록 칸: 연결된 번호'));
+    wrap.append(byClass('div','lnpg-description','가로: 당첨번호 오름차순 1~6구 · 초록: 과거 실제 자리 · 빨간 물음표: 목표번호의 예상 자리'));
     const grid=byClass('div','lnpg-grid'),trail=[];
     grid.append(byClass('div','lnpg-cell lnpg-head','회차'));
     for(let slot=1;slot<=6;slot++)grid.append(byClass('div','lnpg-cell lnpg-head',slot+'구'));
@@ -81,7 +104,7 @@
       const actualNumbers=draw?draw.numbers.map(Number).sort((a,b)=>a-b):[];
       const present=actualNumbers.includes(predicted);
       const label=byClass('div','lnpg-cell lnpg-round',round+'회');
-      const tiny=byClass('small','',!isTarget?'실제':draw?(present?'✓ 적중':'× 미출현'):'예정');
+      const tiny=byClass('small','',!isTarget?'실제':draw?(present?'✓ 적중':'× 미출현'):'예상');
       label.append(tiny);grid.append(label);
       if(draw){
         const position=actualNumbers.indexOf(predicted);
@@ -92,24 +115,27 @@
           grid.append(byClass('div','lnpg-cell '+type,actualNumbers[i]));
         }
       }else if(isTarget){
-        // The target number is known; its 1~6 slot is not known before the draw.
-        const candidate=byClass('div','lnpg-next-target');
-        candidate.append(byClass('strong','', '🎯 '+predicted+'번 연결 대상'));
-        candidate.append(byClass('small','',round+'회 출현 여부·1~6구 자리 검증 대기'));
-        grid.append(candidate);
+        // The user sees the target number in its likely *positions*, not as a wide banner.
+        // These are conditional positions IF drawn, not a claim it will appear.
+        const marked=new Set(likelySlots(predicted));
+        for(let slot=1;slot<=6;slot++){
+          const candidate=byClass('div',marked.has(slot)?'lnpg-cell lnpg-target-candidate':'lnpg-cell lnpg-target-empty',marked.has(slot)?predicted+'?':'·');
+          candidate.title=marked.has(slot)?'당첨될 경우 '+slot+'구에 놓일 수 있는 예상 위치':'예상 범위 외';
+          grid.append(candidate);
+        }
       }else{
         for(let i=0;i<6;i++)grid.append(byClass('div','lnpg-cell lnpg-unknown','—'));
       }
     }
     wrap.append(grid);
     const targetDraw=drawAt(draws,path.target);
-    const outcome=!targetDraw?'⏳ '+path.target+'회 '+path.next+'번 자리·결과는 추첨 후 확인':
+    const outcome=!targetDraw?'⏳ '+path.target+'회 '+path.next+'번 · 당첨될 경우 주된 자리 '+likelySlots(path.next).join('·')+'구 (80% 포함 구간) · 출현 여부는 별도':
       targetDraw.numbers.map(Number).includes(path.next)?'✓ '+path.target+'회 '+path.next+'번 실제 당첨 및 자리 확인':
       '× '+path.target+'회 '+path.next+'번 미출현 (제외수 증명 아님)';
     wrap.append(byClass('div','lnpg-trail',trail.join(' → ')+'  |  '+outcome));
     return wrap;
   }
-  window.LNPositionGrid={create:createPositionGrid};
+  window.LNPositionGrid={create:createPositionGrid,likelySlots};
   function parseSource(row){
     const heading=row.querySelector(':scope > b')?.textContent||'';
     const detail=row.querySelector(':scope > div')?.textContent||'';
