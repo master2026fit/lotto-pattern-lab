@@ -44,7 +44,7 @@
   <button type="button" data-lncl-more class="lncl-more" hidden>다음 20건 더 보기</button>
   <div class="lncl-example" data-lncl-example></div>
   <p>동일한 회차·번호에 다른 연결 간격이 겹칠 수 있습니다. 전체 적중률은 동일 회차·번호의 중복을 제거합니다. 무작위 한 번호의 본당첨 포함 기준은 6/45=13.33%이며, 패턴 적중이 확률 우위를 보장하지 않습니다.</p>`;
-  root.append(panel);
+  root.prepend(panel);
   const $=s=>panel.querySelector(s);
   let forecast=[],reviews=new Map(),visible=20,loaded=false,busy=false;
   const escape=s=>String(s).replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
