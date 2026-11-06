@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc">
+  <title id="title">1249회 연결번호 관찰표와 9번 56회 간격 사례</title>
+  <desc id="desc">5점 이상 연결 대상 5, 8, 9, 30, 32, 34, 36. 3개 경로 중복 대상 6, 19, 32, 44. 9번은 실제 출현 회차 1025, 1081, 1137, 1193에서 56회 간격을 반복했으며 1249회 9번 출현은 미확정.</desc>
+  <defs>
+    <style>text{font-family:'Noto Sans KR','Malgun Gothic',sans-serif}.h{font-size:30px;font-weight:900;fill:#133953}.small{font-size:19px;font-weight:700;fill:#486779}.num{font-size:30px;font-weight:900;fill:#11354e;text-anchor:middle;dominant-baseline:central}.r{font-size:23px;font-weight:800;fill:#173c52;text-anchor:middle}</style>
+    <linearGradient id="paper" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#eff8fc"/><stop offset="1" stop-color="#dcebf3"/></linearGradient>
+  </defs>
+  <rect width="1200" height="620" rx="20" fill="url(#paper)"/>
+  <rect x="23" y="22" width="1154" height="576" rx="19" fill="none" stroke="#9fbac9" stroke-width="2"/>
+  <text x="65" y="85" class="h">1249회, 두 가지 방식으로 연결 흐름 보기</text>
+  <text x="65" y="121" class="small">과거에 실제 당첨된 5점 연결과 중복 경로를 구분했습니다.</text>
+  <rect x="65" y="155" width="1068" height="140" rx="18" fill="#ffffff" stroke="#b8cfda"/>
+  <text x="89" y="194" font-size="23" fill="#1a4e69" font-weight="900">5점 이상 생존 · 7개 번호</text>
+  <g fill="#f0d09b" stroke="#c7a063" stroke-width="2"><circle cx="454" cy="224" r="35"/><circle cx="557" cy="224" r="35"/><circle cx="660" cy="224" r="35"/><circle cx="763" cy="224" r="35"/><circle cx="866" cy="224" r="35"/><circle cx="969" cy="224" r="35"/><circle cx="1072" cy="224" r="35"/></g>
+  <text class="num" x="454" y="224">5</text><text class="num" x="557" y="224">8</text><text class="num" x="660" y="224">9</text><text class="num" x="763" y="224">30</text><text class="num" x="866" y="224">32</text><text class="num" x="969" y="224">34</text><text class="num" x="1072" y="224">36</text>
+  <rect x="65" y="309" width="1068" height="100" rx="18" fill="#ffffff" stroke="#b8cfda"/>
+  <text x="89" y="365" font-size="23" fill="#1a4e69" font-weight="900">서로 다른 경로 3건 중복 · 4개 번호</text>
+  <g fill="#9bdfd1" stroke="#489d8e" stroke-width="2"><circle cx="752" cy="358" r="31"/><circle cx="861" cy="358" r="31"/><circle cx="970" cy="358" r="31"/><circle cx="1079" cy="358" r="31"/></g>
+  <text class="num" x="752" y="358">6</text><text class="num" x="861" y="358">19</text><text class="num" x="970" y="358">32</text><text class="num" x="1079" y="358">44</text>
+  <text x="65" y="464" font-size="23" font-weight="900" fill="#153c56">9번의 동일 회차간격 사례 · 56회마다 실제 9번 출현</text>
+  <line x1="111" y1="514" x2="1082" y2="514" stroke="#6d9bb2" stroke-width="5"/>
+  <g fill="#1b6580"><circle cx="122" cy="514" r="12"/><circle cx="359" cy="514" r="12"/><circle cx="596" cy="514" r="12"/><circle cx="833" cy="514" r="12"/></g><circle cx="1070" cy="514" r="15" fill="#ffffff" stroke="#cc8d39" stroke-width="5" stroke-dasharray="6 4"/>
+  <text class="r" x="122" y="552">1025회</text><text class="r" x="359" y="552">1081회</text><text class="r" x="596" y="552">1137회</text><text class="r" x="833" y="552">1193회</text><text class="r" x="1070" y="552" fill="#b66c22">1249회?</text>
+  <text x="600" y="588" font-size="17" fill="#547184" text-anchor="middle">실선 ● = 과거 본당첨 확인 / 빈 점선 ○ = 추첨 전 관찰 대상 · 결과는 아직 알 수 없습니다.</text>
+</svg>
