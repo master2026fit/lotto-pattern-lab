@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="790" viewBox="0 0 1200 790" role="img" aria-labelledby="title desc">
+  <title id="title">로또 1249회 이웃수 관찰과 1~1248회 전수 실험 결과</title>
+  <desc id="desc">1248회 당첨번호 16,18,27,36,38,42의 바로 옆 고유 번호는 15,17,19,26,28,35,37,39,41,43. 17과 37은 양쪽 이웃번호가 겹친다. 과거 후보 12244개 중 1584개 적중, 12.94퍼센트로 무작위 기준 13.33퍼센트보다 높지 않았다.</desc>
+  <rect width="1200" height="790" fill="#f4f7f1"/>
+  <rect x="43" y="41" width="1114" height="708" rx="25" fill="#fffefa" stroke="#d5e1d7" stroke-width="2"/>
+  <rect x="78" y="72" width="170" height="37" rx="18" fill="#14523d"/>
+  <text x="163" y="97" fill="#ffffff" font-size="18" font-family="sans-serif" font-weight="800" text-anchor="middle">LOTTO NOTE · ⑤</text>
+  <text x="78" y="156" fill="#113a2e" font-size="43" font-family="sans-serif" font-weight="900">바로 옆 번호, 정말 더 자주 나올까?</text>
+  <text x="78" y="194" fill="#5d6b62" font-size="22" font-family="sans-serif">1~1248회 기록으로 확인한 이웃수 실험 · 보너스번호 제외</text>
+  <text x="78" y="250" fill="#2d4b3e" font-size="25" font-family="sans-serif" font-weight="800">1248회 실제 번호</text>
+  <g font-family="sans-serif" font-size="26" font-weight="800" text-anchor="middle">
+    <circle cx="185" cy="299" r="38" fill="#20634d"/><text x="185" y="308" fill="white">16</text>
+    <circle cx="345" cy="299" r="38" fill="#20634d"/><text x="345" y="308" fill="white">18</text>
+    <circle cx="505" cy="299" r="38" fill="#20634d"/><text x="505" y="308" fill="white">27</text>
+    <circle cx="665" cy="299" r="38" fill="#20634d"/><text x="665" y="308" fill="white">36</text>
+    <circle cx="825" cy="299" r="38" fill="#20634d"/><text x="825" y="308" fill="white">38</text>
+    <circle cx="985" cy="299" r="38" fill="#20634d"/><text x="985" y="308" fill="white">42</text>
+  </g>
+  <text x="600" y="375" fill="#699182" font-size="37" font-family="sans-serif" text-anchor="middle" font-weight="900">↓ ±1 이웃수만 추출 · 중복 제거 ↓</text>
+  <rect x="82" y="398" width="1035" height="104" rx="17" fill="#ebf4ed"/>
+  <text x="82" y="390" fill="#23513e" font-size="24" font-family="sans-serif" font-weight="800">1249회 관찰 번호 10개</text>
+  <g font-family="sans-serif" font-size="24" font-weight="850" text-anchor="middle">
+    <circle cx="146" cy="452" r="32" fill="#ffffff" stroke="#568170" stroke-width="2"/><text x="146" y="461" fill="#1c5947">15</text>
+    <circle cx="246" cy="452" r="32" fill="#f4bb39"/><text x="246" y="461" fill="#25372e">17</text>
+    <circle cx="346" cy="452" r="32" fill="#ffffff" stroke="#568170" stroke-width="2"/><text x="346" y="461" fill="#1c5947">19</text>
+    <circle cx="446" cy="452" r="32" fill="#ffffff" stroke="#568170" stroke-width="2"/><text x="446" y="461" fill="#1c5947">26</text>
+    <circle cx="546" cy="452" r="32" fill="#ffffff" stroke="#568170" stroke-width="2"/><text x="546" y="461" fill="#1c5947">28</text>
+    <circle cx="646" cy="452" r="32" fill="#ffffff" stroke="#568170" stroke-width="2"/><text x="646" y="461" fill="#1c5947">35</text>
+    <circle cx="746" cy="452" r="32" fill="#f4bb39"/><text x="746" y="461" fill="#25372e">37</text>
+    <circle cx="846" cy="452" r="32" fill="#ffffff" stroke="#568170" stroke-width="2"/><text x="846" y="461" fill="#1c5947">39</text>
+    <circle cx="946" cy="452" r="32" fill="#ffffff" stroke="#568170" stroke-width="2"/><text x="946" y="461" fill="#1c5947">41</text>
+    <circle cx="1046" cy="452" r="32" fill="#ffffff" stroke="#568170" stroke-width="2"/><text x="1046" y="461" fill="#1c5947">43</text>
+  </g>
+  <text x="1034" y="528" fill="#866017" font-size="19" font-family="sans-serif" text-anchor="end" font-weight="700">● 노랑 17·37 = 양쪽에서 겹친 이웃수</text>
+  <line x1="78" y1="552" x2="1120" y2="552" stroke="#d9e2dc" stroke-width="2"/>
+  <text x="80" y="598" fill="#203d30" font-size="25" font-family="sans-serif" font-weight="850">1~1248회 · 지난 회차와 다음 회차 사이 1,247개 구간 전수 조사</text>
+  <g font-family="sans-serif" font-size="21" text-anchor="middle">
+    <rect x="80" y="622" width="318" height="93" rx="13" fill="#e7f2eb"/>
+    <text x="239" y="654" fill="#476d59">실제 이웃수 재출현</text><text x="239" y="692" font-size="35" font-weight="900" fill="#175b42">12.94%</text>
+    <rect x="441" y="622" width="318" height="93" rx="13" fill="#eff0ed"/>
+    <text x="600" y="654" fill="#676f69">무작위 기준</text><text x="600" y="692" font-size="35" font-weight="900" fill="#4e5752">13.33%</text>
+    <rect x="802" y="622" width="318" height="93" rx="13" fill="#fff4d8"/>
+    <text x="961" y="654" fill="#866b25">겹친 이웃수 재출현</text><text x="961" y="692" font-size="35" font-weight="900" fill="#87600d">13.45%</text>
+  </g>
+  <text x="1117" y="737" font-size="16" fill="#808c83" font-family="sans-serif" text-anchor="end">관찰 후보 12,244개 중 1,584개 출현 · 다음 회차의 예측력 입증 자료는 아님</text>
+</svg>
