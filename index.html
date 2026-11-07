@@ -150,10 +150,14 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 .close{background:#2d445f;color:white;border:1px solid #637e9d;border-radius:9px;padding:7px 13px}
 #toTop{position:fixed;bottom:25px;right:24px;border:1px solid #d6b779;background:#1b3451;color:#ffe2a7;width:55px;height:55px;border-radius:50%;font-size:22px;font-weight:900;box-shadow:0 9px 25px #0008;opacity:0;pointer-events:none;transform:translateY(12px);transition:.2s;z-index:30}
 #toTop.show{opacity:1;pointer-events:auto;transform:none}
+#toMenu{position:fixed;bottom:25px;right:91px;border:1px solid #83c0b0;background:#123e47;color:#d4fff0;min-width:75px;height:55px;border-radius:28px;padding:0 13px;font-size:14px;font-weight:900;box-shadow:0 9px 25px #0008;opacity:0;pointer-events:none;transform:translateY(12px);transition:.2s;z-index:30;white-space:nowrap}
+#toMenu.show{opacity:1;pointer-events:auto;transform:none}
+#toMenu:focus-visible,#toTop:focus-visible{outline:3px solid #f1d08b;outline-offset:3px}
+#quickAccess{scroll-margin-top:12px}
 .footer{margin-top:60px;text-align:center;color:#8295af;font-size:12px;border-top:1px solid #27394f;padding-top:20px}
 .mobile-menu{display:none}
 @media(max-width:960px){.sidebar{width:196px;padding:22px 10px}.number-grid{grid-template-columns:repeat(6,minmax(0,1fr))}.cards{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:720px){.app{display:block}.sidebar{width:auto;height:auto;position:relative;padding:14px;border-right:0;border-bottom:1px solid var(--line)}.logo{margin:0 0 12px}.nav{flex-direction:row;overflow:auto;gap:5px}.nav button{width:auto;flex:none;white-space:nowrap;font-size:12px;padding:8px 11px}.side-foot{display:none}.main{padding:20px 14px 65px}.topbar{margin-bottom:15px}.hero{padding:24px 18px}.number-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}.number-card{min-height:75px}.number-card .n{font-size:22px}.cards,.row{grid-template-columns:1fr}.rule-stats{grid-template-columns:repeat(2,1fr)}.ticket{flex-wrap:wrap}.ball{width:34px;height:34px}#toTop{bottom:15px;right:14px}}
+@media(max-width:720px){.app{display:block}.sidebar{width:auto;height:auto;position:relative;padding:14px;border-right:0;border-bottom:1px solid var(--line)}.logo{margin:0 0 12px}.nav{flex-direction:row;overflow:auto;gap:5px}.nav button{width:auto;flex:none;white-space:nowrap;font-size:12px;padding:8px 11px}.side-foot{display:none}.main{padding:20px 14px 65px}.topbar{margin-bottom:15px}.hero{padding:24px 18px}.number-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}.number-card{min-height:75px}.number-card .n{font-size:22px}.cards,.row{grid-template-columns:1fr}.rule-stats{grid-template-columns:repeat(2,1fr)}.ticket{flex-wrap:wrap}.ball{width:34px;height:34px}#toTop{bottom:15px;right:14px}#toMenu{bottom:15px;right:80px;min-width:72px}}
 
 /* 결과 해석과 45개 규칙 전체 목록 */
 .audit-banner{background:#102c40;border:1px solid #426b77;border-left:5px solid #75c9bf;border-radius:12px;padding:16px 18px;margin:14px 0;line-height:1.85;color:#d9eff0}
@@ -446,6 +450,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 </main>
 </div>
 <dialog id="detailDialog"><div class="modal-head"><div><div class="eyebrow">NUMBER PATTERN DETAIL</div><h2 style="margin:3px 0" id="modalTitle">번호 분석</h2></div><div class="toolbar"><button class="close" onclick="document.getElementById('detailDialog').scrollTo({top:0,behavior:'smooth'})">↑ 맨 위로</button><button class="close" onclick="document.getElementById('detailDialog').close()">닫기 ✕</button></div></div><div id="modalBody" class="modal-body"></div></dialog>
+<button id="toMenu" type="button" aria-label="첫 화면 메뉴로 돌아가기" title="자주 보는 메뉴로 돌아가기" onclick="returnToQuickMenu()">⌂ 메뉴</button>
 <button id="toTop" aria-label="맨 위로 이동" title="맨 위로 이동" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <script src="./exclusion_lab.js"></script>
 <script src="./exclusion_ui.js"></script>
@@ -644,6 +649,7 @@ function go(id){
   document.querySelectorAll(".page").forEach(e=>e.classList.toggle("active",e.id===id));
   document.querySelectorAll(".nav button").forEach(e=>e.classList.toggle("active",e.dataset.tab===id));
   window.scrollTo({top:0,behavior:"smooth"});
+  updateNavControls();
   if(id==="research"&&state.draws.length)showResearch();
   if(id==="exclusions"&&state.draws.length)renderExclusionLab();
   if(id==="patterns"&&state.draws.length)showPatternSearch();
@@ -651,6 +657,22 @@ function go(id){
     $("poolInput").value.split(/[\s,;]+/).filter(Boolean).length>=7)makeTickets(false);
   if(id==="tickets"&&state.draws.length&&!$("recapSvg")&&!state.skipInitialRecap)showRecapImage();
   if(id==="tickets"&&state.draws.length&&!state.lastPatternAudit)runPatternAudit();
+}
+function returnToQuickMenu(){
+  const dialog=$("detailDialog");
+  if(dialog&&dialog.open)dialog.close();
+  if(!$("home").classList.contains("active"))go("home");
+  const quick=$("quickAccess");
+  if(quick)setTimeout(()=>quick.scrollIntoView({behavior:"smooth",block:"start"}),80);
+  updateNavControls();
+}
+function updateNavControls(){
+  const top=$("toTop"),menu=$("toMenu"),home=$("home"),quick=$("quickAccess");
+  if(top)top.classList.toggle("show",window.scrollY>110);
+  if(menu&&home){
+    const awayFromQuick=quick&&quick.getBoundingClientRect().bottom<90;
+    menu.classList.toggle("show",!home.classList.contains("active")||!!awayFromQuick);
+  }
 }
 const RULES=[];
 function addRule(group,label,k,test,mark,why){
@@ -4529,7 +4551,7 @@ async function runBacktest(){
 
 $("patternN").addEventListener("change",fillPatternSelect);
 $("detailDialog").addEventListener("click",e=>{if(e.target===$("detailDialog"))$("detailDialog").close();});
-window.addEventListener("scroll",()=>$("toTop").classList.toggle("show",window.scrollY>110),{passive:true});
+window.addEventListener("scroll",updateNavControls,{passive:true});
 
 let deferredPwaInstall=null;
 function installPWA(){
@@ -4572,6 +4594,7 @@ restorePinned();
 try{$("candidateLimit").value=localStorage.getItem("lotto_pattern_pool_limit_v1")||"";}catch(_){}
 fillPatternSelect();
 renderQuickAccess();
+updateNavControls();
 reloadData();
 </script>
 </body>
