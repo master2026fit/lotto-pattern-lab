@@ -87,6 +87,26 @@ input[type=number]{width:95px}
 .draw-review-banner summary{cursor:pointer;color:#f0d49d;font-weight:800}
 .draw-review-banner .hint{margin:7px 0}
 .draw-review-banner .simple-table{min-width:680px}
+.quick-access{margin:0 0 18px;padding:15px 17px;border:1px solid #3b6377;border-radius:16px;background:linear-gradient(130deg,#102b40,#102237)}
+.quick-access-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.quick-access-head h2{font-size:18px;color:#f4d69c;margin:0}
+.quick-access-head button{background:#25415c;color:#e4eef9;border:1px solid #63829e;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:800;cursor:pointer}
+.quick-access-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.quick-access-btn{display:flex;flex-direction:column;justify-content:center;gap:5px;min-height:75px;text-align:left;padding:11px 12px;border:1px solid #406481;border-radius:12px;background:#1a3855;color:#fff;cursor:pointer}
+.quick-access-btn:hover,.quick-access-btn:focus-visible{border-color:#e4c081;background:#274b69;outline:1px solid #e4c081}
+.quick-access-btn b{font-size:14px}.quick-access-btn small{font-size:11px;color:#b8d0e4;line-height:1.5}
+.quick-access-edit{padding:12px;margin-top:12px;border:1px dashed #55738e;border-radius:11px;background:#0d2034}
+.quick-access-edit[hidden]{display:none!important}
+.quick-access-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:10px 0}
+.quick-access-options label{display:flex;align-items:center;gap:6px;font-size:12px;border:1px solid #35516c;padding:8px;border-radius:8px;cursor:pointer}
+.quick-access-options input{accent-color:#eac684}
+.home-deep-details{margin:20px 0;border:1px solid #476782;border-radius:15px;background:#0e2237}
+.home-deep-details>summary{padding:17px 19px;color:#f8d8a2;font-weight:850;cursor:pointer;line-height:1.7}
+.home-deep-details>summary small{font-size:12px;color:#a7bed4;font-weight:400;display:block}
+.home-deep-details[open]>summary{border-bottom:1px solid #38536e}
+.home-deep-content{padding:0 17px 10px}
+@media(max-width:900px){.quick-access-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:530px){.quick-access-options{grid-template-columns:repeat(2,minmax(0,1fr))}.quick-access{padding:12px}.quick-access-btn{min-height:68px;padding:10px}.quick-access-btn b{font-size:13px}.home-deep-content{padding:0 9px 9px}#home .hero{padding:19px 16px}#home .hero .lead{font-size:13px;line-height:1.65}}
 .round-overview{margin:18px 0 24px;padding:19px;border:1px solid #567b8b;border-radius:17px;background:linear-gradient(145deg,#15324a,#0e2138)}
 .round-overview h2{margin:0;font-size:21px;color:#fff}
 .round-overview .round-heading{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
@@ -265,11 +285,13 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 <main class="main">
 <div class="topbar"><div><div class="identity">HISTORICAL NUMBER INTELLIGENCE</div><p>데이터와 과거 사례로 확인하는 로또 연구소</p></div><div class="top-actions"><button type="button" class="pwa-install-btn" id="pwaInstallBtn" onclick="installPWA()">📲 휴대폰 앱 설치</button><div class="connection" id="dataStatus">● 데이터 확인 중</div></div></div>
 <section id="home" class="page active">
+  <div id="quickAccess" class="quick-access" aria-label="자주 보는 메뉴"><div class="quick-access-head"><h2>⭐ 내가 자주 보는 메뉴</h2><button type="button" onclick="toggleQuickEditor()">메뉴 편집</button></div><div id="quickAccessButtons" class="quick-access-grid"></div><div id="quickAccessEditor" class="quick-access-edit" hidden></div></div>
   <div class="hero"><div class="eyebrow">WEEKLY AUTO DISCOVERY</div><h1 id="heroTitle">로또 번호별 자동 패턴 분석</h1><p class="lead">1~45번의 기본 조건과 번호별 출현 자리·간격·회차 이동 흐름을 전수 검사합니다. 번호를 누르면 이번 회차의 실제 연결 패턴과 성공·실패 PPT 그림을 확인할 수 있습니다.</p>
     <div class="flex"><button class="btn" onclick="reloadData()">최신 당첨번호 확인</button><button class="btn secondary" onclick="go('tickets')">최종 5조합 만들기</button><span class="tag" id="sourceBadge">조회 준비 중</span></div>
   </div>
   <section id="roundOverview" class="round-overview" aria-label="최근 회차 결과와 새 회차 변경 현황" aria-live="polite"><div class="round-heading"><h2>📅 회차별 한눈에 보기</h2><span class="tag">최신 결과를 불러오는 중</span></div><p class="hint">최근 당첨 결과와 다음 회차의 변화가 여기에 자동으로 표시됩니다.</p></section>
   <div id="drawReviewNotice" class="draw-review-banner" aria-live="polite"></div>
+  <details id="homeResearchDetails" class="home-deep-details"><summary>🧪 전체 상세 분석 펼쳐보기 <small>사전 연구원장 · 누적 성적표 · 45수 검색 · 16개 모듈 · 번호별 비교</small></summary><div class="home-deep-content">
   <div id="serverReviewGallery" class="section panel" hidden></div>
   <div id="serverPredrawLedger" class="section panel"><h2>🔒 서버 사전 저장 연구원장</h2><div id="serverPredrawLedgerContent" class="hint">추첨 전 저장된 자료를 확인 중입니다.</div></div>
   <div id="patternScorecard" class="section panel"><h2>📊 실제 사전 패턴 누적 성적표</h2><div id="patternScorecardContent" class="hint">무작위 기준선과 비교할 기록을 확인하고 있습니다.</div></div>
@@ -296,6 +318,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
   <p class="hint" id="evidence45Count">결과 계산 중</p><div class="tablewrap"><table class="simple-table"><thead><tr><th>번호</th><th>미출현 중</th><th>기본 일치</th><th>초기 신호</th><th>간이 검증</th><th>연결 탐색</th><th>판정</th></tr></thead><tbody id="evidence45Rows"></tbody></table></div>
   <p class="caution">기본 일치·연결 탐색·초기 신호는 서로 중복될 수 있고, 당첨 가능성이나 조합 가중치가 아닙니다. 간이 기준 부합조차 미래 적중력을 입증한 것은 아닙니다.</p></div>
   <div class="section panel"><div class="section-head"><h2>최신 확인 당첨번호</h2><span id="lastRound" class="tag">-</span></div><div id="lastBalls" class="ballset"></div><p class="hint">표시된 회차는 실제로 확인된 데이터 기준입니다. 새 회차가 반영되면 다음 회차 연구가 갱신됩니다.</p></div>
+  </div></details>
 </section>
 <section id="research" class="page"><div class="eyebrow">NUMBER LAB</div><h1>번호 연구소</h1><p class="lead">특정 번호의 출현 흐름과 이번 회차에 적용되는 번호별 패턴을 확인합니다.</p><div class="toolbar"><label>분석 번호 <input id="focusN" class="field" type="number" min="1" max="45" value="39"></label><button class="btn" onclick="showResearch()">번호 조사하기</button></div><div id="researchResult"></div></section>
 <section id="patterns" class="page"><div class="eyebrow">PATTERN EXPLORER</div><h1>패턴 검색</h1><p class="lead">선택한 번호의 이번 회차 출현·자리·간격 기록에서 자동 생성한 연결 패턴과 기본 45종 조건을 따로 살펴봅니다. 조건의 과거 성공·실패 회차를 정확히 비교하세요.</p><div class="toolbar"><label>번호 <input id="patternN" class="field" type="number" min="1" max="45" value="39"></label><label>조건 <select id="patternRule" class="field"></select></label><button class="btn" onclick="showPatternSearch()">역대 패턴 검색</button></div><div id="patternResult"></div></section>
@@ -443,6 +466,79 @@ const BASE=6/45;
 const LOOKBACK=15;
 const $=id=>document.getElementById(id);
 const state={draws:[],source:"",profiles:[],tickets:[],nonce:0,loading:false,cache:new Map(),proofCache:new Map(),module16:null,poolMode:"research",locked:[]};
+const QUICK_MENU_KEY="lotto_pattern_quick_menu_v1";
+const QUICK_MENU_DEFAULT=["overview","watch","exclusions","tickets"];
+const QUICK_MENU_ITEMS=[
+  {id:"overview",label:"📅 회차별 결과",description:"지난 결과 · 새 회차 변화",anchor:"roundOverview"},
+  {id:"watch",label:"⭐ 중요패턴",description:"생존 · 탈락 · 연결",tab:"watch"},
+  {id:"exclusions",label:"🚫 제외수 연구",description:"제외 기록 · 복기",tab:"exclusions"},
+  {id:"tickets",label:"🎱 최종 5조합",description:"후보 · 맞춤 조합",tab:"tickets"},
+  {id:"patterns",label:"▤ 패턴 검색",description:"번호별 연결 탐색",tab:"patterns"},
+  {id:"research",label:"◎ 번호 연구소",description:"한 번호 깊이 보기",tab:"research"},
+  {id:"backtest",label:"◷ 과거 검증",description:"실패 · 성공 비교",tab:"backtest"},
+  {id:"candidates",label:"🔎 이번 회차 45수",description:"자동 검색 결과",anchor:"candidateGrid"},
+  {id:"predraw",label:"🔒 사전 저장 원장",description:"추첨 전 고정된 자료",anchor:"serverPredrawLedger"},
+  {id:"scorecard",label:"📊 누적 성적표",description:"패턴 실전 결과",anchor:"patternScorecard"}
+];
+function quickMenuIds(){
+  if(Array.isArray(state.quickMenuIds))return state.quickMenuIds.slice();
+  let saved=null;
+  try{saved=JSON.parse(localStorage.getItem(QUICK_MENU_KEY)||"null");}catch(_){}
+  const valid=Array.isArray(saved)?[...new Set(saved.filter(id=>QUICK_MENU_ITEMS.some(x=>x.id===id)))].slice(0,5):[];
+  state.quickMenuIds=valid.length?valid:QUICK_MENU_DEFAULT.slice();
+  return state.quickMenuIds.slice();
+}
+function renderQuickAccess(){
+  const buttons=$("quickAccessButtons"),editor=$("quickAccessEditor");
+  if(!buttons||!editor)return;
+  const ids=quickMenuIds(),editing=!editor.hidden;
+  buttons.innerHTML=ids.map(id=>{
+    const x=QUICK_MENU_ITEMS.find(item=>item.id===id);
+    return '<button type="button" class="quick-access-btn" onclick="openQuickItem(\''+x.id+'\')">'+
+      '<b>'+x.label+'</b><small>'+x.description+'</small></button>';
+  }).join("");
+  editor.innerHTML='<strong>바로가기 선택 · '+ids.length+'/5개</strong>'+
+    '<p class="round-note">자주 쓰는 메뉴를 1~5개 선택하세요. 이 휴대폰에 선택이 저장됩니다.</p>'+
+    '<div class="quick-access-options">'+QUICK_MENU_ITEMS.map(x=>
+      '<label><input type="checkbox" '+(ids.includes(x.id)?'checked ':'')+
+      'onchange="changeQuickItem(\''+x.id+'\')">'+x.label+'</label>').join("")+'</div>'+
+    '<p class="round-note" id="quickAccessMessage">메뉴를 눌러 바로 이동할 수 있습니다.</p>';
+  editor.hidden=!editing;
+}
+function toggleQuickEditor(){
+  const editor=$("quickAccessEditor"),button=$("quickAccess")?.querySelector(".quick-access-head button");
+  if(!editor)return;
+  editor.hidden=!editor.hidden;
+  if(button)button.textContent=editor.hidden?"메뉴 편집":"편집 닫기";
+}
+function changeQuickItem(id){
+  if(!QUICK_MENU_ITEMS.some(x=>x.id===id))return;
+  const ids=quickMenuIds(),has=ids.includes(id);
+  if(!has&&ids.length>=5){
+    renderQuickAccess();
+    const msg=$("quickAccessMessage");if(msg)msg.textContent="최대 5개까지 선택할 수 있습니다.";
+    return;
+  }
+  if(has&&ids.length===1){
+    renderQuickAccess();
+    const msg=$("quickAccessMessage");if(msg)msg.textContent="최소 하나는 남겨두세요.";
+    return;
+  }
+  state.quickMenuIds=has?ids.filter(x=>x!==id):ids.concat(id);
+  try{localStorage.setItem(QUICK_MENU_KEY,JSON.stringify(state.quickMenuIds));}catch(_){}
+  renderQuickAccess();
+}
+function openQuickItem(id){
+  const item=QUICK_MENU_ITEMS.find(x=>x.id===id);
+  if(!item)return;
+  if(item.tab){go(item.tab);return;}
+  const target=$(item.anchor);
+  if(!target)return;
+  if(!$("home").classList.contains("active"))go("home");
+  const deep=$("homeResearchDetails");
+  if(deep&&deep.contains(target))deep.open=true;
+  setTimeout(()=>target.scrollIntoView({behavior:"smooth",block:"start"}),70);
+}
 function clean(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function pct(v){return Number.isFinite(v)?(v*100).toFixed(1)+"%":"—";}
 function ball(n){return '<span class="ball b'+(n<=10?1:n<=20?2:n<=30?3:n<=40?4:5)+'">'+n+'</span>';}
@@ -4475,6 +4571,7 @@ if("serviceWorker" in navigator){
 restorePinned();
 try{$("candidateLimit").value=localStorage.getItem("lotto_pattern_pool_limit_v1")||"";}catch(_){}
 fillPatternSelect();
+renderQuickAccess();
 reloadData();
 </script>
 </body>
