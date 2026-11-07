@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="850" viewBox="0 0 1200 850" role="img" aria-labelledby="title desc">
+  <title id="title">로또 끝수 패턴: 두 쌍이 겹친 실제 예와 무작위 확률 비교</title>
+  <desc id="desc">1248회 실제 숫자 16,18,27,36,38,42에는 끝수6 두 개, 끝수8 두 개가 등장했다. 1~1248회 중 같은 끝수 한 쌍 이상은 975회 78.13퍼센트이고 무작위 기대 79.03퍼센트. 정확히 두 쌍은 261회 20.91퍼센트로 무작위 기대 19.63퍼센트. 끝수 1~5에는 각각 5개 번호, 끝수 0과 6~9에는 각각 4개 번호가 있다.</desc>
+  <rect width="1200" height="850" fill="#f7f5fc"/>
+  <rect x="44" y="39" width="1112" height="771" rx="24" fill="#fffefa" stroke="#e1dcec" stroke-width="2"/>
+  <text x="81" y="101" font-family="sans-serif" fill="#733d8e" font-size="22" font-weight="800">별난 로또 실험실 ⑥ · 끝자리 패턴의 착시</text>
+  <text x="81" y="158" font-family="sans-serif" fill="#392347" font-size="43" font-weight="900">끝수가 두 쌍이나 겹치면 특별할까?</text>
+  <text x="81" y="197" font-family="sans-serif" fill="#6b6071" font-size="21">실제 기록과 ‘우연히 나올 확률’을 함께 비교합니다.</text>
+  <rect x="83" y="229" width="1036" height="217" rx="16" fill="#f1eaf7"/>
+  <text x="109" y="267" font-family="sans-serif" fill="#604071" font-size="23" font-weight="800">실제 예시 · 1248회 본번호</text>
+  <g font-family="sans-serif" font-size="27" font-weight="900" text-anchor="middle">
+    <rect x="108" y="284" width="290" height="119" rx="14" fill="#fff8f4" stroke="#e4c7bd"/>
+    <circle cx="205" cy="341" r="33" fill="#d4829f"/><text x="205" y="350" fill="white">16</text>
+    <circle cx="303" cy="341" r="33" fill="#d4829f"/><text x="303" y="350" fill="white">36</text>
+    <text x="253" y="388" font-size="20" fill="#873b5e">끝수 6 쌍</text>
+    <rect x="455" y="284" width="290" height="119" rx="14" fill="#fff8f4" stroke="#e4c7bd"/>
+    <circle cx="552" cy="341" r="33" fill="#8354b2"/><text x="552" y="350" fill="white">18</text>
+    <circle cx="650" cy="341" r="33" fill="#8354b2"/><text x="650" y="350" fill="white">38</text>
+    <text x="600" y="388" font-size="20" fill="#654382">끝수 8 쌍</text>
+    <rect x="800" y="284" width="290" height="119" rx="14" fill="#ffffff" stroke="#dad5e1"/>
+    <circle cx="896" cy="341" r="32" fill="#c7c1ce"/><text x="896" y="350" fill="#403a44">27</text>
+    <circle cx="993" cy="341" r="32" fill="#c7c1ce"/><text x="993" y="350" fill="#403a44">42</text>
+    <text x="947" y="388" font-size="20" fill="#746d79">끝수 7·2</text>
+  </g>
+  <text x="85" y="498" font-family="sans-serif" fill="#392347" font-size="28" font-weight="850">1~1248회 전수 조사</text>
+  <g font-family="sans-serif" text-anchor="middle">
+    <rect x="83" y="519" width="494" height="126" rx="14" fill="#fff4ed" stroke="#f0d6c5"/>
+    <text x="330" y="553" font-size="21" fill="#825c53" font-weight="700">같은 끝수 한 쌍 이상</text>
+    <text x="330" y="603" font-size="36" fill="#a74a6e" font-weight="900">78.13% <tspan font-size="22" fill="#86797f">실제</tspan></text>
+    <text x="330" y="632" font-size="17" fill="#6c6871">975 / 1248회 · 무작위 기대 79.03%</text>
+    <rect x="625" y="519" width="494" height="126" rx="14" fill="#f0eafa" stroke="#dbcaef"/>
+    <text x="872" y="553" font-size="21" fill="#74558e" font-weight="700">같은 끝수 정확히 두 쌍</text>
+    <text x="872" y="603" font-size="36" fill="#6e3a93" font-weight="900">20.91% <tspan font-size="22" fill="#86797f">실제</tspan></text>
+    <text x="872" y="632" font-size="17" fill="#6c6871">261 / 1248회 · 무작위 기대 19.63%</text>
+  </g>
+  <line x1="82" y1="675" x2="1118" y2="675" stroke="#e1dcec" stroke-width="2"/>
+  <text x="83" y="718" font-family="sans-serif" fill="#3f2e4a" font-size="24" font-weight="850">끝수 그룹마다 애초에 숫자 개수가 다릅니다.</text>
+  <text x="83" y="754" font-family="sans-serif" fill="#605667" font-size="21">끝수 1·2·3·4·5 → 각각 5개　|　끝수 0·6·7·8·9 → 각각 4개</text>
+  <text x="1115" y="792" font-family="sans-serif" fill="#8c8691" font-size="17" text-anchor="end">정확한 확률은 45개 중 6개 조합 8,145,060가지를 기준으로 계산 · LOTTO NOTE</text>
+</svg>
