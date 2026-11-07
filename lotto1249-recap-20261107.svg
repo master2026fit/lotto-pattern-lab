@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1140" viewBox="0 0 900 1140" role="img" aria-labelledby="ttl desc">
+<title id="ttl">로또 1249회 사전 공개 기록 복기</title>
+<desc id="desc">당첨번호 2 11 16 25 34 35 보너스 14. 공개한 5조합의 본당첨 일치 수는 1,2,0,1,0으로 전부 미당첨. 사전 33수 검색에는 25 34 35 세 개가 포함되었고, 검색 바깥 12수에는 2 11 16 세 개가 포함되었다.</desc>
+<rect width="900" height="1140" fill="#f4efe5"/>
+<rect x="0" y="0" width="900" height="17" fill="#9b3d30"/>
+<text x="60" y="76" fill="#526054" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="25" font-weight="700" letter-spacing="3">LOTTO NOTE  /  2026.11.07</text>
+<text x="58" y="140" fill="#243e35" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="56" font-weight="900">1249회, 실제로 맞힌 건?</text>
+<text x="60" y="190" fill="#685c51" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="26">발표 전에 공개한 기록을 그대로 대조했습니다.</text>
+<line x1="58" y1="220" x2="842" y2="220" stroke="#9f9a8e" stroke-width="2"/>
+
+<text x="60" y="273" fill="#273d34" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="30" font-weight="900">당첨번호</text>
+<g font-family="Noto Sans KR,Malgun Gothic,sans-serif" text-anchor="middle" font-size="30" font-weight="900">
+<circle cx="112" cy="333" r="43" fill="#d4aa47"/><text x="112" y="345" fill="#fff">2</text>
+<circle cx="240" cy="333" r="43" fill="#6689ad"/><text x="240" y="345" fill="#fff">11</text>
+<circle cx="368" cy="333" r="43" fill="#6689ad"/><text x="368" y="345" fill="#fff">16</text>
+<circle cx="496" cy="333" r="43" fill="#aa5944"/><text x="496" y="345" fill="#fff">25</text>
+<circle cx="624" cy="333" r="43" fill="#788681"/><text x="624" y="345" fill="#fff">34</text>
+<circle cx="752" cy="333" r="43" fill="#788681"/><text x="752" y="345" fill="#fff">35</text>
+</g>
+<rect x="60" y="399" width="780" height="57" rx="13" fill="#e4dbcd"/>
+<text x="82" y="437" fill="#654b40" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="25" font-weight="700">보너스 14</text>
+<text x="452" y="437" fill="#654b40" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="25">합계 123  ·  홀짝 3:3  ·  연속 34-35</text>
+
+<rect x="60" y="489" width="780" height="369" rx="19" fill="#ffffff" stroke="#dbd0c2" stroke-width="2"/>
+<text x="84" y="543" fill="#243e35" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="31" font-weight="900">① 공개 5조합 전부 미당첨</text>
+<text x="84" y="579" fill="#7c7168" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="21">2026.11.01 발행 글 13번 기준 / 본당첨만 계산</text>
+<g font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="25">
+  <text x="86" y="627" fill="#655f57" font-weight="700">1게임</text><text x="222" y="627" fill="#263e36">8·9·22·35·36·39</text><text x="798" y="627" fill="#9b3d30" font-weight="900" text-anchor="end">1개</text>
+  <line x1="85" x2="812" y1="644" y2="644" stroke="#ece6de"/>
+  <text x="86" y="685" fill="#655f57" font-weight="700">2게임</text><text x="222" y="685" fill="#263e36">2·17·25·36·37·42</text><text x="798" y="685" fill="#9b3d30" font-weight="900" text-anchor="end">2개</text>
+  <line x1="85" x2="812" y1="702" y2="702" stroke="#ece6de"/>
+  <text x="86" y="743" fill="#655f57" font-weight="700">3게임</text><text x="222" y="743" fill="#263e36">6·14·15·21·33·36</text><text x="798" y="743" fill="#9b3d30" font-weight="900" text-anchor="end">0개</text>
+  <line x1="85" x2="812" y1="760" y2="760" stroke="#ece6de"/>
+  <text x="86" y="801" fill="#655f57" font-weight="700">4게임</text><text x="222" y="801" fill="#263e36">16·21·26·31·39·42</text><text x="798" y="801" fill="#9b3d30" font-weight="900" text-anchor="end">1개</text>
+</g>
+<text x="85" y="834" fill="#716960" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="18">5게임 8·14·18·27·42·44 → 0개 (3·5게임은 보너스 14 포함)</text>
+
+<rect x="60" y="885" width="780" height="180" rx="19" fill="#213d33"/>
+<text x="85" y="934" fill="#f7ebdc" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="30" font-weight="900">② 사전 검색 33수 vs 바깥 12수</text>
+<text x="86" y="984" fill="#e5e9dc" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="25">검색 33수:  <tspan fill="#efba86" font-weight="900">25 · 34 · 35  /  3개 포함</tspan></text>
+<text x="86" y="1030" fill="#e5e9dc" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="25">바깥 12수:  <tspan fill="#efba86" font-weight="900">2 · 11 · 16  /  3개 포함</tspan></text>
+<text x="60" y="1107" fill="#766c61" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="18">결과 이후 번호를 바꾸지 않은 기록입니다. 과거 패턴은 다음 추첨을 보장하지 않습니다.</text>
+</svg>
