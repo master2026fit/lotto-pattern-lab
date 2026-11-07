@@ -103,10 +103,14 @@ input[type=number]{width:95px}
 .round-result .round-bonus .ball{margin-left:5px}
 .round-result .round-result-note{font-size:12px;color:#c3d3e3;margin-top:6px;line-height:1.6}
 .round-overview .round-changes{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
-.round-change{font-size:12px;padding:8px 11px;border-radius:9px;border:1px solid #415e78;background:#152b43;color:#d3e1f2}
+.round-change{font-size:12px;padding:8px 11px;border-radius:9px;border:1px solid #415e78;background:#152b43;color:#d3e1f2;text-align:left;cursor:pointer;min-width:90px}
 .round-change b{font-size:17px;display:block;color:#f4d6a2}
 .round-change.added{border-color:#3d8b73;background:#123a33}.round-change.added b{color:#9df2ca}
 .round-change.removed{border-color:#95616c;background:#3b2736}.round-change.removed b{color:#ffb6bd}
+.round-change.active{outline:2px solid #ffe1a1;outline-offset:2px;box-shadow:0 0 0 2px #14283b inset}
+.round-change:hover,.round-change:focus-visible{filter:brightness(1.2)}
+.round-number-group[hidden]{display:none!important}
+.round-number-group h4{margin:14px 0 4px;font-size:14px;color:#eaf1fb}
 .round-overview .round-number-list{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0 14px}
 .round-overview .round-number-list button{display:inline-grid;place-items:center;width:32px;height:32px;border:1px solid #6f9e85;border-radius:50%;background:#1e5545;color:#e0ffee;font-weight:800;cursor:pointer}
 .round-overview .round-number-list button.removed{background:#493042;border-color:#90596d;color:#ffd9dc}
@@ -3532,12 +3536,15 @@ function renderRoundOverview(){
 
   let changeContent='<p class="round-note">'+clean(sourceLabel)+' · '+clean(priorLabel)+'</p>';
   if(priorIsSaved){
-    changeContent+='<div class="round-changes">'+
-      '<div class="round-change added">새로 추가<b>'+added.length+'수</b></div>'+
-      '<div class="round-change">계속 유지<b>'+kept.length+'수</b></div>'+
-      '<div class="round-change removed">이번에 빠짐<b>'+removed.length+'수</b></div></div>'+
-      '<strong>🟢 새로 들어온 연구후보</strong>'+numberButtons(added,false)+
-      '<strong>🔴 이번에 빠진 연구후보</strong>'+numberButtons(removed,true);
+    changeContent+='<p class="round-note">아래 숫자 카드를 누르면 해당 번호만 펼쳐집니다.</p>'+
+      '<div class="round-changes" role="group" aria-label="연구후보 변경 종류">'+
+      '<button type="button" class="round-change added active" data-round-view="added" aria-pressed="true" aria-controls="roundChangeNumbers" onclick="showRoundChange(\'added\')">새로 추가<b>'+added.length+'수</b></button>'+
+      '<button type="button" class="round-change" data-round-view="kept" aria-pressed="false" aria-controls="roundChangeNumbers" onclick="showRoundChange(\'kept\')">계속 유지<b>'+kept.length+'수</b></button>'+
+      '<button type="button" class="round-change removed" data-round-view="removed" aria-pressed="false" aria-controls="roundChangeNumbers" onclick="showRoundChange(\'removed\')">이번에 빠짐<b>'+removed.length+'수</b></button></div>'+
+      '<div id="roundChangeNumbers" aria-live="polite">'+
+      '<div class="round-number-group" data-round-group="added"><h4>🟢 새로 들어온 연구후보 · '+added.length+'수</h4>'+numberButtons(added,false)+'</div>'+
+      '<div class="round-number-group" data-round-group="kept" hidden><h4>🔵 계속 유지된 연구후보 · '+kept.length+'수</h4>'+numberButtons(kept,false)+'</div>'+
+      '<div class="round-number-group" data-round-group="removed" hidden><h4>🔴 이번에 빠진 연구후보 · '+removed.length+'수</h4>'+numberButtons(removed,true)+'</div></div>';
     if(previous.candidatePolicy!==(savedCurrent?.candidatePolicy||'dynamic-unlimited-v2'))
       changeContent+='<p class="round-note">⚠️ 두 회차의 후보 선정 정책이 다를 수 있어 변화 개수는 단순 비교입니다.</p>';
   }else{
@@ -3565,6 +3572,18 @@ function renderRoundOverview(){
     '<p class="round-note">당첨번호와 실제 사전 연구후보의 포함 개수를 함께 확인합니다.</p>'+recent+'</div>'+
     '<div class="round-overview-card"><h3>새 회차 · 추가 및 변경</h3>'+changeContent+'</div></div>'+
     (state.source==='온라인'?'':'<p class="round-note">⚠️ 기기에 저장된 당첨 데이터를 사용 중입니다. 최신 회차 여부는 온라인 연결 후 다시 확인하세요.</p>');
+}
+function showRoundChange(kind){
+  const host=$("roundOverview");
+  if(!host||!["added","kept","removed"].includes(kind))return;
+  host.querySelectorAll("[data-round-view]").forEach(button=>{
+    const active=button.dataset.roundView===kind;
+    button.classList.toggle("active",active);
+    button.setAttribute("aria-pressed",String(active));
+  });
+  host.querySelectorAll("[data-round-group]").forEach(group=>{
+    group.hidden=group.dataset.roundGroup!==kind;
+  });
 }
 function summarizeStoredReview(item){
   if(!item||!item.review||!Array.isArray(item.review.actual)||item.review.actual.length!==6||
