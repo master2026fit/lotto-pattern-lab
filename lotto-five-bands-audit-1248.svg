@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1150" role="img" aria-labelledby="title desc">
+  <title id="title">로또 다섯 숫자대에서 빈 구간이 발생할 확률 비교</title>
+  <desc id="desc">숫자대를 1~10, 11~20, 21~30, 31~40, 41~45의 다섯 구간으로 구분한 결과, 적어도 한 구간이 비는 가능한 조합은 7145060개, 87.72퍼센트. 실제 1~1248회 중 1105회, 88.54퍼센트. 모든 구간이 다 채워지는 가능한 조합은 1000000개 12.28퍼센트, 실제143회11.46퍼센트. 출현하는 구간 수는 2개 45회, 3개402회,4개658회,5개143회. 마지막 41~45 구간이 비는 이론 확률은47.13퍼센트, 실제598회47.92퍼센트.</desc>
+  <rect width="1200" height="1150" fill="#fffdfa"/>
+  <path d="M0 0H1200V14H0Z" fill="#a81460"/>
+  <text x="65" y="69" font-family="'Malgun Gothic',sans-serif" font-size="20" font-weight="800" fill="#9c2364">LOTTO NOTE · 별난 로또 실험실 ⑨</text>
+  <text x="64" y="133" font-family="'Malgun Gothic',sans-serif" font-size="47" font-weight="900" fill="#2d2b32">한 숫자대가 비어도 괜찮을까?</text>
+  <text x="65" y="175" font-family="'Malgun Gothic',sans-serif" font-size="21" fill="#68616a">5개 숫자대 · 실제 1~1248회 당첨번호 · 전체 8,145,060개 조합</text>
+  <g font-family="'Malgun Gothic',sans-serif" text-anchor="middle" font-size="24" font-weight="850">
+    <rect x="64" y="209" width="206" height="64" rx="10" fill="#f3e7ee"/>
+    <text x="167" y="249" fill="#8d1e59">1~10</text>
+    <rect x="281" y="209" width="206" height="64" rx="10" fill="#f3e7ee"/>
+    <text x="384" y="249" fill="#8d1e59">11~20</text>
+    <rect x="498" y="209" width="206" height="64" rx="10" fill="#f3e7ee"/>
+    <text x="601" y="249" fill="#8d1e59">21~30</text>
+    <rect x="715" y="209" width="206" height="64" rx="10" fill="#f3e7ee"/>
+    <text x="818" y="249" fill="#8d1e59">31~40</text>
+    <rect x="932" y="209" width="206" height="64" rx="10" fill="#fae5a1"/>
+    <text x="1035" y="249" fill="#655124">41~45</text>
+  </g>
+  <text x="68" y="310" font-family="'Malgun Gothic',sans-serif" font-size="18" fill="#73646e">※ 앞의 네 구간은 각 10개, 마지막 구간은 5개입니다.</text>
+
+  <rect x="61" y="341" width="1078" height="290" rx="19" fill="#f8edf2" stroke="#e6c4d5" stroke-width="2" />
+  <text x="97" y="391" font-family="'Malgun Gothic',sans-serif" font-size="30" font-weight="900" fill="#79204f">적어도 한 구간이 비어 있는 경우</text>
+  <text x="96" y="446" font-family="'Malgun Gothic',sans-serif" font-size="23" font-weight="700" fill="#4b3e47">전체 가능한 조합</text>
+  <text x="1078" y="446" text-anchor="end" font-family="Arial,sans-serif" font-size="30" font-weight="900" fill="#ac155e">87.72%</text>
+  <rect x="97" y="459" width="980" height="27" rx="13" fill="#e5d5dd" />
+  <rect x="97" y="459" width="859.7" height="27" rx="13" fill="#bd256e" />
+  <text x="96" y="532" font-family="'Malgun Gothic',sans-serif" font-size="23" font-weight="700" fill="#4b3e47">실제 1,248회 당첨 기록</text>
+  <text x="1078" y="532" text-anchor="end" font-family="Arial,sans-serif" font-size="30" font-weight="900" fill="#ac155e">88.54%</text>
+  <rect x="97" y="545" width="980" height="27" rx="13" fill="#e5d5dd" />
+  <rect x="97" y="545" width="867.7" height="27" rx="13" fill="#e75696" />
+  <text x="97" y="605" font-family="'Malgun Gothic',sans-serif" font-size="20" fill="#66525e">전체 7,145,060 / 8,145,060개  ·  실제 1,105 / 1,248회</text>
+
+  <text x="65" y="690" font-family="'Malgun Gothic',sans-serif" font-size="31" font-weight="900" fill="#2d2b32">실제로 번호가 등장한 구간 수</text>
+  <rect x="62" y="715" width="1076" height="53" rx="9" fill="#322e35" />
+  <g font-family="'Malgun Gothic',sans-serif" font-size="22" font-weight="800" fill="white">
+    <text x="100" y="749">등장 구간</text><text x="538" y="749">전체 조합</text><text x="825" y="749">실제 당첨</text>
+  </g>
+  <g font-family="'Malgun Gothic',sans-serif" font-size="25" font-weight="800">
+    <rect x="62" y="780" width="1076" height="68" rx="8" fill="#f7f4f5" />
+    <text x="102" y="823" fill="#38333b">2개</text><text x="540" y="823" fill="#a81460">3.06%</text><text x="825" y="823" fill="#353139">45회 · 3.61%</text>
+    <rect x="62" y="855" width="1076" height="68" rx="8" fill="#fff9e8" />
+    <text x="102" y="898" fill="#38333b">3개</text><text x="540" y="898" fill="#a81460">32.96%</text><text x="825" y="898" fill="#353139">402회 · 32.21%</text>
+    <rect x="62" y="930" width="1076" height="68" rx="8" fill="#f7f4f5" />
+    <text x="102" y="973" fill="#38333b">4개</text><text x="540" y="973" fill="#a81460">51.69%</text><text x="825" y="973" fill="#353139">658회 · 52.72%</text>
+    <rect x="62" y="1005" width="1076" height="68" rx="8" fill="#fff9e8" />
+    <text x="102" y="1048" fill="#38333b">5개 모두</text><text x="540" y="1048" fill="#a81460">12.28%</text><text x="825" y="1048" fill="#353139">143회 · 11.46%</text>
+  </g>
+  <text x="65" y="1111" font-family="'Malgun Gothic',sans-serif" font-size="19" fill="#665f64">5개 구간을 모두 채운 조합은 1,000,000개뿐입니다. 보너스번호는 제외했습니다.</text>
+</svg>
