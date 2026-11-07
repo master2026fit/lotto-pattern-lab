@@ -87,6 +87,34 @@ input[type=number]{width:95px}
 .draw-review-banner summary{cursor:pointer;color:#f0d49d;font-weight:800}
 .draw-review-banner .hint{margin:7px 0}
 .draw-review-banner .simple-table{min-width:680px}
+.round-overview{margin:18px 0 24px;padding:19px;border:1px solid #567b8b;border-radius:17px;background:linear-gradient(145deg,#15324a,#0e2138)}
+.round-overview h2{margin:0;font-size:21px;color:#fff}
+.round-overview .round-heading{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.round-overview .round-heading .tag{font-size:12px}
+.round-overview-grid{display:grid;grid-template-columns:1.12fr 1fr;gap:14px}
+.round-overview-card{border:1px solid #37546d;background:#0c1c2e;border-radius:13px;padding:15px;min-width:0}
+.round-overview-card h3{margin:0 0 7px;font-size:16px;color:#f6d9a5}
+.round-result{padding:10px 0;border-top:1px solid #2d435b}
+.round-result:first-child{border-top:0}
+.round-result-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:7px}
+.round-result .ballset{gap:5px;align-items:center}
+.round-result .ball{width:30px;height:30px;font-size:12px}
+.round-result .round-bonus{font-size:11px;color:#b5c9dd;margin-left:5px;white-space:nowrap}
+.round-result .round-bonus .ball{margin-left:5px}
+.round-result .round-result-note{font-size:12px;color:#c3d3e3;margin-top:6px;line-height:1.6}
+.round-overview .round-changes{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
+.round-change{font-size:12px;padding:8px 11px;border-radius:9px;border:1px solid #415e78;background:#152b43;color:#d3e1f2}
+.round-change b{font-size:17px;display:block;color:#f4d6a2}
+.round-change.added{border-color:#3d8b73;background:#123a33}.round-change.added b{color:#9df2ca}
+.round-change.removed{border-color:#95616c;background:#3b2736}.round-change.removed b{color:#ffb6bd}
+.round-overview .round-number-list{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0 14px}
+.round-overview .round-number-list button{display:inline-grid;place-items:center;width:32px;height:32px;border:1px solid #6f9e85;border-radius:50%;background:#1e5545;color:#e0ffee;font-weight:800;cursor:pointer}
+.round-overview .round-number-list button.removed{background:#493042;border-color:#90596d;color:#ffd9dc}
+.round-overview .round-number-list button:hover{filter:brightness(1.3)}
+.round-overview .round-note{font-size:12px;color:#aebed3;line-height:1.75;margin:6px 0}
+.round-overview .round-line-items{margin:10px 0;padding:10px 12px;border:1px solid #2b4b63;border-radius:10px;background:#12283e;font-size:12px;line-height:1.8;color:#c4d8e8}
+@media(max-width:850px){.round-overview-grid{grid-template-columns:1fr}}
+@media(max-width:420px){.round-overview{padding:13px}.round-overview-card{padding:12px}.round-result .ball{width:27px;height:27px;font-size:11px}.round-result .ballset{gap:3px}.round-result .round-bonus .ball{margin-left:2px}}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:15px}
 .ticket{background:#fff;color:#183153;border:1px solid #d9e3ee;border-left:5px solid #d7a859;border-radius:11px;padding:14px 17px;display:flex;justify-content:space-between;align-items:center;gap:12px;margin:10px 0}
 .ticket strong{color:#234b91}
@@ -177,8 +205,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 .pinned-box input{width:100%;margin-top:8px;min-height:46px}
 .candidate-selected{color:var(--mint);font-weight:750}
 .candidate-locked{color:var(--gold);font-weight:750}
-.candidate-excluded{color:var(--muted)}
-.candidate-review{margin-top:18px}
+.candidate-excluded{color:var(--muted)}.candidate-review{margin-top:18px}
 .candidate-review details{margin-top:12px}
 .candidate-review .small-note{font-size:.88rem;color:var(--muted)}
 .candidate-review .toolbar{align-items:center}
@@ -237,6 +264,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
   <div class="hero"><div class="eyebrow">WEEKLY AUTO DISCOVERY</div><h1 id="heroTitle">로또 번호별 자동 패턴 분석</h1><p class="lead">1~45번의 기본 조건과 번호별 출현 자리·간격·회차 이동 흐름을 전수 검사합니다. 번호를 누르면 이번 회차의 실제 연결 패턴과 성공·실패 PPT 그림을 확인할 수 있습니다.</p>
     <div class="flex"><button class="btn" onclick="reloadData()">최신 당첨번호 확인</button><button class="btn secondary" onclick="go('tickets')">최종 5조합 만들기</button><span class="tag" id="sourceBadge">조회 준비 중</span></div>
   </div>
+  <section id="roundOverview" class="round-overview" aria-label="최근 회차 결과와 새 회차 변경 현황" aria-live="polite"><div class="round-heading"><h2>📅 회차별 한눈에 보기</h2><span class="tag">최신 결과를 불러오는 중</span></div><p class="hint">최근 당첨 결과와 다음 회차의 변화가 여기에 자동으로 표시됩니다.</p></section>
   <div id="drawReviewNotice" class="draw-review-banner" aria-live="polite"></div>
   <div id="serverReviewGallery" class="section panel" hidden></div>
   <div id="serverPredrawLedger" class="section panel"><h2>🔒 서버 사전 저장 연구원장</h2><div id="serverPredrawLedgerContent" class="hint">추첨 전 저장된 자료를 확인 중입니다.</div></div>
@@ -357,8 +385,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
     #watch #ln-pattern-watch-v1{max-width:none;margin:18px 0;padding:18px;background:#101f33;border:1px solid #355171;color:#e7edf6;box-shadow:none}
     #watch #ln-pattern-watch-v1 h2,#watch #ln-pattern-watch-v1 h3{color:#e7f0ff}
     #watch #ln-pattern-watch-v1 .lnpw-sub,#watch #ln-pattern-watch-v1 .lnpw-state,#watch #ln-pattern-watch-v1 .lnpw-note,#watch #ln-pattern-watch-v1 .lnpw-legend{color:#b2c3d9}
-    #watch #ln-pattern-watch-v1 .lnpw-stat,#watch #ln-pattern-watch-v1 .lnpw-button{background:#182d45;color:#e7f0ff;border-color:#355171}
-    #watch #ln-pattern-watch-v1 .lnpw-stat.focus,#watch #ln-pattern-watch-v1 .lnpw-pill.focus{background:#40301d;color:#f9d89a;border-color:#8c6929}
+    #watch #ln-pattern-watch-v1 .lnpw-stat,#watch #ln-pattern-watch-v1 .lnpw-button{background:#182d45;color:#e7f0ff;border-color:#355171}    #watch #ln-pattern-watch-v1 .lnpw-stat.focus,#watch #ln-pattern-watch-v1 .lnpw-pill.focus{background:#40301d;color:#f9d89a;border-color:#8c6929}
     #watch #ln-pattern-watch-v1 .lnpw-pill{background:#16283f;border-color:#355171}
     #watch #ln-pattern-watch-v1 .lnpw-pill small{color:#b8c8df}
     #watch #ln-pattern-watch-v1 .lnpw-pill.focus small{color:#f1c882}
@@ -507,6 +534,7 @@ async function reloadData(){
   $("patternAuditResult").innerHTML='<p class="hint">새 데이터로 다시 검증할 준비가 됐습니다.</p>';
   fillRecapRounds();
   renderDrawReviewNotice();
+  renderRoundOverview();
   renderServerPredrawLedger();
   if($("tickets").classList.contains("active"))showRecapImage();
   if($("research").classList.contains("active"))showResearch();
@@ -537,8 +565,7 @@ for(const k of [1,2,3,5]){
     (x,n)=>x===n,"선택 번호가 최근 "+k+"회 사이에 이미 등장한 상태입니다.");
 }
 for(const k of [1,3,5]){
-  for(const count of [1,2]){
-    addRule("이웃수","최근 "+k+"회 {n}번 이웃수 "+count+"개 이상",k,
+  for(const count of [1,2]){    addRule("이웃수","최근 "+k+"회 {n}번 이웃수 "+count+"개 이상",k,
       (ds,i,n)=>recentCount(ds,i,k,x=>Math.abs(x-n)===1)>=count,
       (x,n)=>Math.abs(x-n)===1,
       "선택 번호의 바로 앞뒤 번호가 최근 "+k+"회 동안 나온 횟수를 조사합니다.");
@@ -717,8 +744,7 @@ function makeExtraDirectRules(ds,n){
       (d,j,v)=>j>=1&&d[j-1].numbers.some(x=>Math.abs(x-v)===offset),
       (d,j)=>[j-1],"이웃 대체 가설을 넓힌 ±"+offset+" 거리 관찰입니다. 여러 번호에 동시에 해당하므로 독립적인 당첨 신호로 보지 않습니다.",
       (x,v)=>Math.abs(x-v)===offset);
-  }
-  const slots=recentPositions(ds,i,n,4);
+  }  const slots=recentPositions(ds,i,n,4);
   if(slots.length===4&&slots.every(x=>x.slot===slots[0].slot)){
     const slot=slots[0].slot;
     add("동일자리4",n+"번 최근 네 출현이 모두 "+slot+"구",4,
@@ -897,8 +923,7 @@ function scanModule16(ds,profiles){
     }
   }
 
-  const endingAbsent=(target,steps,endings)=>{
-    if(target<steps)return false;
+  const endingAbsent=(target,steps,endings)=>{    if(target<steps)return false;
     for(let j=target-steps;j<target;j++)
       if(ds[j].numbers.some(n=>endings.includes(n%10)))return false;
     return true;
@@ -1077,8 +1102,7 @@ function renderModule16(){
   $("module16Count").textContent="16개 분석 축의 기본 점검 완료 · 관찰 항목이 발견된 분류 "+
     state.module16.filter(m=>m.items.length).length+"개 · 번호 직접 신호와 집합 관찰을 구분";
 }
-function module16ForNumber(n){
-  if(!state.module16)return "";
+function module16ForNumber(n){  if(!state.module16)return "";
   const found=state.module16.flatMap(m=>m.items.filter(it=>it.n===n)
     .map(it=>({module:m.id,name:m.name,...it})));
   return '<div class="section panel"><h2>16모듈 중 '+n+'번 관련 직접 관찰</h2>'+
@@ -1257,8 +1281,7 @@ function evidenceBar(e){
   const v=evidenceOf(e);
   const rate=v.n?pct(v.rate):"비교 자료 없음";
   const w=v.n?Math.max(0,Math.min(100,v.rate/0.30*100)):0;
-  return '<div class="evidence-panel"><div class="evidence-tag">'+clean(evidenceVerdict(e))+'</div>'+
-    '<div class="evidence-compare"><strong>최근 검증 구간:</strong> '+v.n+'회 중 '+v.w+'회 출현 ('+rate+')</div>'+
+  return '<div class="evidence-panel"><div class="evidence-tag">'+clean(evidenceVerdict(e))+'</div>'+    '<div class="evidence-compare"><strong>최근 검증 구간:</strong> '+v.n+'회 중 '+v.w+'회 출현 ('+rate+')</div>'+
     '<div class="evidence-meter" role="img" aria-label="관찰 출현비율 '+rate+'와 기본 비교선 13.3퍼센트"><span class="value" style="width:'+
     w.toFixed(1)+'%"></span><i class="base"></i></div>'+
     '<div class="evidence-compare">민트색: 관찰 비율(표 범위 0~30%) · 금색: 일반적인 비교선 13.3%</div>'+
@@ -1437,8 +1460,7 @@ function renderHistoryPage(details,key,page){
 
 function ruleCard(n,e,ds){
   state.proofCache.set(n+":"+e.rule.id,e);
-  const failures=e.cases-e.wins;
-  const rate=e.cases?e.wins/e.cases:0;
+  const failures=e.cases-e.wins;  const rate=e.cases?e.wins/e.cases:0;
   const valRate=e.holdCases?e.holdWins/e.holdCases:NaN;
   const current=e.rule.k;
   const lastD=latest(ds).draw_no;
@@ -1617,8 +1639,7 @@ function comparisonMarkup(nums,focus,ds){
   const table=(list,limit)=>{
     const chosen=limit?list.slice(0,limit):list;
     return '<div class="tablewrap"><table class="simple-table compare-grid"><thead><tr><th>이번 회차 검사 조건</th>'+
-      nums.map(n=>'<th>'+n+'번</th>').join("")+
-      '<th>45개 중 일치</th><th>실제 자료·그림</th></tr></thead><tbody>'+
+      nums.map(n=>'<th>'+n+'번</th>').join("")+      '<th>45개 중 일치</th><th>실제 자료·그림</th></tr></thead><tbody>'+
       chosen.map(rowHtml).join("")+'</tbody></table></div>';
   };
   const sample=rows.find(x=>x.matched.includes(focus)&&x.selectedCount<3)||
@@ -1797,8 +1818,7 @@ function autoNumbers(dsProfiles,round,size=45){
     const neutralTie=n=>((Math.imul(n,1103515245)+Math.imul(seed,12345))>>>0)^((n+seed*17)*2654435761>>>0);
     pending.sort((a,b)=>countInBand(a)-countInBand(b)||((neutralTie(a)>>>0)-(neutralTie(b)>>>0)));
     chosen.push(pending.shift());
-  }
-  return chosen.sort((a,b)=>a-b);
+  }  return chosen.sort((a,b)=>a-b);
 }
 function readPinned(){
   const values=$("lockedInput").value.trim().split(/[\s,;]+/).filter(Boolean).map(Number);
@@ -1977,8 +1997,7 @@ function useAllNumbers(){
 }
 function setResearchPool(){
   if(!state.profiles.length)return;
-  let pins,limit;
-  try{pins=readPinned();limit=candidateLimit();}
+  let pins,limit;  try{pins=readPinned();limit=candidateLimit();}
   catch(err){$("autoPoolExplanation").textContent=err.message;return;}
   state.locked=pins;state.poolMode="research";
   const plan=researchPoolPlan(),base=limit?plan.numbers.slice(0,limit):plan.numbers;
@@ -2157,8 +2176,7 @@ function buildRecapData(round){
   const profileMap=new Map(allProfiles.map(p=>[p.n,p]));
   const selectedMap=new Map(selected.map(x=>[x.n,x]));
   const allNumbers=Array.from({length:45},(_,i)=>{
-    const n=i+1,p=profileMap.get(n),savedRow=selectedMap.get(n);
-    return {n,basic:savedRow?savedRow.basic:p.basicCount,
+    const n=i+1,p=profileMap.get(n),savedRow=selectedMap.get(n);    return {n,basic:savedRow?savedRow.basic:p.basicCount,
       connected:savedRow?savedRow.connected:p.flowCount,
       selected:pool.includes(n),hit:wins.includes(n)};
   });
@@ -2337,8 +2355,7 @@ async function syncServerFullScans(){
     const packet=await response.json();
     if(!packet||packet.version!==1||!Array.isArray(packet.records)||packet.records.length>104)
       throw Error("서버 기록 형식 불일치");
-    const records=packet.records.filter(x=>{
-      if(!x||typeof x!=="object"||!Number.isInteger(x.round))return false;
+    const records=packet.records.filter(x=>{      if(!x||typeof x!=="object"||!Number.isInteger(x.round))return false;
       const cutoff=Date.UTC(2002,11,7,11,30)+(x.round-1)*7*24*60*60*1000;
       return x.captureSource==="scheduled-github-actions"&&
         x.scope==="all45"&&x.candidatePolicy==="dynamic-unlimited-v2"&&
@@ -2517,8 +2534,7 @@ async function syncHistoricalWalkforward(){
         throw Error("과거 개별 사례 형식 불일치");
       state.historicalCaseIndex=index;
     }catch(e){console.warn("전 회차 번호 색인:",e.message);}
-  }
-  renderHistoricalWalkforward();
+  }  renderHistoricalWalkforward();
 }
 function renderHistoricalWalkforward(){
   const out=$("historicalWalkforwardContent"),p=state.historicalWalkforward;
@@ -2697,8 +2713,7 @@ function historicalTraceDiagram(round,n,key,drawMap){
       if(periods.every(p=>previous(p.round)?.numbers.includes(n))){
         nodes=periods;method="동일 번호 · "+gap+"회 간격";break;
       }
-    }
-  }else if(key==="diagonal"){
+    }  }else if(key==="diagonal"){
     outer:for(let gap=1;gap*4<=round-1;gap++){
       const prior=previous(round-gap);
       if(!prior)continue;
@@ -2877,8 +2892,7 @@ function renderHistoricalComposite(){
   }
   const positions=keys.map(key=>index.axisKeys.indexOf(key));
   if(positions.length<2||positions.some(i=>i<0)){out.textContent="선택한 조건을 확인해 주세요.";return;}
-  const from=$("historicalCompositePeriod")?.value==="late"?p.lateRange[0]:p.firstTestRound;
-  const to=$("historicalCompositePeriod")?.value==="late"?p.lateRange[1]:p.lastTestRound;
+  const from=$("historicalCompositePeriod")?.value==="late"?p.lateRange[0]:p.firstTestRound;  const to=$("historicalCompositePeriod")?.value==="late"?p.lateRange[1]:p.lastTestRound;
   const cases=item.cases.filter(c=>c[0]>=from&&c[0]<=to);
   const stats=indices=>{
     const matching=cases.filter(c=>indices.every(i=>!!(c[1]&(1<<i))));
@@ -3057,8 +3071,7 @@ function renderHistoricalNumberConsistency(){
   const cards=axes.map(axis=>{
     const early=stat(earlyStart,earlyEnd,axis.picked),late=stat(lateStart,lateEnd,axis.picked);
     return {label:axis.label,early,late,status:group(early,late)};
-  });
-  const filter=$("historicalConsistencyView")?.value||"all";
+  });  const filter=$("historicalConsistencyView")?.value||"all";
   const visible=cards.filter(row=>filter==="all"||row.status.key===filter);
   const fmtRate=record=>record.rate===null?"—":record.rate.toFixed(1)+"%";
   const fmtDiff=value=>(value>=0?"+":"")+value.toFixed(1)+"%p";
@@ -3237,8 +3250,7 @@ function renderHistoricalFollowupReview(){
     ["predictedButMissed","검색됐지만 미당첨","선택한 번호가 해당 회차에 나오지 않은 경우"],
     ["unpredictedWinner","검색 밖 실제 당첨","선택하지 않았지만 해당 회차에 당첨된 경우"]
   ];
-  const head='<div style="margin:22px 0 10px;padding-top:18px;border-top:1px solid rgba(128,148,175,.3)">'+
-    '<h3>🕒 놓친 번호, 몇 회 뒤 다시 나왔나?</h3>'+
+  const head='<div style="margin:22px 0 10px;padding-top:18px;border-top:1px solid rgba(128,148,175,.3)">'+    '<h3>🕒 놓친 번호, 몇 회 뒤 다시 나왔나?</h3>'+
     '<p class="hint">① 검색됐지만 미당첨 ② 검색 밖 실제 당첨을 구분해 다음 1·2·3·5·10회 내 재등장을 복기합니다. 아래 비율은 <strong>과거 사후 집계</strong>로, 미래 적중 확률 상승의 증거가 아닙니다.</p></div>';
   const header='<div class="tablewrap"><table class="simple-table"><thead><tr>'+
     '<th>몇 회 이내</th><th>검색됐지만 미당첨</th><th>검색 밖 실제 당첨</th><th>무작위 번호 기준</th>'+
@@ -3417,8 +3429,7 @@ function reconcileFullScans(){
   const book=fullScanBook();let changed=false;
   for(const item of book){
     if(item.review)continue;
-    const actual=draws.get(item.round);
-    if(!actual)continue;
+    const actual=draws.get(item.round);    if(!actual)continue;
     item.review={actual:actual.numbers.slice(),bonus:actual.bonus_no};
     changed=true;
   }
@@ -3472,6 +3483,89 @@ function renderFullScanStatus(){
 }
 
 const DRAW_REVIEW_ACK_KEY="lotto_pattern_review_ack_v1";
+function renderRoundOverview(){
+  const out=$("roundOverview");
+  if(!out||!state.draws.length)return;
+  const last=latest(state.draws),next=upcoming(state.draws);
+  const book=fullScanBook(),byRound=new Map(book.map(item=>[item.round,item]));
+  const serverReviews=new Map((state.serverWeeklyReviews||[]).map(item=>[item.round,item]));
+  const recent=state.draws.slice(-5).reverse().map(draw=>{
+    const saved=byRound.get(draw.draw_no),server=serverReviews.get(draw.draw_no);
+    let recap='사전 저장 연구원장 없음 · 복기 비교 대기',status='대기';
+    if(saved&&saved.review&&Array.isArray(saved.candidatePool)&&
+      Array.isArray(saved.review.actual)&&saved.review.actual.length===6&&
+      saved.review.actual.every(n=>draw.numbers.includes(n))){
+      const hits=draw.numbers.filter(n=>saved.candidatePool.includes(n));
+      recap='사전 연구후보 '+saved.candidatePool.length+'수 중 당첨번호 '+hits.length+'개 포함'+
+        (hits.length?' ('+hits.join('·')+')':'');
+      status='복기';
+    }else if(server&&Array.isArray(server.actual)&&
+      server.actual.length===6&&server.actual.every(n=>draw.numbers.includes(n))){
+      recap='사전 연구후보 '+server.candidateCount+'수 중 당첨번호 '+server.selectedHit.length+'개 포함'+
+        (server.selectedHit.length?' ('+server.selectedHit.join('·')+')':'');
+      status='복기';
+    }
+    return '<div class="round-result"><div class="round-result-head"><strong>'+draw.draw_no+'회 당첨 결과</strong>'+
+      '<span class="tag '+(status==='복기'?'green':'')+'">'+status+'</span></div>'+
+      balls(draw.numbers)+'<div class="round-bonus">보너스 '+ball(draw.bonus_no)+'</div>'+
+      '<div class="round-result-note">'+clean(recap)+'</div></div>';
+  }).join('');
+
+  const savedCurrent=byRound.get(next),previous=byRound.get(next-1);
+  const currentIsSaved=!!(savedCurrent&&Array.isArray(savedCurrent.candidatePool)&&
+    Array.isArray(savedCurrent.rows)&&savedCurrent.rows.length===45);
+  const proposed=currentIsSaved?savedCurrent.candidatePool:researchPoolPlan().numbers;
+  const currentPool=[...new Set(proposed.filter(n=>Number.isInteger(n)&&n>=1&&n<=45))].sort((a,b)=>a-b);
+  const priorIsSaved=!!(previous&&Array.isArray(previous.candidatePool)&&
+    Array.isArray(previous.rows)&&previous.rows.length===45);
+  const previousPool=priorIsSaved?new Set(previous.candidatePool):new Set();
+  const currentSet=new Set(currentPool);
+  const added=priorIsSaved?currentPool.filter(n=>!previousPool.has(n)):[];
+  const removed=priorIsSaved?[...previousPool].filter(n=>!currentSet.has(n)).sort((a,b)=>a-b):[];
+  const kept=priorIsSaved?currentPool.filter(n=>previousPool.has(n)):[];
+  const sourceLabel=currentIsSaved?'추첨 전 저장된 '+next+'회 원장':'현재 재계산된 '+next+'회 후보(미확정)';
+  const priorLabel=priorIsSaved?(next-1)+'회 사전 저장 원장':'직전 회차 사전 원장 없음';
+  const numberButtons=(arr,removedType)=>arr.length?
+    '<div class="round-number-list">'+arr.map(n=>'<button type="button" class="'+(removedType?'removed':'')+'" '+
+    'onclick="openDetail('+n+')" title="'+n+'번 현재 패턴 보기">'+n+'</button>').join('')+'</div>':
+    '<p class="round-note">해당 번호 없음</p>';
+
+  let changeContent='<p class="round-note">'+clean(sourceLabel)+' · '+clean(priorLabel)+'</p>';
+  if(priorIsSaved){
+    changeContent+='<div class="round-changes">'+
+      '<div class="round-change added">새로 추가<b>'+added.length+'수</b></div>'+
+      '<div class="round-change">계속 유지<b>'+kept.length+'수</b></div>'+
+      '<div class="round-change removed">이번에 빠짐<b>'+removed.length+'수</b></div></div>'+
+      '<strong>🟢 새로 들어온 연구후보</strong>'+numberButtons(added,false)+
+      '<strong>🔴 이번에 빠진 연구후보</strong>'+numberButtons(removed,true);
+    if(previous.candidatePolicy!==(savedCurrent?.candidatePolicy||'dynamic-unlimited-v2'))
+      changeContent+='<p class="round-note">⚠️ 두 회차의 후보 선정 정책이 다를 수 있어 변화 개수는 단순 비교입니다.</p>';
+  }else{
+    changeContent+='<div class="round-changes"><div class="round-change">이번 연구후보<b>'+currentPool.length+'수</b></div></div>'+
+      '<p class="round-note">직전 회차의 추첨 전 저장본이 없어 ‘신규 추가·유지·빠짐’을 확정할 수 없습니다.</p>';
+  }
+  if(priorIsSaved){
+    const previousFlags=new Map(previous.rows.map(row=>[row.n,new Set(row.flags||[])]));
+    const currentFlags=currentIsSaved?
+      savedCurrent.rows.map(row=>({n:row.n,flags:row.flags||[]})):
+      Array.from({length:45},(_,i)=>({n:i+1,flags:[...patternAuditKeys(state.draws,state.draws.length,i+1)]}));
+    const names=new Map(PATTERN_AUDIT_AXES.map(axis=>[axis.key,axis.label]));
+    const newSignals=currentFlags.flatMap(row=>row.flags.filter(flag=>
+      names.has(flag)&&!(previousFlags.get(row.n)||new Set()).has(flag))
+      .map(flag=>({n:row.n,label:names.get(flag)})));
+    changeContent+='<div class="round-line-items"><b>새로 감지된 연결조건 '+newSignals.length+'건</b><div>'+
+      (newSignals.length?newSignals.slice(0,8).map(x=>x.n+'번 · '+clean(x.label)).join(' / ')+
+        (newSignals.length>8?' / 외 '+(newSignals.length-8)+'건':''):'직전 원장과 비교해 새로 켜진 조건 없음')+
+      '</div></div>';
+  }
+  changeContent+='<p class="round-note">후보와 연결조건의 ‘추가’는 기록상의 변화이며 당첨 가능성이 올라갔다는 의미는 아닙니다. 고정수·제외수·조합은 자동으로 변경하지 않습니다.</p>';
+  out.innerHTML='<div class="round-heading"><h2>📅 회차별 한눈에 보기</h2><div class="flex">'+
+    '<span class="tag green">최근 확정 '+last.draw_no+'회</span><span class="tag gold">연구 중 '+next+'회</span></div></div>'+
+    '<div class="round-overview-grid"><div class="round-overview-card"><h3>지난 결과 · 최근 5회</h3>'+
+    '<p class="round-note">당첨번호와 실제 사전 연구후보의 포함 개수를 함께 확인합니다.</p>'+recent+'</div>'+
+    '<div class="round-overview-card"><h3>새 회차 · 추가 및 변경</h3>'+changeContent+'</div></div>'+
+    (state.source==='온라인'?'':'<p class="round-note">⚠️ 기기에 저장된 당첨 데이터를 사용 중입니다. 최신 회차 여부는 온라인 연결 후 다시 확인하세요.</p>');
+}
 function summarizeStoredReview(item){
   if(!item||!item.review||!Array.isArray(item.review.actual)||item.review.actual.length!==6||
     !Array.isArray(item.rows)||item.rows.length!==45)throw Error("사전 복기 기록 형식이 올바르지 않습니다.");
@@ -3597,8 +3691,7 @@ async function runPatternAudit(){
       '<div class="tablewrap"><table class="simple-table"><thead><tr><th>사전 검색 조건</th>'+
       '<th>앞 절반 조건 성립: 출현/건</th><th>뒤 절반 조건 성립: 출현/건</th>'+
       '<th>뒤 절반 미성립: 출현/건</th><th>판정</th></tr></thead><tbody>'+
-      table+'</tbody></table></div>'+
-      '<p class="caution">이 결과는 현재 정의된 규칙을 과거 자료에 다시 적용한 재현 실험으로, 진짜 사전 저장 실험과 구분합니다. 조건끼리 겹치고 과거를 보며 만든 규칙이므로 숫자의 미래 당첨확률을 입증하지 않습니다. 표본 부족·기간 간 역전인 조건을 우선 경계하고, 일관성이 있어 보여도 자동 고정수나 제외수로 바꾸지 않습니다.</p>';
+      table+'</tbody></table></div>'+      '<p class="caution">이 결과는 현재 정의된 규칙을 과거 자료에 다시 적용한 재현 실험으로, 진짜 사전 저장 실험과 구분합니다. 조건끼리 겹치고 과거를 보며 만든 규칙이므로 숫자의 미래 당첨확률을 입증하지 않습니다. 표본 부족·기간 간 역전인 조건을 우선 경계하고, 일관성이 있어 보여도 자동 고정수나 제외수로 바꾸지 않습니다.</p>';
     state.lastPatternAudit={length,report,round:latest(ds).draw_no};
   }catch(err){
     out.innerHTML='<p class="caution">누적 검증에 실패했습니다: '+clean(err.message)+'</p>';
@@ -3777,8 +3870,7 @@ function trialBook(){
     const raw=JSON.parse(localStorage.getItem(TRIAL_BOOK_KEY)||"[]");
     state.trialBookCache=Array.isArray(raw)?raw.filter(x=>x&&Number.isInteger(x.round)&&
       Number.isInteger(x.sourceRound)&&Array.isArray(x.pool)&&Array.isArray(x.tickets)):[];
-  }catch(_){state.trialBookCache=[];}
-  return state.trialBookCache;
+  }catch(_){state.trialBookCache=[];}  return state.trialBookCache;
 }
 function saveTrialBook(rows){
   state.trialBookCache=rows.slice();
@@ -3957,8 +4049,7 @@ function parseResearchBackup(raw){
     records.fullScans.length>BACKUP_SCAN_LIMIT||records.trials.length>BACKUP_TRIAL_LIMIT||
     (records.pinned!==null&&records.pinned!==undefined&&(
       !Number.isInteger(records.pinned.round)||records.pinned.round<1||
-      records.pinned.round>5000||!validBackupNumbers(records.pinned.pins,null,0,5))))
-    throw Error("백업 내 기록 수 또는 고정수 데이터가 유효하지 않습니다.");
+      records.pinned.round>5000||!validBackupNumbers(records.pinned.pins,null,0,5))))    throw Error("백업 내 기록 수 또는 고정수 데이터가 유효하지 않습니다.");
   if(records.fullScans.some(x=>!validateFullBackupScan(x))||
     records.trials.some(x=>!validateTrialBackup(x)))
     throw Error("일부 검색·조합 기록이 손상됐습니다. 안전을 위해 파일 전체를 가져오지 않습니다.");
@@ -4137,8 +4228,7 @@ function renderTrialHistory(){
     cards+(book.length>10?'<p class="hint">최근 10개 실험을 표시합니다. 전체 기록은 JSON 백업을 이용하세요.</p>':'')+
     (state.trialStorageFailed?'<p class="caution">브라우저 저장공간에 기록을 저장하지 못했습니다. JSON 백업을 이용해 주세요.</p>':'')+'</div>';
 }
-function makeTickets(again){
-  if(!state.draws.length)return alert("데이터를 먼저 연결해 주세요.");
+function makeTickets(again){  if(!state.draws.length)return alert("데이터를 먼저 연결해 주세요.");
   let pool,pins;
   try{
     pins=readPinned();
@@ -4317,8 +4407,7 @@ async function runBacktest(){
       '</tbody></table></div>'+
       '<p class="caution">주의: 장기 연결·복합 관찰 규칙 자체는 과거 자료를 연구하며 설계한 것이므로 이 검증도 완전한 미래 실험이 아닙니다. 후보 수가 N개라면 무작위 선택에서도 당첨번호 포함 기대값은 6×N/45개입니다. 표의 무작위 비교는 매 회차 후보 수를 맞췄습니다. 결과가 높거나 낮아도 다음 회차의 당첨확률이 높아졌다는 뜻은 아닙니다.</p></div>';
   }catch(error){
-    progress("검증을 완료하지 못했습니다. ("+error.message+")");
-  }finally{
+    progress("검증을 완료하지 못했습니다. ("+error.message+")");  }finally{
     state.backtestRunning=false;btn.disabled=false;
   }
 }
