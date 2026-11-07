@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1190" width="1200" height="1190" role="img" aria-labelledby="title description">
+  <title id="title">로또 홀짝 3대3 vs 2대4 4대2 전수조사</title>
+  <desc id="description">1회부터 1248회까지 홀짝 조합 실제 분포. 홀수3 짝수3 414회 33.17퍼센트. 홀수2 짝수4 또는 홀수4 짝수2 합계615회49.28퍼센트. 홀수는 23개 짝수는22개이다. 모든 한 게임 1등 확률은 동일하다.</desc>
+  <rect width="1200" height="1190" fill="#f8faf9"/>
+  <rect x="28" y="28" width="1144" height="1134" fill="#fff" stroke="#d4ddda" stroke-width="3"/>
+  <rect x="70" y="70" width="360" height="45" rx="22" fill="#185750"/>
+  <text x="92" y="100" fill="#fff" font-size="22" font-family="sans-serif" font-weight="850">LOTTO NOTE   |   별난 로또 실험실 ⑫</text>
+  <text x="69" y="182" fill="#173f3d" font-size="52" font-family="sans-serif" font-weight="900">홀짝 3:3이 정답일까?</text>
+  <text x="70" y="230" fill="#75817e" font-size="24" font-family="sans-serif">1~1248회 본번호 6개 · 1,248개 실제 결과 전수 비교</text>
+  <line x1="70" y1="260" x2="1132" y2="260" stroke="#dfe7e5" stroke-width="3"/>
+  <rect x="72" y="294" width="500" height="160" rx="16" fill="#1c5953"/>
+  <text x="107" y="342" fill="#e9fbf6" font-size="22" font-family="sans-serif" font-weight="700">홀수 3 · 짝수 3</text>
+  <text x="107" y="414" fill="#fff" font-size="73" font-family="sans-serif" font-weight="900">33.17%</text>
+  <rect x="592" y="294" width="538" height="160" rx="16" fill="#fff2e8" stroke="#ffd6be" stroke-width="3"/>
+  <text x="629" y="342" fill="#ab5937" font-size="22" font-family="sans-serif" font-weight="700">홀수 2·짝수 4 + 홀수 4·짝수 2</text>
+  <text x="629" y="414" fill="#d16238" font-size="73" font-family="sans-serif" font-weight="900">49.28%</text>
+  <text x="70" y="515" fill="#1e4a49" font-size="30" font-weight="850" font-family="sans-serif">실제 분포와 수학적 예상 비교</text>
+  <text x="71" y="547" fill="#71817c" font-size="19" font-family="sans-serif">녹색 막대 = 실제 비율  |  주황색 세로선 = 이론상 비율</text>
+  <g stroke="#e4eae8"><line x1="255" y1="580" x2="255" y2="1015"/><line x1="410" y1="580" x2="410" y2="1015"/><line x1="565" y1="580" x2="565" y2="1015"/><line x1="720" y1="580" x2="720" y2="1015"/><line x1="797" y1="580" x2="797" y2="1015"/></g>
+  <g font-size="17" fill="#83918c" font-family="sans-serif"><text x="255" y="576">0%</text><text x="401" y="576">10%</text><text x="556" y="576">20%</text><text x="711" y="576">30%</text><text x="789" y="576">35%</text></g>
+  <g font-family="sans-serif">
+    <text x="75" y="632" font-size="25" fill="#243c3a" font-weight="800">홀 0 : 짝 6</text><rect x="255" y="605" width="21.1" height="39" rx="5" fill="#28716a"/><line x1="269.2" y1="598" x2="269.2" y2="649" stroke="#d4663b" stroke-width="6"/><text x="892" y="632" font-size="25" font-weight="850" fill="#183f3b">17회</text><text x="1031" y="632" font-size="23" fill="#526a66">1.36%</text>
+    <text x="75" y="693" font-size="25" fill="#243c3a" font-weight="800">홀 1 : 짝 5</text><rect x="255" y="666" width="104.2" height="39" rx="5" fill="#28716a"/><line x1="370.2" y1="659" x2="370.2" y2="710" stroke="#d4663b" stroke-width="6"/><text x="892" y="693" font-size="25" font-weight="850" fill="#183f3b">84회</text><text x="1031" y="693" font-size="23" fill="#526a66">6.73%</text>
+    <text x="75" y="754" font-size="25" fill="#243c3a" font-weight="800">홀 2 : 짝 4</text><rect x="255" y="727" width="353.9" height="39" rx="5" fill="#28716a"/><line x1="607.1" y1="720" x2="607.1" y2="771" stroke="#d4663b" stroke-width="6"/><text x="892" y="754" font-size="25" font-weight="850" fill="#183f3b">285회</text><text x="1031" y="754" font-size="23" fill="#526a66">22.84%</text>
+    <rect x="59" y="782" width="1072" height="57" rx="7" fill="#e7f5ef"/>
+    <text x="75" y="821" font-size="25" fill="#104b43" font-weight="900">홀 3 : 짝 3</text><rect x="255" y="792" width="514.1" height="39" rx="5" fill="#145c52"/><line x1="773.9" y1="785" x2="773.9" y2="836" stroke="#d4663b" stroke-width="6"/><text x="892" y="821" font-size="25" font-weight="900" fill="#104b43">414회</text><text x="1031" y="821" font-size="23" fill="#104b43" font-weight="800">33.17%</text>
+    <text x="75" y="883" font-size="25" fill="#243c3a" font-weight="800">홀 4 : 짝 2</text><rect x="255" y="856" width="409.8" height="39" rx="5" fill="#28716a"/><line x1="644.2" y1="849" x2="644.2" y2="900" stroke="#d4663b" stroke-width="6"/><text x="892" y="883" font-size="25" font-weight="850" fill="#183f3b">330회</text><text x="1031" y="883" font-size="23" fill="#526a66">26.44%</text>
+    <text x="75" y="944" font-size="25" fill="#243c3a" font-weight="800">홀 5 : 짝 1</text><rect x="255" y="917" width="122.9" height="39" rx="5" fill="#28716a"/><line x1="395.9" y1="910" x2="395.9" y2="961" stroke="#d4663b" stroke-width="6"/><text x="892" y="944" font-size="25" font-weight="850" fill="#183f3b">99회</text><text x="1031" y="944" font-size="23" fill="#526a66">7.93%</text>
+    <text x="75" y="1005" font-size="25" fill="#243c3a" font-weight="800">홀 6 : 짝 0</text><rect x="255" y="978" width="23.6" height="39" rx="5" fill="#28716a"/><line x1="274.2" y1="971" x2="274.2" y2="1022" stroke="#d4663b" stroke-width="6"/><text x="892" y="1005" font-size="25" font-weight="850" fill="#183f3b">19회</text><text x="1031" y="1005" font-size="23" fill="#526a66">1.52%</text>
+  </g>
+  <rect x="72" y="1040" width="1058" height="72" rx="8" fill="#fff6e7" stroke="#eedcca" stroke-width="2"/>
+  <text x="99" y="1074" font-size="24" font-weight="850" fill="#a75b33" font-family="sans-serif">한 가지 놓치기 쉬운 사실</text>
+  <text x="99" y="1103" font-size="22" font-weight="750" fill="#3e514d" font-family="sans-serif">1~45에는 홀수 23개, 짝수 22개  ·  3:3도 전체 조합의 33.48%뿐</text>
+  <text x="74" y="1140" font-size="18" fill="#7b8882" font-family="sans-serif">로또6/45 본번호 기준 · 특정 6개 조합의 1등 확률은 모두 동일</text>
+</svg>
