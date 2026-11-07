@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">로또 1249회 역발상 제외수 실험: 33개를 제외하고 남은 12개 번호</title>
+  <desc id="desc">1249회 사전 검색 후보 33개를 제외하여 남은 12개 번호는 2, 10, 11, 13, 14, 16, 21, 29, 38, 40, 41, 42입니다. 무작위 로또 6/45 기준 남은 12수에 들어갈 실제 당첨번호는 0개 13.60%, 1개 34.97%, 2개 33.16%, 3개 이상 18.28%입니다. 예측 결과가 아니라 기준 확률입니다.</desc>
+  <rect x="0" y="0" width="1200" height="675" rx="28" fill="#f1f7f8"/>
+  <rect x="22" y="21" width="1156" height="633" rx="24" fill="#e6f0f5" stroke="#b9ccd8" stroke-width="2"/>
+  <text x="68" y="81" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-weight="900" font-size="33" fill="#163950">33개 번호를 제외하면, 무엇이 남을까?</text>
+  <text x="68" y="115" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="18" fill="#496a7b">1249회 추첨 전 저장한 검색 결과 · 남은 번호만 따로 보는 역발상 실험</text>
+  <rect x="66" y="149" width="318" height="240" rx="22" fill="#173b55"/>
+  <text x="95" y="196" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="20" font-weight="800" fill="#c9dce6">검색으로 잡힌 번호</text>
+  <text x="92" y="293" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="86" font-weight="900" fill="#f4d29d">33수</text>
+  <text x="95" y="342" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="17" fill="#d4e6ec">45개 중 33개는 이번 실험에서 제외</text>
+  <path d="M400 262 L445 262" stroke="#b3854d" stroke-width="8" stroke-linecap="round"/>
+  <path d="M439 244 L463 262 L439 280" fill="none" stroke="#b3854d" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="479" y="149" width="655" height="240" rx="22" fill="#fffdfa" stroke="#cfddd8" stroke-width="2"/>
+  <text x="507" y="193" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="22" font-weight="900" fill="#1e685e">남은 12수 · 연구용 대조군</text>
+  <g font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="27" font-weight="900" text-anchor="middle">
+    <circle cx="548" cy="250" r="33" fill="#a8dccb" stroke="#44957c" stroke-width="2"/><text x="548" y="260" fill="#143e3c">2</text>
+    <circle cx="649" cy="250" r="33" fill="#a8dccb" stroke="#44957c" stroke-width="2"/><text x="649" y="260" fill="#143e3c">10</text>
+    <circle cx="750" cy="250" r="33" fill="#a8dccb" stroke="#44957c" stroke-width="2"/><text x="750" y="260" fill="#143e3c">11</text>
+    <circle cx="851" cy="250" r="33" fill="#a8dccb" stroke="#44957c" stroke-width="2"/><text x="851" y="260" fill="#143e3c">13</text>
+    <circle cx="952" cy="250" r="33" fill="#a8dccb" stroke="#44957c" stroke-width="2"/><text x="952" y="260" fill="#143e3c">14</text>
+    <circle cx="1053" cy="250" r="33" fill="#a8dccb" stroke="#44957c" stroke-width="2"/><text x="1053" y="260" fill="#143e3c">16</text>
+    <circle cx="548" cy="333" r="33" fill="#a8dccb" stroke="#44957c" stroke-width="2"/><text x="548" y="343" fill="#143e3c">21</text>
+    <circle cx="649" cy="333" r="33" fill="#a8dccb" stroke="#44957c" stroke-width="2"/><text x="649" y="343" fill="#143e3c">29</text>
+    <circle cx="750" cy="333" r="33" fill="#a8dccb" stroke="#44957c" stroke-width="2"/><text x="750" y="343" fill="#143e3c">38</text>
+    <circle cx="851" cy="333" r="33" fill="#a8dccb" stroke="#44957c" stroke-width="2"/><text x="851" y="343" fill="#143e3c">40</text>
+    <circle cx="952" cy="333" r="33" fill="#a8dccb" stroke="#44957c" stroke-width="2"/><text x="952" y="343" fill="#143e3c">41</text>
+    <circle cx="1053" cy="333" r="33" fill="#a8dccb" stroke="#44957c" stroke-width="2"/><text x="1053" y="343" fill="#143e3c">42</text>
+  </g>
+  <rect x="66" y="417" width="1068" height="187" rx="20" fill="#fffefd" stroke="#ccdae2" stroke-width="2"/>
+  <text x="92" y="459" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="22" font-weight="900" fill="#173b55">남은 12수에 실제 본당첨번호가 포함될 기준 확률</text>
+  <g font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-weight="800" text-anchor="middle">
+    <rect x="93" y="483" width="137" height="61" rx="5" fill="#8299a6"/><text x="161.5" y="508" fill="#fff" font-size="18">0개</text><text x="161.5" y="531" fill="#fff" font-size="16">13.60%</text>
+    <rect x="232" y="483" width="352" height="61" rx="5" fill="#567b96"/><text x="408" y="508" fill="#fff" font-size="18">1개</text><text x="408" y="531" fill="#fff" font-size="17">34.97%</text>
+    <rect x="586" y="483" width="334" height="61" rx="5" fill="#3e987e"/><text x="753" y="508" fill="#fff" font-size="18">2개</text><text x="753" y="531" fill="#fff" font-size="17">33.16%</text>
+    <rect x="922" y="483" width="186" height="61" rx="5" fill="#d2a45f"/><text x="1015" y="508" fill="#203e51" font-size="18">3개 이상</text><text x="1015" y="531" fill="#203e51" font-size="16">18.28%</text>
+  </g>
+  <text x="94" y="581" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="16" fill="#5a7180">확률은 로또 6/45의 무작위 추첨 가정으로 계산 · 특정 검색법의 예측 성과가 아닙니다.</text>
+  <text x="68" y="631" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-weight="800" font-size="16" fill="#4b6779">LOTTO NOTE · 2026.11.07 추첨 전 기록 · 예측·당첨 보장 아님</text>
+</svg>
