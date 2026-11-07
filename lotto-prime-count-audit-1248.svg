@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1230" role="img" aria-labelledby="t d">
+<title id="t">로또 1~1248회 소수 출현 개수별 전수조사</title>
+<desc id="d">소수14개. 실제 소수0개109회,1개367회,2개446회,3개254회,4개64회,5개8회,6개0회. 모두 소수인 조합은 수학적으로3003가지.</desc>
+<rect width="1000" height="1230" rx="24" fill="#fafaf6"/>
+<path d="M0 18H1000" stroke="#ff571c" stroke-width="19"/>
+<text x="48" y="85" fill="#202321" font-size="31" font-weight="850" font-family="Noto Sans KR,Apple SD Gothic Neo,Malgun Gothic,sans-serif">별난 로또 실험실 ⑮  /  LOTTO NOTE</text>
+<text x="48" y="148" fill="#202321" font-size="46" font-weight="950" font-family="Noto Sans KR,Apple SD Gothic Neo,Malgun Gothic,sans-serif">당첨번호 여섯 개 중 소수는 몇 개?</text>
+<rect x="48" y="180" width="904" height="177" rx="17" fill="#dbf3e6"/>
+<text x="76" y="231" fill="#244538" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="27" font-weight="850">1~45 중 소수는 14개</text>
+<text x="76" y="284" fill="#183a2d" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="33" font-weight="850">2  3  5  7  11  13  17  19</text>
+<text x="76" y="332" fill="#183a2d" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="33" font-weight="850">23  29  31  37  41  43</text>
+<text x="48" y="424" fill="#252826" font-size="38" font-weight="900" font-family="Noto Sans KR,Malgun Gothic,sans-serif">1~1248회 실제 출현 횟수</text>
+<text x="48" y="465" fill="#69756c" font-size="24" font-family="Noto Sans KR,Malgun Gothic,sans-serif">막대는 실제 회차 수  /  오른쪽은 무작위 조합의 수학적 비율</text>
+<g font-family="Noto Sans KR,Malgun Gothic,sans-serif">
+  <text x="50" y="531" font-size="29" font-weight="850" fill="#26352c">0개</text><rect x="145" y="503" width="148" height="41" rx="6" fill="#aaaeb0"/><text x="308" y="534" font-size="28" font-weight="780" fill="#292f2b">109회</text><text x="950" y="533" text-anchor="end" font-size="26" fill="#647468">예상 9.04%</text>
+  <text x="50" y="632" font-size="29" font-weight="850" fill="#26352c">1개</text><rect x="145" y="604" width="497" height="41" rx="6" fill="#8ea89b"/><text x="658" y="635" font-size="28" font-weight="780" fill="#292f2b">367회</text><text x="950" y="681" text-anchor="end" font-size="26" fill="#647468">예상 29.20%</text>
+  <text x="50" y="739" font-size="29" font-weight="850" fill="#26352c">2개</text><rect x="145" y="711" width="604" height="41" rx="6" fill="#34644b"/><text x="769" y="742" font-size="28" font-weight="780" fill="#292f2b">446회</text><text x="950" y="789" text-anchor="end" font-size="26" fill="#647468">예상 35.15%</text>
+  <text x="50" y="846" font-size="29" font-weight="850" fill="#26352c">3개</text><rect x="145" y="818" width="344" height="41" rx="6" fill="#8ea89b"/><text x="508" y="849" font-size="28" font-weight="780" fill="#292f2b">254회</text><text x="950" y="895" text-anchor="end" font-size="26" fill="#647468">예상 20.09%</text>
+  <text x="50" y="953" font-size="29" font-weight="850" fill="#26352c">4개</text><rect x="145" y="925" width="87" height="41" rx="6" fill="#aaaeb0"/><text x="249" y="956" font-size="28" font-weight="780" fill="#292f2b">64회</text><text x="950" y="966" text-anchor="end" font-size="26" fill="#647468">예상 5.71%</text>
+  <text x="50" y="1032" font-size="29" font-weight="850" fill="#26352c">5개</text><rect x="145" y="1004" width="16" height="41" rx="5" fill="#ff571c"/><text x="182" y="1035" font-size="28" font-weight="850" fill="#e0501c">8회</text><text x="950" y="1035" text-anchor="end" font-size="26" fill="#647468">예상 0.762%</text>
+  <text x="50" y="1101" font-size="29" font-weight="850" fill="#26352c">6개</text><rect x="145" y="1073" width="8" height="41" rx="3" fill="#ff571c" opacity="0.27"/><text x="182" y="1104" font-size="28" font-weight="900" fill="#e0501c">0회</text><text x="950" y="1104" text-anchor="end" font-size="26" fill="#647468">예상 0.0369%</text>
+</g>
+<path d="M49 1143H951" stroke="#ccd3cc" stroke-width="2"/>
+<text x="50" y="1186" fill="#26392d" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="25" font-weight="700">6개 모두 소수인 조합은 3,003가지 존재</text>
+<text x="50" y="1214" fill="#69746c" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="17">실제 기록 1~1248회 · 본번호 6개 · 보너스번호 제외</text>
+</svg>
