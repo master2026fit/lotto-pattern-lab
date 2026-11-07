@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1150" role="img" aria-labelledby="title desc">
+<title id="title">1~1248회 합이 46인 대칭 번호쌍 실험</title>
+<desc id="desc">제395회 11+35,15+31,20+26 세 쌍이 모두 합46. 실제 대칭 번호쌍 0쌍846회 67.79%, 1쌍374회 29.97%, 2쌍27회 2.16%, 3쌍1회 0.08%. 수학적 예상 비율은 각각68.97%,28.74%,2.27%,0.02%.</desc>
+<rect width="1000" height="1150" rx="26" fill="#f7f4e9"/>
+<path d="M40 144H960" stroke="#d4cebf" stroke-width="2"/>
+<text x="55" y="68" fill="#263b34" font-family="Noto Sans KR,Apple SD Gothic Neo,Malgun Gothic,sans-serif" font-size="29" font-weight="800">LOTTO NOTE  /  별난 로또 실험실 ⑭</text>
+<text x="55" y="120" fill="#1b3930" font-family="Noto Sans KR,Apple SD Gothic Neo,Malgun Gothic,sans-serif" font-size="41" font-weight="900">6개 숫자에 숨은 ‘합 46’의 세 쌍</text>
+<rect x="48" y="179" width="904" height="368" rx="22" fill="#e3eadb" stroke="#b9c7b3" stroke-width="2"/>
+<rect x="73" y="200" width="176" height="58" rx="8" fill="#b83f2d"/>
+<text x="161" y="240" text-anchor="middle" fill="#fff" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="30" font-weight="850">395회</text>
+<text x="270" y="239" fill="#2d473e" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="25" font-weight="750">당첨번호 11·15·20·26·31·35</text>
+<g font-family="Noto Sans KR,Malgun Gothic,sans-serif" text-anchor="middle" font-size="47" font-weight="850">
+  <rect x="96" y="278" width="808" height="71" rx="12" fill="#fffaf0"/><text x="279" y="331" fill="#1c3c34">11 + 35</text><text x="553" y="331" fill="#7b8c7d">=</text><text x="731" y="331" fill="#b33e2f">46</text>
+  <rect x="96" y="361" width="808" height="71" rx="12" fill="#fffaf0"/><text x="279" y="414" fill="#1c3c34">15 + 31</text><text x="553" y="414" fill="#7b8c7d">=</text><text x="731" y="414" fill="#b33e2f">46</text>
+  <rect x="96" y="444" width="808" height="71" rx="12" fill="#fffaf0"/><text x="279" y="497" fill="#1c3c34">20 + 26</text><text x="553" y="497" fill="#7b8c7d">=</text><text x="731" y="497" fill="#b33e2f">46</text>
+</g>
+<text x="57" y="606" fill="#213c32" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="38" font-weight="900">1~1248회, 대칭 번호쌍은 몇 개였을까?</text>
+<text x="57" y="651" fill="#617268" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="24">막대 = 실제 출현 비율  /  오른쪽 = 수학적 예상 비율</text>
+<g font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="28" font-weight="800">
+  <text x="55" y="728" fill="#29443a">0쌍</text><rect x="156" y="698" width="568" height="46" rx="8" fill="#cdcec2"/><text x="740" y="730" fill="#273d34">846회 67.79%</text>
+  <text x="55" y="817" fill="#29443a">1쌍</text><rect x="156" y="787" width="251" height="46" rx="8" fill="#597765"/><text x="425" y="819" fill="#273d34">374회 29.97%</text>
+  <text x="55" y="906" fill="#29443a">2쌍</text><rect x="156" y="876" width="20" height="46" rx="6" fill="#b67e53"/><text x="198" y="908" fill="#273d34">27회 2.16%</text>
+  <text x="55" y="995" fill="#b33e2f">3쌍</text><rect x="156" y="965" width="12" height="46" rx="6" fill="#b83f2d"/><text x="198" y="997" fill="#b33e2f">단 1회 0.08%</text>
+</g>
+<g font-family="Noto Sans KR,Malgun Gothic,sans-serif" text-anchor="end" font-size="22" fill="#6d786e">
+  <text x="945" y="758">예상 68.97%</text>
+  <text x="945" y="847">예상 28.74%</text>
+  <text x="945" y="936">예상 2.27%</text>
+  <text x="945" y="1025">예상 0.02%</text>
+</g>
+<path d="M55 1057H945" stroke="#d4cebf" stroke-width="2"/>
+<text x="55" y="1095" fill="#40584d" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="23" font-weight="700">수학적 예상: 가능한 8,145,060개 조합을 정확하게 분류</text>
+<text x="55" y="1125" fill="#6f796f" font-family="Noto Sans KR,Malgun Gothic,sans-serif" font-size="18">본번호 6개 기준 · 보너스번호 제외 · LOTTO NOTE 자체 집계</text>
+</svg>
