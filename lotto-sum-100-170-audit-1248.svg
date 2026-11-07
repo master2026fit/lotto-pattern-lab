@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="790" viewBox="0 0 1200 790" role="img" aria-labelledby="title desc">
+  <title id="title">로또 번호 총합 100~170만 고르는 것이 유리한지 전수 비교</title>
+  <desc id="desc">1~45에서 6개를 뽑은 모든 8145060개 조합 중 총합 100~170에 해당하는 조합은 6149537개 즉 75.50퍼센트이다. 실제 1~1248회에서는 917회 즉 73.48퍼센트였다. 이 조건으로 1995523개 즉 24.50퍼센트의 가능한 조합을 제외하게 된다. 본번호 6개 합계 최소 21 최대 255, 이론적 중심 138.</desc>
+  <rect width="1200" height="790" fill="#f6f3ec"/>
+  <rect x="44" y="44" width="1112" height="701" rx="17" fill="#fffdf8" stroke="#dacfc3" stroke-width="2"/>
+  <text x="82" y="102" fill="#df5b18" font-size="23" font-family="sans-serif" font-weight="850">LOTTO NOTE · 별난 로또 실험실 ⑦</text>
+  <text x="82" y="157" fill="#272422" font-size="41" font-family="sans-serif" font-weight="900">총합 100~170만 고르면, 정말 유리할까?</text>
+  <text x="82" y="197" fill="#77716b" font-size="21" font-family="sans-serif">가능한 전체 번호 조합과 실제 당첨 기록을 나란히 비교</text>
+  <rect x="85" y="230" width="1029" height="93" rx="12" fill="#f1eee7"/>
+  <text x="113" y="265" fill="#585149" font-size="22" font-family="sans-serif" font-weight="750">6개 숫자의 합계 범위</text>
+  <text x="113" y="302" fill="#292623" font-size="27" font-family="sans-serif" font-weight="850">최소 21　→　중심 138　→　최대 255</text>
+  <text x="1003" y="286" text-anchor="middle" fill="#df5b18" font-size="29" font-family="sans-serif" font-weight="900">100~170</text>
+  <text x="82" y="382" fill="#252525" font-size="25" font-family="sans-serif" font-weight="850">① 가능한 모든 조합 8,145,060가지 중</text>
+  <rect x="83" y="404" width="1029" height="86" rx="9" fill="#d2cec8"/>
+  <path d="M 92 404 H 860 V 490 H 92 Q 83 490 83 481 V 413 Q 83 404 92 404" fill="#ec6b22"/>
+  <text x="453" y="455" text-anchor="middle" font-family="sans-serif" font-size="27" fill="white" font-weight="900">100~170 · 75.50%</text>
+  <text x="981" y="455" text-anchor="middle" font-family="sans-serif" font-size="25" fill="#36312c" font-weight="900">24.50%</text>
+  <text x="84" y="522" fill="#77716b" font-family="sans-serif" font-size="18">해당 6,149,537가지</text>
+  <text x="1112" y="522" text-anchor="end" fill="#77716b" font-family="sans-serif" font-size="18">범위 밖 1,995,523가지</text>
+  <text x="82" y="582" fill="#252525" font-size="25" font-family="sans-serif" font-weight="850">② 1~1248회 실제 당첨 결과에서는</text>
+  <rect x="83" y="604" width="1029" height="86" rx="9" fill="#d2cec8"/>
+  <path d="M 92 604 H 839 V 690 H 92 Q 83 690 83 681 V 613 Q 83 604 92 604" fill="#ec6b22"/>
+  <text x="453" y="655" text-anchor="middle" font-family="sans-serif" font-size="27" fill="white" font-weight="900">100~170 · 73.48%</text>
+  <text x="976" y="655" text-anchor="middle" font-family="sans-serif" font-size="25" fill="#36312c" font-weight="900">26.52%</text>
+  <text x="84" y="722" fill="#77716b" font-family="sans-serif" font-size="18">해당 917회</text>
+  <text x="1112" y="722" text-anchor="end" fill="#77716b" font-family="sans-serif" font-size="18">범위 밖 331회</text>
+</svg>
