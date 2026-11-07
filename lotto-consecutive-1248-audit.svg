@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1010" role="img" aria-labelledby="title desc">
+  <title id="title">로또 연속번호 발생 빈도와 전체 조합 비교</title>
+  <desc id="desc">1~1248회 실제 본번호 6개 중 연속번호를 한 쌍 이상 포함한 회차는 646회 51.76퍼센트. 전체 가능한 8145060개 조합 중에서는 4306680개 52.87퍼센트. 연속쌍 0개 실제 602회 48.24퍼센트 이론 47.13퍼센트, 1개 490회 39.26퍼센트 이론 40.39퍼센트, 2개 134회 10.74퍼센트 이론 11.22퍼센트, 3개 이상 22회 1.76퍼센트 이론 1.26퍼센트. 1246회는 22 23 24, 27 28의 연속번호가 포함됐다.</desc>
+  <rect width="1200" height="1010" fill="#f5faf9" />
+  <rect x="0" y="0" width="1200" height="14" fill="#126c77" />
+  <text x="72" y="65" font-family="Arial,'Malgun Gothic',sans-serif" font-size="18" font-weight="800" letter-spacing="2" fill="#29737a">LOTTO NOTE  /  별난 로또 실험실 ⑧</text>
+  <text x="70" y="138" font-family="'Malgun Gothic',sans-serif" font-size="50" font-weight="900" fill="#182b32">붙어 있는 숫자, 정말 드물까?</text>
+  <text x="73" y="181" font-family="'Malgun Gothic',sans-serif" font-size="23" fill="#53666c">1~1248회 본번호 6개와 전체 가능한 8,145,060개 조합 비교</text>
+
+  <rect x="60" y="225" width="1080" height="294" rx="22" fill="#ffffff" stroke="#d3e4e2" stroke-width="2" />
+  <text x="91" y="277" font-family="'Malgun Gothic',sans-serif" font-size="29" font-weight="900" fill="#193d45">연속번호가 한 쌍 이상 포함된 비율</text>
+  <text x="91" y="324" font-family="'Malgun Gothic',sans-serif" font-size="24" font-weight="700" fill="#405d62">모든 가능한 조합</text>
+  <text x="1090" y="324" text-anchor="end" font-family="Arial,'Malgun Gothic',sans-serif" font-size="28" font-weight="900" fill="#156f78">52.87%</text>
+  <rect x="91" y="339" width="998" height="27" rx="13" fill="#e3efee" />
+  <rect x="91" y="339" width="527.7" height="27" rx="13" fill="#188896" />
+  <text x="92" y="391" font-family="'Malgun Gothic',sans-serif" font-size="23" font-weight="700" fill="#405d62">실제 1,248회 당첨 기록</text>
+  <text x="1090" y="391" text-anchor="end" font-family="Arial,'Malgun Gothic',sans-serif" font-size="28" font-weight="900" fill="#d46a44">51.76%</text>
+  <rect x="91" y="408" width="998" height="27" rx="13" fill="#f4e9e2" />
+  <rect x="91" y="408" width="516.6" height="27" rx="13" fill="#ec8663" />
+  <text x="91" y="484" font-family="'Malgun Gothic',sans-serif" font-size="19" fill="#687f7d">이론 4,306,680 / 8,145,060개   ·   실제 646 / 1,248회   ·   차이 −1.11%p</text>
+
+  <text x="70" y="575" font-family="'Malgun Gothic',sans-serif" font-size="31" font-weight="900" fill="#182b32">연속되는 숫자 쌍의 개수를 세어보면</text>
+  <rect x="60" y="608" width="1080" height="52" rx="11" fill="#246d75" />
+  <text x="108" y="643" font-family="'Malgun Gothic',sans-serif" font-size="22" font-weight="800" fill="#fff">연속쌍</text>
+  <text x="548" y="643" font-family="'Malgun Gothic',sans-serif" font-size="22" font-weight="800" fill="#fff">전체 조합에서</text>
+  <text x="890" y="643" font-family="'Malgun Gothic',sans-serif" font-size="22" font-weight="800" fill="#fff">실제 당첨 기록</text>
+
+  <rect x="60" y="670" width="1080" height="65" rx="8" fill="#ffffff" />
+  <text x="107" y="712" font-family="'Malgun Gothic',sans-serif" font-size="25" font-weight="800" fill="#233a40">0쌍</text>
+  <text x="550" y="712" font-family="Arial,sans-serif" font-size="27" font-weight="800" fill="#188896">47.13%</text>
+  <text x="890" y="712" font-family="Arial,sans-serif" font-size="27" font-weight="800" fill="#d46a44">48.24%</text>
+  <text x="1060" y="711" font-family="'Malgun Gothic',sans-serif" font-size="17" fill="#5e7678">602회</text>
+  <rect x="60" y="742" width="1080" height="65" rx="8" fill="#ebf5f3" />
+  <text x="107" y="784" font-family="'Malgun Gothic',sans-serif" font-size="25" font-weight="800" fill="#233a40">1쌍</text>
+  <text x="550" y="784" font-family="Arial,sans-serif" font-size="27" font-weight="800" fill="#188896">40.39%</text>
+  <text x="890" y="784" font-family="Arial,sans-serif" font-size="27" font-weight="800" fill="#d46a44">39.26%</text>
+  <text x="1060" y="783" font-family="'Malgun Gothic',sans-serif" font-size="17" fill="#5e7678">490회</text>
+  <rect x="60" y="814" width="1080" height="65" rx="8" fill="#ffffff" />
+  <text x="107" y="856" font-family="'Malgun Gothic',sans-serif" font-size="25" font-weight="800" fill="#233a40">2쌍</text>
+  <text x="550" y="856" font-family="Arial,sans-serif" font-size="27" font-weight="800" fill="#188896">11.22%</text>
+  <text x="890" y="856" font-family="Arial,sans-serif" font-size="27" font-weight="800" fill="#d46a44">10.74%</text>
+  <text x="1060" y="855" font-family="'Malgun Gothic',sans-serif" font-size="17" fill="#5e7678">134회</text>
+  <rect x="60" y="886" width="1080" height="65" rx="8" fill="#ebf5f3" />
+  <text x="107" y="928" font-family="'Malgun Gothic',sans-serif" font-size="25" font-weight="800" fill="#233a40">3쌍 이상</text>
+  <text x="550" y="928" font-family="Arial,sans-serif" font-size="27" font-weight="800" fill="#188896">1.26%</text>
+  <text x="890" y="928" font-family="Arial,sans-serif" font-size="27" font-weight="800" fill="#d46a44">1.76%</text>
+  <text x="1060" y="927" font-family="'Malgun Gothic',sans-serif" font-size="17" fill="#5e7678">22회</text>
+  <text x="70" y="985" font-family="'Malgun Gothic',sans-serif" font-size="18" fill="#5b7378">※ 22·23·24는 연속쌍 2개(22–23, 23–24)로 계산. 보너스번호 제외.</text>
+</svg>
