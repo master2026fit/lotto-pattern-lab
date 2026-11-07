@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="925" viewBox="0 0 1200 925" role="img" aria-label="전회차 보너스 번호가 다음 회차 본번호로 나타난 사례 172번, 보너스로 재등장 37번, 등장하지 않음 1038번. 네 회 연속 승격 사례도 표시.">
+  <defs>
+    <style>
+      text {font-family:'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif}
+      .dark {fill:#183a3a}
+      .muted {fill:#637b77}
+      .heavy {font-weight:850}
+      .semi {font-weight:700}
+    </style>
+    <pattern id="dots" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#b5d6cf" opacity=".48"/></pattern>
+  </defs>
+  <rect width="1200" height="925" rx="16" fill="#f4f9f6"/>
+  <rect x="0" y="0" width="1200" height="14" fill="#e75839"/>
+  <rect x="35" y="34" width="1130" height="850" rx="20" fill="#fff" stroke="#dbe9e3" stroke-width="2"/>
+  <rect x="65" y="59" width="265" height="38" rx="19" fill="#dcefe8"/>
+  <text x="84" y="86" font-size="18" class="semi dark">LOTTO NOTE · 실험실 ⑲</text>
+  <text x="68" y="152" font-size="42" class="heavy dark">보너스 번호, 다음 주엔 어디로 갔을까?</text>
+  <text x="69" y="191" font-size="20" class="muted">로또 1~1248회 · 연속 추첨 1,247쌍 비교 · 보너스와 본번호의 역할 변화</text>
+  <line x1="68" y1="220" x2="1130" y2="220" stroke="#e3ebe7" stroke-width="2"/>
+
+  <text x="69" y="268" font-size="24" class="semi dark">다음 회차에서 이전 보너스 번호의 위치</text>
+  <rect x="68" y="293" width="336" height="182" rx="16" fill="#ecf8f4"/>
+  <rect x="428" y="293" width="336" height="182" rx="16" fill="#fff2ec"/>
+  <rect x="788" y="293" width="338" height="182" rx="16" fill="#eff2f7"/>
+  <text x="95" y="333" font-size="21" class="semi dark">본번호 6개 안에 등장</text>
+  <text x="95" y="402" font-size="62" font-weight="900" fill="#188770">172회</text>
+  <text x="95" y="445" font-size="25" class="heavy dark">13.79%</text>
+  <text x="455" y="333" font-size="21" font-weight="750" fill="#a94730">보너스로 다시 등장</text>
+  <text x="455" y="402" font-size="62" font-weight="900" fill="#e75839">37회</text>
+  <text x="455" y="445" font-size="25" class="heavy dark">2.97%</text>
+  <text x="815" y="333" font-size="21" font-weight="750" fill="#4f6180">일곱 번호에 없음</text>
+  <text x="815" y="402" font-size="62" font-weight="900" fill="#657d99">1,038회</text>
+  <text x="815" y="445" font-size="25" class="heavy dark">83.24%</text>
+
+  <text x="70" y="530" font-size="23" class="semi dark">본번호 승격률: 실제와 이론 비교</text>
+  <rect x="68" y="548" width="1059" height="100" rx="12" fill="#f7faf9" stroke="#e2ece6"/>
+  <text x="92" y="581" font-size="18" class="semi dark">실제</text>
+  <rect x="189" y="567" width="761" height="24" rx="12" fill="#e4ece9"/>
+  <rect x="189" y="567" width="691" height="24" rx="12" fill="#208c75"/>
+  <text x="968" y="585" font-size="19" class="heavy dark">13.79%</text>
+  <text x="92" y="624" font-size="18" class="semi dark">이론</text>
+  <rect x="189" y="609" width="761" height="24" rx="12" fill="#e4ece9"/>
+  <rect x="189" y="609" width="668" height="24" rx="12" fill="#e75839"/>
+  <text x="968" y="627" font-size="19" class="heavy dark">13.33%</text>
+  <text x="748" y="529" font-size="16" class="muted">표시 막대는 차이를 보기 쉽게 같은 눈금에서 확대한 비교</text>
+
+  <rect x="68" y="672" width="1059" height="173" rx="13" fill="#ebf6f2"/>
+  <text x="91" y="708" font-size="24" class="heavy dark">특이 사례 · 4번 연속 '보너스 → 본번호'</text>
+  <text x="92" y="741" font-size="16" class="muted">각 행의 숫자는 왼쪽 회차의 보너스 번호가 다음 회차 본번호에서 확인된 값</text>
+  <g font-size="19" font-weight="750" text-anchor="middle">
+    <rect x="93" y="761" width="223" height="54" rx="11" fill="#ffffff" stroke="#b5ddd2"/>
+    <text x="204" y="795" fill="#1a5b51">794 → 795회   13</text>
+    <rect x="346" y="761" width="223" height="54" rx="11" fill="#ffffff" stroke="#b5ddd2"/>
+    <text x="457" y="795" fill="#1a5b51">795 → 796회   36</text>
+    <rect x="599" y="761" width="223" height="54" rx="11" fill="#ffffff" stroke="#b5ddd2"/>
+    <text x="710" y="795" fill="#1a5b51">796 → 797회    5</text>
+    <rect x="852" y="761" width="247" height="54" rx="11" fill="#ffffff" stroke="#b5ddd2"/>
+    <text x="976" y="795" fill="#1a5b51">797 → 798회   36</text>
+  </g>
+  <text x="70" y="901" font-size="15" class="muted">자료: 동행복권 회차별 당첨번호 1~1248회 · LOTTO NOTE 직접 재계산 · 과거 통계는 미래 당첨을 보장하지 않습니다.</text>
+</svg>
