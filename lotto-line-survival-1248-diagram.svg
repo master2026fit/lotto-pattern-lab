@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">대각선 로또 패턴은 3회에서 4회 이어지지만 5회에서 끊어지기도 한다</title>
+  <desc id="desc">58회 40, 59회 41, 60회 42, 61회 43은 상승 대각선이었으나 62회 44는 나오지 않았다. 1~1248회 연구 결과 상승대각선 27/132, 하강대각선 16/116, 세로 16/143, 같은 회차 내 가로 6/73이었다.</desc>
+  <rect width="1200" height="760" fill="#f9fafb"/>
+  <rect x="48" y="46" width="1104" height="668" rx="22" fill="white" stroke="#dedfe5" stroke-width="2"/>
+  <text x="86" y="105" font-size="24" font-weight="700" fill="#dc2626" font-family="sans-serif">별난 로또 실험실 ④ | 실제 회차 연결</text>
+  <text x="86" y="162" font-size="42" font-weight="800" fill="#14151b" font-family="sans-serif">3개를 이은 선, 4개째는 성공했다</text>
+  <text x="86" y="203" font-size="23" fill="#636779" font-family="sans-serif">그렇다면 5개째도 이어졌을까? 58~62회 실전 사례</text>
+  <line x1="168" y1="393" x2="976" y2="393" stroke="#e2e4e9" stroke-width="3" stroke-dasharray="5 10"/>
+  <path d="M169 393 L383 346 L596 299 L809 252" fill="none" stroke="#ea3d34" stroke-width="8" stroke-linecap="round"/>
+  <path d="M809 252 L1022 205" fill="none" stroke="#b5b9c5" stroke-width="6" stroke-dasharray="14 14"/>
+  <g font-family="sans-serif" text-anchor="middle" font-weight="800" font-size="27">
+    <circle cx="169" cy="393" r="39" fill="#e23b34"/><text x="169" y="402" fill="white">40</text>
+    <circle cx="383" cy="346" r="39" fill="#e23b34"/><text x="383" y="355" fill="white">41</text>
+    <circle cx="596" cy="299" r="39" fill="#e23b34"/><text x="596" y="308" fill="white">42</text>
+    <circle cx="809" cy="252" r="43" fill="#2149d7"/><text x="809" y="262" fill="white">43</text>
+    <circle cx="1022" cy="205" r="45" fill="white" stroke="#9ba1ad" stroke-dasharray="7 7" stroke-width="4"/><text x="1022" y="215" fill="#9ba1ad">44</text>
+  </g>
+  <g font-family="sans-serif" font-size="23" text-anchor="middle" fill="#2b2c33" font-weight="700">
+    <text x="169" y="457">58회</text><text x="383" y="457">59회</text><text x="596" y="457">60회</text><text x="809" y="457">61회</text><text x="1022" y="457">62회</text>
+  </g>
+  <rect x="719" y="321" width="179" height="48" rx="24" fill="#e8efff"/>
+  <text x="809" y="352" font-size="23" font-weight="800" fill="#2149d7" text-anchor="middle" font-family="sans-serif">4번째 적중</text>
+  <text x="1022" y="287" font-size="26" font-weight="800" fill="#c23f37" text-anchor="middle" font-family="sans-serif">5번째 실패</text>
+  <line x1="88" y1="495" x2="1111" y2="495" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="87" y="547" font-size="27" font-weight="800" font-family="sans-serif" fill="#16181f">3개 → 4개 연장 관찰 비율</text>
+  <g font-family="sans-serif" font-size="23" fill="#232630">
+    <text x="88" y="598">↗ 상승 대각선</text><text x="328" y="598" fill="#d23f33" font-weight="800">27/132 = 20.45%</text>
+    <text x="648" y="598">↘ 하강 대각선</text><text x="897" y="598" font-weight="800">16/116 = 13.79%</text>
+    <text x="88" y="648">│ 같은 번호 세로</text><text x="328" y="648" font-weight="800">16/143 = 11.19%</text>
+    <text x="648" y="648">― 같은 회차 가로</text><text x="897" y="648" font-weight="800">6/73 = 8.22%</text>
+  </g>
+  <text x="1108" y="687" font-size="17" text-anchor="end" font-family="sans-serif" fill="#8a8e97">분석: 로또 1~1248회 · 가로는 동일 회차 내 조건부 비율 · LOTTO NOTE</text>
+</svg>
