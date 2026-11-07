@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1110" width="1200" height="1110" role="img" aria-labelledby="figure-title figure-desc">
+  <title id="figure-title">로또 당첨번호 여섯 개 사이 최대 빈칸 전수조사</title>
+  <desc id="figure-desc">로또 1회부터1248회까지 정렬한 6개 숫자의 인접한 다섯 구간 중 가장 큰 빈칸 수를 조사했다. 0~4개17회1.36퍼센트,5~9개264회21.15퍼센트,10~14개542회43.43퍼센트,15~19개304회24.36퍼센트,20개 이상121회9.70퍼센트. 실제 최대 빈칸은 523회4번과37번 사이 32개이다.</desc>
+  <rect width="1200" height="1110" fill="#f7fafd"/>
+  <rect x="28" y="28" width="1144" height="1054" fill="#fff" stroke="#d7e1eb" stroke-width="3"/>
+  <rect x="68" y="64" width="367" height="44" rx="5" fill="#1452b2"/>
+  <text x="90" y="94" fill="#fff" font-size="23" font-family="sans-serif" font-weight="850">LOTTO NOTE  ·  별난 로또 실험실 ⑬</text>
+  <text x="69" y="174" fill="#173866" font-size="49" font-family="sans-serif" font-weight="900">번호 사이, 어디까지 비어도 괜찮을까?</text>
+  <text x="70" y="220" fill="#6e7886" font-size="23" font-family="sans-serif">1~1248회 본번호 6개 · 다섯 구간 중 가장 긴 공백 조사</text>
+  <line x1="71" y1="246" x2="1130" y2="246" stroke="#dbe3ed" stroke-width="3"/>
+  <rect x="72" y="277" width="504" height="149" rx="12" fill="#114db0"/>
+  <text x="103" y="325" fill="#d6e8ff" font-size="22" font-weight="800" font-family="sans-serif">가장 흔했던 최대 빈칸 범위</text>
+  <text x="103" y="394" fill="#fff" font-size="65" font-weight="900" font-family="sans-serif">10~14개</text>
+  <rect x="594" y="277" width="534" height="149" rx="12" fill="#fff0e9" stroke="#f6d3c1" stroke-width="2"/>
+  <text x="624" y="325" fill="#a6583d" font-size="22" font-weight="800" font-family="sans-serif">20개 이상 빈 회차 비율</text>
+  <text x="624" y="394" fill="#df6240" font-size="65" font-weight="900" font-family="sans-serif">9.70%</text>
+  <text x="73" y="484" fill="#183966" font-size="29" font-weight="850" font-family="sans-serif">실제 1,248회 vs 가능한 전체 조합</text>
+  <text x="74" y="516" fill="#7a8291" font-size="18" font-family="sans-serif">파랑 = 실제 출현 비율  |  주황 세로선 = 수학적 확률</text>
+  <g stroke="#e7edf4" stroke-width="2"><line x1="288" y1="555" x2="288" y2="888"/><line x1="410" y1="555" x2="410" y2="888"/><line x1="532" y1="555" x2="532" y2="888"/><line x1="654" y1="555" x2="654" y2="888"/><line x1="776" y1="555" x2="776" y2="888"/><line x1="837" y1="555" x2="837" y2="888"/></g>
+  <g fill="#87929d" font-size="17" font-family="sans-serif"><text x="288" y="546">0%</text><text x="402" y="546">10%</text><text x="523" y="546">20%</text><text x="644" y="546">30%</text><text x="766" y="546">40%</text><text x="823" y="546">45%</text></g>
+  <g font-family="sans-serif">
+    <text x="74" y="603" fill="#2b425e" font-size="26" font-weight="750">0~4개</text>
+    <rect x="288" y="572" width="16.6" height="39" rx="5" fill="#1d62c4"/><line x1="302" y1="564" x2="302" y2="617" stroke="#e86b40" stroke-width="6"/>
+    <text x="913" y="600" fill="#173d71" font-size="25" font-weight="850">17회</text><text x="1029" y="600" fill="#566c84" font-size="22">1.36%</text>
+    <text x="74" y="667" fill="#2b425e" font-size="26" font-weight="750">5~9개</text>
+    <rect x="288" y="636" width="258.1" height="39" rx="5" fill="#1d62c4"/><line x1="536.1" y1="628" x2="536.1" y2="681" stroke="#e86b40" stroke-width="6"/>
+    <text x="913" y="664" fill="#173d71" font-size="25" font-weight="850">264회</text><text x="1029" y="664" fill="#566c84" font-size="22">21.15%</text>
+    <rect x="60" y="698" width="1078" height="65" rx="9" fill="#e5efff"/>
+    <text x="74" y="738" fill="#144a9c" font-size="26" font-weight="900">10~14개</text>
+    <rect x="288" y="706" width="529.9" height="39" rx="5" fill="#114fb3"/><line x1="808.7" y1="698" x2="808.7" y2="751" stroke="#e86b40" stroke-width="6"/>
+    <text x="913" y="735" fill="#123a75" font-size="25" font-weight="900">542회</text><text x="1029" y="735" fill="#123a75" font-size="22" font-weight="850">43.43%</text>
+    <text x="74" y="802" fill="#2b425e" font-size="26" font-weight="750">15~19개</text>
+    <rect x="288" y="771" width="297.1" height="39" rx="5" fill="#1d62c4"/><line x1="592.6" y1="763" x2="592.6" y2="816" stroke="#e86b40" stroke-width="6"/>
+    <text x="913" y="799" fill="#173d71" font-size="25" font-weight="850">304회</text><text x="1029" y="799" fill="#566c84" font-size="22">24.36%</text>
+    <text x="74" y="866" fill="#2b425e" font-size="26" font-weight="750">20개 이상</text>
+    <rect x="288" y="835" width="118.3" height="39" rx="5" fill="#1d62c4"/><line x1="420.6" y1="827" x2="420.6" y2="880" stroke="#e86b40" stroke-width="6"/>
+    <text x="913" y="863" fill="#173d71" font-size="25" font-weight="850">121회</text><text x="1029" y="863" fill="#566c84" font-size="22">9.70%</text>
+  </g>
+  <rect x="72" y="918" width="1056" height="114" rx="10" fill="#fff5eb" stroke="#ffd8bd" stroke-width="2"/>
+  <text x="98" y="959" fill="#b54f2b" font-size="23" font-weight="850" font-family="sans-serif">실제 가장 큰 빈칸 · 523회</text>
+  <text x="98" y="1006" fill="#263c56" font-size="29" font-weight="900" font-family="sans-serif">1 · 4  ── 빈 숫자 5~36 : 32개 ──  37 · 38 · 40 · 45</text>
+  <text x="74" y="1062" fill="#758494" font-size="18" font-family="sans-serif">빈칸 = 정렬한 인접 두 번호의 차이 − 1  ·  보너스번호 제외  ·  미래 당첨을 보장하지 않음</text>
+</svg>
