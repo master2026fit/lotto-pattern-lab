@@ -148,12 +148,13 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 .modal-head{position:sticky;top:0;background:#11243c;padding:18px 23px;display:flex;align-items:center;justify-content:space-between;gap:15px;border-bottom:1px solid #3a5272;z-index:2}
 .modal-body{padding:22px}
 .close{background:#2d445f;color:white;border:1px solid #637e9d;border-radius:9px;padding:7px 13px}
-#toTop{position:fixed;bottom:25px;right:24px;border:1px solid #d6b779;background:#1b3451;color:#ffe2a7;width:55px;height:55px;border-radius:50%;font-size:22px;font-weight:900;box-shadow:0 9px 25px #0008;opacity:0;pointer-events:none;transform:translateY(12px);transition:.2s;z-index:30}
+#toTop{position:fixed;bottom:25px;right:24px;border:1px solid #d6b779;background:#1b3451;color:#ffe2a7;width:55px;height:55px;border-radius:50%;font-size:22px;font-weight:900;box-shadow:0 9px 25px #0008;opacity:0;pointer-events:none;transform:translateY(12px);transition:.2s;z-index:20010}
 #toTop.show{opacity:1;pointer-events:auto;transform:none}
-#toMenu{position:fixed;bottom:25px;right:91px;border:1px solid #83c0b0;background:#123e47;color:#d4fff0;min-width:75px;height:55px;border-radius:28px;padding:0 13px;font-size:14px;font-weight:900;box-shadow:0 9px 25px #0008;opacity:0;pointer-events:none;transform:translateY(12px);transition:.2s;z-index:30;white-space:nowrap}
+#toMenu{position:fixed;bottom:25px;right:91px;border:1px solid #83c0b0;background:#123e47;color:#d4fff0;min-width:75px;height:55px;border-radius:28px;padding:0 13px;font-size:14px;font-weight:900;box-shadow:0 9px 25px #0008;opacity:0;pointer-events:none;transform:translateY(12px);transition:.2s;z-index:20010;white-space:nowrap}
 #toMenu.show{opacity:1;pointer-events:auto;transform:none}
 #toMenu:focus-visible,#toTop:focus-visible{outline:3px solid #f1d08b;outline-offset:3px}
 #quickAccess{scroll-margin-top:12px}
+@media(max-width:560px){body.watch-navigation #toMenu,body.watch-navigation #toTop{bottom:calc(100px + env(safe-area-inset-bottom,0px))}}
 .footer{margin-top:60px;text-align:center;color:#8295af;font-size:12px;border-top:1px solid #27394f;padding-top:20px}
 .mobile-menu{display:none}
 @media(max-width:960px){.sidebar{width:196px;padding:22px 10px}.number-grid{grid-template-columns:repeat(6,minmax(0,1fr))}.cards{grid-template-columns:repeat(2,1fr)}}
@@ -668,6 +669,7 @@ function returnToQuickMenu(){
 }
 function updateNavControls(){
   const top=$("toTop"),menu=$("toMenu"),home=$("home"),quick=$("quickAccess");
+  document.body.classList.toggle("watch-navigation",!!$("watch")?.classList.contains("active"));
   if(top)top.classList.toggle("show",window.scrollY>110);
   if(menu&&home){
     const awayFromQuick=quick&&quick.getBoundingClientRect().bottom<90;
