@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="955" viewBox="0 0 1200 955" role="img" aria-label="덧셈 삼각형. 제46회 당첨번호 8 13 15 23 31 38에서 8+15=23, 8+23=31, 15+23=38. 제1회부터 제1248회까지 639회에 덧셈 관계가 발견됐고, 전체 조합의 이론 비율은 52.99퍼센트.">
+  <defs>
+    <style>
+      text{font-family:'Pretendard','Noto Sans KR','Apple SD Gothic Neo',sans-serif}
+      .main{fill:#412047}
+      .muted{fill:#6d6474}
+      .bold{font-weight:850}
+    </style>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M24 0H0V24" fill="none" stroke="#e7dcef" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="955" rx="16" fill="#fbf8fd"/>
+  <rect x="0" y="0" width="1200" height="12" fill="#ea6c3b"/>
+  <rect x="38" y="38" width="1124" height="868" rx="21" fill="#fff" stroke="#e9dfea" stroke-width="2"/>
+  <rect x="64" y="67" width="295" height="38" rx="19" fill="#f1e4f6"/>
+  <text x="86" y="93" font-size="18" font-weight="750" fill="#5c2b64">LOTTO NOTE / 실험실 ⑳</text>
+  <text x="67" y="161" font-size="41" class="bold main">당첨번호 두 개를 더했더니, 또 당첨번호?</text>
+  <text x="69" y="201" font-size="20" class="muted">정의: 서로 다른 당첨 본번호 3개가 a + b = c를 만족하면 1개로 집계</text>
+  <line x1="67" x2="1134" y1="229" y2="229" stroke="#ebe5ee" stroke-width="2"/>
+
+  <rect x="67" y="257" width="1067" height="270" rx="17" fill="#f8f3fc" stroke="#ebdff1"/>
+  <text x="90" y="297" font-size="24" class="bold main">제46회 · 실제 당첨번호 여섯 개</text>
+  <g font-weight="850" font-size="27" text-anchor="middle">
+    <rect x="92" y="317" width="116" height="61" rx="12" fill="#55275e"/><text x="150" y="356" fill="#fff">8</text>
+    <rect x="228" y="317" width="116" height="61" rx="12" fill="#aaa0b3"/><text x="286" y="356" fill="#fff">13</text>
+    <rect x="364" y="317" width="116" height="61" rx="12" fill="#55275e"/><text x="422" y="356" fill="#fff">15</text>
+    <rect x="500" y="317" width="116" height="61" rx="12" fill="#ee6b3f"/><text x="558" y="356" fill="#fff">23</text>
+    <rect x="636" y="317" width="116" height="61" rx="12" fill="#ee6b3f"/><text x="694" y="356" fill="#fff">31</text>
+    <rect x="772" y="317" width="116" height="61" rx="12" fill="#ee6b3f"/><text x="830" y="356" fill="#fff">38</text>
+  </g>
+  <text x="925" y="345" font-size="15" class="muted">13은</text><text x="925" y="369" font-size="15" class="muted">이 식에 미참여</text>
+  <g font-size="28" font-weight="850" text-anchor="middle">
+    <rect x="92" y="408" width="302" height="84" rx="13" fill="#fff" stroke="#ead4ef"/>
+    <text x="242" y="461" fill="#55275e">8 + 15 = 23</text>
+    <rect x="415" y="408" width="302" height="84" rx="13" fill="#fff" stroke="#ead4ef"/>
+    <text x="566" y="461" fill="#55275e">8 + 23 = 31</text>
+    <rect x="738" y="408" width="362" height="84" rx="13" fill="#fff" stroke="#ead4ef"/>
+    <text x="919" y="461" fill="#55275e">15 + 23 = 38</text>
+  </g>
+
+  <text x="69" y="580" font-size="25" class="bold main">1~1248회 전수조사 · 한 회차의 덧셈식 수</text>
+  <rect x="67" y="602" width="1067" height="134" rx="14" fill="#fff" stroke="#e9dfea"/>
+  <g font-size="19" text-anchor="middle">
+    <text x="185" y="638" class="muted">0개</text><text x="454" y="638" class="muted">1개</text>
+    <text x="723" y="638" class="muted">2개</text><text x="992" y="638" class="muted">3개</text>
+    <text x="185" y="695" font-size="43" font-weight="850" fill="#796b84">609회</text>
+    <text x="454" y="695" font-size="43" font-weight="850" fill="#55275e">467회</text>
+    <text x="723" y="695" font-size="43" font-weight="850" fill="#874a9c">145회</text>
+    <text x="992" y="695" font-size="43" font-weight="850" fill="#e7673f">27회</text>
+  </g>
+
+  <rect x="67" y="767" width="510" height="109" rx="14" fill="#f0e3f6"/>
+  <text x="90" y="799" font-size="19" font-weight="750" fill="#562666">실제 · 하나 이상 발견</text>
+  <text x="90" y="847" font-size="37" class="bold main">639회 / 51.20%</text>
+  <rect x="599" y="767" width="535" height="109" rx="14" fill="#fff0e7"/>
+  <text x="622" y="799" font-size="19" font-weight="750" fill="#ad4e2d">전체 8,145,060개 조합 중</text>
+  <text x="622" y="847" font-size="37" font-weight="850" fill="#b54d2a">4,316,371개 / 52.99%</text>
+  <text x="68" y="929" font-size="15" class="muted">자료: 동행복권 제1~1248회 본번호 · LOTTO NOTE 전수검증 / 보너스 제외 / 역사 통계는 당첨 예측이 아닙니다.</text>
+</svg>
