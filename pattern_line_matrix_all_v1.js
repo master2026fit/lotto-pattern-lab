@@ -53,6 +53,8 @@
   #ln-connection-schedule-v1 .lnmx .lnmx-stat{border:1px solid #bed1df;background:#fff;border-radius:8px;padding:8px 3px;text-align:center;color:#315774;font-size:11px;line-height:1.5}
   #ln-connection-schedule-v1 .lnmx .lnmx-stat b{display:block;color:#244b67;font-size:13px}
   #ln-connection-schedule-v1 .lnmx .lnmx-notice{padding:9px 10px;border-left:4px solid #d5ac6a;background:#edf4fa;font-size:11px;color:#45667d;line-height:1.6;margin:10px 0}
+  #ln-connection-schedule-v1 .lna .lnmx-shortcut{width:100%;min-height:44px;box-sizing:border-box;display:block;margin:11px 0;padding:10px;background:#f7d18b;color:#3c3b25;border:1px solid #bb9758;border-radius:9px;font-size:13px;font-weight:900}
+  #ln-connection-schedule-v1 .lna .lnmx-shortcut:focus-visible{outline:3px solid #da9d39}
   @media(max-width:700px){
     #ln-connection-schedule-v1 .lnmx{padding:9px}
     #ln-connection-schedule-v1 .lncm-master .lnmx .lnmx-matrix table{display:table!important;table-layout:fixed!important;width:100%!important;border-spacing:2px!important}
@@ -108,6 +110,14 @@
     <div class="lnmx-notice">연결은 각 회차 <b>추첨 이전 기록으로만</b> 계산합니다. 1~4회는 과거 4지점이 부족해 해당 없음으로 표시됩니다. 검색번호가 적어 라인이 2수 미만이면 X가 아니라 ·로 구분합니다. 대각은 각 번호군의 첫째 줄 1~6칸에서 시작하는 경로를 요약합니다. 이 표의 반복 미출현은 미래 제외 성능이 검증됐다는 뜻이 아닙니다.</div>`;
   const after=host.querySelector('[data-lna-six]')||host.querySelector('[data-lnco]');
   if(after)after.after(panel);else host.querySelector('[data-lncm-stats]')?.after(panel);
+  const atlas=host.querySelector('[data-lna-six]');
+  if(atlas&&!atlas.querySelector('.lnmx-shortcut')){
+    const shortcut=document.createElement('button');shortcut.type='button';
+    shortcut.className='lnmx-shortcut';
+    shortcut.textContent='📊 전체 1~최신회차 라인 매트릭스 바로가기';
+    shortcut.addEventListener('click',()=>panel.scrollIntoView({behavior:'smooth',block:'start'}));
+    atlas.querySelector('h6')?.after(shortcut);
+  }
   const $=q=>panel.querySelector(q);
   const body=$('[data-lnmx-body]'),status=$('[data-lnmx-status]');
   const symbols=['O','X','·'];
@@ -258,6 +268,8 @@
   }
   async function expandAll(){
     if(allRunning)return;
+    // "All" means round 1 through the latest, even after a jump to a middle round.
+    if(anchor!==(mode==='latest'?last:1))resetView(mode,mode==='latest'?last:1);
     allRunning=true;
     const button=$('[data-lnmx-full]');button.disabled=true;button.textContent='전체 표 생성 중…';
     const token=++taskId;
