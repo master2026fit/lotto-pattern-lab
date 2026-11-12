@@ -36,7 +36,11 @@
   @media(max-width:700px){
   #ln-connection-schedule-v1 .lnco{padding:8px}
   #ln-connection-schedule-v1 .lnco-out{overflow:visible}
-  #ln-connection-schedule-v1 .lnco-out th,#ln-connection-schedule-v1 .lnco-out td{padding:8px 3px;font-size:11px}
+  #ln-connection-schedule-v1 .lncm-master .lnco-out table{display:table!important;width:100%!important;table-layout:auto!important}
+  #ln-connection-schedule-v1 .lncm-master .lnco-out thead{display:table-header-group!important}
+  #ln-connection-schedule-v1 .lncm-master .lnco-out tbody{display:table-row-group!important}
+  #ln-connection-schedule-v1 .lncm-master .lnco-out tr{display:table-row!important;background:none!important;border:0!important;padding:0!important;overflow:visible!important}
+  #ln-connection-schedule-v1 .lncm-master .lnco-out th,#ln-connection-schedule-v1 .lncm-master .lnco-out td{display:table-cell!important;grid-column:auto!important;float:none!important;border:1px solid #416177!important;border-radius:0!important;padding:8px 3px;font-size:11px}
   #ln-connection-schedule-v1 .lnco-chip{min-width:31px;min-height:31px}
   }`;
   master.append(css);
