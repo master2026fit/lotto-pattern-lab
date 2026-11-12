@@ -66,6 +66,7 @@
    <div data-lnnxt-match class="lnnxt-evidence">과거 동일 그림을 검색 중…</div>
    <div class="lnnxt-label">과거 유사 그림의 다음 회차 출현 빈도</div>
    <div class="lnnxt-next-stats" data-lnnxt-stats></div>
+   <p class="lnnxt-note" data-lnnxt-baseline></p>
    <details data-lnnxt-examples><summary>과거에 일치한 회차와 바로 다음 그림 보기</summary><div data-lnnxt-examples-body></div></details>
    <div class="lnnxt-note">노란색 ?는 <b>추첨 전 미확정</b>입니다. 과거 다음 회차의 출현 비율은 참고용 기록이지 1250회 당첨 확률이나 제외수 판정이 아닙니다. 번호군의 한 열에 번호가 2개면 무작위로도 74.85%가 전부 미출현하며, 3개면 64.40%가 전부 미출현합니다. 조건별로 표본 수가 다르며 사후에 찾은 비슷한 그림에는 우연의 효과가 큽니다.</div>`;
   const desc=matrix.querySelector('h5 + p');
@@ -160,6 +161,7 @@
     recents.append(comparison((latest+1)+'회',future.code));
     $('[data-lnnxt-match]').textContent='과거 동일·유사 그림 검색 중…';
     $('[data-lnnxt-stats]').replaceChildren();
+    $('[data-lnnxt-baseline]').textContent='';
     $('[data-lnnxt-examples-body]').replaceChildren();
     return past.code;
   }
@@ -194,7 +196,7 @@
     const stats=$('[data-lnnxt-stats]');stats.replaceChildren();
     for(let j=0;j<6;j++){
       const div=document.createElement('div'),label=document.createElement('span');
-      label.textContent=(j+1)+'열';
+      label.textContent=String(j+1);
       const num=document.createElement('b'),a=analogStats[j];
       num.textContent=a.n?a.o+'/'+a.n:'—';
       const small=document.createElement('small');small.textContent=a.n?'O '+a.p.toFixed(0)+'%':'표본 없음';
@@ -207,11 +209,9 @@
       examples.append(comparison((row.r+1)+'회',row.next));
     }
     if(!selected.length){const empty=document.createElement('p');empty.textContent='비교할 만큼 유사한 과거 그림이 없습니다.';examples.append(empty);}
-    const note=document.createElement('p');note.style.fontSize='11px';
-    note.textContent='표 안 숫자는 과거 유사 그림 이후의 출현 건수/관찰 건수입니다. 현재 '+(latest+1)+'회 각 열의 무작위 출현 기준은 '+
-      candidate.map((line,i)=>(i+1)+'열 '+(baseline(line.length)===null?'해당 없음':(baseline(line.length)*100).toFixed(1)+'%')).join(' · ')+
+    $('[data-lnnxt-baseline]').textContent='위 숫자는 과거 동일·유사 그림의 다음 회차 출현 수/관찰 수입니다. 현재 '+(latest+1)+'회 각 칸의 무작위 출현 기준은 '+
+      candidate.map((line,i)=>(i+1)+'칸 '+(baseline(line.length)===null?'해당 없음':(baseline(line.length)*100).toFixed(1)+'%')).join(' · ')+
       '이며, 실제 결과는 추첨 전까지 물음표(?)입니다.';
-    stats.after(note);
   }
   let previousModel=null;
   function update(){
