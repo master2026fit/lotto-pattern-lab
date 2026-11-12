@@ -57,6 +57,15 @@
   #ln-connection-schedule-v1 .lna-round-list summary{font-size:12px;color:#ffe3ad;cursor:pointer;line-height:1.6;font-weight:800}
   #ln-connection-schedule-v1 .lna-round-list button{padding:6px 9px;background:#285672;border:1px solid #72a5b5;border-radius:8px;color:#dcf1ff;font-size:11px;margin-top:6px}
   #ln-connection-schedule-v1 .lna-alert{font-size:11px;line-height:1.7;color:#bcd7e7;border-left:3px solid #ddae69;padding:7px 10px;background:#163548;margin-top:10px}
+  #ln-connection-schedule-v1 .lna-trace{display:grid;gap:8px;margin:10px 0}
+  #ln-connection-schedule-v1 .lna-trace-item{border:1px solid #52748a;border-radius:9px;padding:9px;background:#193b53}
+  #ln-connection-schedule-v1 .lna-trace-item>strong{font-size:12px;color:#ffe1ab}
+  #ln-connection-schedule-v1 .lna-trace-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:3px;margin-top:5px}
+  #ln-connection-schedule-v1 .lna-trace-grid button{display:flex;flex-direction:column;gap:2px;align-items:center;justify-content:center;min-width:0;min-height:40px;padding:2px 0;background:#26455b;border:1px solid #55738a;border-radius:5px;color:#d3e2ed}
+  #ln-connection-schedule-v1 .lna-trace-grid button.hit{background:#205844;color:#d3ffe2;border-color:#7fdaad}
+  #ln-connection-schedule-v1 .lna-trace-grid button.miss{background:#5e3646;color:#ffe2e8;border-color:#dd9ba5}
+  #ln-connection-schedule-v1 .lna-trace-grid button span{font-size:10px;font-weight:900}
+  #ln-connection-schedule-v1 .lna-trace-grid button small{font-size:9px}
   @media(max-width:700px){
    #ln-connection-schedule-v1 .lna{padding:9px}
    #ln-connection-schedule-v1 .lna-grid{gap:2px;padding:4px}
@@ -69,6 +78,7 @@
    #ln-connection-schedule-v1 .lncm-master .lna-tables tbody{display:table-row-group!important}
    #ln-connection-schedule-v1 .lncm-master .lna-tables tr{display:table-row!important;background:none!important;border:0!important;overflow:visible!important}
    #ln-connection-schedule-v1 .lncm-master .lna-tables th,#ln-connection-schedule-v1 .lncm-master .lna-tables td{display:table-cell!important;padding:7px 3px!important;border:1px solid #4a6a80!important;border-radius:0!important;font-size:11px}
+   #ln-connection-schedule-v1 [data-lna-round-table]{display:none}
    #ln-connection-schedule-v1 .lna-balls{gap:4px}
    #ln-connection-schedule-v1 .lna-ball{min-width:30px;min-height:30px}
   }`;
@@ -125,6 +135,9 @@
     <h5>⑤ 라인별 반복 미출현 · 기대치 비교</h5>
     <div class="lna-tables" data-lna-stats></div>
     <button type="button" data-lna-stats-more class="lna-more" hidden>추가 라인 통계 보기</button>
+    <h5>⑥ 라인별 최근 12회 변화</h5>
+    <p class="lna-hint">× 전부 미출현 · ✓ 1개 이상 출현 · – 해당 라인·중복군의 번호가 2수 미만. 각 칸을 누르면 해당 회차 번호판으로 이동합니다.</p>
+    <div class="lna-trace" data-lna-trace></div>
     <div class="lna-alert">
       <b>해석 기준:</b> 미출현은 기본적으로 흔합니다. 특정 번호 한 개가 본당첨에 없을 확률은 39/45 = 86.67%입니다.
       라인에서 여러 번호가 전부 미출현한 비율은 <b>같은 번호 수를 무작위 선택했을 때의 기대 비율</b>과 나란히 비교합니다.
@@ -328,6 +341,7 @@
         details.append(view);
       });
       list.append(details);
+      if(typeof window!=='undefined'&&window.innerWidth<=700)details.open=true;
     }
     const more=$('[data-lna-round-more]');
     more.hidden=history.length<=shown;
@@ -356,6 +370,43 @@
       diff:(x.zero-x.expected)/x.eligible
     })).sort((a,b)=>b.diff-a.diff||b.eligible-a.eligible);
   }
+  function renderTrace(){
+    const area=$('[data-lna-trace]');area.textContent='';
+    if(!history.length)return;
+    const type=$('[data-lna-type]').value,t=$('[data-lna-tier]').value;
+    const top=aggregate.filter(x=>(type==='all'||type===x.line.type)&&(t==='all'||t===x.group)).slice(0,6);
+    const recent=history.slice(0,12).reverse();
+    for(const entry of top){
+      const wrapper=document.createElement('div');wrapper.className='lna-trace-item';
+      const title=document.createElement('strong');
+      title.textContent=entry.line.title+' · '+tierLabel(entry.group)+
+        ' · 관찰 '+entry.eligible+'회 중 전부 미출현 '+entry.zero+'회';
+      wrapper.append(title);
+      const grid=document.createElement('div');grid.className='lna-trace-grid';
+      for(const item of recent){
+        const numbers=entry.line.ns.filter(n=>item.count[n]>0&&tier(item.count[n])===entry.group);
+        const hit=numbers.some(n=>item.actual.has(n));
+        const state=numbers.length<2?'none':hit?'hit':'miss';
+        const btn=document.createElement('button');btn.type='button';
+        btn.className=state==='none'?'':state;
+        btn.title=item.round+'회 · '+(state==='none'?'해당 없음':state==='hit'?'출현':'전부 미출현')+' · '+numbers.join(', ');
+        btn.setAttribute('aria-label',btn.title);
+        const no=document.createElement('small');no.textContent=String(item.round%100).padStart(2,'0');
+        const outcome=document.createElement('span');outcome.textContent=state==='none'?'–':state==='hit'?'✓':'×';
+        btn.append(no,outcome);
+        btn.addEventListener('click',()=>{
+          target=item.round;
+          $('[data-lna-tier]').value=entry.group;
+          $('[data-lna-type]').value=entry.line.type;
+          selectedLine=entry.line.id;lineShown=15;statsShown=14;
+          renderCurrent();renderAggregate();
+          panel.scrollIntoView({behavior:'smooth',block:'start'});
+        });
+        grid.append(btn);
+      }
+      wrapper.append(grid);area.append(wrapper);
+    }
+  }
   function renderAggregate(){
     const box=$('[data-lna-stats]');box.textContent='';
     if(!history.length)return;
@@ -375,6 +426,7 @@
     const more=$('[data-lna-stats-more]');
     more.hidden=statsShown>=filtered.length;
     more.textContent=`다른 라인 통계 ${Math.min(15,filtered.length-statsShown)}개 더 보기 (${Math.min(statsShown,filtered.length)}/${filtered.length})`;
+    renderTrace();
   }
   async function audit(){
     if(busy)return;
