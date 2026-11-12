@@ -41,6 +41,13 @@
     #ln-connection-schedule-v1 .lna .lna-line-list{display:grid;gap:7px;margin:10px 0}
     #ln-connection-schedule-v1 .lna .lna-line-list button{width:100%;min-height:55px;padding:9px 10px;text-align:left;display:flex;align-items:center;gap:8px;justify-content:space-between;border:1px solid #b4cbdc;border-radius:10px;background:#fff;color:#254663}
     #ln-connection-schedule-v1 .lna .lna-line-list button.selected{border:2px solid #d99827;background:#fff1c9}
+    #ln-connection-schedule-v1 .lna .lna-inline{background:#fff8e8;border:2px solid #d99d3c;border-radius:10px;margin:0 0 10px;padding:9px;scroll-margin-top:15px}
+    #ln-connection-schedule-v1 .lna .lna-inline-header{font-size:13px;font-weight:900;line-height:1.55;color:#65420d;margin:0 0 8px}
+    #ln-connection-schedule-v1 .lna .lna-inline .lna-group{border:0;padding:0}
+    #ln-connection-schedule-v1 .lna .lna-inline .lna-num.focus{outline:3px solid #e69c21;outline-offset:-3px;background:#ffe6a4}
+    #ln-connection-schedule-v1 .lna .lna-inline .lna-num.hit.focus{background:#9ae9af;color:#145238}
+    #ln-connection-schedule-v1 .lna .lna-inline-foot{font-size:11px;color:#785318;line-height:1.6;margin-top:7px}
+    #ln-connection-schedule-v1 .lna .lna-inline-close{display:block;width:100%;min-height:38px;background:#e8f0fb;border:1px solid #aac1d4;color:#28516d;border-radius:8px;margin-top:8px;font-weight:900}
     #ln-connection-schedule-v1 .lna .lna-line-list button.exclude{border-color:#efacb0}
     #ln-connection-schedule-v1 .lna .lna-line-list .lna-description{flex:1;min-width:0;font-size:12px;line-height:1.55;color:#34546b}
     #ln-connection-schedule-v1 .lna .lna-line-list .lna-description b{font-size:13px;color:#1d3e58}
@@ -122,7 +129,7 @@
       <span>금색: 선택한 가로·세로·대각선</span>
     </div>
     <h5>② 번호군 안의 가로·세로·대각선</h5>
-    <p class="lna-caption">각 번호군의 6칸 배열에서 두 칸 이상 이어지는 라인을 표시합니다. 라인을 누르면 위 숫자칸에서 위치를 확인할 수 있습니다.</p>
+    <p class="lna-caption">각 번호군의 6칸 배열에서 두 칸 이상 이어지는 라인을 표시합니다. <b>라인을 누르면 바로 아래에 6칸 그림이 펼쳐집니다.</b> 다시 누르면 닫힙니다.</p>
     <div class="lna-line-list" data-lna-lines></div>
     <button class="lna-more" type="button" data-lna-line-more hidden>다른 라인 더 보기</button>
     <h5>③ 회차별 검색번호 · 세로 연속 복기</h5>
@@ -274,6 +281,7 @@
       const hits=misses===null?null:line.ns.length-misses;
       const button=document.createElement('button');button.type='button';
       button.className=(misses===line.ns.length?'exclude ':'')+(selected===line.id?'selected':'');
+      button.setAttribute('aria-expanded',String(selected===line.id));
       const label=document.createElement('div');label.className='lna-description';
       const header=document.createElement('b');header.textContent=tierName(line.t)+' · '+line.title+' · '+line.ns.length+'수';
       const detail=document.createElement('div');detail.textContent=line.ns.join(' · ')+'  |  무출현 기대 '+(100*zeroProb(line.ns.length)).toFixed(1)+'%';
@@ -286,7 +294,29 @@
         const focus=selected?line:null;
         const display=$('[data-lna-selected]');display.textContent='';display.append(buildCard(entry,focus));
         renderLineList(entry,source);
-      });root.append(button);
+        if(selected){
+          const preview=root.querySelector('[data-lna-inline-picture]');
+          if(preview)requestAnimationFrame(()=>preview.scrollIntoView({behavior:'smooth',block:'nearest'}));
+        }
+      });
+      root.append(button);
+      if(selected===line.id){
+        const preview=document.createElement('div');preview.className='lna-inline';preview.dataset.lnaInlinePicture='1';
+        const title=document.createElement('div');title.className='lna-inline-header';
+        title.textContent='📐 '+entry.round+'회 · '+tierName(line.t)+' · '+line.title;
+        preview.append(title);
+        preview.append(renderTier(line.t,groupsOf(entry.count)[line.t],entry.actual,new Set(line.ns)));
+        const note=document.createElement('div');note.className='lna-inline-foot';
+        note.textContent='금색 테두리 '+line.ns.join(' · ')+' · '+(hits===null?'결과 대기':hits===0?'전부 미출현':'출현 '+hits+'수 / 미출현 '+misses+'수');
+        preview.append(note);
+        const close=document.createElement('button');close.type='button';close.className='lna-inline-close';close.textContent='✕ 그림 닫기';
+        close.addEventListener('click',()=>{
+          selected='';
+          const display=$('[data-lna-selected]');display.textContent='';display.append(buildCard(entry,null));
+          renderLineList(entry,source);
+        });
+        preview.append(close);root.append(preview);
+      }
     }
     const more=$('[data-lna-line-more]');more.hidden=list.length<=linesVisible;
     more.textContent='다른 라인 '+Math.min(18,list.length-linesVisible)+'개 더 보기 ('+Math.min(linesVisible,list.length)+'/'+list.length+')';
