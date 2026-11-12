@@ -178,6 +178,8 @@
       results=[];$('[data-lnco-status]').textContent='검증 오류: '+e.message;
     }finally{busy=false;btn.disabled=false;selector.disabled=false;}
   }
+  window.LNOverlapAudit={countConnections,numberGroups,category};
+  window.dispatchEvent(new Event('lnco:ready'));
   $('[data-lnco-run]').addEventListener('click',audit);
   $('[data-lnco-more]').addEventListener('click',()=>{shown+=12;renderRecaps();});
   window.addEventListener('lncs:schedule-ready',refresh);
