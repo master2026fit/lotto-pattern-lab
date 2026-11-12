@@ -1,5 +1,5 @@
-const CACHE_NAME="lotto-note-shell-20261112-v66";
-const SHELL=["./","./index.html","./exclusion_lab.js","./exclusion_ui.js","./pattern_watch_explained.js","./diagonal_survival_watch.js","./pattern_survival_visual_v8.js","./pattern_survival_stage_audit_v1.js","./pattern_connection_schedule_v3.js","./pattern_connection_visual_v1.js","./pattern_connection_table_v6.js","./pattern_connection_master_v2.js","./pattern_overlap_audit_v1.js","./pattern_overlap_lines_v1.js","./pattern_line_matrix_all_v1.js","./pattern_walkforward_v1.js","./pattern_connection_ledger_v1.js","./manifest.webmanifest","./icons/icon-192.png","./icons/icon-512.png"];
+const CACHE_NAME="lotto-note-shell-20261112-v67";
+const SHELL=["./","./index.html","./exclusion_lab.js","./exclusion_ui.js","./pattern_watch_explained.js","./diagonal_survival_watch.js","./pattern_survival_visual_v8.js","./pattern_survival_stage_audit_v1.js","./pattern_connection_schedule_v3.js","./pattern_connection_visual_v1.js","./pattern_connection_table_v6.js","./pattern_connection_master_v2.js","./pattern_overlap_audit_v1.js","./pattern_overlap_lines_v1.js","./pattern_line_matrix_all_v1.js","./pattern_next_pattern_v1.js","./pattern_walkforward_v1.js","./pattern_connection_ledger_v1.js","./manifest.webmanifest","./icons/icon-192.png","./icons/icon-512.png"];
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting()));
 });
