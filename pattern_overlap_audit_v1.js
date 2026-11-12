@@ -43,6 +43,36 @@
   #ln-connection-schedule-v1 .lncm-master .lnco-out th,#ln-connection-schedule-v1 .lncm-master .lnco-out td{display:table-cell!important;grid-column:auto!important;float:none!important;border:1px solid #416177!important;border-radius:0!important;padding:8px 3px;font-size:11px}
   #ln-connection-schedule-v1 .lnco-chip{min-width:31px;min-height:31px}
   }`;
+  // Keep the original screenshot's category rows, with exactly six number slots
+  // and a light, high-contrast theme (the new line atlas uses the same layout).
+  css.textContent += `
+    #ln-connection-schedule-v1 .lnco{background:#f4f8ff;color:#193b54;border-color:#d9b679;box-shadow:0 4px 15px #0002}
+    #ln-connection-schedule-v1 .lnco h6{color:#1e405c}
+    #ln-connection-schedule-v1 .lnco p{color:#3f5f77}
+    #ln-connection-schedule-v1 .lnco-curr{background:#fff;border:1px solid #b9cfde}
+    #ln-connection-schedule-v1 .lnco-curr strong{color:#1d405d}
+    #ln-connection-schedule-v1 .lnco-row{border-top-color:#d2e0e9;gap:7px}
+    #ln-connection-schedule-v1 .lnco-row>strong{color:#1d405d;min-width:39px}
+    #ln-connection-schedule-v1 .lnco-chips{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;flex:1;min-width:0}
+    #ln-connection-schedule-v1 .lnco-chip{display:flex;min-width:0;min-height:43px;padding:3px 1px;background:#e9f1fc;color:#254460;border:1px solid #9cb7ca;border-radius:8px;font-size:13px}
+    #ln-connection-schedule-v1 .lnco-chip.hit{background:#bdf0d0;border-color:#55b786;color:#155b3c}
+    #ln-connection-schedule-v1 .lnco-chip.miss{background:#ffe1e5;border-color:#da8c98;color:#943542}
+    #ln-connection-schedule-v1 .lnco-tools label{color:#2b516b}
+    #ln-connection-schedule-v1 .lnco-status{color:#2b536c}
+    #ln-connection-schedule-v1 .lnco-out th,#ln-connection-schedule-v1 .lnco-out td{background:#fff;color:#26485e;border-color:#bdd1dc}
+    #ln-connection-schedule-v1 .lnco-out th{background:#e5f1fc;color:#1f4560}
+    #ln-connection-schedule-v1 .lnco-out tr:nth-child(5) td,#ln-connection-schedule-v1 .lnco-out tr:nth-child(6) td{background:#f4f9ff}
+    #ln-connection-schedule-v1 .lnco-list details{background:#fff;border-color:#b8cedd}
+    #ln-connection-schedule-v1 .lnco-list summary{background:#e3f0fd;color:#234960;padding:10px;border-radius:8px}
+    #ln-connection-schedule-v1 .lnco-more{background:#dfedff!important;color:#254862;border:1px solid #9ebbd0;border-radius:8px}
+    #ln-connection-schedule-v1 .lnco .lnco-cap{color:#48657b}
+    #ln-connection-schedule-v1 .lnco [data-lnco-to-lines]{width:100%;min-height:44px;padding:9px;margin:10px 0;background:#f4c16c;color:#283f50;border:1px solid #bf965a;border-radius:9px;font-size:13px;font-weight:900}
+    @media(max-width:700px){
+      #ln-connection-schedule-v1 .lnco-chips{gap:4px}
+      #ln-connection-schedule-v1 .lnco-chip{font-size:12px;min-height:40px}
+      #ln-connection-schedule-v1 .lnco{padding:9px}
+    }
+  `;
   master.append(css);
   const panel=document.createElement('section');panel.className='lnco';panel.dataset.lnco='1';
   panel.innerHTML=`
@@ -59,6 +89,7 @@
     <div class="lnco-status" data-lnco-status>복기를 누르면 해당 회차 직전 기록만으로 번호별 중복을 다시 계산합니다.</div>
     <div class="lnco-out" data-lnco-result></div>
     <div class="lnco-list" data-lnco-list></div>
+    <button type="button" data-lnco-to-lines>📐 사진과 같은 6칸 가로·세로·대각선 라인 분석 바로가기</button>
     <button type="button" class="lnco-more" data-lnco-more hidden>이전 회차 더 보기</button>
     <p class="lnco-cap">본당첨 6개 기준(보너스 제외) · 같은 번호의 여러 경로는 번호 한 개로 집계 · 과거 재계산은 추첨 전에 서버에 저장한 실전 예측과 구분합니다. 무작위 기준 6/45=13.33%입니다.</p>`;
   master.querySelector('[data-lncm-stats]')?.after(panel);
@@ -180,6 +211,11 @@
   }
   window.LNOverlapAudit={countConnections,numberGroups,category};
   window.dispatchEvent(new Event('lnco:ready'));
+  $('[data-lnco-to-lines]').addEventListener('click',()=>{
+    const target=document.querySelector('[data-lna-six]');
+    if(target)target.scrollIntoView({behavior:'smooth',block:'start'});
+    else $('[data-lnco-status]').textContent='라인 분석 화면을 불러오지 못했습니다. 새로고침 후 다시 눌러주세요.';
+  });
   $('[data-lnco-run]').addEventListener('click',audit);
   $('[data-lnco-more]').addEventListener('click',()=>{shown+=12;renderRecaps();});
   window.addEventListener('lncs:schedule-ready',refresh);
