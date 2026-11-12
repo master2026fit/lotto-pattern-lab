@@ -28,14 +28,46 @@
     .lncl-grade b{color:#ffe1a6}
     .lncl-example{margin-top:10px}
     .lncl-example .lnpg-card{margin:8px 0}
-    @media(max-width:560px){.lncl{padding:9px}.lncl-tools{gap:6px}.lncl-tools label{min-width:88px}.lncl-table{min-width:465px}}
+    .lncl-flow-figure{margin:10px 0;padding:10px;background:#112f47;border:1px solid #7191a9;border-radius:10px;max-width:100%;box-sizing:border-box}
+    .lncl-flow-title{margin-bottom:10px;color:#ffdf9d;font-size:13px;font-weight:800;line-height:1.5}
+    .lncl-flow-track{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+    .lncl-flow-point{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;min-width:0;min-height:76px;padding:6px 2px;border-radius:8px;background:#234a61;border:1px solid #527990;box-sizing:border-box;text-align:center;overflow-wrap:anywhere}
+    .lncl-flow-point strong{color:#ffe6ad;font-size:16px;line-height:1.2}
+    .lncl-flow-point small{display:block;color:#cde4f3;font-size:10px;line-height:1.25}
+    .lncl-flow-point span{display:block;color:#a9cbe0;font-size:10px;line-height:1.25}
+    .lncl-flow-point.final{border:2px solid #e5b96e;background:#463d30}
+    .lncl-flow-point.final.win{border-color:#70d6a5;background:#164d43}
+    .lncl-flow-point.final.fail{border-color:#f19ba5;background:#582f42}
+    .lncl-flow-legend{margin-top:8px;color:#c3ddeb;font-size:11px;line-height:1.6}
+    @media(max-width:700px){
+      .lncl{width:100%;max-width:100%;min-width:0;box-sizing:border-box;padding:10px}
+      .lncl-tools{gap:6px}.lncl-tools label{min-width:88px}
+      .lncl-scroll{width:100%;max-width:100%;overflow:visible}
+      .lncl-table{display:block;width:100%;min-width:0;border-spacing:0;font-size:13px}
+      .lncl-table thead{display:none}
+      .lncl-table tbody{display:grid;gap:10px}
+      .lncl-table tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;padding:1px;background:#45677b;border-radius:10px;overflow:hidden}
+      .lncl-table td{display:block;min-width:0;padding:8px 7px;border-radius:0!important;line-height:1.35;overflow-wrap:anywhere}
+      .lncl-table td::before{display:block;margin-bottom:4px;color:#a8cadf;font-size:10px;font-weight:800}
+      .lncl-table td:nth-child(1)::before{content:'검증 회차'}
+      .lncl-table td:nth-child(2)::before{content:'대상 번호'}
+      .lncl-table td:nth-child(3)::before{content:'이동 흐름'}
+      .lncl-table td:nth-child(4)::before{content:'사전 저장'}
+      .lncl-table td:nth-child(5)::before{content:'결과 · 그림'}
+      .lncl-table td:nth-child(3),.lncl-table td[colspan]{grid-column:1/-1}
+      .lncl-table td:nth-child(3) strong{font-size:14px}
+      .lncl-table td:nth-child(5) button{display:block;width:100%;min-height:36px;margin-top:5px;padding:7px 3px;white-space:normal}
+      .lncl-flow-point{min-height:69px;padding:5px 1px}
+      .lncl-flow-point strong{font-size:14px}
+      .lncl-flow-point small,.lncl-flow-point span{font-size:9px}
+    }
   </style>
   <h4>🔐 연결번호 사전 저장원장 · 자동 복기</h4>
   <p>발표 전에 확인한 4점 이상 연결만 서버에 처음 발견한 시각대로 고정합니다. 예정표는 가까운 회차부터 표시하며, 발표 뒤 공식 복기 자료가 저장되어야 성공·실패로 판정합니다.</p>
   <div class="lncl-summary" data-lncl-status>서버 원장 확인 전…</div>
   <div class="lncl-grade" data-lncl-grade>검증 완료한 실전 회차가 쌓이면 비교 성적을 표시합니다.</div>
   <div class="lncl-tools">
-    <label>검증 상태<select data-lncl-filter><option value="all">전체</option><option value="pending">⏳ 예정</option><option value="win">✓ 성공</option><option value="fail">× 실패</option></select></label>
+    <label>검증 상태<select data-lncl-filter><option value="all">전체</option><option value="pending">⏳ 미검증</option><option value="win">✓ 출현</option><option value="fail">× 미출현</option></select></label>
     <label>검증 회차<input data-lncl-round type="number" placeholder="전체" min="1"></label>
     <label>대상 번호<input data-lncl-num type="number" placeholder="1~45" min="1" max="45"></label>
     <label>자리 흐름<input data-lncl-flow placeholder="6-4-3-1"></label>
@@ -53,8 +85,34 @@
   const targetDate=r=>kst(new Date(Date.UTC(2002,11,7,11,30)+(r-1)*7*86400000).toISOString());
   const key=r=>[r.target,r.next].join('-');
   const status=r=>{const a=reviews.get(r.target);return !a?'pending':a.includes(r.next)?'win':'fail';};
-  const viewStatus=s=>s==='win'?'<span class="lncl-win">✓ 성공</span>':
-    s==='fail'?'<span class="lncl-fail">× 실패</span>':'<span class="lncl-due">⏳ 대기</span>';
+  const viewStatus=(s,r)=>s==='win'?'<span class="lncl-win">✓ 출현</span>':
+    s==='fail'?'<span class="lncl-fail">× 미출현</span>':
+    '<span class="lncl-due">⏳ '+(typeof state!=='undefined'&&state.draws?.some(d=>d.draw_no===r.target)?'복기 대기':'결과 대기')+'</span>';
+
+  // Always provide a fully visible, five-step mobile diagram even if the optional
+  // LNPositionGrid visualization has not been loaded.
+  function compactFlow(r){
+    const figure=document.createElement('div');figure.className='lncl-flow-figure';
+    const heading=document.createElement('div');heading.className='lncl-flow-title';
+    const st=status(r);
+    heading.textContent=r.target+'회 '+r.next+'번 · '+(st==='win'?'✓ 출현':st==='fail'?'× 미출현':'⏳ 결과 미검증');
+    figure.append(heading);
+    const track=document.createElement('div');track.className='lncl-flow-track';
+    const points=[...r.steps.map(step=>({round:step.round,n:step.n,slot:step.slot})),{round:r.target,n:r.next,final:true}];
+    for(const point of points){
+      const node=document.createElement('div');
+      node.className='lncl-flow-point'+(point.final?' final '+st:'');
+      const round=document.createElement('small');round.textContent=point.round+'회';
+      const num=document.createElement('strong');num.textContent=point.n+'번';
+      const slot=document.createElement('span');slot.textContent=point.final?(st==='win'?'출현':st==='fail'?'미출현':'검증 대상'):(point.slot?point.slot+'구':'연결');
+      node.append(round,num,slot);track.append(node);
+    }
+    figure.append(track);
+    const note=document.createElement('div');note.className='lncl-flow-legend';
+    note.textContent='왼쪽부터 추첨 회차 순서 · 각 단계 간격 +'+r.gap+'회 · 번호 이동 '+(r.shift>0?'+':'')+r.shift+' · 마지막 칸은 '+r.target+'회 검증 결과입니다.';
+    figure.append(note);
+    return figure;
+  }
   function showRow(r){
     const area=$('[data-lncl-example]');area.textContent='';
     const back=document.createElement('button');back.type='button';back.className='lncl-back';
@@ -63,10 +121,13 @@
     const p=document.createElement('p');p.textContent=`${r.target}회 ${r.next}번 · ${r.flow.replaceAll('-', '→')} · ${kst(r.createdAt)} 최초 저장 · ${status(r)==='pending'?'결과 대기':status(r)==='win'?'실제 적중':'미출현'}`;
     area.append(back,p);
     const create=window.LNPositionGrid?.create;
-    if(typeof create==='function'&&typeof state!=='undefined'){
-      const steps=r.steps.map(s=>({round:s.round,num:s.n}));
-      area.append(create({target:r.target,next:r.next,gap:r.gap,shift:r.shift,count:r.count,steps},state.draws));
-    }
+    if(typeof create==='function'&&typeof state!=='undefined'&&window.innerWidth>700){
+      try{
+        const steps=r.steps.map(s=>({round:s.round,num:s.n}));
+        const full=create({target:r.target,next:r.next,gap:r.gap,shift:r.shift,count:r.count,steps},state.draws);
+        area.append(full||compactFlow(r));
+      }catch(_){area.append(compactFlow(r));}
+    }else area.append(compactFlow(r));
     area.scrollIntoView({behavior:'smooth',block:'start'});
   }
   function gradeStats(){
@@ -76,7 +137,7 @@
     const summary=(rows,label)=>{
       const win=rows.filter(p=>status(p)==='win').length;
       const expected=rows.length*6/45;
-      return `${label}: <b>${win}/${rows.length}</b> (${rows.length?(100*win/rows.length).toFixed(1):'—'}%) · 무작위 기대 ${expected.toFixed(1)}건`;
+      return `${label}: <b>${win}/${rows.length}</b> (${rows.length?(100*win/rows.length).toFixed(1):'—'}%) · 미출현 ${rows.length-win}건 · 무작위 기대 ${expected.toFixed(1)}건`;
     };
     const roundGroups=[...new Set(scored.map(r=>r.target))].sort((a,b)=>a-b);
     const cutoffCount=n=>scored.filter(r=>roundGroups.indexOf(r.target)>=Math.max(0,roundGroups.length-n));
@@ -102,13 +163,14 @@
       `<td><strong>${r.next}번</strong><small>${r.count}점 연결</small></td>`+
       `<td><strong>${escape(r.flow.replaceAll('-', '→'))}</strong><small>간격 +${r.gap}회 · 이동 ${r.shift>0?'+':''}${r.shift}</small></td>`+
       `<td>${kst(r.createdAt)}<small>${r.sourceRound}회 기준</small></td>`+
-      `<td>${viewStatus(status(r))}<small><button type="button" data-lncl-show="${i}">자리 그림</button></small></td></tr>`).join(''):
+      `<td>${viewStatus(status(r),r)}<small><button type="button" data-lncl-show="${i}">🖼 그림 보기</button></small></td></tr>`).join(''):
       '<tr><td colspan="5">해당 조건의 사전 저장 기록이 없습니다.</td></tr>';
     for(const b of body.querySelectorAll('[data-lncl-show]'))b.addEventListener('click',()=>showRow(rows[+b.dataset.lnclShow]));
     const more=$('[data-lncl-more]');more.hidden=sorted.length<=visible;
     const pending=forecast.filter(r=>!reviews.has(r.target)).length;
     const done=forecast.length-pending;
-    $('[data-lncl-status]').textContent=`추첨 전에 최초 저장한 연결 ${forecast.length}건 · 결과 대기 ${pending}건 · 결과 확정 ${done}건 · 현재 검색 ${sorted.length}건${next?' · 다음 '+next+'회':''}`;
+    const wins=forecast.filter(r=>status(r)==='win').length;
+    $('[data-lncl-status]').textContent=`추첨 전에 최초 저장한 연결 ${forecast.length}건 · 미검증 ${pending}건 · 결과 확정 ${done}건 (출현 ${wins}건 · 미출현 ${done-wins}건) · 현재 검색 ${sorted.length}건${next?' · 다음 '+next+'회':''}`;
     gradeStats();
   }
   async function load(){
