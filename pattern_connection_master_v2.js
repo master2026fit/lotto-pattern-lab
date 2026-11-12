@@ -69,6 +69,31 @@
     #ln-connection-schedule-v1 .lncm-feedback{font-size:12px;color:#b8dceb;line-height:1.6}
     #ln-connection-schedule-v1 .lncm-master button{touch-action:manipulation}
     #ln-connection-schedule-v1 .lncs-float.lncm-hide{display:none!important}
+    #ln-connection-schedule-v1 .lncm-round-actions{display:flex;gap:7px;flex-wrap:wrap;margin:6px 0 12px}
+    #ln-connection-schedule-v1 .lncm-round-actions button{flex:1 1 165px;min-height:44px}
+    #ln-connection-schedule-v1 .lncm-show-all{background:#d8a753!important;border-color:#ffe0a0!important;color:#132c40!important;font-size:13px!important}
+    #ln-connection-schedule-v1 .lncm-overview{max-width:100%;min-width:0;box-sizing:border-box;background:#0c283d;border:1px solid #88bdc2;border-radius:12px;padding:10px;margin:9px 0 14px;scroll-margin-top:65px}
+    #ln-connection-schedule-v1 .lncm-overview h6{color:#ffe0a5;font-size:16px;margin:3px 0 7px}
+    #ln-connection-schedule-v1 .lncm-overview .lncm-note{margin:6px 0}
+    #ln-connection-schedule-v1 .lncm-num-grid{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:5px;padding:9px 0 12px}
+    #ln-connection-schedule-v1 .lncm-num-grid button,#ln-connection-schedule-v1 .lncm-num-grid span{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1px;min-width:0;min-height:43px;border:1px solid #4c6d84;border-radius:8px;background:#17334a;color:#8fa9c0;box-sizing:border-box;font-size:13px;font-weight:850}
+    #ln-connection-schedule-v1 .lncm-num-grid button.active{border:2px solid #d7ae66;background:#304f5f;color:#fff0be}
+    #ln-connection-schedule-v1 .lncm-num-grid button.hit{border-color:#68d3a4;background:#185342;color:#d6ffe9}
+    #ln-connection-schedule-v1 .lncm-num-grid button.miss{border-color:#f4a2b1;background:#563347;color:#ffe4e6}
+    #ln-connection-schedule-v1 .lncm-num-grid small{display:block;font-size:9px;line-height:1.2;color:inherit;font-weight:700}
+    #ln-connection-schedule-v1 .lncm-num-section{background:#12334b;border:1px solid #58778d;border-radius:11px;margin:10px 0;padding:9px;scroll-margin-top:80px}
+    #ln-connection-schedule-v1 .lncm-num-heading{font-size:14px;font-weight:850;color:#ffe3a7;margin:2px 0 7px}
+    #ln-connection-schedule-v1 .lncm-num-section .lncm-path-view{margin:6px 0;padding:8px}
+    #ln-connection-schedule-v1 .lncm-alt{width:100%;margin-top:8px}
+    #ln-connection-schedule-v1 .lncm-overview-close{display:block;width:100%;margin:12px 0 0;background:#34576f!important}
+    #ln-connection-schedule-v1 .lncm-overview-banner{padding:8px 10px;background:#173b54;color:#e9f7ff;font-size:12px;line-height:1.7;border-radius:9px}
+    @media(max-width:700px){
+      #ln-connection-schedule-v1 .lncm-num-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+      #ln-connection-schedule-v1 .lncm-num-grid button,#ln-connection-schedule-v1 .lncm-num-grid span{min-height:43px;font-size:12px}
+      #ln-connection-schedule-v1 .lncm-round-actions{gap:6px}
+      #ln-connection-schedule-v1 .lncm-num-section{padding:7px}
+      #ln-connection-schedule-v1 .lncm-overview{padding:8px}
+    }
     @media(max-width:700px){
       #ln-connection-schedule-v1 .lncm-master{width:100%;padding:9px}
       #ln-connection-schedule-v1 .lncm-master .lncm-scroll{overflow:visible;max-width:100%}
@@ -111,7 +136,7 @@
       <label>대상 번호 <select data-lncm-num aria-label="검증 대상 번호"><option value="0">전체 45수</option></select></label>
       <label>검증 회차 <input data-lncm-round type="number" min="1" inputmode="numeric" placeholder="전체 회차" aria-label="검증 회차 검색"></label>
     </div>
-    <p class="lncm-note">회차를 펼치고 <b>🖼 그림 보기</b>를 누르면 이동하지 않고 이 표 안에 5단계 연결이 나타납니다. 휴대폰에서 옆으로 밀 필요가 없습니다.</p>
+    <p class="lncm-note"><b>📊 회차 전체 그림</b>을 누르면 해당 회차에 연결된 대상 번호가 모두 나타납니다. 각 번호의 이전 4지점 → 해당 회차 결과를 한꺼번에 볼 수 있습니다.</p>
     <div data-lncm-groups></div><button type="button" class="lncm-load" data-lncm-more hidden>다음 검증 회차 더 보기</button>
     <h6>📒 지난 연결 결과 · 출현/미출현 복기</h6>
     <div class="lncm-scroll"><table class="lncm-recap"><thead><tr><th style="width:19%">회차</th><th style="width:24%">연결 결과</th><th style="width:30%">번호별 출현</th><th style="width:27%">기록·그림</th></tr></thead><tbody data-lncm-recaps></tbody></table></div>
@@ -123,7 +148,7 @@
   const groupArea=$('[data-lncm-groups]'),groupMore=$('[data-lncm-more]');
   const minSelect=$('[data-lncm-min]'),numSelect=$('[data-lncm-num]');
   for(let n=1;n<=45;n++){const option=document.createElement('option');option.value=n;option.textContent=n+'번';numSelect.append(option);}
-  let model=null,allGroups=[],visibleGroups=8,openTarget=0,detailLimit=20,selectedPath='',recapCount=8;
+  let model=null,allGroups=[],visibleGroups=8,openTarget=0,overviewTarget=0,detailLimit=20,selectedPath='',recapCount=8;
   const recapCache=new Map();
   const floating=main.querySelector('[data-lncs-floating]');
   if(floating&&typeof IntersectionObserver==='function'){
@@ -181,10 +206,102 @@
     const small=document.createElement('small');small.textContent='5점↑ '+paths.filter(p=>p.count>=5).length+' · 6점↑ '+paths.filter(p=>p.count>=6).length;
     stats.append(strong,small);tr.append(cell(stats,'연결 건수'));
     const toggle=document.createElement('button');toggle.type='button';toggle.textContent=openTarget===target?'접기 ▲':'펼치기 ▼';toggle.setAttribute('aria-expanded',String(openTarget===target));
-    toggle.addEventListener('click',()=>{openTarget=openTarget===target?0:target;detailLimit=20;selectedPath='';renderGroups();});tr.append(cell(toggle,'연결 기록'));
+    toggle.addEventListener('click',()=>{
+      const wasOpen=openTarget===target;
+      openTarget=wasOpen?0:target;overviewTarget=0;detailLimit=20;selectedPath='';renderGroups();
+    });tr.append(cell(toggle,'연결 기록'));
     tbody.append(tr);table.append(tbody);tableWrap.append(table);holder.append(tableWrap);
+    const actions=document.createElement('div');actions.className='lncm-round-actions';
+    const viewAll=document.createElement('button');viewAll.type='button';viewAll.className='lncm-show-all';
+    viewAll.textContent=overviewTarget===target?'✕ '+target+'회 전체 그림 닫기':'📊 '+target+'회 번호·연결 전체 보기';
+    viewAll.setAttribute('aria-expanded',String(overviewTarget===target));
+    viewAll.addEventListener('click',()=>{
+      const wasOpen=overviewTarget===target;
+      overviewTarget=wasOpen?0:target;openTarget=0;selectedPath='';
+      renderGroups();
+      if(!wasOpen){
+        const overview=groupArea.querySelector('[data-lncm-overview="'+target+'"]');
+        if(overview)overview.scrollIntoView({behavior:'smooth',block:'start'});
+      }
+    });
+    actions.append(viewAll);holder.append(actions);
+    if(overviewTarget===target)holder.append(makeOverview(target,paths));
     if(openTarget===target)holder.append(makeDetail(target,paths));
     return holder;
+  }
+  // One overview per scheduled round. Deduplicate target numbers rather than
+  // counting overlapping line patterns as independent lottery chances.
+  function makeOverview(target,paths){
+    const area=document.createElement('section');area.className='lncm-overview';
+    area.dataset.lncmOverview=String(target);
+    const grouped=new Map();
+    for(const p of paths){
+      if(!grouped.has(p.next))grouped.set(p.next,[]);
+      grouped.get(p.next).push(p);
+    }
+    for(const p of grouped.values())p.sort((a,b)=>b.count-a.count||a.gap-b.gap||a.shift-b.shift);
+    const numbers=[...grouped.keys()].sort((a,b)=>a-b);
+    const heading=document.createElement('h6');
+    heading.textContent='📊 '+target+'회 · 전체 연결 번호 '+numbers.length+'수';
+    area.append(heading);
+    const info=document.createElement('p');info.className='lncm-overview-banner';
+    info.textContent='대상 번호 '+(numbers.length?numbers.join(' · '):'없음')+
+      ' · 연결 '+paths.length+'건 · 각 번호의 가장 긴 연결을 먼저 표시합니다. 나머지 연결도 번호 아래에서 펼쳐볼 수 있습니다.';
+    area.append(info);
+    const note=document.createElement('p');note.className='lncm-note';
+    note.textContent='아래 1~45 숫자판에서 테두리가 있는 숫자는 관찰 대상이고, 흐린 숫자는 연결이 확인되지 않은 번호입니다. 대상이 아니라고 미출현으로 판정하지 않습니다.';
+    area.append(note);
+    const grid=document.createElement('div');grid.className='lncm-num-grid';
+    grid.setAttribute('aria-label',target+'회 전체 1~45번 연결 여부');
+    const sectionByNumber=new Map();
+    for(const n of numbers){
+      const lines=grouped.get(n),section=document.createElement('section');
+      section.className='lncm-num-section';section.dataset.lncmNumber=String(n);
+      const title=document.createElement('div');title.className='lncm-num-heading';
+      title.textContent=n+'번 · '+lines.length+'건 연결 · 최장 '+lines[0].count+'점';
+      section.append(title,makePathDiagram(lines[0],'이 번호의 대표 연결'));
+      if(lines.length>1){
+        const extra=document.createElement('details');extra.className='lncm-other-paths';
+        const toggle=document.createElement('summary');
+        toggle.textContent='겹친 다른 연결 '+(lines.length-1)+'건 전부 보기';
+        extra.append(toggle);
+        extra.addEventListener('toggle',()=>{
+          if(!extra.open||extra.dataset.loaded)return;
+          extra.dataset.loaded='1';
+          for(const p of lines.slice(1))extra.append(makePathDiagram(p,'같은 번호의 다른 연결'));
+        });
+        section.append(extra);
+      }
+      sectionByNumber.set(n,section);
+    }
+    for(let n=1;n<=45;n++){
+      const lines=grouped.get(n);
+      if(!lines){
+        const blank=document.createElement('span');blank.textContent=n;blank.title=n+'번: 4점 이상 연결 없음';grid.append(blank);
+        continue;
+      }
+      const outcome=model?.byDraw?.[target];
+      const mark=outcome instanceof Set?(outcome.has(n)?'hit':'miss'):'pending';
+      const button=document.createElement('button');button.type='button';
+      button.className='active'+(mark==='pending'?'':' '+mark);
+      button.setAttribute('aria-label',n+'번 연결 '+lines.length+'건의 그림으로 이동');
+      const big=document.createElement('strong');big.textContent=n;
+      const count=document.createElement('small');count.textContent=lines.length+'건';
+      button.append(big,count);
+      button.addEventListener('click',()=>sectionByNumber.get(n)?.scrollIntoView({behavior:'smooth',block:'start'}));
+      grid.append(button);
+    }
+    area.append(grid);
+    for(const n of numbers)area.append(sectionByNumber.get(n));
+    const close=document.createElement('button');close.type='button';
+    close.className='lncm-overview-close';close.textContent='✕ '+target+'회 전체 그림 접기';
+    close.addEventListener('click',()=>{
+      overviewTarget=0;renderGroups();
+      const btn=[...groupArea.querySelectorAll('.lncm-show-all')].find(b=>b.textContent.includes(target+'회'));
+      if(btn)btn.scrollIntoView({behavior:'smooth',block:'center'});
+    });
+    area.append(close);
+    return area;
   }
   function makeDetail(target,paths){
     const area=document.createElement('div');area.className='lncm-detail';
@@ -296,19 +413,19 @@
   }
   function refresh(){
     const next=window.LNConnectionSchedule?.getModel();if(!next)return;
-    if(!model||next.last!==model.last){model=next;visibleGroups=8;openTarget=0;selectedPath='';recapCount=8;recapCache.clear();}
+    if(!model||next.last!==model.last){model=next;visibleGroups=8;openTarget=0;overviewTarget=0;selectedPath='';recapCount=8;recapCache.clear();}
     renderGroups();renderRecaps();
   }
-  minSelect.addEventListener('change',()=>{visibleGroups=8;openTarget=0;selectedPath='';renderGroups();});
+  minSelect.addEventListener('change',()=>{visibleGroups=8;openTarget=0;overviewTarget=0;selectedPath='';renderGroups();});
   $('[data-lncm-round]').addEventListener('input',()=>{
-    visibleGroups=8;openTarget=0;selectedPath='';
+    visibleGroups=8;openTarget=0;overviewTarget=0;selectedPath='';
     const round=Number($('[data-lncm-round]').value)||0;
     if(model&&round>=5&&round<=model.last&&model.last-round<120){
       recapCount=Math.max(recapCount,model.last-round+1);renderRecaps();
     }
     renderGroups();
   });
-  numSelect.addEventListener('change',()=>{visibleGroups=8;openTarget=0;selectedPath='';renderGroups();});
+  numSelect.addEventListener('change',()=>{visibleGroups=8;openTarget=0;overviewTarget=0;selectedPath='';renderGroups();});
   groupMore.addEventListener('click',()=>{visibleGroups+=8;renderGroups();});
   $('[data-lncm-recap-more]').addEventListener('click',()=>{recapCount+=8;renderRecaps();});
   window.addEventListener('lncs:schedule-ready',refresh);
