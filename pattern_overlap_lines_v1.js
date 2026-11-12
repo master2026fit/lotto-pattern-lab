@@ -149,7 +149,7 @@
   const tiers=['1','2','3','4','5','6'];
   const tierName=t=>t==='6'?'6건+':t+'건';
   const classify=n=>n>=6?'6':String(n);
-  let model=null,target=0,history=[],aggregate=[],selected='',linesVisible=18,historyVisible=8,statsVisible=12,busy=false;
+  let model=null,target=0,history=[],aggregate=[],selected='',linesVisible=18,historyVisible=8,historyRendered=0,statsVisible=12,busy=false;
   const fmt=n=>n.toLocaleString('ko-KR');
   const zeroProb=n=>{
     let p=1;
@@ -323,8 +323,15 @@
     if(!list.length)root.textContent='선택 조건에서 두 번호 이상 연결된 라인이 없습니다.';
   }
   function renderHistory(){
-    const root=$('[data-lna-history]');root.textContent='';
-    for(const [i,entry] of history.slice(0,historyVisible).entries()){
+    const root=$('[data-lna-history]');
+    const count=Math.min(historyVisible,history.length);
+    // Incrementally append only the new batch: do not recreate the existing
+    // details, lose expanded rows, or move the user's position unexpectedly.
+    if(historyRendered>count||root.children.length!==historyRendered){
+      root.replaceChildren();historyRendered=0;
+    }
+    for(let i=historyRendered;i<count;i++){
+      const entry=history[i];
       const details=document.createElement('details');details.open=i<2;
       const heading=document.createElement('summary');
       const groups=groupsOf(entry.count),nums=Object.values(groups).flat();
@@ -336,6 +343,7 @@
       visit.addEventListener('click',()=>{selectRound(entry.round);panel.scrollIntoView({behavior:'smooth',block:'start'});});
       details.append(visit);root.append(details);
     }
+    historyRendered=count;
     const more=$('[data-lna-history-more]');more.hidden=historyVisible>=history.length;
     more.textContent='이전 '+Math.min(8,history.length-historyVisible)+'회 더 보기 ('+Math.min(historyVisible,history.length)+'/'+history.length+')';
   }
@@ -408,7 +416,7 @@
     const last=model.last,choice=$('[data-lna-period]').value,start=choice==='all'?5:Math.max(5,last-Number(choice)+1);
     busy=true;
     const btn=$('[data-lna-audit]'),sel=$('[data-lna-period]');
-    btn.disabled=true;sel.disabled=true;history=[];aggregate=[];
+    btn.disabled=true;sel.disabled=true;history=[];aggregate=[];historyRendered=0;
     $('[data-lna-history]').textContent='';$('[data-lna-stats]').textContent='';$('[data-lna-trend]').textContent='';
     try{
       const results=[];
@@ -443,9 +451,17 @@
   $('[data-lna-tier]').addEventListener('change',changeFilters);
   $('[data-lna-kind]').addEventListener('change',changeFilters);
   $('[data-lna-line-more]').addEventListener('click',()=>{linesVisible+=18;renderSelected();});
-  $('[data-lna-history-more]').addEventListener('click',()=>{historyVisible+=8;renderHistory();});
+  $('[data-lna-history-more]').addEventListener('click',()=>{
+    const firstNewIndex=historyRendered;
+    historyVisible=Math.min(history.length,historyVisible+8);
+    renderHistory();
+    // Move only to the first NEW round, rather than the top of the page or
+    // keeping the now-shifted button anchored at an unrelated scroll position.
+    const firstNew=$('[data-lna-history]').children[firstNewIndex];
+    if(firstNew)requestAnimationFrame(()=>firstNew.scrollIntoView({behavior:'smooth',block:'start',inline:'nearest'}));
+  });
   $('[data-lna-stats-more]').addEventListener('click',()=>{statsVisible+=12;renderStats();});
   window.addEventListener('lnco:ready',refresh);
-  window.addEventListener('lncs:schedule-ready',()=>{if(!busy){history=[];aggregate=[];target=0;refresh();}});
+  window.addEventListener('lncs:schedule-ready',()=>{if(!busy){history=[];aggregate=[];historyRendered=0;target=0;refresh();}});
   refresh();
 })();
