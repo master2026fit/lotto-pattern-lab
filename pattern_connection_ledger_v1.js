@@ -54,7 +54,7 @@
       .lncl-table td:nth-child(3)::before{content:'이동 흐름'}
       .lncl-table td:nth-child(4)::before{content:'사전 저장'}
       .lncl-table td:nth-child(5)::before{content:'결과 · 그림'}
-      .lncl-table td:nth-child(3),.lncl-table td[colspan]{grid-column:1/-1}
+      .lncl-table td:nth-child(3),.lncl-table td:nth-child(5),.lncl-table td[colspan]{grid-column:1/-1}
       .lncl-table td:nth-child(3) strong{font-size:14px}
       .lncl-table td:nth-child(5) button{display:block;width:100%;min-height:36px;margin-top:5px;padding:7px 3px;white-space:normal}
       .lncl-flow-point{min-height:69px;padding:5px 1px}
