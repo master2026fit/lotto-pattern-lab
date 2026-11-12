@@ -331,10 +331,10 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
   <div class="eyebrow">PATTERN WATCH · HISTORICAL AUDIT</div>
   <h1>★ 중요패턴 추적</h1>
   <p class="lead">추첨 전 검색된 패턴 번호를 회차별로 기록하고, 당첨·미당첨을 같은 기준으로 복기합니다. 추적 표시는 고정수·제외수를 자동으로 변경하지 않습니다.</p>
-  <style>#watch [data-lncm-master]{scroll-margin-top:105px}#watch .ln-master-jump{position:sticky;top:8px;z-index:35;margin:12px 0;padding:9px;border:1px solid #d9b16c;border-radius:12px;background:#102b43;box-shadow:0 4px 14px #0007}#watch .ln-master-jump button{display:block;width:100%;min-height:48px;padding:10px 14px;border:1px solid #ffdaa0;border-radius:9px;background:#e3b971;color:#172f46;font-size:16px;font-weight:900;cursor:pointer}#watch .ln-master-jump small{display:block;margin-top:6px;text-align:center;font-size:12px;color:#e0eaf3}@media(min-width:700px){#watch .ln-master-jump{max-width:840px;margin:14px auto}}</style>
+  <style>#watch [data-lncm-master]{scroll-margin-top:18px}#watch .ln-master-jump{position:relative;top:auto;z-index:auto;margin:12px 0;padding:9px;border:1px solid #d9b16c;border-radius:12px;background:#102b43;box-shadow:0 4px 14px #0007}#watch .ln-master-jump button{display:block;width:100%;min-height:48px;padding:10px 14px;border:1px solid #ffdaa0;border-radius:9px;background:#e3b971;color:#172f46;font-size:16px;font-weight:900;cursor:pointer}#watch .ln-master-jump small{display:block;margin-top:6px;text-align:center;font-size:12px;color:#e0eaf3}@media(min-width:700px){#watch .ln-master-jump{max-width:840px;margin:14px auto}}</style>
   <div class="ln-master-jump">
     <button type="button" onclick="const target=document.querySelector('[data-lncm-master]');if(target){target.scrollIntoView({behavior:'smooth',block:'start'})}else{alert('통합표를 불러오는 중입니다. 잠시 뒤 다시 눌러주세요.')}">🧭 전체 생존 패턴 통합표 바로가기 ↓</button>
-    <small>1249회부터 가까운 검증 회차 · 연결 번호를 한 표에서 확인</small>
+    <small>가까운 검증 회차와 번호별 그림 · 지난 출현/미출현 기록 확인</small>
   </div>
 <section id="ln-pattern-watch-v1" class="lnpw" aria-label="로또 당번 동반 패턴 추적">
   <style>
@@ -462,7 +462,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 <script src="./pattern_connection_schedule_v3.js"></script>
 <script src="./pattern_connection_visual_v1.js?v=20261106slots"></script>
 <script src="./pattern_connection_table_v6.js"></script>
-<script src="./pattern_connection_master_v2.js"></script>
+<script src="./pattern_connection_master_v2.js?v=20261112mobile2"></script>
 <script src="./pattern_walkforward_v1.js?v=20261106moves"></script>
 <script src="./pattern_connection_ledger_v1.js?v=20261112mobile4"></script>
 <script>
