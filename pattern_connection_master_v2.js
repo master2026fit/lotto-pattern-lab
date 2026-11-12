@@ -68,6 +68,7 @@
     #ln-connection-schedule-v1 .lncm-recap-view{margin:8px 0}
     #ln-connection-schedule-v1 .lncm-feedback{font-size:12px;color:#b8dceb;line-height:1.6}
     #ln-connection-schedule-v1 .lncm-master button{touch-action:manipulation}
+    #ln-connection-schedule-v1 .lncs-float.lncm-hide{display:none!important}
     @media(max-width:700px){
       #ln-connection-schedule-v1 .lncm-master{width:100%;padding:9px}
       #ln-connection-schedule-v1 .lncm-master .lncm-scroll{overflow:visible;max-width:100%}
@@ -124,6 +125,12 @@
   for(let n=1;n<=45;n++){const option=document.createElement('option');option.value=n;option.textContent=n+'번';numSelect.append(option);}
   let model=null,allGroups=[],visibleGroups=8,openTarget=0,detailLimit=20,selectedPath='',recapCount=8;
   const recapCache=new Map();
+  const floating=main.querySelector('[data-lncs-floating]');
+  if(floating&&typeof IntersectionObserver==='function'){
+    new IntersectionObserver(entries=>{
+      floating.classList.toggle('lncm-hide',entries[0].isIntersecting);
+    },{threshold:0}).observe(panel);
+  }
   const numberList=paths=>[...new Set(paths.map(p=>p.next))].sort((a,b)=>a-b);
   const labelNums=nums=>nums.slice(0,6).join(' · ')+(nums.length>6?' 외 '+(nums.length-6)+'수':'');
   const cell=(value,label='')=>{const td=document.createElement('td');if(label)td.dataset.label=label;if(typeof value==='string')td.textContent=value;else td.append(value);return td;};
@@ -228,7 +235,7 @@
     const stats=$('[data-lncm-stats]');stats.textContent='';
     ['대기 회차 '+allGroups.length.toLocaleString('ko-KR')+'개','살아남은 연결 '+total.toLocaleString('ko-KR')+'건','가장 가까운 검증 '+(allGroups[0]?.target||'-')+'회'].forEach(t=>{const x=document.createElement('span');x.textContent=t;stats.append(x);});
     groupArea.textContent='';
-    if(!allGroups.length){const empty=document.createElement('p');empty.className='lncm-note';empty.textContent=round&&round<=model.last?'입력한 '+round+'회는 이미 추첨된 회차입니다. 아래 지난 복기 기록을 확인해 주세요.':'이 조건에서 검증을 기다리는 연결이 없습니다. 회차·번호·연속성 조건을 바꾸어 보세요.';groupArea.append(empty);}
+    if(!allGroups.length){const empty=document.createElement('p');empty.className='lncm-note';empty.textContent=round&&round<=model.last?'입력한 '+round+'회는 이미 추첨된 회차입니다. 아래 지난 복기에서 확인하거나, 검증 회차 검색을 비워 다음 연결을 확인하세요.':'이 조건에서 검증을 기다리는 연결이 없습니다. 회차·번호·연속성 조건을 바꾸어 보세요.';groupArea.append(empty);}
     allGroups.slice(0,visibleGroups).forEach(g=>groupArea.append(makeGroup(g.target,g.paths)));
     groupMore.hidden=allGroups.length<=visibleGroups;
     groupMore.textContent='가까운 검증 회차 '+Math.min(8,allGroups.length-visibleGroups)+'개 더 보기 ('+Math.min(visibleGroups,allGroups.length)+'/'+allGroups.length+')';
@@ -293,7 +300,14 @@
     renderGroups();renderRecaps();
   }
   minSelect.addEventListener('change',()=>{visibleGroups=8;openTarget=0;selectedPath='';renderGroups();});
-  $('[data-lncm-round]').addEventListener('input',()=>{visibleGroups=8;openTarget=0;selectedPath='';renderGroups();});
+  $('[data-lncm-round]').addEventListener('input',()=>{
+    visibleGroups=8;openTarget=0;selectedPath='';
+    const round=Number($('[data-lncm-round]').value)||0;
+    if(model&&round>=5&&round<=model.last&&model.last-round<120){
+      recapCount=Math.max(recapCount,model.last-round+1);renderRecaps();
+    }
+    renderGroups();
+  });
   numSelect.addEventListener('change',()=>{visibleGroups=8;openTarget=0;selectedPath='';renderGroups();});
   groupMore.addEventListener('click',()=>{visibleGroups+=8;renderGroups();});
   $('[data-lncm-recap-more]').addEventListener('click',()=>{recapCount+=8;renderRecaps();});
