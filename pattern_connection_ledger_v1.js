@@ -85,17 +85,33 @@
   const targetDate=r=>kst(new Date(Date.UTC(2002,11,7,11,30)+(r-1)*7*86400000).toISOString());
   const key=r=>[r.target,r.next].join('-');
   const status=r=>{const a=reviews.get(r.target);return !a?'pending':a.includes(r.next)?'win':'fail';};
-  const viewStatus=(s,r)=>s==='win'?'<span class="lncl-win">✓ 출현</span>':
-    s==='fail'?'<span class="lncl-fail">× 미출현</span>':
-    '<span class="lncl-due">⏳ '+(typeof state!=='undefined'&&state.draws?.some(d=>d.draw_no===r.target)?'복기 대기':'결과 대기')+'</span>';
+  // Keep confirmed server-review statistics separate from the live draw preview.
+  // A missing saved review is never recorded as a verified miss.
+  function observed(r){
+    const verified=status(r);
+    if(verified!=='pending')return {value:verified,verified:true};
+    if(typeof state==='undefined'||state.source!=='온라인'||!Array.isArray(state.draws))
+      return {value:'pending',verified:false};
+    const draw=state.draws.find(d=>d.draw_no===r.target);
+    if(!draw||!Array.isArray(draw.numbers)||draw.numbers.length!==6||
+      draw.numbers.some(n=>!Number.isInteger(n)||n<1||n>45))
+      return {value:'pending',verified:false};
+    return {value:draw.numbers.includes(r.next)?'win':'fail',verified:false};
+  }
+  const viewStatus=r=>{
+    const result=observed(r);
+    if(result.value==='pending')return '<span class="lncl-due">⏳ 결과 대기</span>';
+    const mark=result.value==='win'?'<span class="lncl-win">✓ 출현</span>':'<span class="lncl-fail">× 미출현</span>';
+    return mark+(result.verified?'':'<small>온라인 조회 · 서버 복기 전</small>');
+  };
 
   // Always provide a fully visible, five-step mobile diagram even if the optional
   // LNPositionGrid visualization has not been loaded.
   function compactFlow(r){
     const figure=document.createElement('div');figure.className='lncl-flow-figure';
     const heading=document.createElement('div');heading.className='lncl-flow-title';
-    const st=status(r);
-    heading.textContent=r.target+'회 '+r.next+'번 · '+(st==='win'?'✓ 출현':st==='fail'?'× 미출현':'⏳ 결과 미검증');
+    const actual=observed(r),st=actual.value;
+    heading.textContent=r.target+'회 '+r.next+'번 · '+(st==='win'?'✓ 출현':st==='fail'?'× 미출현':'⏳ 결과 대기')+(actual.verified?'':st==='pending'?'':' (온라인 조회 · 서버 복기 전)');
     figure.append(heading);
     const track=document.createElement('div');track.className='lncl-flow-track';
     const points=[...r.steps.map(step=>({round:step.round,n:step.n,slot:step.slot})),{round:r.target,n:r.next,final:true}];
@@ -118,7 +134,8 @@
     const back=document.createElement('button');back.type='button';back.className='lncl-back';
     back.textContent='↩ 연결 기록표로 돌아가기';
     back.addEventListener('click',()=>$('[data-lncl-rows]').scrollIntoView({behavior:'smooth',block:'start'}));
-    const p=document.createElement('p');p.textContent=`${r.target}회 ${r.next}번 · ${r.flow.replaceAll('-', '→')} · ${kst(r.createdAt)} 최초 저장 · ${status(r)==='pending'?'결과 대기':status(r)==='win'?'실제 적중':'미출현'}`;
+    const o=observed(r);
+    const p=document.createElement('p');p.textContent=`${r.target}회 ${r.next}번 · ${r.flow.replaceAll('-', '→')} · ${kst(r.createdAt)} 최초 저장 · ${o.value==='pending'?'결과 대기':o.value==='win'?'출현':'미출현'}${o.value!=='pending'&&!o.verified?' (온라인 조회, 서버 복기 미확정)':''}`;
     area.append(back,p);
     const create=window.LNPositionGrid?.create;
     if(typeof create==='function'&&typeof state!=='undefined'&&window.innerWidth>700){
@@ -152,7 +169,7 @@
     const next=typeof state!=='undefined'&&state.draws?.length?state.draws.at(-1).draw_no+1:0;
     const sorted=forecast.filter(r=>
       (!round||r.target===round)&&(!num||r.next===num)&&(!flow||r.flow.includes(flow))&&
-      (filter==='all'||status(r)===filter));
+      (filter==='all'||observed(r).value===filter));
     sorted.sort((a,b)=>{
       const x=reviews.has(a.target)?1:0,y=reviews.has(b.target)?1:0;
       return x-y||(x?a.target-b.target:a.target-b.target)||a.next-b.next;
@@ -163,14 +180,15 @@
       `<td><strong>${r.next}번</strong><small>${r.count}점 연결</small></td>`+
       `<td><strong>${escape(r.flow.replaceAll('-', '→'))}</strong><small>간격 +${r.gap}회 · 이동 ${r.shift>0?'+':''}${r.shift}</small></td>`+
       `<td>${kst(r.createdAt)}<small>${r.sourceRound}회 기준</small></td>`+
-      `<td>${viewStatus(status(r),r)}<small><button type="button" data-lncl-show="${i}">🖼 그림 보기</button></small></td></tr>`).join(''):
+      `<td>${viewStatus(r)}<small><button type="button" data-lncl-show="${i}">🖼 그림 보기</button></small></td></tr>`).join(''):
       '<tr><td colspan="5">해당 조건의 사전 저장 기록이 없습니다.</td></tr>';
     for(const b of body.querySelectorAll('[data-lncl-show]'))b.addEventListener('click',()=>showRow(rows[+b.dataset.lnclShow]));
     const more=$('[data-lncl-more]');more.hidden=sorted.length<=visible;
     const pending=forecast.filter(r=>!reviews.has(r.target)).length;
     const done=forecast.length-pending;
     const wins=forecast.filter(r=>status(r)==='win').length;
-    $('[data-lncl-status]').textContent=`추첨 전에 최초 저장한 연결 ${forecast.length}건 · 미검증 ${pending}건 · 결과 확정 ${done}건 (출현 ${wins}건 · 미출현 ${done-wins}건) · 현재 검색 ${sorted.length}건${next?' · 다음 '+next+'회':''}`;
+    const onlinePreview=forecast.filter(r=>status(r)==='pending'&&observed(r).value!=='pending').length;
+    $('[data-lncl-status]').textContent=`추첨 전에 최초 저장한 연결 ${forecast.length}건 · 서버 미검증 ${pending}건 (온라인 결과 조회 ${onlinePreview}건) · 결과 확정 ${done}건 (출현 ${wins}건 · 미출현 ${done-wins}건) · 현재 검색 ${sorted.length}건${next?' · 다음 '+next+'회':''}`;
     gradeStats();
   }
   async function load(){
