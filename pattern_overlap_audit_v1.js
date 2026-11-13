@@ -46,31 +46,34 @@
   // Keep the original screenshot's category rows, with exactly six number slots
   // and a light, high-contrast theme (the new line atlas uses the same layout).
   css.textContent += `
-    #ln-connection-schedule-v1 .lnco{background:#f4f8ff;color:#193b54;border-color:#d9b679;box-shadow:0 4px 15px #0002}
-    #ln-connection-schedule-v1 .lnco h6{color:#1e405c}
-    #ln-connection-schedule-v1 .lnco p{color:#3f5f77}
-    #ln-connection-schedule-v1 .lnco-curr{background:#fff;border:1px solid #b9cfde}
-    #ln-connection-schedule-v1 .lnco-curr strong{color:#1d405d}
-    #ln-connection-schedule-v1 .lnco-row{border-top-color:#d2e0e9;gap:7px}
-    #ln-connection-schedule-v1 .lnco-row>strong{color:#1d405d;min-width:39px}
-    #ln-connection-schedule-v1 .lnco-chips{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;flex:1;min-width:0}
-    #ln-connection-schedule-v1 .lnco-chip{display:flex;min-width:0;min-height:43px;padding:3px 1px;background:#e9f1fc;color:#254460;border:1px solid #9cb7ca;border-radius:8px;font-size:13px}
-    #ln-connection-schedule-v1 .lnco-chip.hit{background:#bdf0d0;border-color:#55b786;color:#155b3c}
-    #ln-connection-schedule-v1 .lnco-chip.miss{background:#ffe1e5;border-color:#da8c98;color:#943542}
-    #ln-connection-schedule-v1 .lnco-tools label{color:#2b516b}
-    #ln-connection-schedule-v1 .lnco-status{color:#2b536c}
-    #ln-connection-schedule-v1 .lnco-out th,#ln-connection-schedule-v1 .lnco-out td{background:#fff;color:#26485e;border-color:#bdd1dc}
-    #ln-connection-schedule-v1 .lnco-out th{background:#e5f1fc;color:#1f4560}
-    #ln-connection-schedule-v1 .lnco-out tr:nth-child(5) td,#ln-connection-schedule-v1 .lnco-out tr:nth-child(6) td{background:#f4f9ff}
-    #ln-connection-schedule-v1 .lnco-list details{background:#fff;border-color:#b8cedd}
-    #ln-connection-schedule-v1 .lnco-list summary{background:#e3f0fd;color:#234960;padding:10px;border-radius:8px}
-    #ln-connection-schedule-v1 .lnco-more{background:#dfedff!important;color:#254862;border:1px solid #9ebbd0;border-radius:8px}
-    #ln-connection-schedule-v1 .lnco .lnco-cap{color:#48657b}
-    #ln-connection-schedule-v1 .lnco [data-lnco-to-lines]{width:100%;min-height:44px;padding:9px;margin:10px 0;background:#f4c16c;color:#283f50;border:1px solid #bf965a;border-radius:9px;font-size:13px;font-weight:900}
+    #ln-connection-schedule-v1 .lncm-master .lnco{background:#f4f8ff;color:#193b54;border-color:#d9b679;box-shadow:0 4px 15px #0002}
+    #ln-connection-schedule-v1 .lncm-master .lnco h6{color:#123953;font-size:19px;font-weight:900}
+    #ln-connection-schedule-v1 .lncm-master .lnco p{color:#3f5f77}
+    #ln-connection-schedule-v1 .lncm-master .lnco-curr{background:#fff;border:1px solid #b9cfde}
+    #ln-connection-schedule-v1 .lncm-master .lnco-curr strong{color:#123953;font-size:15px;font-weight:900}
+    #ln-connection-schedule-v1 .lncm-master .lnco-row{border-top-color:#d2e0e9;gap:7px}
+    #ln-connection-schedule-v1 .lncm-master .lnco-row>strong{color:#17435b;min-width:39px;font-size:14px;font-weight:900}
+    #ln-connection-schedule-v1 .lncm-master .lnco-chips{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;flex:1;min-width:0}
+    #ln-connection-schedule-v1 .lncm-master .lnco-chip{display:flex;min-width:0;min-height:43px;padding:3px 1px;background:#e9f1fc;color:#254460;border:1px solid #9cb7ca;border-radius:8px;font-size:13px}
+    #ln-connection-schedule-v1 .lncm-master .lnco-chip.hit{background:#bdf0d0;border-color:#55b786;color:#155b3c}
+    #ln-connection-schedule-v1 .lncm-master .lnco-chip.miss{background:#ffe1e5;border-color:#da8c98;color:#943542}
+    #ln-connection-schedule-v1 .lncm-master .lnco-tools label{color:#2b516b}
+    #ln-connection-schedule-v1 .lncm-master .lnco-tools button{background:#185769!important;color:#fff!important;border:1px solid #12627b!important;font-size:14px;font-weight:900}
+    #ln-connection-schedule-v1 .lncm-master .lnco-out>strong{display:block;color:#173d59;font-size:14px;font-weight:900;margin:8px 0}
+    #ln-connection-schedule-v1 .lncm-master .lnco small{color:#3f5f76}
+    #ln-connection-schedule-v1 .lncm-master .lnco-status{color:#2b536c}
+    #ln-connection-schedule-v1 .lncm-master .lnco-out th,#ln-connection-schedule-v1 .lncm-master .lnco-out td{background:#fff;color:#26485e;border-color:#bdd1dc}
+    #ln-connection-schedule-v1 .lncm-master .lnco-out th{background:#e5f1fc;color:#1f4560}
+    #ln-connection-schedule-v1 .lncm-master .lnco-out tr:nth-child(5) td,#ln-connection-schedule-v1 .lncm-master .lnco-out tr:nth-child(6) td{background:#f4f9ff}
+    #ln-connection-schedule-v1 .lncm-master .lnco-list details{background:#fff;border-color:#b8cedd}
+    #ln-connection-schedule-v1 .lncm-master .lnco-list summary{background:#e3f0fd;color:#234960;padding:10px;border-radius:8px}
+    #ln-connection-schedule-v1 .lncm-master .lnco-more{background:#dfedff!important;color:#254862;border:1px solid #9ebbd0;border-radius:8px}
+    #ln-connection-schedule-v1 .lncm-master .lnco .lnco-cap{color:#48657b}
+    #ln-connection-schedule-v1 .lncm-master .lnco [data-lnco-to-lines]{width:100%;min-height:44px;padding:9px;margin:10px 0;background:#f4c16c;color:#283f50;border:1px solid #bf965a;border-radius:9px;font-size:13px;font-weight:900}
     @media(max-width:700px){
-      #ln-connection-schedule-v1 .lnco-chips{gap:4px}
-      #ln-connection-schedule-v1 .lnco-chip{font-size:12px;min-height:40px}
-      #ln-connection-schedule-v1 .lnco{padding:9px}
+      #ln-connection-schedule-v1 .lncm-master .lnco-chips{gap:4px}
+      #ln-connection-schedule-v1 .lncm-master .lnco-chip{font-size:12px;min-height:40px}
+      #ln-connection-schedule-v1 .lncm-master .lnco{padding:9px}
     }
   `;
   master.append(css);
