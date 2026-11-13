@@ -165,38 +165,6 @@
     {
       "target": 1249,
       "next": 5,
-      "gap": 78,
-      "shift": -6,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "5-2-2-4",
-      "steps": [
-        {
-          "round": 937,
-          "n": 29,
-          "slot": 5
-        },
-        {
-          "round": 1015,
-          "n": 23,
-          "slot": 2
-        },
-        {
-          "round": 1093,
-          "n": 17,
-          "slot": 2
-        },
-        {
-          "round": 1171,
-          "n": 11,
-          "slot": 4
-        }
-      ]
-    },
-    {
-      "target": 1249,
-      "next": 5,
       "gap": 17,
       "shift": -7,
       "count": 4,
@@ -223,6 +191,38 @@
           "round": 1232,
           "n": 12,
           "slot": 1
+        }
+      ]
+    },
+    {
+      "target": 1249,
+      "next": 5,
+      "gap": 78,
+      "shift": -6,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "5-2-2-4",
+      "steps": [
+        {
+          "round": 937,
+          "n": 29,
+          "slot": 5
+        },
+        {
+          "round": 1015,
+          "n": 23,
+          "slot": 2
+        },
+        {
+          "round": 1093,
+          "n": 17,
+          "slot": 2
+        },
+        {
+          "round": 1171,
+          "n": 11,
+          "slot": 4
         }
       ]
     },
@@ -389,38 +389,6 @@
     {
       "target": 1249,
       "next": 9,
-      "gap": 56,
-      "shift": 0,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "2-2-2-2",
-      "steps": [
-        {
-          "round": 1025,
-          "n": 9,
-          "slot": 2
-        },
-        {
-          "round": 1081,
-          "n": 9,
-          "slot": 2
-        },
-        {
-          "round": 1137,
-          "n": 9,
-          "slot": 2
-        },
-        {
-          "round": 1193,
-          "n": 9,
-          "slot": 2
-        }
-      ]
-    },
-    {
-      "target": 1249,
-      "next": 9,
       "gap": 10,
       "shift": -2,
       "count": 4,
@@ -447,6 +415,38 @@
           "round": 1239,
           "n": 11,
           "slot": 1
+        }
+      ]
+    },
+    {
+      "target": 1249,
+      "next": 9,
+      "gap": 56,
+      "shift": 0,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "2-2-2-2",
+      "steps": [
+        {
+          "round": 1025,
+          "n": 9,
+          "slot": 2
+        },
+        {
+          "round": 1081,
+          "n": 9,
+          "slot": 2
+        },
+        {
+          "round": 1137,
+          "n": 9,
+          "slot": 2
+        },
+        {
+          "round": 1193,
+          "n": 9,
+          "slot": 2
         }
       ]
     },
@@ -1029,38 +1029,6 @@
     {
       "target": 1249,
       "next": 30,
-      "gap": 235,
-      "shift": 3,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "5-3-4-6",
-      "steps": [
-        {
-          "round": 309,
-          "n": 18,
-          "slot": 5
-        },
-        {
-          "round": 544,
-          "n": 21,
-          "slot": 3
-        },
-        {
-          "round": 779,
-          "n": 24,
-          "slot": 4
-        },
-        {
-          "round": 1014,
-          "n": 27,
-          "slot": 6
-        }
-      ]
-    },
-    {
-      "target": 1249,
-      "next": 30,
       "gap": 61,
       "shift": 3,
       "count": 4,
@@ -1085,6 +1053,38 @@
         },
         {
           "round": 1188,
+          "n": 27,
+          "slot": 6
+        }
+      ]
+    },
+    {
+      "target": 1249,
+      "next": 30,
+      "gap": 235,
+      "shift": 3,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "5-3-4-6",
+      "steps": [
+        {
+          "round": 309,
+          "n": 18,
+          "slot": 5
+        },
+        {
+          "round": 544,
+          "n": 21,
+          "slot": 3
+        },
+        {
+          "round": 779,
+          "n": 24,
+          "slot": 4
+        },
+        {
+          "round": 1014,
           "n": 27,
           "slot": 6
         }
@@ -1125,38 +1125,6 @@
     {
       "target": 1249,
       "next": 32,
-      "gap": 142,
-      "shift": 2,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "2-4-4-3",
-      "steps": [
-        {
-          "round": 681,
-          "n": 24,
-          "slot": 2
-        },
-        {
-          "round": 823,
-          "n": 26,
-          "slot": 4
-        },
-        {
-          "round": 965,
-          "n": 28,
-          "slot": 4
-        },
-        {
-          "round": 1107,
-          "n": 30,
-          "slot": 3
-        }
-      ]
-    },
-    {
-      "target": 1249,
-      "next": 32,
       "gap": 127,
       "shift": -3,
       "count": 4,
@@ -1183,6 +1151,38 @@
           "round": 1122,
           "n": 35,
           "slot": 6
+        }
+      ]
+    },
+    {
+      "target": 1249,
+      "next": 32,
+      "gap": 142,
+      "shift": 2,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "2-4-4-3",
+      "steps": [
+        {
+          "round": 681,
+          "n": 24,
+          "slot": 2
+        },
+        {
+          "round": 823,
+          "n": 26,
+          "slot": 4
+        },
+        {
+          "round": 965,
+          "n": 28,
+          "slot": 4
+        },
+        {
+          "round": 1107,
+          "n": 30,
+          "slot": 3
         }
       ]
     },
@@ -1573,38 +1573,6 @@
     {
       "target": 1250,
       "next": 5,
-      "gap": 179,
-      "shift": -6,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "4-6-3-3",
-      "steps": [
-        {
-          "round": 534,
-          "n": 29,
-          "slot": 4
-        },
-        {
-          "round": 713,
-          "n": 23,
-          "slot": 6
-        },
-        {
-          "round": 892,
-          "n": 17,
-          "slot": 3
-        },
-        {
-          "round": 1071,
-          "n": 11,
-          "slot": 3
-        }
-      ]
-    },
-    {
-      "target": 1250,
-      "next": 5,
       "gap": 70,
       "shift": -1,
       "count": 4,
@@ -1663,6 +1631,38 @@
           "round": 1171,
           "n": 12,
           "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1250,
+      "next": 5,
+      "gap": 179,
+      "shift": -6,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "4-6-3-3",
+      "steps": [
+        {
+          "round": 534,
+          "n": 29,
+          "slot": 4
+        },
+        {
+          "round": 713,
+          "n": 23,
+          "slot": 6
+        },
+        {
+          "round": 892,
+          "n": 17,
+          "slot": 3
+        },
+        {
+          "round": 1071,
+          "n": 11,
+          "slot": 3
         }
       ]
     },
@@ -2437,38 +2437,6 @@
     {
       "target": 1250,
       "next": 36,
-      "gap": 155,
-      "shift": 7,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "1-3-4-4",
-      "steps": [
-        {
-          "round": 630,
-          "n": 8,
-          "slot": 1
-        },
-        {
-          "round": 785,
-          "n": 15,
-          "slot": 3
-        },
-        {
-          "round": 940,
-          "n": 22,
-          "slot": 4
-        },
-        {
-          "round": 1095,
-          "n": 29,
-          "slot": 4
-        }
-      ]
-    },
-    {
-      "target": 1250,
-      "next": 36,
       "gap": 129,
       "shift": 5,
       "count": 4,
@@ -2495,6 +2463,38 @@
           "round": 1121,
           "n": 31,
           "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1250,
+      "next": 36,
+      "gap": 155,
+      "shift": 7,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "1-3-4-4",
+      "steps": [
+        {
+          "round": 630,
+          "n": 8,
+          "slot": 1
+        },
+        {
+          "round": 785,
+          "n": 15,
+          "slot": 3
+        },
+        {
+          "round": 940,
+          "n": 22,
+          "slot": 4
+        },
+        {
+          "round": 1095,
+          "n": 29,
+          "slot": 4
         }
       ]
     },
@@ -2629,38 +2629,6 @@
     {
       "target": 1250,
       "next": 42,
-      "gap": 90,
-      "shift": 6,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "4-5-5-4",
-      "steps": [
-        {
-          "round": 890,
-          "n": 18,
-          "slot": 4
-        },
-        {
-          "round": 980,
-          "n": 24,
-          "slot": 5
-        },
-        {
-          "round": 1070,
-          "n": 30,
-          "slot": 5
-        },
-        {
-          "round": 1160,
-          "n": 36,
-          "slot": 4
-        }
-      ]
-    },
-    {
-      "target": 1250,
-      "next": 42,
       "gap": 84,
       "shift": 0,
       "count": 4,
@@ -2687,6 +2655,38 @@
           "round": 1166,
           "n": 42,
           "slot": 6
+        }
+      ]
+    },
+    {
+      "target": 1250,
+      "next": 42,
+      "gap": 90,
+      "shift": 6,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "4-5-5-4",
+      "steps": [
+        {
+          "round": 890,
+          "n": 18,
+          "slot": 4
+        },
+        {
+          "round": 980,
+          "n": 24,
+          "slot": 5
+        },
+        {
+          "round": 1070,
+          "n": 30,
+          "slot": 5
+        },
+        {
+          "round": 1160,
+          "n": 36,
+          "slot": 4
         }
       ]
     },
@@ -5061,38 +5061,6 @@
     {
       "target": 1252,
       "next": 19,
-      "gap": 186,
-      "shift": -2,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "2-4-4-5",
-      "steps": [
-        {
-          "round": 508,
-          "n": 27,
-          "slot": 2
-        },
-        {
-          "round": 694,
-          "n": 25,
-          "slot": 4
-        },
-        {
-          "round": 880,
-          "n": 23,
-          "slot": 4
-        },
-        {
-          "round": 1066,
-          "n": 21,
-          "slot": 5
-        }
-      ]
-    },
-    {
-      "target": 1252,
-      "next": 19,
       "gap": 95,
       "shift": -6,
       "count": 4,
@@ -5118,6 +5086,38 @@
         {
           "round": 1157,
           "n": 25,
+          "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1252,
+      "next": 19,
+      "gap": 186,
+      "shift": -2,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "2-4-4-5",
+      "steps": [
+        {
+          "round": 508,
+          "n": 27,
+          "slot": 2
+        },
+        {
+          "round": 694,
+          "n": 25,
+          "slot": 4
+        },
+        {
+          "round": 880,
+          "n": 23,
+          "slot": 4
+        },
+        {
+          "round": 1066,
+          "n": 21,
           "slot": 5
         }
       ]
@@ -5317,38 +5317,6 @@
     {
       "target": 1252,
       "next": 29,
-      "gap": 241,
-      "shift": 3,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "3-2-4-4",
-      "steps": [
-        {
-          "round": 288,
-          "n": 17,
-          "slot": 3
-        },
-        {
-          "round": 529,
-          "n": 20,
-          "slot": 2
-        },
-        {
-          "round": 770,
-          "n": 23,
-          "slot": 4
-        },
-        {
-          "round": 1011,
-          "n": 26,
-          "slot": 4
-        }
-      ]
-    },
-    {
-      "target": 1252,
-      "next": 29,
       "gap": 190,
       "shift": -2,
       "count": 4,
@@ -5375,6 +5343,38 @@
           "round": 1062,
           "n": 31,
           "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1252,
+      "next": 29,
+      "gap": 241,
+      "shift": 3,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "3-2-4-4",
+      "steps": [
+        {
+          "round": 288,
+          "n": 17,
+          "slot": 3
+        },
+        {
+          "round": 529,
+          "n": 20,
+          "slot": 2
+        },
+        {
+          "round": 770,
+          "n": 23,
+          "slot": 4
+        },
+        {
+          "round": 1011,
+          "n": 26,
+          "slot": 4
         }
       ]
     },
@@ -6789,38 +6789,6 @@
     {
       "target": 1253,
       "next": 23,
-      "gap": 134,
-      "shift": 3,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "2-1-1-5",
-      "steps": [
-        {
-          "round": 717,
-          "n": 11,
-          "slot": 2
-        },
-        {
-          "round": 851,
-          "n": 14,
-          "slot": 1
-        },
-        {
-          "round": 985,
-          "n": 17,
-          "slot": 1
-        },
-        {
-          "round": 1119,
-          "n": 20,
-          "slot": 5
-        }
-      ]
-    },
-    {
-      "target": 1253,
-      "next": 23,
       "gap": 133,
       "shift": -3,
       "count": 4,
@@ -6847,6 +6815,38 @@
           "round": 1120,
           "n": 26,
           "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1253,
+      "next": 23,
+      "gap": 134,
+      "shift": 3,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "2-1-1-5",
+      "steps": [
+        {
+          "round": 717,
+          "n": 11,
+          "slot": 2
+        },
+        {
+          "round": 851,
+          "n": 14,
+          "slot": 1
+        },
+        {
+          "round": 985,
+          "n": 17,
+          "slot": 1
+        },
+        {
+          "round": 1119,
+          "n": 20,
+          "slot": 5
         }
       ]
     },
@@ -7077,38 +7077,6 @@
     {
       "target": 1253,
       "next": 31,
-      "gap": 205,
-      "shift": -1,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "5-6-4-5",
-      "steps": [
-        {
-          "round": 433,
-          "n": 35,
-          "slot": 5
-        },
-        {
-          "round": 638,
-          "n": 34,
-          "slot": 6
-        },
-        {
-          "round": 843,
-          "n": 33,
-          "slot": 4
-        },
-        {
-          "round": 1048,
-          "n": 32,
-          "slot": 5
-        }
-      ]
-    },
-    {
-      "target": 1253,
-      "next": 31,
       "gap": 84,
       "shift": 7,
       "count": 4,
@@ -7167,6 +7135,38 @@
           "round": 1060,
           "n": 24,
           "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1253,
+      "next": 31,
+      "gap": 205,
+      "shift": -1,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "5-6-4-5",
+      "steps": [
+        {
+          "round": 433,
+          "n": 35,
+          "slot": 5
+        },
+        {
+          "round": 638,
+          "n": 34,
+          "slot": 6
+        },
+        {
+          "round": 843,
+          "n": 33,
+          "slot": 4
+        },
+        {
+          "round": 1048,
+          "n": 32,
+          "slot": 5
         }
       ]
     },
@@ -7231,38 +7231,6 @@
           "round": 1130,
           "n": 28,
           "slot": 6
-        }
-      ]
-    },
-    {
-      "target": 1253,
-      "next": 36,
-      "gap": 221,
-      "shift": 0,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "4-3-5-5",
-      "steps": [
-        {
-          "round": 369,
-          "n": 36,
-          "slot": 4
-        },
-        {
-          "round": 590,
-          "n": 36,
-          "slot": 3
-        },
-        {
-          "round": 811,
-          "n": 36,
-          "slot": 5
-        },
-        {
-          "round": 1032,
-          "n": 36,
-          "slot": 5
         }
       ]
     },
@@ -7358,6 +7326,38 @@
         {
           "round": 1058,
           "n": 32,
+          "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1253,
+      "next": 36,
+      "gap": 221,
+      "shift": 0,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "4-3-5-5",
+      "steps": [
+        {
+          "round": 369,
+          "n": 36,
+          "slot": 4
+        },
+        {
+          "round": 590,
+          "n": 36,
+          "slot": 3
+        },
+        {
+          "round": 811,
+          "n": 36,
+          "slot": 5
+        },
+        {
+          "round": 1032,
+          "n": 36,
           "slot": 5
         }
       ]
@@ -7461,38 +7461,6 @@
     {
       "target": 1253,
       "next": 39,
-      "gap": 177,
-      "shift": 3,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "4-4-5-5",
-      "steps": [
-        {
-          "round": 545,
-          "n": 27,
-          "slot": 4
-        },
-        {
-          "round": 722,
-          "n": 30,
-          "slot": 4
-        },
-        {
-          "round": 899,
-          "n": 33,
-          "slot": 5
-        },
-        {
-          "round": 1076,
-          "n": 36,
-          "slot": 5
-        }
-      ]
-    },
-    {
-      "target": 1253,
-      "next": 39,
       "gap": 55,
       "shift": 6,
       "count": 4,
@@ -7550,6 +7518,38 @@
         {
           "round": 1095,
           "n": 34,
+          "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1253,
+      "next": 39,
+      "gap": 177,
+      "shift": 3,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "4-4-5-5",
+      "steps": [
+        {
+          "round": 545,
+          "n": 27,
+          "slot": 4
+        },
+        {
+          "round": 722,
+          "n": 30,
+          "slot": 4
+        },
+        {
+          "round": 899,
+          "n": 33,
+          "slot": 5
+        },
+        {
+          "round": 1076,
+          "n": 36,
           "slot": 5
         }
       ]
@@ -7973,38 +7973,6 @@
     {
       "target": 1254,
       "next": 6,
-      "gap": 249,
-      "shift": -2,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "1-1-1-1",
-      "steps": [
-        {
-          "round": 258,
-          "n": 14,
-          "slot": 1
-        },
-        {
-          "round": 507,
-          "n": 12,
-          "slot": 1
-        },
-        {
-          "round": 756,
-          "n": 10,
-          "slot": 1
-        },
-        {
-          "round": 1005,
-          "n": 8,
-          "slot": 1
-        }
-      ]
-    },
-    {
-      "target": 1254,
-      "next": 6,
       "gap": 115,
       "shift": -6,
       "count": 4,
@@ -8031,6 +7999,38 @@
           "round": 1139,
           "n": 12,
           "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1254,
+      "next": 6,
+      "gap": 249,
+      "shift": -2,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "1-1-1-1",
+      "steps": [
+        {
+          "round": 258,
+          "n": 14,
+          "slot": 1
+        },
+        {
+          "round": 507,
+          "n": 12,
+          "slot": 1
+        },
+        {
+          "round": 756,
+          "n": 10,
+          "slot": 1
+        },
+        {
+          "round": 1005,
+          "n": 8,
+          "slot": 1
         }
       ]
     },
@@ -8325,38 +8325,6 @@
     {
       "target": 1254,
       "next": 14,
-      "gap": 229,
-      "shift": -6,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "4-5-3-3",
-      "steps": [
-        {
-          "round": 338,
-          "n": 38,
-          "slot": 4
-        },
-        {
-          "round": 567,
-          "n": 32,
-          "slot": 5
-        },
-        {
-          "round": 796,
-          "n": 26,
-          "slot": 3
-        },
-        {
-          "round": 1025,
-          "n": 20,
-          "slot": 3
-        }
-      ]
-    },
-    {
-      "target": 1254,
-      "next": 14,
       "gap": 131,
       "shift": 1,
       "count": 4,
@@ -8383,6 +8351,38 @@
           "round": 1123,
           "n": 13,
           "slot": 1
+        }
+      ]
+    },
+    {
+      "target": 1254,
+      "next": 14,
+      "gap": 229,
+      "shift": -6,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "4-5-3-3",
+      "steps": [
+        {
+          "round": 338,
+          "n": 38,
+          "slot": 4
+        },
+        {
+          "round": 567,
+          "n": 32,
+          "slot": 5
+        },
+        {
+          "round": 796,
+          "n": 26,
+          "slot": 3
+        },
+        {
+          "round": 1025,
+          "n": 20,
+          "slot": 3
         }
       ]
     },
@@ -8549,38 +8549,6 @@
     {
       "target": 1254,
       "next": 22,
-      "gap": 131,
-      "shift": 1,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "5-3-2-3",
-      "steps": [
-        {
-          "round": 730,
-          "n": 18,
-          "slot": 5
-        },
-        {
-          "round": 861,
-          "n": 19,
-          "slot": 3
-        },
-        {
-          "round": 992,
-          "n": 20,
-          "slot": 2
-        },
-        {
-          "round": 1123,
-          "n": 21,
-          "slot": 3
-        }
-      ]
-    },
-    {
-      "target": 1254,
-      "next": 22,
       "gap": 43,
       "shift": -1,
       "count": 4,
@@ -8671,6 +8639,38 @@
           "round": 1151,
           "n": 27,
           "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1254,
+      "next": 22,
+      "gap": 131,
+      "shift": 1,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "5-3-2-3",
+      "steps": [
+        {
+          "round": 730,
+          "n": 18,
+          "slot": 5
+        },
+        {
+          "round": 861,
+          "n": 19,
+          "slot": 3
+        },
+        {
+          "round": 992,
+          "n": 20,
+          "slot": 2
+        },
+        {
+          "round": 1123,
+          "n": 21,
+          "slot": 3
         }
       ]
     },
@@ -11205,38 +11205,6 @@
     {
       "target": 1256,
       "next": 8,
-      "gap": 201,
-      "shift": -6,
-      "count": 6,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "5-3-1-4",
-      "steps": [
-        {
-          "round": 452,
-          "n": 32,
-          "slot": 5
-        },
-        {
-          "round": 653,
-          "n": 26,
-          "slot": 3
-        },
-        {
-          "round": 854,
-          "n": 20,
-          "slot": 1
-        },
-        {
-          "round": 1055,
-          "n": 14,
-          "slot": 4
-        }
-      ]
-    },
-    {
-      "target": 1256,
-      "next": 8,
       "gap": 96,
       "shift": 1,
       "count": 4,
@@ -11263,6 +11231,38 @@
           "round": 1160,
           "n": 7,
           "slot": 1
+        }
+      ]
+    },
+    {
+      "target": 1256,
+      "next": 8,
+      "gap": 201,
+      "shift": -6,
+      "count": 6,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "5-3-1-4",
+      "steps": [
+        {
+          "round": 452,
+          "n": 32,
+          "slot": 5
+        },
+        {
+          "round": 653,
+          "n": 26,
+          "slot": 3
+        },
+        {
+          "round": 854,
+          "n": 20,
+          "slot": 1
+        },
+        {
+          "round": 1055,
+          "n": 14,
+          "slot": 4
         }
       ]
     },
@@ -12837,70 +12837,6 @@
     {
       "target": 1257,
       "next": 15,
-      "gap": 118,
-      "shift": 0,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "3-2-2-3",
-      "steps": [
-        {
-          "round": 785,
-          "n": 15,
-          "slot": 3
-        },
-        {
-          "round": 903,
-          "n": 15,
-          "slot": 2
-        },
-        {
-          "round": 1021,
-          "n": 15,
-          "slot": 2
-        },
-        {
-          "round": 1139,
-          "n": 15,
-          "slot": 3
-        }
-      ]
-    },
-    {
-      "target": 1257,
-      "next": 15,
-      "gap": 160,
-      "shift": 1,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "3-2-3-1",
-      "steps": [
-        {
-          "round": 617,
-          "n": 11,
-          "slot": 3
-        },
-        {
-          "round": 777,
-          "n": 12,
-          "slot": 2
-        },
-        {
-          "round": 937,
-          "n": 13,
-          "slot": 3
-        },
-        {
-          "round": 1097,
-          "n": 14,
-          "slot": 1
-        }
-      ]
-    },
-    {
-      "target": 1257,
-      "next": 15,
       "gap": 88,
       "shift": 3,
       "count": 4,
@@ -12933,6 +12869,38 @@
     {
       "target": 1257,
       "next": 15,
+      "gap": 118,
+      "shift": 0,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "3-2-2-3",
+      "steps": [
+        {
+          "round": 785,
+          "n": 15,
+          "slot": 3
+        },
+        {
+          "round": 903,
+          "n": 15,
+          "slot": 2
+        },
+        {
+          "round": 1021,
+          "n": 15,
+          "slot": 2
+        },
+        {
+          "round": 1139,
+          "n": 15,
+          "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1257,
+      "next": 15,
       "gap": 119,
       "shift": -1,
       "count": 4,
@@ -12959,6 +12927,38 @@
           "round": 1138,
           "n": 16,
           "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1257,
+      "next": 15,
+      "gap": 160,
+      "shift": 1,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "3-2-3-1",
+      "steps": [
+        {
+          "round": 617,
+          "n": 11,
+          "slot": 3
+        },
+        {
+          "round": 777,
+          "n": 12,
+          "slot": 2
+        },
+        {
+          "round": 937,
+          "n": 13,
+          "slot": 3
+        },
+        {
+          "round": 1097,
+          "n": 14,
+          "slot": 1
         }
       ]
     },
@@ -13925,38 +13925,6 @@
     {
       "target": 1258,
       "next": 10,
-      "gap": 198,
-      "shift": 0,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "2-1-1-2",
-      "steps": [
-        {
-          "round": 466,
-          "n": 10,
-          "slot": 2
-        },
-        {
-          "round": 664,
-          "n": 10,
-          "slot": 1
-        },
-        {
-          "round": 862,
-          "n": 10,
-          "slot": 1
-        },
-        {
-          "round": 1060,
-          "n": 10,
-          "slot": 2
-        }
-      ]
-    },
-    {
-      "target": 1258,
-      "next": 10,
       "gap": 170,
       "shift": -1,
       "count": 4,
@@ -13983,6 +13951,38 @@
           "round": 1088,
           "n": 11,
           "slot": 1
+        }
+      ]
+    },
+    {
+      "target": 1258,
+      "next": 10,
+      "gap": 198,
+      "shift": 0,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "2-1-1-2",
+      "steps": [
+        {
+          "round": 466,
+          "n": 10,
+          "slot": 2
+        },
+        {
+          "round": 664,
+          "n": 10,
+          "slot": 1
+        },
+        {
+          "round": 862,
+          "n": 10,
+          "slot": 1
+        },
+        {
+          "round": 1060,
+          "n": 10,
+          "slot": 2
         }
       ]
     },
@@ -14245,38 +14245,6 @@
     {
       "target": 1258,
       "next": 17,
-      "gap": 140,
-      "shift": 1,
-      "count": 6,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "3-2-3-5",
-      "steps": [
-        {
-          "round": 698,
-          "n": 13,
-          "slot": 3
-        },
-        {
-          "round": 838,
-          "n": 14,
-          "slot": 2
-        },
-        {
-          "round": 978,
-          "n": 15,
-          "slot": 3
-        },
-        {
-          "round": 1118,
-          "n": 16,
-          "slot": 5
-        }
-      ]
-    },
-    {
-      "target": 1258,
-      "next": 17,
       "gap": 59,
       "shift": -7,
       "count": 4,
@@ -14303,6 +14271,38 @@
           "round": 1199,
           "n": 24,
           "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1258,
+      "next": 17,
+      "gap": 140,
+      "shift": 1,
+      "count": 6,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "3-2-3-5",
+      "steps": [
+        {
+          "round": 698,
+          "n": 13,
+          "slot": 3
+        },
+        {
+          "round": 838,
+          "n": 14,
+          "slot": 2
+        },
+        {
+          "round": 978,
+          "n": 15,
+          "slot": 3
+        },
+        {
+          "round": 1118,
+          "n": 16,
+          "slot": 5
         }
       ]
     },
@@ -14853,70 +14853,6 @@
     {
       "target": 1258,
       "next": 40,
-      "gap": 102,
-      "shift": 6,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "1-3-4-3",
-      "steps": [
-        {
-          "round": 850,
-          "n": 16,
-          "slot": 1
-        },
-        {
-          "round": 952,
-          "n": 22,
-          "slot": 3
-        },
-        {
-          "round": 1054,
-          "n": 28,
-          "slot": 4
-        },
-        {
-          "round": 1156,
-          "n": 34,
-          "slot": 3
-        }
-      ]
-    },
-    {
-      "target": 1258,
-      "next": 40,
-      "gap": 157,
-      "shift": 4,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "4-6-5-5",
-      "steps": [
-        {
-          "round": 630,
-          "n": 24,
-          "slot": 4
-        },
-        {
-          "round": 787,
-          "n": 28,
-          "slot": 6
-        },
-        {
-          "round": 944,
-          "n": 32,
-          "slot": 5
-        },
-        {
-          "round": 1101,
-          "n": 36,
-          "slot": 5
-        }
-      ]
-    },
-    {
-      "target": 1258,
-      "next": 40,
       "gap": 56,
       "shift": 0,
       "count": 4,
@@ -14974,6 +14910,70 @@
         {
           "round": 1195,
           "n": 34,
+          "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1258,
+      "next": 40,
+      "gap": 102,
+      "shift": 6,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "1-3-4-3",
+      "steps": [
+        {
+          "round": 850,
+          "n": 16,
+          "slot": 1
+        },
+        {
+          "round": 952,
+          "n": 22,
+          "slot": 3
+        },
+        {
+          "round": 1054,
+          "n": 28,
+          "slot": 4
+        },
+        {
+          "round": 1156,
+          "n": 34,
+          "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1258,
+      "next": 40,
+      "gap": 157,
+      "shift": 4,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "4-6-5-5",
+      "steps": [
+        {
+          "round": 630,
+          "n": 24,
+          "slot": 4
+        },
+        {
+          "round": 787,
+          "n": 28,
+          "slot": 6
+        },
+        {
+          "round": 944,
+          "n": 32,
+          "slot": 5
+        },
+        {
+          "round": 1101,
+          "n": 36,
           "slot": 5
         }
       ]
@@ -15877,38 +15877,6 @@
     {
       "target": 1259,
       "next": 23,
-      "gap": 163,
-      "shift": 0,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "3-4-1-5",
-      "steps": [
-        {
-          "round": 607,
-          "n": 23,
-          "slot": 3
-        },
-        {
-          "round": 770,
-          "n": 23,
-          "slot": 4
-        },
-        {
-          "round": 933,
-          "n": 23,
-          "slot": 1
-        },
-        {
-          "round": 1096,
-          "n": 23,
-          "slot": 5
-        }
-      ]
-    },
-    {
-      "target": 1259,
-      "next": 23,
       "gap": 150,
       "shift": 4,
       "count": 4,
@@ -15935,6 +15903,38 @@
           "round": 1109,
           "n": 19,
           "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1259,
+      "next": 23,
+      "gap": 163,
+      "shift": 0,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "3-4-1-5",
+      "steps": [
+        {
+          "round": 607,
+          "n": 23,
+          "slot": 3
+        },
+        {
+          "round": 770,
+          "n": 23,
+          "slot": 4
+        },
+        {
+          "round": 933,
+          "n": 23,
+          "slot": 1
+        },
+        {
+          "round": 1096,
+          "n": 23,
+          "slot": 5
         }
       ]
     },
@@ -19877,38 +19877,6 @@
     {
       "target": 1261,
       "next": 26,
-      "gap": 200,
-      "shift": 2,
-      "count": 6,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "2-4-5-2",
-      "steps": [
-        {
-          "round": 461,
-          "n": 18,
-          "slot": 2
-        },
-        {
-          "round": 661,
-          "n": 20,
-          "slot": 4
-        },
-        {
-          "round": 861,
-          "n": 22,
-          "slot": 5
-        },
-        {
-          "round": 1061,
-          "n": 24,
-          "slot": 2
-        }
-      ]
-    },
-    {
-      "target": 1261,
-      "next": 26,
       "gap": 71,
       "shift": 3,
       "count": 4,
@@ -19967,6 +19935,38 @@
           "round": 1065,
           "n": 23,
           "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1261,
+      "next": 26,
+      "gap": 200,
+      "shift": 2,
+      "count": 6,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "2-4-5-2",
+      "steps": [
+        {
+          "round": 461,
+          "n": 18,
+          "slot": 2
+        },
+        {
+          "round": 661,
+          "n": 20,
+          "slot": 4
+        },
+        {
+          "round": 861,
+          "n": 22,
+          "slot": 5
+        },
+        {
+          "round": 1061,
+          "n": 24,
+          "slot": 2
         }
       ]
     },
@@ -20165,38 +20165,6 @@
     {
       "target": 1261,
       "next": 35,
-      "gap": 230,
-      "shift": -1,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "5-5-4-6",
-      "steps": [
-        {
-          "round": 341,
-          "n": 39,
-          "slot": 5
-        },
-        {
-          "round": 571,
-          "n": 38,
-          "slot": 5
-        },
-        {
-          "round": 801,
-          "n": 37,
-          "slot": 4
-        },
-        {
-          "round": 1031,
-          "n": 36,
-          "slot": 6
-        }
-      ]
-    },
-    {
-      "target": 1261,
-      "next": 35,
       "gap": 123,
       "shift": 6,
       "count": 4,
@@ -20223,6 +20191,38 @@
           "round": 1138,
           "n": 29,
           "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1261,
+      "next": 35,
+      "gap": 230,
+      "shift": -1,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "5-5-4-6",
+      "steps": [
+        {
+          "round": 341,
+          "n": 39,
+          "slot": 5
+        },
+        {
+          "round": 571,
+          "n": 38,
+          "slot": 5
+        },
+        {
+          "round": 801,
+          "n": 37,
+          "slot": 4
+        },
+        {
+          "round": 1031,
+          "n": 36,
+          "slot": 6
         }
       ]
     },
@@ -20581,38 +20581,6 @@
     {
       "target": 1262,
       "next": 5,
-      "gap": 159,
-      "shift": -7,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "4-5-4-2",
-      "steps": [
-        {
-          "round": 626,
-          "n": 33,
-          "slot": 4
-        },
-        {
-          "round": 785,
-          "n": 26,
-          "slot": 5
-        },
-        {
-          "round": 944,
-          "n": 19,
-          "slot": 4
-        },
-        {
-          "round": 1103,
-          "n": 12,
-          "slot": 2
-        }
-      ]
-    },
-    {
-      "target": 1262,
-      "next": 5,
       "gap": 66,
       "shift": -10,
       "count": 4,
@@ -20639,6 +20607,38 @@
           "round": 1196,
           "n": 15,
           "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1262,
+      "next": 5,
+      "gap": 159,
+      "shift": -7,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "4-5-4-2",
+      "steps": [
+        {
+          "round": 626,
+          "n": 33,
+          "slot": 4
+        },
+        {
+          "round": 785,
+          "n": 26,
+          "slot": 5
+        },
+        {
+          "round": 944,
+          "n": 19,
+          "slot": 4
+        },
+        {
+          "round": 1103,
+          "n": 12,
+          "slot": 2
         }
       ]
     },
@@ -21349,38 +21349,6 @@
     {
       "target": 1262,
       "next": 22,
-      "gap": 135,
-      "shift": -2,
-      "count": 7,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "4-4-3-3",
-      "steps": [
-        {
-          "round": 722,
-          "n": 30,
-          "slot": 4
-        },
-        {
-          "round": 857,
-          "n": 28,
-          "slot": 4
-        },
-        {
-          "round": 992,
-          "n": 26,
-          "slot": 3
-        },
-        {
-          "round": 1127,
-          "n": 24,
-          "slot": 3
-        }
-      ]
-    },
-    {
-      "target": 1262,
-      "next": 22,
       "gap": 131,
       "shift": -5,
       "count": 4,
@@ -21407,6 +21375,38 @@
           "round": 1131,
           "n": 27,
           "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1262,
+      "next": 22,
+      "gap": 135,
+      "shift": -2,
+      "count": 7,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "4-4-3-3",
+      "steps": [
+        {
+          "round": 722,
+          "n": 30,
+          "slot": 4
+        },
+        {
+          "round": 857,
+          "n": 28,
+          "slot": 4
+        },
+        {
+          "round": 992,
+          "n": 26,
+          "slot": 3
+        },
+        {
+          "round": 1127,
+          "n": 24,
+          "slot": 3
         }
       ]
     },
@@ -23237,38 +23237,6 @@
     {
       "target": 1263,
       "next": 27,
-      "gap": 204,
-      "shift": 5,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "2-2-3-3",
-      "steps": [
-        {
-          "round": 447,
-          "n": 7,
-          "slot": 2
-        },
-        {
-          "round": 651,
-          "n": 12,
-          "slot": 2
-        },
-        {
-          "round": 855,
-          "n": 17,
-          "slot": 3
-        },
-        {
-          "round": 1059,
-          "n": 22,
-          "slot": 3
-        }
-      ]
-    },
-    {
-      "target": 1263,
-      "next": 27,
       "gap": 59,
       "shift": -3,
       "count": 4,
@@ -23327,6 +23295,38 @@
           "round": 1164,
           "n": 25,
           "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1263,
+      "next": 27,
+      "gap": 204,
+      "shift": 5,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "2-2-3-3",
+      "steps": [
+        {
+          "round": 447,
+          "n": 7,
+          "slot": 2
+        },
+        {
+          "round": 651,
+          "n": 12,
+          "slot": 2
+        },
+        {
+          "round": 855,
+          "n": 17,
+          "slot": 3
+        },
+        {
+          "round": 1059,
+          "n": 22,
+          "slot": 3
         }
       ]
     },
@@ -23909,38 +23909,6 @@
     {
       "target": 1264,
       "next": 1,
-      "gap": 214,
-      "shift": -5,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "3-3-3-1",
-      "steps": [
-        {
-          "round": 408,
-          "n": 21,
-          "slot": 3
-        },
-        {
-          "round": 622,
-          "n": 16,
-          "slot": 3
-        },
-        {
-          "round": 836,
-          "n": 11,
-          "slot": 3
-        },
-        {
-          "round": 1050,
-          "n": 6,
-          "slot": 1
-        }
-      ]
-    },
-    {
-      "target": 1264,
-      "next": 1,
       "gap": 89,
       "shift": -5,
       "count": 4,
@@ -23999,6 +23967,38 @@
           "round": 1141,
           "n": 11,
           "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1264,
+      "next": 1,
+      "gap": 214,
+      "shift": -5,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "3-3-3-1",
+      "steps": [
+        {
+          "round": 408,
+          "n": 21,
+          "slot": 3
+        },
+        {
+          "round": 622,
+          "n": 16,
+          "slot": 3
+        },
+        {
+          "round": 836,
+          "n": 11,
+          "slot": 3
+        },
+        {
+          "round": 1050,
+          "n": 6,
+          "slot": 1
         }
       ]
     },
@@ -25189,38 +25189,6 @@
     {
       "target": 1264,
       "next": 35,
-      "gap": 188,
-      "shift": 2,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "6-4-4-4",
-      "steps": [
-        {
-          "round": 512,
-          "n": 27,
-          "slot": 6
-        },
-        {
-          "round": 700,
-          "n": 29,
-          "slot": 4
-        },
-        {
-          "round": 888,
-          "n": 31,
-          "slot": 4
-        },
-        {
-          "round": 1076,
-          "n": 33,
-          "slot": 4
-        }
-      ]
-    },
-    {
-      "target": 1264,
-      "next": 35,
       "gap": 86,
       "shift": 8,
       "count": 4,
@@ -25279,6 +25247,38 @@
           "round": 1163,
           "n": 33,
           "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1264,
+      "next": 35,
+      "gap": 188,
+      "shift": 2,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "6-4-4-4",
+      "steps": [
+        {
+          "round": 512,
+          "n": 27,
+          "slot": 6
+        },
+        {
+          "round": 700,
+          "n": 29,
+          "slot": 4
+        },
+        {
+          "round": 888,
+          "n": 31,
+          "slot": 4
+        },
+        {
+          "round": 1076,
+          "n": 33,
+          "slot": 4
         }
       ]
     },
@@ -26853,38 +26853,6 @@
     {
       "target": 1265,
       "next": 32,
-      "gap": 235,
-      "shift": 3,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "3-4-4-6",
-      "steps": [
-        {
-          "round": 325,
-          "n": 20,
-          "slot": 3
-        },
-        {
-          "round": 560,
-          "n": 23,
-          "slot": 4
-        },
-        {
-          "round": 795,
-          "n": 26,
-          "slot": 4
-        },
-        {
-          "round": 1030,
-          "n": 29,
-          "slot": 6
-        }
-      ]
-    },
-    {
-      "target": 1265,
-      "next": 32,
       "gap": 61,
       "shift": 2,
       "count": 4,
@@ -26943,6 +26911,38 @@
           "round": 1194,
           "n": 33,
           "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1265,
+      "next": 32,
+      "gap": 235,
+      "shift": 3,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "3-4-4-6",
+      "steps": [
+        {
+          "round": 325,
+          "n": 20,
+          "slot": 3
+        },
+        {
+          "round": 560,
+          "n": 23,
+          "slot": 4
+        },
+        {
+          "round": 795,
+          "n": 26,
+          "slot": 4
+        },
+        {
+          "round": 1030,
+          "n": 29,
+          "slot": 6
         }
       ]
     },
@@ -28805,38 +28805,6 @@
     {
       "target": 1266,
       "next": 40,
-      "gap": 215,
-      "shift": 7,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "2-5-5-5",
-      "steps": [
-        {
-          "round": 406,
-          "n": 12,
-          "slot": 2
-        },
-        {
-          "round": 621,
-          "n": 19,
-          "slot": 5
-        },
-        {
-          "round": 836,
-          "n": 26,
-          "slot": 5
-        },
-        {
-          "round": 1051,
-          "n": 33,
-          "slot": 5
-        }
-      ]
-    },
-    {
-      "target": 1266,
-      "next": 40,
       "gap": 107,
       "shift": 1,
       "count": 4,
@@ -28894,6 +28862,38 @@
         {
           "round": 1082,
           "n": 34,
+          "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1266,
+      "next": 40,
+      "gap": 215,
+      "shift": 7,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "2-5-5-5",
+      "steps": [
+        {
+          "round": 406,
+          "n": 12,
+          "slot": 2
+        },
+        {
+          "round": 621,
+          "n": 19,
+          "slot": 5
+        },
+        {
+          "round": 836,
+          "n": 26,
+          "slot": 5
+        },
+        {
+          "round": 1051,
+          "n": 33,
           "slot": 5
         }
       ]
@@ -30789,38 +30789,6 @@
     {
       "target": 1268,
       "next": 13,
-      "gap": 125,
-      "shift": -4,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "3-5-3-3",
-      "steps": [
-        {
-          "round": 768,
-          "n": 29,
-          "slot": 3
-        },
-        {
-          "round": 893,
-          "n": 25,
-          "slot": 5
-        },
-        {
-          "round": 1018,
-          "n": 21,
-          "slot": 3
-        },
-        {
-          "round": 1143,
-          "n": 17,
-          "slot": 3
-        }
-      ]
-    },
-    {
-      "target": 1268,
-      "next": 13,
       "gap": 46,
       "shift": -4,
       "count": 4,
@@ -30845,6 +30813,38 @@
         },
         {
           "round": 1222,
+          "n": 17,
+          "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1268,
+      "next": 13,
+      "gap": 125,
+      "shift": -4,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "3-5-3-3",
+      "steps": [
+        {
+          "round": 768,
+          "n": 29,
+          "slot": 3
+        },
+        {
+          "round": 893,
+          "n": 25,
+          "slot": 5
+        },
+        {
+          "round": 1018,
+          "n": 21,
+          "slot": 3
+        },
+        {
+          "round": 1143,
           "n": 17,
           "slot": 3
         }
@@ -35396,6 +35396,38 @@
     },
     {
       "target": 1270,
+      "next": 39,
+      "gap": 21,
+      "shift": 4,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "5-4-4-6",
+      "steps": [
+        {
+          "round": 1186,
+          "n": 23,
+          "slot": 5
+        },
+        {
+          "round": 1207,
+          "n": 27,
+          "slot": 4
+        },
+        {
+          "round": 1228,
+          "n": 31,
+          "slot": 4
+        },
+        {
+          "round": 1249,
+          "n": 35,
+          "slot": 6
+        }
+      ]
+    },
+    {
+      "target": 1270,
       "next": 40,
       "gap": 162,
       "shift": 3,
@@ -35781,70 +35813,6 @@
     {
       "target": 1271,
       "next": 14,
-      "gap": 109,
-      "shift": -6,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "5-5-2-1",
-      "steps": [
-        {
-          "round": 835,
-          "n": 38,
-          "slot": 5
-        },
-        {
-          "round": 944,
-          "n": 32,
-          "slot": 5
-        },
-        {
-          "round": 1053,
-          "n": 26,
-          "slot": 2
-        },
-        {
-          "round": 1162,
-          "n": 20,
-          "slot": 1
-        }
-      ]
-    },
-    {
-      "target": 1271,
-      "next": 14,
-      "gap": 155,
-      "shift": -3,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "4-3-2-3",
-      "steps": [
-        {
-          "round": 651,
-          "n": 26,
-          "slot": 4
-        },
-        {
-          "round": 806,
-          "n": 23,
-          "slot": 3
-        },
-        {
-          "round": 961,
-          "n": 20,
-          "slot": 2
-        },
-        {
-          "round": 1116,
-          "n": 17,
-          "slot": 3
-        }
-      ]
-    },
-    {
-      "target": 1271,
-      "next": 14,
       "gap": 46,
       "shift": -5,
       "count": 4,
@@ -35877,6 +35845,38 @@
     {
       "target": 1271,
       "next": 14,
+      "gap": 109,
+      "shift": -6,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "5-5-2-1",
+      "steps": [
+        {
+          "round": 835,
+          "n": 38,
+          "slot": 5
+        },
+        {
+          "round": 944,
+          "n": 32,
+          "slot": 5
+        },
+        {
+          "round": 1053,
+          "n": 26,
+          "slot": 2
+        },
+        {
+          "round": 1162,
+          "n": 20,
+          "slot": 1
+        }
+      ]
+    },
+    {
+      "target": 1271,
+      "next": 14,
       "gap": 148,
       "shift": -5,
       "count": 4,
@@ -35903,6 +35903,38 @@
           "round": 1123,
           "n": 19,
           "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1271,
+      "next": 14,
+      "gap": 155,
+      "shift": -3,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "4-3-2-3",
+      "steps": [
+        {
+          "round": 651,
+          "n": 26,
+          "slot": 4
+        },
+        {
+          "round": 806,
+          "n": 23,
+          "slot": 3
+        },
+        {
+          "round": 961,
+          "n": 20,
+          "slot": 2
+        },
+        {
+          "round": 1116,
+          "n": 17,
+          "slot": 3
         }
       ]
     },
@@ -36901,38 +36933,6 @@
     {
       "target": 1271,
       "next": 45,
-      "gap": 182,
-      "shift": 8,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "1-4-3-4",
-      "steps": [
-        {
-          "round": 543,
-          "n": 13,
-          "slot": 1
-        },
-        {
-          "round": 725,
-          "n": 21,
-          "slot": 4
-        },
-        {
-          "round": 907,
-          "n": 29,
-          "slot": 3
-        },
-        {
-          "round": 1089,
-          "n": 37,
-          "slot": 4
-        }
-      ]
-    },
-    {
-      "target": 1271,
-      "next": 45,
       "gap": 73,
       "shift": 6,
       "count": 4,
@@ -36991,6 +36991,38 @@
           "round": 1170,
           "n": 38,
           "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1271,
+      "next": 45,
+      "gap": 182,
+      "shift": 8,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "1-4-3-4",
+      "steps": [
+        {
+          "round": 543,
+          "n": 13,
+          "slot": 1
+        },
+        {
+          "round": 725,
+          "n": 21,
+          "slot": 4
+        },
+        {
+          "round": 907,
+          "n": 29,
+          "slot": 3
+        },
+        {
+          "round": 1089,
+          "n": 37,
+          "slot": 4
         }
       ]
     },
@@ -37157,38 +37189,6 @@
     {
       "target": 1272,
       "next": 7,
-      "gap": 198,
-      "shift": 1,
-      "count": 5,
-      "sourceRound": 1248,
-      "createdAt": "2026-11-06T08:10:47.828Z",
-      "flow": "1-1-1-2",
-      "steps": [
-        {
-          "round": 480,
-          "n": 3,
-          "slot": 1
-        },
-        {
-          "round": 678,
-          "n": 4,
-          "slot": 1
-        },
-        {
-          "round": 876,
-          "n": 5,
-          "slot": 1
-        },
-        {
-          "round": 1074,
-          "n": 6,
-          "slot": 2
-        }
-      ]
-    },
-    {
-      "target": 1272,
-      "next": 7,
       "gap": 135,
       "shift": -5,
       "count": 4,
@@ -37215,6 +37215,38 @@
           "round": 1137,
           "n": 12,
           "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1272,
+      "next": 7,
+      "gap": 198,
+      "shift": 1,
+      "count": 5,
+      "sourceRound": 1248,
+      "createdAt": "2026-11-06T08:10:47.828Z",
+      "flow": "1-1-1-2",
+      "steps": [
+        {
+          "round": 480,
+          "n": 3,
+          "slot": 1
+        },
+        {
+          "round": 678,
+          "n": 4,
+          "slot": 1
+        },
+        {
+          "round": 876,
+          "n": 5,
+          "slot": 1
+        },
+        {
+          "round": 1074,
+          "n": 6,
+          "slot": 2
         }
       ]
     },
@@ -38655,6 +38687,1574 @@
           "round": 974,
           "n": 39,
           "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 1,
+      "gap": 116,
+      "shift": -4,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "4-1-3-1",
+      "steps": [
+        {
+          "round": 809,
+          "n": 17,
+          "slot": 4
+        },
+        {
+          "round": 925,
+          "n": 13,
+          "slot": 1
+        },
+        {
+          "round": 1041,
+          "n": 9,
+          "slot": 3
+        },
+        {
+          "round": 1157,
+          "n": 5,
+          "slot": 1
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 1,
+      "gap": 297,
+      "shift": -3,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "3-1-3-1",
+      "steps": [
+        {
+          "round": 85,
+          "n": 13,
+          "slot": 3
+        },
+        {
+          "round": 382,
+          "n": 10,
+          "slot": 1
+        },
+        {
+          "round": 679,
+          "n": 7,
+          "slot": 3
+        },
+        {
+          "round": 976,
+          "n": 4,
+          "slot": 1
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 2,
+      "gap": 231,
+      "shift": -3,
+      "count": 5,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "3-4-1-1",
+      "steps": [
+        {
+          "round": 349,
+          "n": 14,
+          "slot": 3
+        },
+        {
+          "round": 580,
+          "n": 11,
+          "slot": 4
+        },
+        {
+          "round": 811,
+          "n": 8,
+          "slot": 1
+        },
+        {
+          "round": 1042,
+          "n": 5,
+          "slot": 1
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 2,
+      "gap": 241,
+      "shift": -4,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "5-3-2-2",
+      "steps": [
+        {
+          "round": 309,
+          "n": 18,
+          "slot": 5
+        },
+        {
+          "round": 550,
+          "n": 14,
+          "slot": 3
+        },
+        {
+          "round": 791,
+          "n": 10,
+          "slot": 2
+        },
+        {
+          "round": 1032,
+          "n": 6,
+          "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 2,
+      "gap": 261,
+      "shift": -9,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "6-4-4-2",
+      "steps": [
+        {
+          "round": 229,
+          "n": 38,
+          "slot": 6
+        },
+        {
+          "round": 490,
+          "n": 29,
+          "slot": 4
+        },
+        {
+          "round": 751,
+          "n": 20,
+          "slot": 4
+        },
+        {
+          "round": 1012,
+          "n": 11,
+          "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 4,
+      "gap": 56,
+      "shift": -4,
+      "count": 5,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "4-2-2-1",
+      "steps": [
+        {
+          "round": 1049,
+          "n": 20,
+          "slot": 4
+        },
+        {
+          "round": 1105,
+          "n": 16,
+          "slot": 2
+        },
+        {
+          "round": 1161,
+          "n": 12,
+          "slot": 2
+        },
+        {
+          "round": 1217,
+          "n": 8,
+          "slot": 1
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 4,
+      "gap": 269,
+      "shift": -3,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "3-3-2-1",
+      "steps": [
+        {
+          "round": 197,
+          "n": 16,
+          "slot": 3
+        },
+        {
+          "round": 466,
+          "n": 13,
+          "slot": 3
+        },
+        {
+          "round": 735,
+          "n": 10,
+          "slot": 2
+        },
+        {
+          "round": 1004,
+          "n": 7,
+          "slot": 1
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 5,
+      "gap": 51,
+      "shift": 1,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "1-1-1-1",
+      "steps": [
+        {
+          "round": 1069,
+          "n": 1,
+          "slot": 1
+        },
+        {
+          "round": 1120,
+          "n": 2,
+          "slot": 1
+        },
+        {
+          "round": 1171,
+          "n": 3,
+          "slot": 1
+        },
+        {
+          "round": 1222,
+          "n": 4,
+          "slot": 1
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 6,
+      "gap": 93,
+      "shift": -6,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "5-4-3-2",
+      "steps": [
+        {
+          "round": 901,
+          "n": 30,
+          "slot": 5
+        },
+        {
+          "round": 994,
+          "n": 24,
+          "slot": 4
+        },
+        {
+          "round": 1087,
+          "n": 18,
+          "slot": 3
+        },
+        {
+          "round": 1180,
+          "n": 12,
+          "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 6,
+      "gap": 275,
+      "shift": -7,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "6-4-1-1",
+      "steps": [
+        {
+          "round": 173,
+          "n": 34,
+          "slot": 6
+        },
+        {
+          "round": 448,
+          "n": 27,
+          "slot": 4
+        },
+        {
+          "round": 723,
+          "n": 20,
+          "slot": 1
+        },
+        {
+          "round": 998,
+          "n": 13,
+          "slot": 1
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 7,
+      "gap": 52,
+      "shift": 1,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "1-2-1-1",
+      "steps": [
+        {
+          "round": 1065,
+          "n": 3,
+          "slot": 1
+        },
+        {
+          "round": 1117,
+          "n": 4,
+          "slot": 2
+        },
+        {
+          "round": 1169,
+          "n": 5,
+          "slot": 1
+        },
+        {
+          "round": 1221,
+          "n": 6,
+          "slot": 1
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 7,
+      "gap": 63,
+      "shift": -2,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "2-3-2-3",
+      "steps": [
+        {
+          "round": 1021,
+          "n": 15,
+          "slot": 2
+        },
+        {
+          "round": 1084,
+          "n": 13,
+          "slot": 3
+        },
+        {
+          "round": 1147,
+          "n": 11,
+          "slot": 2
+        },
+        {
+          "round": 1210,
+          "n": 9,
+          "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 7,
+      "gap": 155,
+      "shift": -8,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "6-3-4-4",
+      "steps": [
+        {
+          "round": 653,
+          "n": 39,
+          "slot": 6
+        },
+        {
+          "round": 808,
+          "n": 31,
+          "slot": 3
+        },
+        {
+          "round": 963,
+          "n": 23,
+          "slot": 4
+        },
+        {
+          "round": 1118,
+          "n": 15,
+          "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 7,
+      "gap": 172,
+      "shift": 0,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "2-2-1-2",
+      "steps": [
+        {
+          "round": 585,
+          "n": 7,
+          "slot": 2
+        },
+        {
+          "round": 757,
+          "n": 7,
+          "slot": 2
+        },
+        {
+          "round": 929,
+          "n": 7,
+          "slot": 1
+        },
+        {
+          "round": 1101,
+          "n": 7,
+          "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 7,
+      "gap": 242,
+      "shift": 0,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "1-2-3-2",
+      "steps": [
+        {
+          "round": 305,
+          "n": 7,
+          "slot": 1
+        },
+        {
+          "round": 547,
+          "n": 7,
+          "slot": 2
+        },
+        {
+          "round": 789,
+          "n": 7,
+          "slot": 3
+        },
+        {
+          "round": 1031,
+          "n": 7,
+          "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 9,
+      "gap": 245,
+      "shift": -3,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "4-3-2-3",
+      "steps": [
+        {
+          "round": 293,
+          "n": 21,
+          "slot": 4
+        },
+        {
+          "round": 538,
+          "n": 18,
+          "slot": 3
+        },
+        {
+          "round": 783,
+          "n": 15,
+          "slot": 2
+        },
+        {
+          "round": 1028,
+          "n": 12,
+          "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 9,
+      "gap": 281,
+      "shift": -3,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "3-4-2-1",
+      "steps": [
+        {
+          "round": 149,
+          "n": 21,
+          "slot": 3
+        },
+        {
+          "round": 430,
+          "n": 18,
+          "slot": 4
+        },
+        {
+          "round": 711,
+          "n": 15,
+          "slot": 2
+        },
+        {
+          "round": 992,
+          "n": 12,
+          "slot": 1
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 10,
+      "gap": 195,
+      "shift": -4,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "3-3-2-4",
+      "steps": [
+        {
+          "round": 493,
+          "n": 26,
+          "slot": 3
+        },
+        {
+          "round": 688,
+          "n": 22,
+          "slot": 3
+        },
+        {
+          "round": 883,
+          "n": 18,
+          "slot": 2
+        },
+        {
+          "round": 1078,
+          "n": 14,
+          "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 11,
+      "gap": 59,
+      "shift": -4,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "5-5-3-2",
+      "steps": [
+        {
+          "round": 1037,
+          "n": 27,
+          "slot": 5
+        },
+        {
+          "round": 1096,
+          "n": 23,
+          "slot": 5
+        },
+        {
+          "round": 1155,
+          "n": 19,
+          "slot": 3
+        },
+        {
+          "round": 1214,
+          "n": 15,
+          "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 11,
+      "gap": 82,
+      "shift": -1,
+      "count": 5,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "3-1-3-4",
+      "steps": [
+        {
+          "round": 945,
+          "n": 15,
+          "slot": 3
+        },
+        {
+          "round": 1027,
+          "n": 14,
+          "slot": 1
+        },
+        {
+          "round": 1109,
+          "n": 13,
+          "slot": 3
+        },
+        {
+          "round": 1191,
+          "n": 12,
+          "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 12,
+      "gap": 50,
+      "shift": -4,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "3-4-4-1",
+      "steps": [
+        {
+          "round": 1073,
+          "n": 28,
+          "slot": 3
+        },
+        {
+          "round": 1123,
+          "n": 24,
+          "slot": 4
+        },
+        {
+          "round": 1173,
+          "n": 20,
+          "slot": 4
+        },
+        {
+          "round": 1223,
+          "n": 16,
+          "slot": 1
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 14,
+      "gap": 172,
+      "shift": 1,
+      "count": 5,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "3-3-3-3",
+      "steps": [
+        {
+          "round": 585,
+          "n": 10,
+          "slot": 3
+        },
+        {
+          "round": 757,
+          "n": 11,
+          "slot": 3
+        },
+        {
+          "round": 929,
+          "n": 12,
+          "slot": 3
+        },
+        {
+          "round": 1101,
+          "n": 13,
+          "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 16,
+      "gap": 70,
+      "shift": -2,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "5-3-3-3",
+      "steps": [
+        {
+          "round": 993,
+          "n": 24,
+          "slot": 5
+        },
+        {
+          "round": 1063,
+          "n": 22,
+          "slot": 3
+        },
+        {
+          "round": 1133,
+          "n": 20,
+          "slot": 3
+        },
+        {
+          "round": 1203,
+          "n": 18,
+          "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 17,
+      "gap": 37,
+      "shift": -4,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "4-6-3-3",
+      "steps": [
+        {
+          "round": 1125,
+          "n": 33,
+          "slot": 4
+        },
+        {
+          "round": 1162,
+          "n": 29,
+          "slot": 6
+        },
+        {
+          "round": 1199,
+          "n": 25,
+          "slot": 3
+        },
+        {
+          "round": 1236,
+          "n": 21,
+          "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 19,
+      "gap": 210,
+      "shift": -4,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "5-3-5-4",
+      "steps": [
+        {
+          "round": 433,
+          "n": 35,
+          "slot": 5
+        },
+        {
+          "round": 643,
+          "n": 31,
+          "slot": 3
+        },
+        {
+          "round": 853,
+          "n": 27,
+          "slot": 5
+        },
+        {
+          "round": 1063,
+          "n": 23,
+          "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 19,
+      "gap": 232,
+      "shift": 1,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "1-1-4-6",
+      "steps": [
+        {
+          "round": 345,
+          "n": 15,
+          "slot": 1
+        },
+        {
+          "round": 577,
+          "n": 16,
+          "slot": 1
+        },
+        {
+          "round": 809,
+          "n": 17,
+          "slot": 4
+        },
+        {
+          "round": 1041,
+          "n": 18,
+          "slot": 6
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 20,
+      "gap": 260,
+      "shift": -2,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "5-3-4-2",
+      "steps": [
+        {
+          "round": 233,
+          "n": 28,
+          "slot": 5
+        },
+        {
+          "round": 493,
+          "n": 26,
+          "slot": 3
+        },
+        {
+          "round": 753,
+          "n": 24,
+          "slot": 4
+        },
+        {
+          "round": 1013,
+          "n": 22,
+          "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 20,
+      "gap": 310,
+      "shift": -3,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "3-4-3-4",
+      "steps": [
+        {
+          "round": 33,
+          "n": 32,
+          "slot": 3
+        },
+        {
+          "round": 343,
+          "n": 29,
+          "slot": 4
+        },
+        {
+          "round": 653,
+          "n": 26,
+          "slot": 3
+        },
+        {
+          "round": 963,
+          "n": 23,
+          "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 24,
+      "gap": 26,
+      "shift": 3,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "2-2-3-3",
+      "steps": [
+        {
+          "round": 1169,
+          "n": 12,
+          "slot": 2
+        },
+        {
+          "round": 1195,
+          "n": 15,
+          "slot": 2
+        },
+        {
+          "round": 1221,
+          "n": 18,
+          "slot": 3
+        },
+        {
+          "round": 1247,
+          "n": 21,
+          "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 26,
+      "gap": 91,
+      "shift": -2,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "5-5-6-5",
+      "steps": [
+        {
+          "round": 909,
+          "n": 34,
+          "slot": 5
+        },
+        {
+          "round": 1000,
+          "n": 32,
+          "slot": 5
+        },
+        {
+          "round": 1091,
+          "n": 30,
+          "slot": 6
+        },
+        {
+          "round": 1182,
+          "n": 28,
+          "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 26,
+      "gap": 140,
+      "shift": 6,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "1-2-2-3",
+      "steps": [
+        {
+          "round": 713,
+          "n": 2,
+          "slot": 1
+        },
+        {
+          "round": 853,
+          "n": 8,
+          "slot": 2
+        },
+        {
+          "round": 993,
+          "n": 14,
+          "slot": 2
+        },
+        {
+          "round": 1133,
+          "n": 20,
+          "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 29,
+      "gap": 156,
+      "shift": -1,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "4-6-4-4",
+      "steps": [
+        {
+          "round": 649,
+          "n": 33,
+          "slot": 4
+        },
+        {
+          "round": 805,
+          "n": 32,
+          "slot": 6
+        },
+        {
+          "round": 961,
+          "n": 31,
+          "slot": 4
+        },
+        {
+          "round": 1117,
+          "n": 30,
+          "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 30,
+      "gap": 78,
+      "shift": -3,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "6-6-6-4",
+      "steps": [
+        {
+          "round": 961,
+          "n": 42,
+          "slot": 6
+        },
+        {
+          "round": 1039,
+          "n": 39,
+          "slot": 6
+        },
+        {
+          "round": 1117,
+          "n": 36,
+          "slot": 6
+        },
+        {
+          "round": 1195,
+          "n": 33,
+          "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 32,
+      "gap": 174,
+      "shift": 4,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "1-4-2-3",
+      "steps": [
+        {
+          "round": 577,
+          "n": 16,
+          "slot": 1
+        },
+        {
+          "round": 751,
+          "n": 20,
+          "slot": 4
+        },
+        {
+          "round": 925,
+          "n": 24,
+          "slot": 2
+        },
+        {
+          "round": 1099,
+          "n": 28,
+          "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 33,
+      "gap": 114,
+      "shift": 6,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "2-2-5-3",
+      "steps": [
+        {
+          "round": 817,
+          "n": 9,
+          "slot": 2
+        },
+        {
+          "round": 931,
+          "n": 15,
+          "slot": 2
+        },
+        {
+          "round": 1045,
+          "n": 21,
+          "slot": 5
+        },
+        {
+          "round": 1159,
+          "n": 27,
+          "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 33,
+      "gap": 191,
+      "shift": 1,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "3-5-4-4",
+      "steps": [
+        {
+          "round": 509,
+          "n": 29,
+          "slot": 3
+        },
+        {
+          "round": 700,
+          "n": 30,
+          "slot": 5
+        },
+        {
+          "round": 891,
+          "n": 31,
+          "slot": 4
+        },
+        {
+          "round": 1082,
+          "n": 32,
+          "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 35,
+      "gap": 246,
+      "shift": 8,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "1-1-4-3",
+      "steps": [
+        {
+          "round": 289,
+          "n": 3,
+          "slot": 1
+        },
+        {
+          "round": 535,
+          "n": 11,
+          "slot": 1
+        },
+        {
+          "round": 781,
+          "n": 19,
+          "slot": 4
+        },
+        {
+          "round": 1027,
+          "n": 27,
+          "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 35,
+      "gap": 257,
+      "shift": 1,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "4-4-2-4",
+      "steps": [
+        {
+          "round": 245,
+          "n": 31,
+          "slot": 4
+        },
+        {
+          "round": 502,
+          "n": 32,
+          "slot": 4
+        },
+        {
+          "round": 759,
+          "n": 33,
+          "slot": 2
+        },
+        {
+          "round": 1016,
+          "n": 34,
+          "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 36,
+      "gap": 65,
+      "shift": 0,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "5-5-6-4",
+      "steps": [
+        {
+          "round": 1013,
+          "n": 36,
+          "slot": 5
+        },
+        {
+          "round": 1078,
+          "n": 36,
+          "slot": 5
+        },
+        {
+          "round": 1143,
+          "n": 36,
+          "slot": 6
+        },
+        {
+          "round": 1208,
+          "n": 36,
+          "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 37,
+      "gap": 37,
+      "shift": 3,
+      "count": 5,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "3-5-5-5",
+      "steps": [
+        {
+          "round": 1125,
+          "n": 25,
+          "slot": 3
+        },
+        {
+          "round": 1162,
+          "n": 28,
+          "slot": 5
+        },
+        {
+          "round": 1199,
+          "n": 31,
+          "slot": 5
+        },
+        {
+          "round": 1236,
+          "n": 34,
+          "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 37,
+      "gap": 187,
+      "shift": 2,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "4-4-5-5",
+      "steps": [
+        {
+          "round": 525,
+          "n": 29,
+          "slot": 4
+        },
+        {
+          "round": 712,
+          "n": 31,
+          "slot": 4
+        },
+        {
+          "round": 899,
+          "n": 33,
+          "slot": 5
+        },
+        {
+          "round": 1086,
+          "n": 35,
+          "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 37,
+      "gap": 191,
+      "shift": 3,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "2-3-4-5",
+      "steps": [
+        {
+          "round": 509,
+          "n": 25,
+          "slot": 2
+        },
+        {
+          "round": 700,
+          "n": 28,
+          "slot": 3
+        },
+        {
+          "round": 891,
+          "n": 31,
+          "slot": 4
+        },
+        {
+          "round": 1082,
+          "n": 34,
+          "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 38,
+      "gap": 153,
+      "shift": 0,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "6-4-5-5",
+      "steps": [
+        {
+          "round": 661,
+          "n": 38,
+          "slot": 6
+        },
+        {
+          "round": 814,
+          "n": 38,
+          "slot": 4
+        },
+        {
+          "round": 967,
+          "n": 38,
+          "slot": 5
+        },
+        {
+          "round": 1120,
+          "n": 38,
+          "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 40,
+      "gap": 128,
+      "shift": 9,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "1-2-3-3",
+      "steps": [
+        {
+          "round": 761,
+          "n": 4,
+          "slot": 1
+        },
+        {
+          "round": 889,
+          "n": 13,
+          "slot": 2
+        },
+        {
+          "round": 1017,
+          "n": 22,
+          "slot": 3
+        },
+        {
+          "round": 1145,
+          "n": 31,
+          "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 41,
+      "gap": 55,
+      "shift": -1,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "6-6-6-5",
+      "steps": [
+        {
+          "round": 1053,
+          "n": 45,
+          "slot": 6
+        },
+        {
+          "round": 1108,
+          "n": 44,
+          "slot": 6
+        },
+        {
+          "round": 1163,
+          "n": 43,
+          "slot": 6
+        },
+        {
+          "round": 1218,
+          "n": 42,
+          "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 42,
+      "gap": 150,
+      "shift": 8,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "2-2-2-5",
+      "steps": [
+        {
+          "round": 673,
+          "n": 10,
+          "slot": 2
+        },
+        {
+          "round": 823,
+          "n": 18,
+          "slot": 2
+        },
+        {
+          "round": 973,
+          "n": 26,
+          "slot": 2
+        },
+        {
+          "round": 1123,
+          "n": 34,
+          "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 44,
+      "gap": 25,
+      "shift": 6,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "4-1-4-5",
+      "steps": [
+        {
+          "round": 1173,
+          "n": 20,
+          "slot": 4
+        },
+        {
+          "round": 1198,
+          "n": 26,
+          "slot": 1
+        },
+        {
+          "round": 1223,
+          "n": 32,
+          "slot": 4
+        },
+        {
+          "round": 1248,
+          "n": 38,
+          "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 45,
+      "gap": 54,
+      "shift": 0,
+      "count": 5,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "6-6-6-6",
+      "steps": [
+        {
+          "round": 1057,
+          "n": 45,
+          "slot": 6
+        },
+        {
+          "round": 1111,
+          "n": 45,
+          "slot": 6
+        },
+        {
+          "round": 1165,
+          "n": 45,
+          "slot": 6
+        },
+        {
+          "round": 1219,
+          "n": 45,
+          "slot": 6
+        }
+      ]
+    },
+    {
+      "target": 1273,
+      "next": 45,
+      "gap": 271,
+      "shift": 0,
+      "count": 4,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:30.019Z",
+      "flow": "6-6-6-6",
+      "steps": [
+        {
+          "round": 189,
+          "n": 45,
+          "slot": 6
+        },
+        {
+          "round": 460,
+          "n": 45,
+          "slot": 6
+        },
+        {
+          "round": 731,
+          "n": 45,
+          "slot": 6
+        },
+        {
+          "round": 1002,
+          "n": 45,
+          "slot": 6
         }
       ]
     }

@@ -735,6 +735,1348 @@
       ],
       "review": null,
       "captureSource": "scheduled-github-actions"
+    },
+    {
+      "round": 1250,
+      "sourceRound": 1249,
+      "createdAt": "2026-11-13T03:56:29.263Z",
+      "scope": "all45",
+      "candidatePolicy": "dynamic-unlimited-v2",
+      "slotTrailPolicy": "same-number-3-last-positions-v1",
+      "candidatePool": [
+        1,
+        5,
+        6,
+        7,
+        12,
+        13,
+        14,
+        16,
+        17,
+        18,
+        22,
+        24,
+        25,
+        27,
+        28,
+        29,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        41,
+        42,
+        45
+      ],
+      "rows": [
+        {
+          "n": 1,
+          "basic": 19,
+          "connected": 11,
+          "flags": [
+            "neighbor1",
+            "ending",
+            "miss5",
+            "sameSlot",
+            "diagonal",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1227,
+              "slot": 1
+            },
+            {
+              "round": 1234,
+              "slot": 1
+            },
+            {
+              "round": 1244,
+              "slot": 1
+            }
+          ],
+          "moduleIds": [
+            3,
+            5,
+            14,
+            16
+          ]
+        },
+        {
+          "n": 2,
+          "basic": 14,
+          "connected": 7,
+          "flags": [
+            "carry",
+            "sameSlot",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1238,
+              "slot": 1
+            },
+            {
+              "round": 1242,
+              "slot": 1
+            },
+            {
+              "round": 1249,
+              "slot": 1
+            }
+          ],
+          "moduleIds": [
+            5,
+            12,
+            16
+          ]
+        },
+        {
+          "n": 3,
+          "basic": 20,
+          "connected": 7,
+          "flags": [
+            "neighbor1",
+            "miss5",
+            "sameSlot",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1216,
+              "slot": 1
+            },
+            {
+              "round": 1218,
+              "slot": 1
+            },
+            {
+              "round": 1230,
+              "slot": 1
+            }
+          ],
+          "moduleIds": [
+            5
+          ]
+        },
+        {
+          "n": 4,
+          "basic": 15,
+          "connected": 8,
+          "flags": [
+            "neighbor2",
+            "ending",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1231,
+              "slot": 1
+            },
+            {
+              "round": 1242,
+              "slot": 2
+            },
+            {
+              "round": 1245,
+              "slot": 1
+            }
+          ],
+          "moduleIds": [
+            5,
+            14
+          ]
+        },
+        {
+          "n": 5,
+          "basic": 15,
+          "connected": 11,
+          "flags": [
+            "ending",
+            "diagonal"
+          ],
+          "slotTrail": [
+            {
+              "round": 1212,
+              "slot": 1
+            },
+            {
+              "round": 1213,
+              "slot": 1
+            },
+            {
+              "round": 1245,
+              "slot": 2
+            }
+          ],
+          "moduleIds": [
+            3,
+            5,
+            14
+          ]
+        },
+        {
+          "n": 6,
+          "basic": 17,
+          "connected": 9,
+          "flags": [
+            "ending",
+            "miss5",
+            "diagonal",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1221,
+              "slot": 1
+            },
+            {
+              "round": 1226,
+              "slot": 2
+            },
+            {
+              "round": 1235,
+              "slot": 1
+            }
+          ],
+          "moduleIds": [
+            3,
+            5,
+            14
+          ]
+        },
+        {
+          "n": 7,
+          "basic": 17,
+          "connected": 7,
+          "flags": [
+            "miss5",
+            "diagonal"
+          ],
+          "slotTrail": [
+            {
+              "round": 1233,
+              "slot": 2
+            },
+            {
+              "round": 1235,
+              "slot": 2
+            },
+            {
+              "round": 1241,
+              "slot": 1
+            }
+          ],
+          "moduleIds": [
+            3,
+            5
+          ]
+        },
+        {
+          "n": 8,
+          "basic": 12,
+          "connected": 7,
+          "flags": [],
+          "slotTrail": [
+            {
+              "round": 1225,
+              "slot": 1
+            },
+            {
+              "round": 1230,
+              "slot": 2
+            },
+            {
+              "round": 1247,
+              "slot": 1
+            }
+          ],
+          "moduleIds": [
+            5,
+            14
+          ]
+        },
+        {
+          "n": 9,
+          "basic": 14,
+          "connected": 7,
+          "flags": [
+            "neighbor2",
+            "miss5",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1225,
+              "slot": 2
+            },
+            {
+              "round": 1230,
+              "slot": 3
+            },
+            {
+              "round": 1243,
+              "slot": 1
+            }
+          ],
+          "moduleIds": [
+            5,
+            14
+          ]
+        },
+        {
+          "n": 10,
+          "basic": 17,
+          "connected": 7,
+          "flags": [
+            "neighbor1",
+            "miss5",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1217,
+              "slot": 2
+            },
+            {
+              "round": 1237,
+              "slot": 1
+            },
+            {
+              "round": 1242,
+              "slot": 3
+            }
+          ],
+          "moduleIds": [
+            5
+          ]
+        },
+        {
+          "n": 11,
+          "basic": 16,
+          "connected": 6,
+          "flags": [
+            "carry"
+          ],
+          "slotTrail": [
+            {
+              "round": 1239,
+              "slot": 1
+            },
+            {
+              "round": 1240,
+              "slot": 1
+            },
+            {
+              "round": 1249,
+              "slot": 2
+            }
+          ],
+          "moduleIds": [
+            5,
+            12
+          ]
+        },
+        {
+          "n": 12,
+          "basic": 25,
+          "connected": 11,
+          "flags": [
+            "neighbor1",
+            "ending",
+            "miss5",
+            "sameSlot",
+            "fixedCycle",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1229,
+              "slot": 1
+            },
+            {
+              "round": 1232,
+              "slot": 1
+            },
+            {
+              "round": 1236,
+              "slot": 1
+            }
+          ],
+          "moduleIds": [
+            1,
+            5,
+            14
+          ]
+        },
+        {
+          "n": 13,
+          "basic": 18,
+          "connected": 11,
+          "flags": [
+            "neighbor2",
+            "miss5",
+            "sameSlot",
+            "diagonal",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1240,
+              "slot": 2
+            },
+            {
+              "round": 1241,
+              "slot": 2
+            },
+            {
+              "round": 1244,
+              "slot": 2
+            }
+          ],
+          "moduleIds": [
+            3,
+            5,
+            14,
+            16
+          ]
+        },
+        {
+          "n": 14,
+          "basic": 18,
+          "connected": 11,
+          "flags": [
+            "neighbor2",
+            "ending",
+            "bonus",
+            "diagonal",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1227,
+              "slot": 2
+            },
+            {
+              "round": 1231,
+              "slot": 3
+            },
+            {
+              "round": 1247,
+              "slot": 2
+            }
+          ],
+          "moduleIds": [
+            3,
+            5,
+            13,
+            14,
+            16
+          ]
+        },
+        {
+          "n": 15,
+          "basic": 28,
+          "connected": 11,
+          "flags": [
+            "neighbor1",
+            "ending",
+            "miss5",
+            "neighborTwice",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1232,
+              "slot": 2
+            },
+            {
+              "round": 1234,
+              "slot": 2
+            },
+            {
+              "round": 1235,
+              "slot": 4
+            }
+          ],
+          "moduleIds": [
+            5,
+            14
+          ]
+        },
+        {
+          "n": 16,
+          "basic": 16,
+          "connected": 7,
+          "flags": [
+            "carry",
+            "diagonal"
+          ],
+          "slotTrail": [
+            {
+              "round": 1246,
+              "slot": 1
+            },
+            {
+              "round": 1248,
+              "slot": 1
+            },
+            {
+              "round": 1249,
+              "slot": 3
+            }
+          ],
+          "moduleIds": [
+            3,
+            5,
+            12,
+            16
+          ]
+        },
+        {
+          "n": 17,
+          "basic": 25,
+          "connected": 10,
+          "flags": [
+            "neighbor1",
+            "miss5",
+            "neighborTwice",
+            "diagonal",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1210,
+              "slot": 4
+            },
+            {
+              "round": 1222,
+              "slot": 3
+            },
+            {
+              "round": 1226,
+              "slot": 4
+            }
+          ],
+          "moduleIds": [
+            3,
+            5
+          ]
+        },
+        {
+          "n": 18,
+          "basic": 19,
+          "connected": 9,
+          "flags": [
+            "neighbor2",
+            "diagonal"
+          ],
+          "slotTrail": [
+            {
+              "round": 1243,
+              "slot": 2
+            },
+            {
+              "round": 1244,
+              "slot": 3
+            },
+            {
+              "round": 1248,
+              "slot": 2
+            }
+          ],
+          "moduleIds": [
+            3,
+            5,
+            14
+          ]
+        },
+        {
+          "n": 19,
+          "basic": 18,
+          "connected": 8,
+          "flags": [
+            "miss5",
+            "sameSlot",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1232,
+              "slot": 3
+            },
+            {
+              "round": 1234,
+              "slot": 3
+            },
+            {
+              "round": 1240,
+              "slot": 3
+            }
+          ],
+          "moduleIds": [
+            5,
+            14
+          ]
+        },
+        {
+          "n": 20,
+          "basic": 18,
+          "connected": 6,
+          "flags": [
+            "miss5"
+          ],
+          "slotTrail": [
+            {
+              "round": 1233,
+              "slot": 3
+            },
+            {
+              "round": 1237,
+              "slot": 2
+            },
+            {
+              "round": 1240,
+              "slot": 4
+            }
+          ],
+          "moduleIds": [
+            5
+          ]
+        },
+        {
+          "n": 21,
+          "basic": 18,
+          "connected": 8,
+          "flags": [
+            "ending",
+            "sameSlot",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1224,
+              "slot": 3
+            },
+            {
+              "round": 1236,
+              "slot": 3
+            },
+            {
+              "round": 1247,
+              "slot": 3
+            }
+          ],
+          "moduleIds": [
+            5,
+            14
+          ]
+        },
+        {
+          "n": 22,
+          "basic": 22,
+          "connected": 9,
+          "flags": [
+            "ending",
+            "diagonal"
+          ],
+          "slotTrail": [
+            {
+              "round": 1239,
+              "slot": 3
+            },
+            {
+              "round": 1246,
+              "slot": 2
+            },
+            {
+              "round": 1247,
+              "slot": 4
+            }
+          ],
+          "moduleIds": [
+            3,
+            5,
+            14
+          ]
+        },
+        {
+          "n": 23,
+          "basic": 17,
+          "connected": 7,
+          "flags": [
+            "neighbor2"
+          ],
+          "slotTrail": [
+            {
+              "round": 1237,
+              "slot": 3
+            },
+            {
+              "round": 1241,
+              "slot": 4
+            },
+            {
+              "round": 1246,
+              "slot": 3
+            }
+          ],
+          "moduleIds": [
+            5,
+            14
+          ]
+        },
+        {
+          "n": 24,
+          "basic": 23,
+          "connected": 10,
+          "flags": [
+            "neighbor1",
+            "ending",
+            "diagonal",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1241,
+              "slot": 5
+            },
+            {
+              "round": 1243,
+              "slot": 3
+            },
+            {
+              "round": 1246,
+              "slot": 4
+            }
+          ],
+          "moduleIds": [
+            3,
+            5,
+            14
+          ]
+        },
+        {
+          "n": 25,
+          "basic": 20,
+          "connected": 9,
+          "flags": [
+            "ending",
+            "carry",
+            "diagonal",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1233,
+              "slot": 4
+            },
+            {
+              "round": 1245,
+              "slot": 3
+            },
+            {
+              "round": 1249,
+              "slot": 4
+            }
+          ],
+          "moduleIds": [
+            3,
+            5,
+            12,
+            14,
+            16
+          ]
+        },
+        {
+          "n": 26,
+          "basic": 23,
+          "connected": 12,
+          "flags": [
+            "neighbor1",
+            "ending",
+            "miss5",
+            "neighborTwice",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1211,
+              "slot": 2
+            },
+            {
+              "round": 1226,
+              "slot": 5
+            },
+            {
+              "round": 1244,
+              "slot": 4
+            }
+          ],
+          "moduleIds": [
+            5,
+            14
+          ]
+        },
+        {
+          "n": 27,
+          "basic": 15,
+          "connected": 9,
+          "flags": [
+            "neighbor2",
+            "diagonal"
+          ],
+          "slotTrail": [
+            {
+              "round": 1224,
+              "slot": 4
+            },
+            {
+              "round": 1246,
+              "slot": 5
+            },
+            {
+              "round": 1248,
+              "slot": 3
+            }
+          ],
+          "moduleIds": [
+            3,
+            5,
+            14
+          ]
+        },
+        {
+          "n": 28,
+          "basic": 21,
+          "connected": 8,
+          "flags": [
+            "fixedCycle"
+          ],
+          "slotTrail": [
+            {
+              "round": 1230,
+              "slot": 5
+            },
+            {
+              "round": 1245,
+              "slot": 4
+            },
+            {
+              "round": 1246,
+              "slot": 6
+            }
+          ],
+          "moduleIds": [
+            1,
+            5,
+            14
+          ]
+        },
+        {
+          "n": 29,
+          "basic": 17,
+          "connected": 8,
+          "flags": [
+            "miss5",
+            "diagonal"
+          ],
+          "slotTrail": [
+            {
+              "round": 1228,
+              "slot": 2
+            },
+            {
+              "round": 1229,
+              "slot": 3
+            },
+            {
+              "round": 1236,
+              "slot": 4
+            }
+          ],
+          "moduleIds": [
+            3,
+            5
+          ]
+        },
+        {
+          "n": 30,
+          "basic": 15,
+          "connected": 6,
+          "flags": [
+            "miss5"
+          ],
+          "slotTrail": [
+            {
+              "round": 1214,
+              "slot": 5
+            },
+            {
+              "round": 1221,
+              "slot": 5
+            },
+            {
+              "round": 1228,
+              "slot": 3
+            }
+          ],
+          "moduleIds": [
+            5
+          ]
+        },
+        {
+          "n": 31,
+          "basic": 20,
+          "connected": 8,
+          "flags": [
+            "ending",
+            "miss5",
+            "sameSlot",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1234,
+              "slot": 4
+            },
+            {
+              "round": 1240,
+              "slot": 5
+            },
+            {
+              "round": 1242,
+              "slot": 5
+            }
+          ],
+          "moduleIds": [
+            5,
+            14
+          ]
+        },
+        {
+          "n": 32,
+          "basic": 17,
+          "connected": 10,
+          "flags": [
+            "neighbor2",
+            "ending",
+            "diagonal",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1238,
+              "slot": 4
+            },
+            {
+              "round": 1239,
+              "slot": 4
+            },
+            {
+              "round": 1245,
+              "slot": 5
+            }
+          ],
+          "moduleIds": [
+            3,
+            5,
+            14
+          ]
+        },
+        {
+          "n": 33,
+          "basic": 22,
+          "connected": 9,
+          "flags": [
+            "neighbor1",
+            "neighbor2",
+            "miss5",
+            "sameSlot",
+            "diagonal",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1214,
+              "slot": 6
+            },
+            {
+              "round": 1223,
+              "slot": 5
+            },
+            {
+              "round": 1239,
+              "slot": 5
+            }
+          ],
+          "moduleIds": [
+            3,
+            5,
+            14
+          ]
+        },
+        {
+          "n": 34,
+          "basic": 20,
+          "connected": 9,
+          "flags": [
+            "neighbor1",
+            "carry",
+            "sameSlot",
+            "diagonal",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1237,
+              "slot": 4
+            },
+            {
+              "round": 1244,
+              "slot": 5
+            },
+            {
+              "round": 1249,
+              "slot": 5
+            }
+          ],
+          "moduleIds": [
+            3,
+            5,
+            12,
+            16
+          ]
+        },
+        {
+          "n": 35,
+          "basic": 23,
+          "connected": 12,
+          "flags": [
+            "neighbor1",
+            "ending",
+            "carry",
+            "neighborTwice",
+            "diagonal",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1228,
+              "slot": 5
+            },
+            {
+              "round": 1234,
+              "slot": 5
+            },
+            {
+              "round": 1249,
+              "slot": 6
+            }
+          ],
+          "moduleIds": [
+            3,
+            5,
+            12,
+            14,
+            16
+          ]
+        },
+        {
+          "n": 36,
+          "basic": 22,
+          "connected": 13,
+          "flags": [
+            "neighbor1",
+            "neighbor2",
+            "ending",
+            "diagonal",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1232,
+              "slot": 6
+            },
+            {
+              "round": 1239,
+              "slot": 6
+            },
+            {
+              "round": 1248,
+              "slot": 4
+            }
+          ],
+          "moduleIds": [
+            3,
+            5,
+            14
+          ]
+        },
+        {
+          "n": 37,
+          "basic": 23,
+          "connected": 10,
+          "flags": [
+            "neighbor2",
+            "miss5",
+            "sameSlot",
+            "diagonal",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1229,
+              "slot": 5
+            },
+            {
+              "round": 1233,
+              "slot": 5
+            },
+            {
+              "round": 1237,
+              "slot": 5
+            }
+          ],
+          "moduleIds": [
+            3,
+            5,
+            14,
+            16
+          ]
+        },
+        {
+          "n": 38,
+          "basic": 18,
+          "connected": 8,
+          "flags": [
+            "fixedCycle"
+          ],
+          "slotTrail": [
+            {
+              "round": 1243,
+              "slot": 4
+            },
+            {
+              "round": 1244,
+              "slot": 6
+            },
+            {
+              "round": 1248,
+              "slot": 5
+            }
+          ],
+          "moduleIds": [
+            1,
+            5,
+            14
+          ]
+        },
+        {
+          "n": 39,
+          "basic": 19,
+          "connected": 6,
+          "flags": [
+            "miss5"
+          ],
+          "slotTrail": [
+            {
+              "round": 1219,
+              "slot": 5
+            },
+            {
+              "round": 1223,
+              "slot": 6
+            },
+            {
+              "round": 1235,
+              "slot": 5
+            }
+          ],
+          "moduleIds": [
+            5
+          ]
+        },
+        {
+          "n": 40,
+          "basic": 16,
+          "connected": 7,
+          "flags": [
+            "miss5",
+            "sameSlot",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1211,
+              "slot": 6
+            },
+            {
+              "round": 1233,
+              "slot": 6
+            },
+            {
+              "round": 1237,
+              "slot": 6
+            }
+          ],
+          "moduleIds": [
+            5
+          ]
+        },
+        {
+          "n": 41,
+          "basic": 22,
+          "connected": 10,
+          "flags": [
+            "ending",
+            "miss5",
+            "neighborTwice",
+            "diagonal",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1225,
+              "slot": 5
+            },
+            {
+              "round": 1227,
+              "slot": 5
+            },
+            {
+              "round": 1242,
+              "slot": 6
+            }
+          ],
+          "moduleIds": [
+            3,
+            5
+          ]
+        },
+        {
+          "n": 42,
+          "basic": 14,
+          "connected": 10,
+          "flags": [
+            "ending",
+            "fixedCycle",
+            "diagonal"
+          ],
+          "slotTrail": [
+            {
+              "round": 1245,
+              "slot": 6
+            },
+            {
+              "round": 1247,
+              "slot": 5
+            },
+            {
+              "round": 1248,
+              "slot": 6
+            }
+          ],
+          "moduleIds": [
+            1,
+            3,
+            5,
+            16
+          ]
+        },
+        {
+          "n": 43,
+          "basic": 18,
+          "connected": 6,
+          "flags": [
+            "miss5",
+            "neighborTwice",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1235,
+              "slot": 6
+            },
+            {
+              "round": 1241,
+              "slot": 6
+            },
+            {
+              "round": 1243,
+              "slot": 5
+            }
+          ],
+          "moduleIds": [
+            5
+          ]
+        },
+        {
+          "n": 44,
+          "basic": 19,
+          "connected": 9,
+          "flags": [
+            "ending",
+            "miss5",
+            "sameSlot",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1228,
+              "slot": 6
+            },
+            {
+              "round": 1240,
+              "slot": 6
+            },
+            {
+              "round": 1243,
+              "slot": 6
+            }
+          ],
+          "moduleIds": [
+            5,
+            14
+          ]
+        },
+        {
+          "n": 45,
+          "basic": 15,
+          "connected": 12,
+          "flags": [
+            "ending",
+            "sameSlot",
+            "diagonal",
+            "context2plus"
+          ],
+          "slotTrail": [
+            {
+              "round": 1219,
+              "slot": 6
+            },
+            {
+              "round": 1224,
+              "slot": 6
+            },
+            {
+              "round": 1247,
+              "slot": 6
+            }
+          ],
+          "moduleIds": [
+            3,
+            5,
+            14,
+            16
+          ]
+        }
+      ],
+      "review": null,
+      "captureSource": "scheduled-github-actions"
     }
   ]
 }
