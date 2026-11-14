@@ -124,6 +124,33 @@
       #ln-connection-schedule-v1 .lncm-step small,#ln-connection-schedule-v1 .lncm-step em{font-size:9px}
     }
   `;
+
+  style.textContent+=\`
+    #ln-connection-schedule-v1 .lncm-history{margin:10px 0 0;padding:11px;background:#163a4c;border:1px solid #648b94;border-radius:10px;color:#e8f5ff;font-size:12px;line-height:1.6}
+    #ln-connection-schedule-v1 .lncm-history-heading{font-size:14px;color:#ffe2a3;display:block;margin-bottom:6px}
+    #ln-connection-schedule-v1 .lncm-history-summary{font-size:13px;font-weight:800;color:#c4f2dc;background:#225146;padding:8px;border-radius:7px}
+    #ln-connection-schedule-v1 .lncm-history-note{font-size:11px;color:#d0e2ed;margin:7px 0;line-height:1.65}
+    #ln-connection-schedule-v1 .lncm-history-examples{display:flex;flex-wrap:wrap;gap:5px;margin:10px 0}
+    #ln-connection-schedule-v1 .lncm-history-examples b{display:block;flex-basis:100%;color:#fff0bf;font-size:11px}
+    #ln-connection-schedule-v1 .lncm-history-examples span,#ln-connection-schedule-v1 .lncm-history-all span{display:inline-flex;padding:6px 8px;background:#263e52;border-radius:6px;color:#ebf3f9;font-size:11px}
+    #ln-connection-schedule-v1 .lncm-history-examples span.win,#ln-connection-schedule-v1 .lncm-history-all span.win{background:#185c48;color:#b9f9d6}
+    #ln-connection-schedule-v1 .lncm-history-examples span.miss,#ln-connection-schedule-v1 .lncm-history-all span.miss{background:#533343;color:#ffd9de}
+    #ln-connection-schedule-v1 .lncm-history-examples details{width:100%}
+    #ln-connection-schedule-v1 .lncm-history-all{display:flex;flex-wrap:wrap;gap:4px;max-height:300px;overflow-y:auto;margin:7px 0}
+    #ln-connection-schedule-v1 .lncm-history-combined{background:#0f3044;border:1px solid #83b1b3;border-radius:9px;padding:10px;margin-top:9px}
+    #ln-connection-schedule-v1 .lncm-history-combined summary{cursor:pointer;color:#ffe4b6;font-weight:850;font-size:13px;line-height:1.6}
+    #ln-connection-schedule-v1 .lncm-history-table{width:100%!important;display:table!important;table-layout:fixed!important;border-collapse:collapse!important;border-spacing:0!important;font-size:11px!important}
+    #ln-connection-schedule-v1 .lncm-history-table thead{display:table-header-group!important}
+    #ln-connection-schedule-v1 .lncm-history-table tbody{display:table-row-group!important}
+    #ln-connection-schedule-v1 .lncm-history-table tr{display:table-row!important}
+    #ln-connection-schedule-v1 .lncm-history-table th,#ln-connection-schedule-v1 .lncm-history-table td{display:table-cell!important;background:#1b4257!important;padding:7px 5px!important;border:1px solid #476c82!important;color:#edf7ff!important;vertical-align:middle!important;text-align:center!important;overflow-wrap:anywhere}
+    #ln-connection-schedule-v1 .lncm-history-table .lncm-history-picked td{background:#385846!important;color:#fff3cc!important;font-weight:900}
+    @media(max-width:700px){
+      #ln-connection-schedule-v1 .lncm-history-table td[data-label]::before{display:none!important}
+      #ln-connection-schedule-v1 .lncm-history{padding:9px}
+      #ln-connection-schedule-v1 .lncm-history-table td,#ln-connection-schedule-v1 .lncm-history-table th{font-size:10px!important;padding:6px 3px!important}
+    }
+  \`;
   root.append(style);
   const panel=document.createElement('section');panel.className='lncm-master';panel.dataset.lncmMaster='1';
   panel.innerHTML=`
@@ -190,8 +217,166 @@
       ' · 회차 간격 +'+p.gap+'회 · 번호 이동 '+(p.shift>0?'+':'')+p.shift+
       ' · 왼쪽부터 실제 이전 4지점 → 대상 번호';
     drawing.append(line);
+    drawing.append(buildHistoricalReview(p));
     return drawing;
   }
+
+  // Backtest each clicked path against its exact gap, shift and pre-draw anchor length.
+  // Every observation is a unique (target round, target number); later draws never
+  // participate in creating that target's signal.
+  const ruleHistoryCache=new Map(),numberHistoryCache=new Map();
+  const shapeName=shift=>shift===0?'고정간격':shift>0?'상승사선':'하강사선';
+  const percent=(hits,total)=>total?(hits*100/total).toFixed(2)+'%':'자료 없음';
+  function ruleHistory(p){
+    const id=[model.last,p.gap,p.shift,p.count].join(':');
+    if(ruleHistoryCache.has(id))return ruleHistoryCache.get(id);
+    const cases=[],draws=model.byDraw,last=model.last;
+    for(let target=p.gap*p.count+1;target<=last;target++){
+      if(!(draws[target] instanceof Set))continue;
+      for(let n=1;n<=45;n++){
+        let valid=true;
+        for(let step=1;step<=p.count;step++){
+          const number=n-step*p.shift,prior=draws[target-step*p.gap];
+          if(number<1||number>45||!(prior instanceof Set)||!prior.has(number)){valid=false;break;}
+        }
+        if(valid)cases.push({round:target,n,hit:draws[target].has(n)});
+      }
+    }
+    ruleHistoryCache.set(id,cases);
+    return cases;
+  }
+  // Historical "same number" classifies a number only after examining ALL of
+  // its valid fixed/up/down 4-point connections at that past round.
+  function numberHistory(n){
+    const id=model.last+':'+n;
+    if(numberHistoryCache.has(id))return numberHistoryCache.get(id);
+    const entries=[],draws=model.byDraw;
+    for(let target=5;target<=model.last;target++){
+      if(!(draws[target] instanceof Set))continue;
+      let F=0,U=0,D=0;
+      for(let gap=1;gap*4<target;gap++){
+        const source=draws[target-gap];
+        if(!(source instanceof Set))continue;
+        for(let shift=-14;shift<=14;shift++){
+          const a=n-shift,b=n-2*shift,c=n-3*shift,d=n-4*shift;
+          if(a<1||a>45||b<1||b>45||c<1||c>45||d<1||d>45)continue;
+          if(!source.has(a))continue;
+          if(!draws[target-2*gap]?.has(b)||!draws[target-3*gap]?.has(c)||!draws[target-4*gap]?.has(d))continue;
+          if(shift===0)F++;else if(shift>0)U++;else D++;
+        }
+      }
+      if(F||U||D)entries.push({round:target,F,U,D,hit:draws[target].has(n)});
+    }
+    numberHistoryCache.set(id,entries);
+    return entries;
+  }
+  function currentShapes(p){
+    const all=p.target>model.last?
+      (model.due.get(p.target)||[]):
+      (window.LNConnectionSchedule?.buildPaths(p.target,model.byDraw)||[]);
+    const related=all.filter(x=>x.next===p.next&&x.count>=4);
+    return related.length?related:[p];
+  }
+  function buildHistoricalReview(p){
+    const outer=document.createElement('div');outer.className='lncm-history';
+    const heading=document.createElement('strong');heading.className='lncm-history-heading';
+    heading.textContent='📊 이 연결의 과거 출현·미출현 복기';
+    outer.append(heading);
+    const rule=ruleHistory(p),hits=rule.filter(x=>x.hit).length;
+    const headline=document.createElement('div');headline.className='lncm-history-summary';
+    headline.textContent=shapeName(p.shift)+' · '+p.gap+'회 간격 · 번호 이동 '+(p.shift>0?'+':'')+p.shift+
+      ' · 이전 '+p.count+'점 이상 성립: '+rule.length+'건 중 '+hits+'건 출현 ('+percent(hits,rule.length)+')';
+    outer.append(headline);
+    const note=document.createElement('p');note.className='lncm-history-note';
+    note.textContent='같은 간격·이동폭으로 이전 지점이 연결된 모든 번호·회차를 확인한 관찰 통계입니다. 이 번호만을 뽑은 통계가 아니며, 결과를 알고 연결을 구성하지 않습니다.';
+    outer.append(note);
+    const examples=document.createElement('div');examples.className='lncm-history-examples';
+    const examplesTitle=document.createElement('b');examplesTitle.textContent='최근 동일 조건 사례';examples.append(examplesTitle);
+    if(!rule.length){
+      const empty=document.createElement('span');empty.textContent='과거 검증 사례 없음';examples.append(empty);
+    }else{
+      for(const x of rule.slice(-6).reverse()){
+        const line=document.createElement('span');line.className=x.hit?'win':'miss';
+        line.textContent=x.round+'회 '+x.n+'번 '+(x.hit?'✓ 출현':'× 미출현');examples.append(line);
+      }
+      if(rule.length>6){
+        const more=document.createElement('details');const sum=document.createElement('summary');
+        sum.textContent='전체 '+rule.length+'건 보기';
+        const list=document.createElement('div');list.className='lncm-history-all';
+        for(const x of rule.slice().reverse()){
+          const item=document.createElement('span');item.className=x.hit?'win':'miss';
+          item.textContent=x.round+'회 '+x.n+'번 '+(x.hit?'✓':'×');list.append(item);
+        }
+        more.append(sum,list);examples.append(more);
+      }
+    }
+    outer.append(examples);
+    const combined=document.createElement('details');combined.className='lncm-history-combined';
+    const summary=document.createElement('summary');summary.textContent='🔎 같은 '+p.next+'번 · 고정/상승/하강 겹침 성적 비교';
+    combined.append(summary);
+    combined.addEventListener('toggle',()=>{
+      if(!combined.open||combined.dataset.ready)return;
+      combined.dataset.ready='1';
+      const related=currentShapes(p),flags={
+        F:related.some(x=>x.shift===0),U:related.some(x=>x.shift>0),D:related.some(x=>x.shift<0)
+      };
+      const count={F:related.filter(x=>x.shift===0).length,U:related.filter(x=>x.shift>0).length,D:related.filter(x=>x.shift<0).length};
+      const label=document.createElement('p');label.className='lncm-history-note';
+      label.textContent=p.target+'회 '+p.next+'번: 고정 '+count.F+'건 · 상승 '+count.U+'건 · 하강 '+count.D+'건. 과거 회차마다 이 번호의 모든 연결을 같은 기준으로 다시 분류했습니다.';
+      combined.append(label);
+      const past=numberHistory(p.next);
+      const conditions=[
+        {label:'고정만',test:v=>v.F>0&&!v.U&&!v.D},
+        {label:'상승만',test:v=>v.U>0&&!v.F&&!v.D},
+        {label:'하강만',test:v=>v.D>0&&!v.F&&!v.U},
+        {label:'고정+하강만',test:v=>v.F>0&&v.D>0&&!v.U},
+        {label:'고정+상승만',test:v=>v.F>0&&v.U>0&&!v.D},
+        {label:'상승+하강만',test:v=>v.U>0&&v.D>0&&!v.F},
+        {label:'세 방향 모두',test:v=>v.F>0&&v.U>0&&v.D>0}
+      ];
+      const currentCond=conditions.find(c=>c.test(flags));
+      const table=document.createElement('table');table.className='lncm-history-table';
+      const tr=document.createElement('tr');
+      for(const title of ['동일 번호의 모양','과거 출현/사례','출현 비율']){
+        const th=document.createElement('th');th.textContent=title;tr.append(th);
+      }
+      const thead=document.createElement('thead');thead.append(tr);table.append(thead);
+      const tbody=document.createElement('tbody');
+      let currentCases=[];
+      for(const cond of conditions){
+        const cases=past.filter(cond.test),wins=cases.filter(x=>x.hit).length;
+        const row=document.createElement('tr');
+        if(cond===currentCond){row.className='lncm-history-picked';currentCases=cases;}
+        for(const value of [cond.label,wins+' / '+cases.length,percent(wins,cases.length)]){
+          const td=document.createElement('td');td.textContent=value;row.append(td);
+        }
+        tbody.append(row);
+      }
+      table.append(tbody);combined.append(table);
+      const exactOne=flags.F&&flags.D&&!flags.U&&count.F===1&&count.D===1&&count.U===0;
+      if(exactOne){
+        const exact=past.filter(v=>v.F===1&&v.D===1&&v.U===0),wins=exact.filter(x=>x.hit).length;
+        const exactNote=document.createElement('p');exactNote.className='lncm-history-note';
+        exactNote.textContent='★ 현재처럼 고정 1건 + 하강 1건이 정확히 겹친 경우: '+exact.length+'건 중 '+wins+'건 출현 ('+percent(wins,exact.length)+')';
+        combined.append(exactNote);
+        currentCases=exact;
+      }
+      const samples=document.createElement('div');samples.className='lncm-history-examples';
+      const title=document.createElement('b');title.textContent='같은 번호·같은 겹침 형태 최근 사례';samples.append(title);
+      if(!currentCases.length){const none=document.createElement('span');none.textContent='과거 동일 겹침 사례 없음';samples.append(none);}
+      for(const x of currentCases.slice(-12).reverse()){
+        const line=document.createElement('span');line.className=x.hit?'win':'miss';
+        line.textContent=x.round+'회 '+p.next+'번 '+(x.hit?'✓ 출현':'× 미출현');samples.append(line);
+      }
+      combined.append(samples);
+      const caution=document.createElement('p');caution.className='lncm-history-note';
+      caution.textContent='서로 겹친 연결을 독립 당첨 기회로 합산하지 않습니다. 과거 출현 비율은 미래 당첨 확률을 올린다는 뜻이 아닙니다.';
+      combined.append(caution);
+    });
+    outer.append(combined);
+    return outer;
+  }
+
   function makeGroup(target,paths){
     const holder=document.createElement('div');holder.className='lncm-group';
     const tableWrap=document.createElement('div');tableWrap.className='lncm-scroll';
