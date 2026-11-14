@@ -125,7 +125,7 @@
     }
   `;
 
-  style.textContent+=\`
+  style.textContent+=`
     #ln-connection-schedule-v1 .lncm-history{margin:10px 0 0;padding:11px;background:#163a4c;border:1px solid #648b94;border-radius:10px;color:#e8f5ff;font-size:12px;line-height:1.6}
     #ln-connection-schedule-v1 .lncm-history-heading{font-size:14px;color:#ffe2a3;display:block;margin-bottom:6px}
     #ln-connection-schedule-v1 .lncm-history-summary{font-size:13px;font-weight:800;color:#c4f2dc;background:#225146;padding:8px;border-radius:7px}
@@ -150,7 +150,7 @@
       #ln-connection-schedule-v1 .lncm-history{padding:9px}
       #ln-connection-schedule-v1 .lncm-history-table td,#ln-connection-schedule-v1 .lncm-history-table th{font-size:10px!important;padding:6px 3px!important}
     }
-  \`;
+  `;
   root.append(style);
   const panel=document.createElement('section');panel.className='lncm-master';panel.dataset.lncmMaster='1';
   panel.innerHTML=`
