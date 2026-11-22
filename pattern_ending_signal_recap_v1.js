@@ -3,6 +3,7 @@
 'use strict';
 const host=document.querySelector('#ln-connection-schedule-v1 [data-lned] [data-lneg]');
 if(!host||host.querySelector('[data-lnsr]'))return;
+const root=host.closest('[data-lned]');
 const css=document.createElement('style');
 css.textContent=`
 #ln-connection-schedule-v1 .lned .lnsr{padding:12px;margin:12px 0 16px;background:#fffdf6;border:2px solid #be9a57;color:#304d61;border-radius:13px;box-sizing:border-box;min-width:0}
@@ -423,13 +424,13 @@ root.querySelector('[data-lned-tier]')?.addEventListener('change',()=>{
 });
 window.addEventListener('lncs:schedule-ready',()=>{
  serial++;
- if(busy){retry=true;return;}
  const fresh=window.LNEndingGeometry?.getModel();
  if(fresh?.last){
    $('[data-lnsr-round]').max=fresh.last+1;
    $('[data-lnsr-round]').value=String(fresh.last+1);
-   compute();
  }
+ if(busy){retry=true;return;}
+ if(fresh?.last)compute();
 });
 window.addEventListener('lneg:ready',()=>{
  if(!model&&window.LNEndingGeometry?.getModel()?.last)compute();
