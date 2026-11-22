@@ -154,6 +154,14 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 #toMenu.show{opacity:1;pointer-events:auto;transform:none}
 #toMenu:focus-visible,#toTop:focus-visible{outline:3px solid #f1d08b;outline-offset:3px}
 #quickAccess{scroll-margin-top:12px}
+.direct-tool-nav{margin:12px 0 19px;padding:14px;border:1px solid #647e95;border-radius:14px;background:#112b44}
+.direct-tool-nav h2{margin:0 0 5px;font-size:17px;color:#ffe1a5}
+.direct-tool-nav p{margin:0 0 9px;color:#bdd6e6;font-size:12px;line-height:1.6}
+.direct-tool-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.direct-tool-grid button{display:flex;flex-direction:column;gap:3px;align-items:start;justify-content:center;min-width:0;min-height:58px;border:1px solid #6689a4;border-radius:9px;background:#20415e;color:#fff3d7;padding:10px;font-size:13px;font-weight:900;text-align:left}
+.direct-tool-grid button small{font-size:10px;color:#d1e0eb;font-weight:600;line-height:1.4}
+.direct-tool-grid button:focus-visible{outline:3px solid #ffe2a5;outline-offset:2px}
+@media(max-width:660px){.direct-tool-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.direct-tool-grid button{min-height:60px;padding:8px}}
 @media(max-width:560px){body.watch-navigation #toMenu,body.watch-navigation #toTop{bottom:calc(100px + env(safe-area-inset-bottom,0px))}}
 .footer{margin-top:60px;text-align:center;color:#8295af;font-size:12px;border-top:1px solid #27394f;padding-top:20px}
 .mobile-menu{display:none}
@@ -281,6 +289,9 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
     <button data-tab="research" onclick="go('research')">◎ 번호 연구소</button>
     <button data-tab="patterns" onclick="go('patterns')">▤ 패턴 검색</button>
     <button data-tab="watch" onclick="go('watch')">★ 중요패턴 추적</button>
+    <button data-pattern-tool="lines" onclick="jumpToPatternTool('lines')">🎯 끝수 해당·제외</button>
+    <button data-pattern-tool="geometry" onclick="jumpToPatternTool('geometry')">🔟 끝수 패턴검색</button>
+    <button data-pattern-tool="recap" onclick="jumpToPatternTool('recap')">📖 끝수 복기</button>
     <button data-tab="tickets" onclick="go('tickets')">◉ 최종 5조합</button>
     <button data-tab="backtest" onclick="go('backtest')">◷ 과거 검증</button>
     <button data-tab="exclusions" onclick="go('exclusions')">🚫 제외수 연구실</button>
@@ -291,6 +302,17 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 <div class="topbar"><div><div class="identity">HISTORICAL NUMBER INTELLIGENCE</div><p>데이터와 과거 사례로 확인하는 로또 연구소</p></div><div class="top-actions"><button type="button" class="pwa-install-btn" id="pwaInstallBtn" onclick="installPWA()">📲 휴대폰 앱 설치</button><div class="connection" id="dataStatus">● 데이터 확인 중</div></div></div>
 <section id="home" class="page active">
   <div id="quickAccess" class="quick-access" aria-label="자주 보는 메뉴"><div class="quick-access-head"><h2>⭐ 내가 자주 보는 메뉴</h2><button type="button" onclick="toggleQuickEditor()">메뉴 편집</button></div><div id="quickAccessButtons" class="quick-access-grid"></div><div id="quickAccessEditor" class="quick-access-edit" hidden></div></div>
+  <nav class="direct-tool-nav" aria-label="끝수·중요패턴 바로가기">
+   <h2>🎯 끝수 · 패턴 바로가기</h2>
+   <p>중요패턴 메뉴를 거치지 않고 원하는 화면으로 바로 이동합니다. 즐겨찾기 5개 제한과 별도로 항상 표시됩니다.</p>
+   <div class="direct-tool-grid">
+    <button type="button" onclick="jumpToPatternTool('lines')">🚫 끝수 해당·제외<small>이번 회차 0~9 끝수 구분</small></button>
+    <button type="button" onclick="jumpToPatternTool('table')">🔢 끝수 O/X표<small>회차별 출현·미출현</small></button>
+    <button type="button" onclick="jumpToPatternTool('geometry')">🧩 끝수 패턴검색<small>가로·세로·대각·건너뛰기</small></button>
+    <button type="button" onclick="jumpToPatternTool('recap')">📖 끝수 지난회차 복기<small>당첨·제외 실패 확인</small></button>
+    <button type="button" onclick="jumpToPatternTool('survival')">🧭 전체 생존 통합표<small>중요패턴 연결 검토</small></button>
+   </div>
+  </nav>
   <div class="hero"><div class="eyebrow">WEEKLY AUTO DISCOVERY</div><h1 id="heroTitle">로또 번호별 자동 패턴 분석</h1><p class="lead">1~45번의 기본 조건과 번호별 출현 자리·간격·회차 이동 흐름을 전수 검사합니다. 번호를 누르면 이번 회차의 실제 연결 패턴과 성공·실패 PPT 그림을 확인할 수 있습니다.</p>
     <div class="flex"><button class="btn" onclick="reloadData()">최신 당첨번호 확인</button><button class="btn secondary" onclick="go('tickets')">최종 5조합 만들기</button><span class="tag" id="sourceBadge">조회 준비 중</span></div>
   </div>
@@ -472,6 +494,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 <script src="./pattern_ending_cross_v1.js?v=20261122ending4"></script>
 <script src="./pattern_ending_geometry_v1.js?v=20261122geometry3"></script>
 <script src="./pattern_ending_signal_recap_v1.js?v=20261122signal2"></script>
+<script src="./pattern_ending_line_overview_v1.js?v=20261122line1"></script>
 <script src="./pattern_walkforward_v1.js?v=20261106moves"></script>
 <script src="./pattern_connection_ledger_v1.js?v=20261112mobile4"></script>
 <script>
@@ -487,6 +510,9 @@ const QUICK_MENU_ITEMS=[
   {id:"overview",label:"📅 회차별 결과",description:"지난 결과 · 새 회차 변화",anchor:"roundOverview"},
   {id:"watch",label:"⭐ 중요패턴",description:"생존 · 탈락 · 연결",tab:"watch"},
   {id:"endings",label:"🎯 끝수 복기",description:"지난회차 당번 · 이번회차 해당·제외",tab:"watch"},
+  {id:"endingLines",label:"🚫 끝수 해당·제외",description:"0~9 제외라인 · 해당 끝수",tab:"watch"},
+  {id:"endingTable",label:"🔢 끝수 O/X표",description:"회차별 끝수 기록",tab:"watch"},
+  {id:"endingGeometry",label:"🧩 끝수 패턴검색",description:"가로·세로·대각·건너뛰기",tab:"watch"},
   {id:"exclusions",label:"🚫 제외수 연구",description:"제외 기록 · 복기",tab:"exclusions"},
   {id:"tickets",label:"🎱 최종 5조합",description:"후보 · 맞춤 조합",tab:"tickets"},
   {id:"patterns",label:"▤ 패턴 검색",description:"번호별 연결 탐색",tab:"patterns"},
@@ -544,14 +570,21 @@ function changeQuickItem(id){
   try{localStorage.setItem(QUICK_MENU_KEY,JSON.stringify(state.quickMenuIds));}catch(_){}
   renderQuickAccess();
 }
+function jumpToPatternTool(kind){
+  const targetMap={lines:"[data-lnel]",table:"[data-lned-digits]",geometry:"[data-lneg]",recap:"[data-lnsr]",survival:"[data-lncm-master]"};
+  const target=targetMap[kind];
+  if(!target)return;
+  go("watch");
+  document.querySelectorAll(".nav button[data-pattern-tool]").forEach(btn=>btn.classList.toggle("active",btn.dataset.patternTool===kind));
+  const focus=()=>{const node=document.querySelector(target);if(node)node.scrollIntoView({behavior:"smooth",block:"start"});};
+  setTimeout(focus,130);
+}
 function openQuickItem(id){
   const item=QUICK_MENU_ITEMS.find(x=>x.id===id);
   if(!item)return;
-  if(item.tab){
-    go(item.tab);
-    if(id==="endings")setTimeout(()=>document.querySelector("[data-lnsr]")?.scrollIntoView({behavior:"smooth",block:"start"}),100);
-    return;
-  }
+  const endingRoutes={endings:"recap",endingLines:"lines",endingTable:"table",endingGeometry:"geometry"};
+  if(endingRoutes[id]){jumpToPatternTool(endingRoutes[id]);return;}
+  if(item.tab){go(item.tab);return;}
   const target=$(item.anchor);
   if(!target)return;
   if(!$("home").classList.contains("active"))go("home");
