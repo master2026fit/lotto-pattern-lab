@@ -110,7 +110,7 @@
   const oldTimeline=root.querySelector('[data-lned-table-more]');
   if(oldTimeline)oldTimeline.after(panel);else root.querySelector('[data-lned-digits]')?.after(panel);
   const $=q=>panel.querySelector(q);
-  let model=null,last=0,byDraw=null,matrix=[],allSignals=[],selectedRound=0,serial=0,busy=false;
+  let model=null,last=0,byDraw=null,matrix=[],selectedRound=0,serial=0,busy=false,retry=false;
   const baseP=d=>{
     const count=d>=1&&d<=5?5:4;let p=1;
     for(let i=0;i<6;i++)p*=(45-count-i)/(45-i);
@@ -205,7 +205,13 @@
     const text=document.createElement('p');text.textContent=small||'';
     div.append(title,bold,text);return div;
   };
-  function cross(digit){
+  function cross(digit,round){
+    const r=Math.max(6,Math.min(last+1,Number(round)||last+1));
+    const roundControl=root.querySelector('[data-lned-round]');
+    if(roundControl){
+      roundControl.value=String(r);
+      roundControl.dispatchEvent(new Event('change',{bubbles:true}));
+    }
     const buttons=root.querySelectorAll('[data-lned-digits] button');
     const button=buttons[digit];
     if(button){
@@ -251,7 +257,7 @@
       '선행 '+sig.length+'점은 실제 과거 관찰, 대상 회차 '+sig.digit+'끝수의 O/X는 이어지거나 끊어질 수 있습니다.';
     outer.append(note);
     const btn=document.createElement('button');btn.type='button';btn.textContent='이 끝수 × 제외라인 교차 보기';
-    btn.addEventListener('click',()=>cross(sig.digit));outer.append(btn);
+    btn.addEventListener('click',()=>cross(sig.digit,sig.round));outer.append(btn);
     place.append(outer);
     if(place.scrollIntoView)place.scrollIntoView({behavior:'smooth',block:'nearest'});
   }
@@ -265,6 +271,8 @@
       const set=allIn.get(path.digit)||new Set();set.add(path.state);
       allIn.set(path.digit,set);
     }
+    const horizontal=horizontalAt(round-1,cfg);
+    const horizontalDig=new Set(horizontal.flatMap(x=>x.digits));
     for(let digit=0;digit<10;digit++){
       const signal=byDigit.get(digit),button=document.createElement('button');
       button.type='button';
@@ -272,14 +280,14 @@
       button.className='lneg-digit'+(conflict?' conflict':signal?(signal.state==='O'?' possible':' absence'):'');
       const head=document.createElement('b');head.textContent=digit+'끝';
       const text=document.createElement('small');
-      text.textContent=conflict?'O/X 충돌':signal?signal.state+'연장 '+signal.length+'점':'연결 없음';
+      text.textContent=conflict?'O/X 충돌':signal?signal.state+'연장 '+signal.length+'점':
+        horizontalDig.has(digit)?'가로 관찰':'연결 없음';
       button.append(head,text);
       if(signal){button.addEventListener('click',()=>detailFor(signal,lines));}
-      else{button.addEventListener('click',()=>cross(digit));}
+      else{button.addEventListener('click',()=>cross(digit,round));}
       out.append(button);
     }
     const group=pre.all.slice().sort((a,b)=>b.length-a.length||a.gap-b.gap||a.digit-b.digit);
-    const horizontal=horizontalAt(round-1,cfg);
     const selectedPaths=group.slice(0,24);
     for(const signal of selectedPaths){
       const row=document.createElement('div');row.className='lneg-row';
@@ -355,7 +363,7 @@
     if(!source.length){const p=document.createElement('p');p.textContent='선택 조건에 맞는 과거 사례 없음';out.append(p);}
   }
   async function compute(){
-    if(busy){serial++;return;}
+    if(busy){serial++;retry=true;return;}
     if(!model&&!rebuild())return;
     const id=++serial,cfg=settings(),button=$('[data-lneg-run]'),
       status=$('[data-lneg-status]'),chosen=Number($('[data-lneg-round]').value);
@@ -425,7 +433,10 @@
       $('[data-lneg-explanation]').textContent='끝수 0~9 각각에 대해 선행 '+cfg.min+
         '점 이상의 O/X 연결만으로 신호를 만들었습니다. 대상 회차의 실제 출현 여부를 예측 전에 확인한 기록처럼 표시하지 않습니다. 같은 회차·끝수에 여러 경로가 겹쳐도 성적은 1건만 셉니다.';
     }catch(e){status.textContent='끝수 패턴 검색 오류: '+e.message;}
-    finally{busy=false;button.disabled=false;}
+    finally{
+      busy=false;button.disabled=false;
+      if(retry){retry=false;requestAnimationFrame(()=>compute());}
+    }
   }
   $('[data-lneg-run]').addEventListener('click',compute);
   $('[data-lneg-current]').addEventListener('click',()=>{
@@ -437,7 +448,10 @@
   $('[data-lneg-round]').addEventListener('change',compute);
   window.addEventListener('lncs:schedule-ready',()=>{
     serial++;
-    if(busy)return;
+    if(busy){
+      retry=true;
+      return;
+    }
     if(rebuild())compute();
   });
   if(rebuild())compute();
