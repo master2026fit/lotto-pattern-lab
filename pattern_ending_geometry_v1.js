@@ -75,6 +75,7 @@
        <option value="10">10회 간격</option>
        <option value="20">20회 간격</option>
        <option value="any80">1~80회 전수 (확장)</option>
+       <option value="allgaps">전체 가능한 회차 간격 전수 (느림)</option>
      </select></label>
      <label>끝수 칸 간격<select data-lneg-shift>
        <option value="any">1~3칸 전수</option>
@@ -143,7 +144,9 @@
   const settings=()=>{
     const dir=$('[data-lneg-dir]').value,gap=$('[data-lneg-gap]').value,
       sh=$('[data-lneg-shift]').value;
-    const gaps=gap==='any80'?Array.from({length:80},(_,i)=>i+1):
+    const allGapCount=Math.max(1,Math.floor(last/Number($('[data-lneg-min]').value)));
+    const gaps=gap==='allgaps'?Array.from({length:allGapCount},(_,i)=>i+1):
+      gap==='any80'?Array.from({length:80},(_,i)=>i+1):
       gap==='any20'?Array.from({length:20},(_,i)=>i+1):[Number(gap)];
     const hops=sh==='any'?[1,2,3]:[Number(sh)];
     const dirs=dir==='all'?['V','P','N','H']:[dir];
@@ -157,7 +160,11 @@
     for(const direction of cfg.dirs){
       if(direction==='H')continue;
       const ds=direction==='V'?[0]:direction==='P'?cfg.hops:cfg.hops.map(x=>-x);
-      for(const gap of cfg.gaps)for(const delta of ds)for(let digit=0;digit<10;digit++){
+      for(const gap of cfg.gaps){
+        if(gap*cfg.min>=round)break;
+        for(const delta of ds){
+          if(Math.abs(delta)*cfg.min>9)continue;
+          for(let digit=0;digit<10;digit++){
         let rr=round-gap,dd=digit-delta;
         if(rr<1||dd<0||dd>9)continue;
         const original=outcome(rr,dd);
@@ -177,6 +184,8 @@
           (length===previous.length&&(gap<previous.gap||
            (gap===previous.gap&&Math.abs(delta)<Math.abs(previous.delta)))))
           best.set(digit,path);
+          }
+        }
       }
     }
     return {all,best:[...best.values()].sort((a,b)=>b.length-a.length||a.gap-b.gap||a.digit-b.digit)};
