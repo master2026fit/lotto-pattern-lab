@@ -45,6 +45,10 @@
   #ln-connection-schedule-v1 .lned .lneg .lneg-step .lneg-step-description small{display:block;font-size:9px;color:#617c90}
   #ln-connection-schedule-v1 .lned .lneg .lneg-detail button{border-radius:8px;min-height:37px;background:#e3f2ff;color:#24516f;border:1px solid #a9c4d5;padding:8px;font-size:11px;font-weight:850}
   #ln-connection-schedule-v1 .lned .lneg .lneg-separator{border-top:1px solid #c8dbe7;margin:9px 0}
+  #ln-connection-schedule-v1 .lned .lneg .lneg-breakdown{display:grid;gap:5px;margin:8px 0}
+  #ln-connection-schedule-v1 .lned .lneg .lneg-break-row{background:#fff;border:1px solid #c1d2df;border-radius:9px;padding:7px;display:flex;justify-content:space-between;gap:7px;align-items:center;color:#315a73;font-size:11px;line-height:1.55}
+  #ln-connection-schedule-v1 .lned .lneg .lneg-break-row b{color:#214e6a;font-size:12px}
+  #ln-connection-schedule-v1 .lned .lneg .lneg-break-row small{font-size:10px;color:#5c7285}
   #ln-connection-schedule-v1 .lned .lneg .lneg-caution{background:#fff5dc;border-left:4px solid #d7b26d;border-radius:7px;padding:9px;line-height:1.6;font-size:11px;color:#6f5828;margin:8px 0}
   @media(min-width:640px){#ln-connection-schedule-v1 .lned .lneg .lneg-tools{grid-template-columns:repeat(3,minmax(0,1fr))}#ln-connection-schedule-v1 .lned .lneg .lneg-summary{grid-template-columns:repeat(3,minmax(0,1fr))}#ln-connection-schedule-v1 .lned .lneg .lneg-predictions{grid-template-columns:repeat(10,minmax(0,1fr))}}
   `;
@@ -102,6 +106,8 @@
    <div data-lneg-lines></div>
    <div class="lneg-title">과거 전체 동일 검색조건 복기</div>
    <div data-lneg-summary class="lneg-summary"></div>
+   <div class="lneg-title">방향별·끝수별 실제 연장 · 무작위 기준 비교</div>
+   <div data-lneg-breakdown class="lneg-breakdown"></div>
    <div class="lneg-title">최근 과거 일치 사례 (출현·미출현 정답 대조)</div>
    <div data-lneg-examples></div>
    <div class="lneg-caution"><b>가로:</b> 같은 회차 내 끝수 사이의 배열로, 이 자체만으로 다음 회차 끝수를 예측할 수 없습니다. 가로 검색은 직전 회차에서 그 도형을 보았을 때 다음 회차의 <b>같은 끝수들</b>이 얼마나 출현했는지를 별도로 비교합니다. 세로·대각은 선행 3점 이상으로 다음 끝수의 동일 O/X 연장을 가정해 과거를 복기합니다. 과거에 우연히 연결된 것을 많이 찾아도 미래 성능은 별도 실전 확인이 필요합니다.</div>
@@ -346,6 +352,27 @@
       stat('가로 도형 다음 회차 참고',hori.wins+'/'+hori.total+'수','가로 배열에 있던 끝수들이 다음 회차에 출현한 번호군')
     );
   }
+  function breakdown(rows,byDigit,cfg,hori){
+    const out=$('[data-lneg-breakdown]');out.replaceChildren();
+    if(cfg.dirs.length===1&&cfg.dirs[0]==='H'){
+      const p=document.createElement('p');
+      p.textContent='가로는 과거 같은 회차 내 끝수 배열입니다. 다음 회차 동일 끝수 관찰은 위의 가로 별도 통계로 표시합니다.';
+      out.append(p);return;
+    }
+    const list=[['V','세로'],['P','↗ 대각'],['N','↖ 대각']];
+    const make=(name,r)=>{
+      if(!r.n)return;
+      const row=document.createElement('div');row.className='lneg-break-row';
+      const label=document.createElement('span');label.textContent=name;
+      const value=document.createElement('span');const head=document.createElement('b');
+      head.textContent=r.win+'/'+r.n+' ('+(100*r.win/r.n).toFixed(1)+'%)';
+      const base=document.createElement('small');base.textContent=' / 무작위 기대 '+r.expected.toFixed(1)+'건';
+      value.append(head,base);row.append(label,value);out.append(row);
+    };
+    for(const [kind,label] of list)if(cfg.dirs.includes(kind))make(label+' 대표 경로',rows[kind]);
+    const note=document.createElement('p');note.textContent='대표 경로는 같은 회차·끝수에서 가장 긴 선행 연결을 선택합니다. 아래는 끝수별 동일 O/X 실제 연장 횟수이며, 단순히 많이 검색됐다는 뜻이 아닙니다.';out.append(note);
+    for(let d=0;d<10;d++)make(d+'끝수',byDigit[d]);
+  }
   function exampleCard(item,horiz=false){
     const d=document.createElement('details'),summary=document.createElement('summary');
     const result=horiz?item.follow+'수 출현':item.correct?'실제 같은 O/X 연장':'실제 연결 중단';
@@ -373,6 +400,8 @@
     selectedRound=chosen;busy=true;button.disabled=true;
     const stats={total:0,correct:0,expected:0,oN:0,oWin:0,xN:0,xWin:0,trainN:0,trainWin:0,holdN:0,holdWin:0,pending:0},
       hori={cases:0,total:0,wins:0,expected:0,examples:[]},
+      statsByDir=Object.fromEntries(['V','P','N'].map(x=>[x,{n:0,win:0,expected:0}])),
+      statsByDigit=Array.from({length:10},()=>({n:0,win:0,expected:0})),
       samples=[];let preview=null,scanCount=0;
     try{
       const start=4,holdStart=Math.max(4,last-159);
@@ -387,7 +416,10 @@
           if(y===null){if(round===last+1)stats.pending++;continue;}
           const correct=(y===1)===(sig.state==='O');
           stats.total++;stats.correct+=+correct;
-          stats.expected+=sig.state==='O'?baseP(sig.digit):1-baseP(sig.digit);
+          const expected=sig.state==='O'?baseP(sig.digit):1-baseP(sig.digit);
+          stats.expected+=expected;
+          statsByDir[sig.kind].n++;statsByDir[sig.kind].win+=+correct;statsByDir[sig.kind].expected+=expected;
+          statsByDigit[sig.digit].n++;statsByDigit[sig.digit].win+=+correct;statsByDigit[sig.digit].expected+=expected;
           if(sig.state==='O'){stats.oN++;stats.oWin+=+correct;}
           else{stats.xN++;stats.xWin+=+correct;}
           if(round>=holdStart){stats.holdN++;stats.holdWin+=+correct;}
@@ -426,6 +458,7 @@
       if(!preview)preview=candidatesAt(chosen,cfg);
       renderPreview(preview,chosen,cfg);
       renderStats(stats,hori,cfg);
+      breakdown(statsByDir,statsByDigit,cfg,hori);
       renderSamples(samples,hori,cfg);
       status.textContent='검색 완료 · '+scanCount+'회 확인 · 회차 간격 '+(cfg.gaps.length===1?cfg.gaps[0]:cfg.gaps[0]+'~'+cfg.gaps.at(-1))+
         '회, 끝수 간격 '+cfg.hops.join('·')+'칸, '+cfg.min+'점 이상 / '+
