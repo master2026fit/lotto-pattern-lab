@@ -206,7 +206,7 @@ function addList(title,entries,round,div){
      const path=e.paths[0];
      if(path)showPath(path,detail);
      if(!detail.parentElement)div.append(detail);
-     renderEndings();
+     renderEndings();summarizeAudit();renderAudit();
    });
    list.append(btn);
  }
@@ -276,6 +276,9 @@ function digitRow(e,round,exclusion,place){
      showPath(e.paths[0],holder);
    });
    block.append(btn,holder);
+   // The selected ending's actual historical numbers open automatically.
+   if(round===viewRound && $('[data-lnsr-digit]').value!=='all' &&
+      Number($('[data-lnsr-digit]').value)===e.digit)showPath(e.paths[0],holder);
  }
  place.append(block);
 }
@@ -305,11 +308,14 @@ function summarizeAudit(){
  const out=$('[data-lnsr-stats]');out.replaceChildren();
  let nO=0,hitO=0,expectedO=0,nX=0,safeX=0,expectedX=0,missedX=0,
      predictedOOccurrences=0,expectedNums=0,retainedHit=0,retainedNum=0,excludedHit=0,conflicts=0;
- for(const rec of cases){
+ const filter=$('[data-lnsr-digit]').value;
+ const relevant=filter==='all'?cases:cases.filter(rec=>rec.rows[Number(filter)]?.state!=='-');
+ for(const rec of relevant){
    const win=actual(rec.round);
    if(!win)continue;
    const exclusion=rec.exclusion||currentExclusion(rec.round);
    for(const row of rec.rows){
+     if(filter!=='all'&&row.digit!==Number(filter))continue;
      const nums=numbers(rec.round,row.digit),p=probability(row.digit);
      if(row.state==='O'){
        nO++;hitO+=+(nums.length>0);expectedO+=p;
@@ -326,7 +332,7 @@ function summarizeAudit(){
    }
  }
  out.append(
-   stat('과거 동일 연결 신호 검증',cases.length+'회','추첨 결과가 확정된 과거 대상 회차'),
+   stat('과거 동일 연결 신호 검증',relevant.length+'회',(filter==='all'?'전체 끝수':'선택 '+filter+'끝수')+' · 실제 추첨이 끝난 회차'),
    stat('O·출현 연장 가설',hitO+'/'+nO+'회','무작위 같은 끝수 기대 '+expectedO.toFixed(1)+'회'),
    stat('X·미출현 연장 가설',safeX+'/'+nX+'회','무작위 같은 끝수 기대 '+expectedX.toFixed(1)+'회'),
    stat('제외끝수에서 실제 출현',missedX+'개','X 관찰이 실패해 놓쳤을 당첨번호 총수'),
@@ -411,7 +417,7 @@ function reset(){
 $('[data-lnsr-run]').addEventListener('click',compute);
 for(const sel of panel.querySelectorAll('.lnsr-controls select'))sel.addEventListener('change',()=>{
  selectedDigit=$('[data-lnsr-digit]').value==='all'?-1:Number($('[data-lnsr-digit]').value);
- if(sel.dataset.lnsrDigit){renderEndings();renderAudit();}
+ if(sel.dataset.lnsrDigit){renderEndings();summarizeAudit();renderAudit();}
  else reset();
 });
 $('[data-lnsr-round]').addEventListener('change',reset);
