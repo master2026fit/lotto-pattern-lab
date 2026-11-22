@@ -471,7 +471,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 <script src="./pattern_vertical_diagonal_review_v1.js?v=20261122latestfirst3"></script>
 <script src="./pattern_ending_cross_v1.js?v=20261122ending4"></script>
 <script src="./pattern_ending_geometry_v1.js?v=20261122geometry3"></script>
-<script src="./pattern_ending_signal_recap_v1.js?v=20261122signal1"></script>
+<script src="./pattern_ending_signal_recap_v1.js?v=20261122signal2"></script>
 <script src="./pattern_walkforward_v1.js?v=20261106moves"></script>
 <script src="./pattern_connection_ledger_v1.js?v=20261112mobile4"></script>
 <script>
@@ -482,10 +482,11 @@ const LOOKBACK=15;
 const $=id=>document.getElementById(id);
 const state={draws:[],source:"",profiles:[],tickets:[],nonce:0,loading:false,cache:new Map(),proofCache:new Map(),module16:null,poolMode:"research",locked:[]};
 const QUICK_MENU_KEY="lotto_pattern_quick_menu_v1";
-const QUICK_MENU_DEFAULT=["overview","watch","exclusions","tickets"];
+const QUICK_MENU_DEFAULT=["overview","watch","exclusions","tickets","endings"];
 const QUICK_MENU_ITEMS=[
   {id:"overview",label:"📅 회차별 결과",description:"지난 결과 · 새 회차 변화",anchor:"roundOverview"},
   {id:"watch",label:"⭐ 중요패턴",description:"생존 · 탈락 · 연결",tab:"watch"},
+  {id:"endings",label:"🎯 끝수 복기",description:"지난회차 당번 · 이번회차 해당·제외",tab:"watch"},
   {id:"exclusions",label:"🚫 제외수 연구",description:"제외 기록 · 복기",tab:"exclusions"},
   {id:"tickets",label:"🎱 최종 5조합",description:"후보 · 맞춤 조합",tab:"tickets"},
   {id:"patterns",label:"▤ 패턴 검색",description:"번호별 연결 탐색",tab:"patterns"},
@@ -546,7 +547,11 @@ function changeQuickItem(id){
 function openQuickItem(id){
   const item=QUICK_MENU_ITEMS.find(x=>x.id===id);
   if(!item)return;
-  if(item.tab){go(item.tab);return;}
+  if(item.tab){
+    go(item.tab);
+    if(id==="endings")setTimeout(()=>document.querySelector("[data-lnsr]")?.scrollIntoView({behavior:"smooth",block:"start"}),100);
+    return;
+  }
   const target=$(item.anchor);
   if(!target)return;
   if(!$("home").classList.contains("active"))go("home");
