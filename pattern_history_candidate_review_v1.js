@@ -88,8 +88,21 @@
     won.textContent='실제 '+round+'회 본당첨: '+(actual?[...actual].sort((a,b)=>a-b).join(' · ')+'번':'결과 대기')+
       ' · 이 열 출현 '+(actual?hits+'/'+nums.length:'미확정');
     d.append(won);
+    const latestRound=window.LNConnectionSchedule?.getModel()?.last||0;
+    if(round<latestRound+1){
+      const next=document.createElement('button');next.type='button';
+      next.textContent='▶ 다음 '+(round+1)+'회 당시 후보·결과 비교';
+      next.addEventListener('click',()=>{
+        // Recalculate candidates for the NEXT target, instead of using the same
+        // round's candidate numbers to grade a different draw.
+        slotDetail(round+1,slot,location,compact);
+      });
+      d.append(next);
+    }
     const close=document.createElement('button');close.type='button';close.textContent='✕ 해당수 접기';
-    close.addEventListener('click',()=>d.remove());d.append(close);
+    close.addEventListener('click',()=>{
+      if(compact)d.remove();else location.remove();
+    });d.append(close);
     location.replaceChildren(d);
     if(typeof d.scrollIntoView==='function')d.scrollIntoView({behavior:'smooth',block:'nearest'});
   }
@@ -107,7 +120,7 @@
         const handler=()=>{
           const old=row.nextElementSibling;
           if(old?.dataset?.lnhiInline==='1'){
-            const matched=old.dataset.slot===String(i);
+            const matched=old.dataset.slot===String(i)&&!!old.querySelector('.lnhi-slot-detail');
             old.remove();if(matched)return;
           }
           const holder=document.createElement('div');holder.dataset.lnhiInline='1';holder.dataset.slot=String(i);
