@@ -136,10 +136,16 @@
     $('[data-lnvd-current]').textContent=next+'회 · 3열 수직 / 4열 대각 조건 '+(ready?'동시 충족':'미충족');
     const info=$('[data-lnvd-current-numbers]');info.replaceChildren();
     const chosen=target.lanes[2].concat(target.lanes[3]);
-    info.textContent='3열 '+(target.lanes[2].join(' · ')||'없음')+
+    const excluded=target.lanes.filter((_,i)=>i!==2&&i!==3).flat();
+    const primary=document.createElement('div');
+    primary.textContent='3열 '+(target.lanes[2].join(' · ')||'없음')+
       ' / 4열 '+(target.lanes[3].join(' · ')||'없음')+
-      ' · 두 열 합계 '+chosen.length+'수'+
+      ' · 두 열 선택 후보 '+chosen.length+'수'+
       (ready?' · 현재 대기 조건과 일치':' · 현재 대기 조건은 충족되지 않음');
+    const secondary=document.createElement('div');
+    secondary.textContent='나머지 열 제외 가설 대상 '+excluded.length+'수: '+(excluded.join(' · ')||'없음')+
+      ' (6열에 1수만 있더라도 제외 가설에서 함께 집계)';
+    info.append(primary,secondary);
   }
   function showRecord(rec){
     const wrap=document.createElement('details');
