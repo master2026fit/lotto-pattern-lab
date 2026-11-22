@@ -61,13 +61,13 @@
    <div class="lnnxt-label" data-lnnxt-next-label>다음 회차의 연결 위치 · 아직 O/X 미정</div>
    <div class="lnnxt-row" data-lnnxt-future></div>
    <div data-lnnxt-inline></div>
-   <div class="lnnxt-label">최근 5회 실제 그림 → 다음 회차</div>
+   <div class="lnnxt-label">최근 5회 실제 그림 · 최신 회차가 위 (다음 대상 회차 포함)</div>
    <div class="lnnxt-compare" data-lnnxt-recent></div>
    <div data-lnnxt-match class="lnnxt-evidence">과거 동일 그림을 검색 중…</div>
    <div class="lnnxt-label">과거 유사 그림의 다음 회차 출현 빈도</div>
    <div class="lnnxt-next-stats" data-lnnxt-stats></div>
    <p class="lnnxt-note" data-lnnxt-baseline></p>
-   <details data-lnnxt-examples><summary>과거에 일치한 회차와 바로 다음 그림 보기</summary><div data-lnnxt-examples-body></div></details>
+   <details data-lnnxt-examples><summary>과거에 일치한 회차와 바로 다음 그림 보기 · 다음 회차가 위</summary><div data-lnnxt-examples-body></div></details>
    <div class="lnnxt-note">노란색 ?는 <b>추첨 전 미확정</b>입니다. 과거 다음 회차의 출현 비율은 참고용 기록이지 1250회 당첨 확률이나 제외수 판정이 아닙니다. 번호군의 한 열에 번호가 2개면 무작위로도 74.85%가 전부 미출현하며, 3개면 64.40%가 전부 미출현합니다. 조건별로 표본 수가 다르며 사후에 찾은 비슷한 그림에는 우연의 효과가 큽니다.</div>`;
   const desc=matrix.querySelector('h5 + p');
   if(desc)desc.after(section);else matrix.prepend(section);
@@ -157,8 +157,10 @@
     makeRow($('[data-lnnxt-future]'),future.states,future.lines.map(n=>n.length>=2?n.length+'수':'없음'),i=>inlineDetail(i,latest+1));
     $('[data-lnnxt-inline]').replaceChildren();
     const recents=$('[data-lnnxt-recent]');recents.replaceChildren();
-    for(let r=Math.max(5,latest-4);r<=latest;r++)recents.append(comparison(r+'회',dataFor(r).code));
-    recents.append(comparison((latest+1)+'회',future.code));
+    // The full history grid displays newest at the top. Keep every
+    // recent-pattern panel in that exact direction.
+    recents.append(comparison((latest+1)+'회 · 대상',future.code));
+    for(let r=latest;r>=Math.max(5,latest-4);r--)recents.append(comparison(r+'회',dataFor(r).code));
     $('[data-lnnxt-match]').textContent='과거 동일·유사 그림 검색 중…';
     $('[data-lnnxt-stats]').replaceChildren();
     $('[data-lnnxt-baseline]').textContent='';
@@ -205,8 +207,10 @@
     const examples=$('[data-lnnxt-examples-body]');examples.replaceChildren();
     const sorted=selected.slice(-8).reverse();
     for(const row of sorted){
-      examples.append(comparison(row.r+'회',row.prev));
-      examples.append(comparison((row.r+1)+'회',row.next));
+      // Newer draw sits above the earlier source draw; the label
+      // states the historical transition explicitly.
+      examples.append(comparison((row.r+1)+'회 · 결과',row.next));
+      examples.append(comparison(row.r+'회 · 기준',row.prev));
     }
     if(!selected.length){const empty=document.createElement('p');empty.textContent='비교할 만큼 유사한 과거 그림이 없습니다.';examples.append(empty);}
     $('[data-lnnxt-baseline]').textContent='위 숫자는 과거 동일·유사 그림의 다음 회차 출현 수/관찰 수입니다. 현재 '+(latest+1)+'회 각 칸의 무작위 출현 기준은 '+
