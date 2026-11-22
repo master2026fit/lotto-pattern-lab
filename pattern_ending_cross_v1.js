@@ -54,6 +54,19 @@
  #ln-connection-schedule-v1 .lned .lned-checks{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
  #ln-connection-schedule-v1 .lned .lned-checks label{display:flex;flex:0 0 auto;flex-direction:row;align-items:center;background:#f0f6fa;border:1px solid #c5d8e4;border-radius:7px;padding:7px 9px;gap:5px;color:#355670}
  #ln-connection-schedule-v1 .lned .lned-checks input{appearance:auto;width:16px;height:16px;min-height:0;accent-color:#a35b43}
+ #ln-connection-schedule-v1 .lned .lned-pattern-table{width:100%;border-collapse:separate;border-spacing:2px;table-layout:fixed;margin:8px 0}
+ #ln-connection-schedule-v1 .lned .lned-pattern-table th{font-size:10px;color:#235373;background:#dcebf7;padding:6px 0;border-radius:4px;vertical-align:middle;text-align:center}
+ #ln-connection-schedule-v1 .lned .lned-pattern-table th:first-child{width:47px}
+ #ln-connection-schedule-v1 .lned .lned-pattern-table td{min-width:0;padding:0}
+ #ln-connection-schedule-v1 .lned .lned-pattern-table button{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:0;width:100%;min-height:32px;padding:1px 0;border:1px solid #c4d2dc;border-radius:5px;font-size:11px;background:#ebf1f6;color:#536677;box-sizing:border-box}
+ #ln-connection-schedule-v1 .lned .lned-pattern-table button.hit{background:#c8f1db;color:#185b3b;border-color:#8acaa6}
+ #ln-connection-schedule-v1 .lned .lned-pattern-table button.miss{background:#ffe0e5;color:#a23f4c;border-color:#e7a8b2}
+ #ln-connection-schedule-v1 .lned .lned-pattern-table button.pending{background:#fff0c4;color:#795913;border-color:#d9b979}
+ #ln-connection-schedule-v1 .lned .lned-pattern-table button.signal{outline:2px solid #deaa43;outline-offset:-2px}
+ #ln-connection-schedule-v1 .lned .lned-pattern-table button.chosen{border:2px solid #1c5b83}
+ #ln-connection-schedule-v1 .lned .lned-pattern-table button small{display:block;font-size:8px;line-height:1;color:inherit}
+ #ln-connection-schedule-v1 .lned .lned-pattern-table .lned-round{background:#e1eff8;color:#235373;text-align:center;border-radius:4px;font-size:10px;font-weight:850;padding:8px 1px}
+ #ln-connection-schedule-v1 .lned .lned-table-more{display:block;width:100%;margin:8px 0;border:1px solid #94b3c8;background:#edf7fd;color:#245578;min-height:38px;padding:8px;font-size:12px;border-radius:8px}
  @media(min-width:640px){#ln-connection-schedule-v1 .lned .lned-digits{grid-template-columns:repeat(10,minmax(0,1fr))}#ln-connection-schedule-v1 .lned .lned-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}
  `;
  parent.append(css);
@@ -63,6 +76,13 @@
   <p>기존 앱의 <b>끝수 최근 5회 출현·공백</b>, <b>2·3·5회 공백</b>, <b>끝수 두 종류 동시 5회 공백</b> 규칙을 회차별로 복원합니다. 끝수가 '필출'로 확정됐다는 의미는 아닙니다.</p>
   <div class="lned-label">다음 회차 끝수 0~9 전체 검색 <span data-lned-target-label></span></div>
   <div data-lned-digits class="lned-digits"></div>
+  <div class="lned-label">회차별 0~9끝수 O/X · 최신 회차부터</div>
+  <p>O: 본당첨에 해당 끝수 출현, X: 미출현, ?: 추첨 전. <b>금색 테두리</b>는 선택한 공백·출현 조건이 추첨 전에 성립했다는 뜻입니다. 칸을 누르면 그 회차와 끝수를 조회합니다.</p>
+  <table class="lned-pattern-table" aria-label="회차별 끝수 0부터 9까지 실제 출현표">
+    <thead><tr><th scope="col">회차</th><th scope="col">0</th><th scope="col">1</th><th scope="col">2</th><th scope="col">3</th><th scope="col">4</th><th scope="col">5</th><th scope="col">6</th><th scope="col">7</th><th scope="col">8</th><th scope="col">9</th></tr></thead>
+    <tbody data-lned-timeline></tbody>
+  </table>
+  <button type="button" data-lned-table-more class="lned-table-more">과거 25회 더 보기</button>
   <div class="lned-controls">
     <label>끝수 신호 조건
       <select data-lned-signal>
@@ -101,7 +121,7 @@
    return 1-none;
  };
  const fmt=p=>(100*p).toFixed(1)+'%';
- let model=null,byDraw=null,last=0,chosenDigit=7,viewRound=0,records=[],showCount=12,busy=false,serial=0;
+ let model=null,byDraw=null,last=0,chosenDigit=7,viewRound=0,records=[],showCount=12,busy=false,serial=0,timelineCount=25;
  let builtRounds=new Map();
  const signalSelect=$('[data-lned-signal]'),digitHost=$('[data-lned-digits]');
  const selectedLanes=new Set([0,1,3]);
@@ -166,6 +186,44 @@
  };
  const labelSignal=kind=>({gap2:'최근 2회 공백',gap3:'최근 3회 공백',gap5:'최근 5회 공백',
    pair5:'두 끝수 동시 5회 공백',present5:'최근 5회 출현',all:'전체 회차'})[kind]||kind;
+ function renderTimeline(){
+   const body=$('[data-lned-timeline]');body.replaceChildren();
+   if(!last)return;
+   const first=last+1,min=Math.max(6,first-timelineCount+1);
+   const fragment=document.createDocumentFragment();
+   for(let r=first;r>=min;r--){
+     const row=document.createElement('tr'),round=document.createElement('td');
+     round.className='lned-round';round.textContent=r+'회';row.append(round);
+     const actual=byDraw[r];
+     for(const digit of digits){
+       const td=document.createElement('td'),btn=document.createElement('button');
+       const has=actual instanceof Set&&actual.size===6;
+       const hit=has&&[...actual].some(n=>n%10===digit);
+       const val=!has?'?':hit?'O':'X';
+       btn.type='button';
+       btn.className=(!has?'pending':hit?'hit':'miss')+
+         (flag(r,digit,signalSelect.value)?' signal':'')+
+         (digit===chosenDigit&&r===viewRound?' chosen':'');
+       btn.textContent=val;
+       const mark=document.createElement('small');
+       const c5=recent(r,5,digit);
+       mark.textContent=c5===null?'':c5+'';
+       btn.append(mark);
+       btn.setAttribute('aria-label',r+'회 '+digit+'끝수, 실제 '+(val==='O'?'출현':val==='X'?'미출현':'대기')+
+         ', 직전 5회 '+(c5===null?'자료 부족':c5+'개 출현')+
+         (flag(r,digit,signalSelect.value)?', 선택한 사전 조건 성립':''));
+       btn.addEventListener('click',()=>{
+         chosenDigit=digit;viewRound=r;invalidate();renderDigitButtons();renderTimeline();drawCurrent();
+         section.querySelector('[data-lned-current]')?.scrollIntoView({behavior:'smooth',block:'nearest'});
+       });
+       td.append(btn);row.append(td);
+     }
+     fragment.append(row);
+   }
+   body.append(fragment);
+   const more=$('[data-lned-table-more]');more.hidden=min===6;
+   more.textContent='이전 '+Math.min(25,min-6)+'회 더 보기 ('+(first-min+1)+'/'+(first-5)+')';
+ }
  function renderDigitButtons(){
    digitHost.replaceChildren();
    for(const digit of digits){
@@ -177,7 +235,7 @@
      const mark=document.createElement('small');mark.textContent='연속공백 '+(g===null?'—':g+'회');
      btn.setAttribute('aria-pressed',String(digit===chosenDigit));
      btn.append(header,count,mark);
-     btn.addEventListener('click',()=>{chosenDigit=digit;invalidate();renderDigitButtons();drawCurrent();});
+     btn.addEventListener('click',()=>{chosenDigit=digit;invalidate();renderDigitButtons();renderTimeline();drawCurrent();});
      digitHost.append(btn);
    }
  }
@@ -341,11 +399,12 @@
    if(!Number.isInteger(n)||n<6||n>last+1){
      $('[data-lned-status]').textContent='회차는 6~'+(last+1)+'회 범위에서 선택해 주세요.';return;
    }
-   viewRound=n;renderDigitButtons();drawCurrent();
+   viewRound=n;renderDigitButtons();renderTimeline();drawCurrent();
  }
  $('[data-lned-goto]').addEventListener('click',changeTarget);
  $('[data-lned-round]').addEventListener('change',changeTarget);
- signalSelect.addEventListener('change',()=>{invalidate();drawCurrent();});
+ signalSelect.addEventListener('change',()=>{invalidate();renderTimeline();drawCurrent();});
+ $('[data-lned-table-more]').addEventListener('click',()=>{timelineCount=Math.min(last-4,timelineCount+25);renderTimeline();});
  $('[data-lned-run]').addEventListener('click',runAudit);
  $('[data-lned-more]').addEventListener('click',()=>{showCount+=12;renderRecords();});
  function refresh(){
@@ -353,7 +412,7 @@
    if(!next?.last||!next.byDraw||!window.LNOverlapAudit)return;
    if(next===model)return;
    model=next;byDraw=next.byDraw;last=next.last;builtRounds.clear();
-   viewRound=last+1;invalidate();renderDigitButtons();drawCurrent();
+   viewRound=last+1;timelineCount=25;invalidate();renderDigitButtons();renderTimeline();drawCurrent();
  }
  window.addEventListener('lncs:schedule-ready',refresh);
  window.addEventListener('lnco:ready',refresh);
