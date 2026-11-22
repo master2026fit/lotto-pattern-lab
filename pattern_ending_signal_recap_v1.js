@@ -90,7 +90,7 @@ panel.innerHTML=`
 `;
 const first=host.querySelector('.lneg-tools');if(first)first.before(panel);else host.prepend(panel);
 const $=q=>panel.querySelector(q);
-let latest=0,model=null,busy=false,serial=0,shown=10,cases=[],viewRound=0,selectedDigit=7;
+let latest=0,model=null,busy=false,retry=false,serial=0,shown=10,cases=[],viewRound=0,selectedDigit=7,exclusionMemo=new Map();
 const lastDigitNumbers=d=>Array.from({length:45},(_,i)=>i+1).filter(n=>n%10===d);
 const digits=Array.from({length:10},(_,i)=>i);
 const probability=d=>{
@@ -146,12 +146,17 @@ function stat(t,v,n){
 function currentExclusion(round){
  const chosen=[...root.querySelectorAll('[data-lned-lanes] input[data-lane]:checked')].map(x=>Number(x.dataset.lane));
  const tier=root.querySelector('[data-lned-tier]')?.value||'1';
+ const key=round+'|'+tier+'|'+chosen.slice().sort().join(',');
+ const cached=exclusionMemo.get(key);
+ if(cached)return cached;
  const nums=[],result=new Set();
  if(!window.LNOverlapAudit||!model?.byDraw)return {set:result,chosen,tier};
  const cnt=window.LNOverlapAudit.countConnections(round,model.byDraw);
  for(let n=1;n<=45;n++)if(cnt[n]>0&&(cnt[n]>=6?'6':String(cnt[n]))===tier)nums.push(n);
  for(let i=0;i<nums.length;i++)if(chosen.includes(i%6))result.add(nums[i]);
- return {set:result,chosen,tier};
+ const info={set:result,chosen,tier};
+ exclusionMemo.set(key,info);
+ return info;
 }
 function showPath(signal,box){
  box.replaceChildren();
@@ -302,7 +307,7 @@ function summarizeAudit(){
  for(const rec of cases){
    const win=actual(rec.round);
    if(!win)continue;
-   const exclusion=currentExclusion(rec.round);
+   const exclusion=rec.exclusion||currentExclusion(rec.round);
    for(const row of rec.rows){
      const nums=numbers(rec.round,row.digit),p=probability(row.digit);
      if(row.state==='O'){
@@ -348,7 +353,7 @@ function renderAudit(){
      const intro=document.createElement('p');
      intro.textContent=(rec.round-1)+'회까지 결과로 '+rec.round+'회 끝수 신호 계산 · 실제 당첨 6수 '+allWinners(rec.round).join(' · ');
      div.append(intro);
-     const exclusion=currentExclusion(rec.round);
+     const exclusion=rec.exclusion||currentExclusion(rec.round);
      for(const row of signals)digitRow(row,rec.round,exclusion,div);
    });
    box.append(div);
@@ -357,7 +362,7 @@ function renderAudit(){
  $('[data-lnsr-more]').textContent='이전 회차 '+Math.min(10,filtered.length-shown)+'건 더 보기 ('+Math.min(shown,filtered.length)+'/'+filtered.length+')';
 }
 async function compute(){
- if(busy){serial++;return;}
+ if(busy){serial++;retry=true;return;}
  const api=window.LNEndingGeometry?.getModel();
  if(!api?.last||!api.byDraw){$('[data-lnsr-status]').textContent='끝수 연결 모델을 불러오지 못했습니다. 앱의 자료가 로드된 뒤 다시 시도하세요.';return;}
  model=api;latest=model.last;
@@ -368,12 +373,16 @@ async function compute(){
  const status=$('[data-lnsr-status]'),run=$('[data-lnsr-run]');
  busy=true;run.disabled=true;status.textContent='과거 끝수 신호를 회차별로 복기 중…';
  try{
+   exclusionMemo.clear();
    const next=[];
    for(let t=6;t<=latest;t++){
      if(serial!==currentId)return;
      if(!actual(t))continue;
      const rows=classify(t,config);
-     if(rows.some(x=>x.state!=='-'))next.push({round:t,rows});
+     if(rows.some(x=>x.state!=='-')){
+       const exclusion=currentExclusion(t);
+       next.push({round:t,rows,exclusion});
+     }
      if(t%20===0){
        status.textContent=t+'/'+latest+'회 · 당시 출현·제외 신호 및 실제 당첨 확인';
        await new Promise(resolve=>requestAnimationFrame(resolve));
@@ -386,28 +395,35 @@ async function compute(){
    status.textContent=round+'회 · '+nameDir(config.dirs[0])+' / '+config.gaps.join('·')+'회 간격 / '+
      config.min+'점 이상 · 검증된 과거 해당 회차 '+cases.length+'회 · 별도의 실제 제외 신호 기록은 적용하지 않음';
  }catch(e){status.textContent='끝수 복기 중 오류: '+e.message;}
- finally{busy=false;run.disabled=false;}
+ finally{
+   busy=false;run.disabled=false;
+   if(retry){
+     retry=false;
+     requestAnimationFrame(()=>compute());
+   }
+ }
 }
 function reset(){
- serial++;if(busy)return;
+ serial++;if(busy){retry=true;return;}
  compute();
 }
 $('[data-lnsr-run]').addEventListener('click',compute);
 for(const sel of panel.querySelectorAll('.lnsr-controls select'))sel.addEventListener('change',()=>{
- selectedDigit=Number($('[data-lnsr-digit]').value)||7;
+ selectedDigit=$('[data-lnsr-digit]').value==='all'?-1:Number($('[data-lnsr-digit]').value);
  if(sel.dataset.lnsrDigit){renderEndings();renderAudit();}
  else reset();
 });
 $('[data-lnsr-round]').addEventListener('change',reset);
 $('[data-lnsr-more]').addEventListener('click',()=>{shown+=10;renderAudit();});
 for(const sel of root.querySelectorAll('[data-lned-lanes] input[data-lane]'))sel.addEventListener('change',()=>{
- if(model){renderEndings();summarizeAudit();renderAudit();}
+ exclusionMemo.clear();reset();
 });
 root.querySelector('[data-lned-tier]')?.addEventListener('change',()=>{
- if(model){renderEndings();summarizeAudit();renderAudit();}
+ exclusionMemo.clear();reset();
 });
 window.addEventListener('lncs:schedule-ready',()=>{
- serial++;if(busy)return;
+ serial++;
+ if(busy){retry=true;return;}
  const fresh=window.LNEndingGeometry?.getModel();
  if(fresh?.last){
    $('[data-lnsr-round]').max=fresh.last+1;
