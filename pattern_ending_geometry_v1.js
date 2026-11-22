@@ -104,7 +104,7 @@
    <div data-lneg-summary class="lneg-summary"></div>
    <div class="lneg-title">최근 과거 일치 사례 (출현·미출현 정답 대조)</div>
    <div data-lneg-examples></div>
-   <div class="lneg-caution">**가로:** 같은 회차 내 끝수 사이의 배열로, 이 자체만으로 다음 회차 끝수를 예측할 수 없습니다. 가로 검색은 직전 회차에서 그 도형을 보았을 때 다음 회차의 <b>같은 끝수들</b>이 얼마나 출현했는지를 별도로 비교합니다. 세로·대각은 선행 3점 이상으로 다음 끝수의 동일 O/X 연장을 가정해 과거를 복기합니다. 과거에 우연히 연결된 것을 많이 찾아도 미래 성능은 별도 실전 확인이 필요합니다.</div>
+   <div class="lneg-caution"><b>가로:</b> 같은 회차 내 끝수 사이의 배열로, 이 자체만으로 다음 회차 끝수를 예측할 수 없습니다. 가로 검색은 직전 회차에서 그 도형을 보았을 때 다음 회차의 <b>같은 끝수들</b>이 얼마나 출현했는지를 별도로 비교합니다. 세로·대각은 선행 3점 이상으로 다음 끝수의 동일 O/X 연장을 가정해 과거를 복기합니다. 과거에 우연히 연결된 것을 많이 찾아도 미래 성능은 별도 실전 확인이 필요합니다.</div>
   `;
   // Place immediately after the 0..9 O/X matrix and before exclusion controls.
   const oldTimeline=root.querySelector('[data-lned-table-more]');
@@ -327,7 +327,7 @@
     const host=$('[data-lneg-summary]');host.replaceChildren();
     if(cfg.dirs.every(d=>d==='H')){
       host.append(
-        stat('가로 도형 · 이전 회차 조건',hori.cases+'건','같은 회차 가로 O/X 3점 이상 배열'),
+        stat('가로 도형 · 이전 회차 조건',hori.cases+'건','같은 회차 가로 O/X '+cfg.min+'점 이상 배열'),
         stat('다음 회차 실제 같은 끝수 출현',hori.wins+' / '+hori.total+'수','전체 가로 도형 내 끝수를 모아 중복 제거 후 대조'),
         stat('무작위 동일 끝수 기대',fmt(hori.expected)+'수','끝수별 4~5개 번호의 기본 출현율 합계')
       );
@@ -407,8 +407,8 @@
               hori.total++;hori.wins+=actual;hori.expected+=baseP(digit);
             }
             for(const sig of horizontal){
-              hori.cases++;
               if(round<=last){
+                hori.cases++;
                 const nextHits=sig.digits.filter(x=>outcome(round,x)===1).length;
                 if(hori.examples.length>=60)hori.examples.shift();
                 hori.examples.push({sig,follow:nextHits});
@@ -435,7 +435,13 @@
     }catch(e){status.textContent='끝수 패턴 검색 오류: '+e.message;}
     finally{
       busy=false;button.disabled=false;
-      if(retry){retry=false;requestAnimationFrame(()=>compute());}
+      if(retry){
+        retry=false;
+        requestAnimationFrame(()=>{
+          if(window.LNConnectionSchedule?.getModel()!==model)rebuild();
+          compute();
+        });
+      }
     }
   }
   $('[data-lneg-run]').addEventListener('click',compute);
