@@ -67,6 +67,17 @@
  #ln-connection-schedule-v1 .lned .lned-pattern-table button small{display:block;font-size:8px;line-height:1;color:inherit}
  #ln-connection-schedule-v1 .lned .lned-pattern-table .lned-round{background:#e1eff8;color:#235373;text-align:center;border-radius:4px;font-size:10px;font-weight:850;padding:8px 1px}
  #ln-connection-schedule-v1 .lned .lned-table-more{display:block;width:100%;margin:8px 0;border:1px solid #94b3c8;background:#edf7fd;color:#245578;min-height:38px;padding:8px;font-size:12px;border-radius:8px}
+ @media(max-width:700px){
+   #ln-connection-schedule-v1 .lncm-master .lned table.lned-pattern-table{display:table!important;width:100%!important;table-layout:fixed!important;border-spacing:1px!important}
+   #ln-connection-schedule-v1 .lncm-master .lned .lned-pattern-table thead{display:table-header-group!important}
+   #ln-connection-schedule-v1 .lncm-master .lned .lned-pattern-table tbody{display:table-row-group!important;gap:0!important}
+   #ln-connection-schedule-v1 .lncm-master .lned .lned-pattern-table tr{display:table-row!important;grid-template-columns:none!important;background:transparent!important;border:0!important;border-radius:0!important;padding:0!important;overflow:visible!important}
+   #ln-connection-schedule-v1 .lncm-master .lned .lned-pattern-table th{display:table-cell!important;background:#dcebf7!important;border:0!important;border-radius:3px!important;padding:5px 0!important}
+   #ln-connection-schedule-v1 .lncm-master .lned .lned-pattern-table td{display:table-cell!important;min-width:0!important;border:0!important;border-radius:3px!important;background:transparent!important;padding:0!important;overflow:visible!important}
+   #ln-connection-schedule-v1 .lncm-master .lned .lned-pattern-table .lned-round{background:#e1eff8!important;color:#235373!important;padding:5px 0!important}
+   #ln-connection-schedule-v1 .lned .lned-pattern-table th:first-child{width:42px}
+   #ln-connection-schedule-v1 .lned .lned-pattern-table button{font-size:10px!important;padding:2px 0!important;min-height:31px!important}
+ }
  @media(min-width:640px){#ln-connection-schedule-v1 .lned .lned-digits{grid-template-columns:repeat(10,minmax(0,1fr))}#ln-connection-schedule-v1 .lned .lned-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}
  `;
  parent.append(css);
