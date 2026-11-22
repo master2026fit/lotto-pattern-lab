@@ -94,6 +94,16 @@
        <option value="all">모든 회차(조건 없음)</option>
       </select>
     </label>
+    <label>연결번호군 (끝수는 0~9 전체 동일)
+      <select data-lned-tier>
+        <option value="1">1건 중복</option>
+        <option value="2">2건 중복</option>
+        <option value="3">3건 중복</option>
+        <option value="4">4건 중복</option>
+        <option value="5">5건 중복</option>
+        <option value="6">6건 이상</option>
+      </select>
+    </label>
     <label>회차 이동
       <input type="number" data-lned-round min="6" inputmode="numeric" placeholder="예: 1252">
     </label>
@@ -102,7 +112,7 @@
   <div data-lned-current class="lned-current"></div>
   <div class="lned-label">교차 검증용 제외 가정: 어떤 세로열을 제외할까요?</div>
   <div class="lned-checks" data-lned-lanes></div>
-  <div class="lned-note">1·2·4열은 현재 관찰하신 <b>제외 중라인</b>과 비교하기 위한 고정 가정입니다. 과거 모든 회차에서 그 열에 동일한 제외 신호가 있었음을 뜻하지 않습니다. 이 연구 표는 실제 제외라인 판정 기록과 분리해서 계산합니다.</div>
+  <div class="lned-note">1·2·4열은 현재 관찰하신 <b>제외 중라인</b>과 비교하기 위한 고정 가정입니다. 선택한 번호군에서 번호를 오름차순으로 6칸씩 배치했을 때의 열입니다. 과거 모든 회차에서 그 열에 동일한 제외 신호가 있었음을 뜻하지 않습니다. 이 연구 표는 실제 제외라인 판정 기록과 분리해서 계산합니다.</div>
   <button type="button" class="lned-run" data-lned-run>📊 선택 끝수 · 과거 전체 회차 교차복기</button>
   <div data-lned-status class="lned-status">끝수·제외열을 선택하고 과거 검증을 실행하세요.</div>
   <div data-lned-metrics class="lned-metrics"></div>
@@ -121,7 +131,7 @@
    return 1-none;
  };
  const fmt=p=>(100*p).toFixed(1)+'%';
- let model=null,byDraw=null,last=0,chosenDigit=7,viewRound=0,records=[],showCount=12,busy=false,serial=0,timelineCount=25;
+ let model=null,byDraw=null,last=0,chosenDigit=7,viewRound=0,records=[],showCount=12,busy=false,serial=0,timelineCount=25,tier='1';
  let builtRounds=new Map();
  const signalSelect=$('[data-lned-signal]'),digitHost=$('[data-lned-digits]');
  const selectedLanes=new Set([0,1,3]);
@@ -167,7 +177,7 @@
    if(builtRounds.has(round))return builtRounds.get(round);
    const c=window.LNOverlapAudit?.countConnections(round,byDraw);
    if(!c)return null;
-   const nums=[];for(let n=1;n<=45;n++)if(c[n]===1)nums.push(n);
+   const nums=[];for(let n=1;n<=45;n++)if(c[n]>0&&(c[n]>=6?'6':String(c[n]))===tier)nums.push(n);
    const lanes=Array.from({length:6},(_,j)=>nums.filter((n,i)=>i%6===j));
    const value={nums,lanes};
    builtRounds.set(round,value);return value;
@@ -250,7 +260,7 @@
    $('[data-lned-round]').value=String(viewRound);
    const box=$('[data-lned-current]');box.replaceChildren();
    const c5=recent(viewRound,5,chosenDigit),g=gap(viewRound,chosenDigit);
-   const p=document.createElement('p');p.textContent=viewRound+'회 · '+chosenDigit+'끝수 · '+
+   const p=document.createElement('p');p.textContent=viewRound+'회 · '+chosenDigit+'끝수 · '+tier+'건 중복군 교차 · '+
      (c5===null?'과거 5회 데이터 부족':'직전 5회 '+c5+'개 출현 / 연속 공백 '+g+'회')+
      ' · 선택 조건: '+labelSignal(signalSelect.value)+' '+(flag(viewRound,chosenDigit,signalSelect.value)?'성립':'불성립');
    box.append(p);
@@ -404,6 +414,10 @@
  $('[data-lned-goto]').addEventListener('click',changeTarget);
  $('[data-lned-round]').addEventListener('change',changeTarget);
  signalSelect.addEventListener('change',()=>{invalidate();renderTimeline();drawCurrent();});
+ $('[data-lned-tier]').addEventListener('change',()=>{
+   tier=$('[data-lned-tier]').value;
+   builtRounds.clear();invalidate();drawCurrent();
+ });
  $('[data-lned-table-more]').addEventListener('click',()=>{timelineCount=Math.min(last-4,timelineCount+25);renderTimeline();});
  $('[data-lned-run]').addEventListener('click',runAudit);
  $('[data-lned-more]').addEventListener('click',()=>{showCount+=12;renderRecords();});
