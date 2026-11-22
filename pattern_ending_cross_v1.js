@@ -84,11 +84,11 @@
  const section=document.createElement('section');section.className='lned';section.dataset.lned='1';
  section.innerHTML=`
   <h6>🔢 0~9끝수 × 세로·대각 제외라인 교차 연구</h6>
-  <p>기존 앱의 <b>끝수 최근 5회 출현·공백</b>, <b>2·3·5회 공백</b>, <b>끝수 두 종류 동시 5회 공백</b> 규칙을 회차별로 복원합니다. 끝수가 '필출'로 확정됐다는 의미는 아닙니다.</p>
+  <p><b>한 회차의 실제 끝수 출현(O/X·출현 개수)</b>를 기본으로 보여주고, 공백 기간과 끝수 교차 검증은 선택 기능으로 제공합니다. 가로·세로·대각·건너뛰기 검색은 바로 아래 '끝수 연결 패턴 검색'에서 확인하세요.</p>
   <div class="lned-label">다음 회차 끝수 0~9 전체 검색 <span data-lned-target-label></span></div>
   <div data-lned-digits class="lned-digits"></div>
   <div class="lned-label">회차별 0~9끝수 O/X · 최신 회차부터</div>
-  <p>O: 본당첨에 해당 끝수 출현, X: 미출현, ?: 추첨 전. <b>금색 테두리</b>는 선택한 공백·출현 조건이 추첨 전에 성립했다는 뜻입니다. 칸을 누르면 그 회차와 끝수를 조회합니다.</p>
+  <p><b>큰 O/X</b>: 해당 회차 끝수 출현·미출현. <b>작은 숫자</b>: 바로 그 회차에 출현한 해당 끝수의 실제 개수(0~6)이며 최근 5회 합계가 아닙니다. <b>?</b>: 결과 대기. <b>금색 테두리</b>: 별도로 선택한 공백·출현 조건이 당시 추첨 전에 성립. 칸을 누르면 당시 정보를 조회합니다.</p>
   <table class="lned-pattern-table" aria-label="회차별 끝수 0부터 9까지 실제 출현표">
     <thead><tr><th scope="col">회차</th><th scope="col">0</th><th scope="col">1</th><th scope="col">2</th><th scope="col">3</th><th scope="col">4</th><th scope="col">5</th><th scope="col">6</th><th scope="col">7</th><th scope="col">8</th><th scope="col">9</th></tr></thead>
     <tbody data-lned-timeline></tbody>
@@ -97,12 +97,12 @@
   <div class="lned-controls">
     <label>끝수 신호 조건
       <select data-lned-signal>
+       <option value="all">기본: 별도 공백 조건 없음</option>
        <option value="gap2">최근 2회 공백</option>
        <option value="gap3">최근 3회 공백</option>
        <option value="gap5">최근 5회 공백</option>
        <option value="pair5">다른 끝수와 함께 5회 공백</option>
        <option value="present5">최근 5회 출현</option>
-       <option value="all">모든 회차(조건 없음)</option>
       </select>
     </label>
     <label>연결번호군 (끝수는 0~9 전체 동일)
@@ -223,16 +223,16 @@
        const val=!has?'?':hit?'O':'X';
        btn.type='button';
        btn.className=(!has?'pending':hit?'hit':'miss')+
-         (flag(r,digit,signalSelect.value)?' signal':'')+
+         (signalSelect.value!=='all'&&flag(r,digit,signalSelect.value)?' signal':'')+
          (digit===chosenDigit&&r===viewRound?' chosen':'');
        btn.textContent=val;
        const mark=document.createElement('small');
-       const c5=recent(r,5,digit);
-       mark.textContent=c5===null?'':c5+'';
+       const actualCount=has?[...actual].filter(n=>n%10===digit).length:null;
+       mark.textContent=actualCount===null?'—':String(actualCount);
        btn.append(mark);
        btn.setAttribute('aria-label',r+'회 '+digit+'끝수, 실제 '+(val==='O'?'출현':val==='X'?'미출현':'대기')+
-         ', 직전 5회 '+(c5===null?'자료 부족':c5+'개 출현')+
-         (flag(r,digit,signalSelect.value)?', 선택한 사전 조건 성립':''));
+         ', 해당 회차 '+(actualCount===null?'결과 미확정':actualCount+'개 당첨')+
+         (signalSelect.value!=='all'&&flag(r,digit,signalSelect.value)?', 선택한 사전 조건 성립':''));
        btn.addEventListener('click',()=>{
          chosenDigit=digit;viewRound=r;invalidate();renderDigitButtons();renderTimeline();drawCurrent();
          section.querySelector('[data-lned-current]')?.scrollIntoView({behavior:'smooth',block:'nearest'});
@@ -248,11 +248,11 @@
  function renderDigitButtons(){
    digitHost.replaceChildren();
    for(const digit of digits){
-     const c5=recent(viewRound,5,digit),g=gap(viewRound,digit);
+     const prevDraw=byDraw[viewRound-1],lastCount=prevDraw instanceof Set?[...prevDraw].filter(n=>n%10===digit).length:null,g=gap(viewRound,digit);
      const btn=document.createElement('button');btn.type='button';
      btn.className='lned-digit'+(digit===chosenDigit?' active':'')+(g>=2?' gap':'');
      const header=document.createElement('strong');header.textContent=digit+'끝';
-     const count=document.createElement('small');count.textContent='5회 '+(c5===null?'—':c5+'개');
+     const count=document.createElement('small');count.textContent='직전 회차 '+(lastCount===null?'—':lastCount+'개');
      const mark=document.createElement('small');mark.textContent='연속공백 '+(g===null?'—':g+'회');
      btn.setAttribute('aria-pressed',String(digit===chosenDigit));
      btn.append(header,count,mark);
@@ -270,14 +270,18 @@
    $('[data-lned-target-label]').textContent=' · '+viewRound+'회 기준';
    $('[data-lned-round]').value=String(viewRound);
    const box=$('[data-lned-current]');box.replaceChildren();
-   const c5=recent(viewRound,5,chosenDigit),g=gap(viewRound,chosenDigit);
+   const prevDraw=byDraw[viewRound-1],prevCount=prevDraw instanceof Set?[...prevDraw].filter(n=>n%10===chosenDigit).length:null,
+     g=gap(viewRound,chosenDigit);
    const p=document.createElement('p');p.textContent=viewRound+'회 · '+chosenDigit+'끝수 · '+tier+'건 중복군 교차 · '+
-     (c5===null?'과거 5회 데이터 부족':'직전 5회 '+c5+'개 출현 / 연속 공백 '+g+'회')+
-     ' · 선택 조건: '+labelSignal(signalSelect.value)+' '+(flag(viewRound,chosenDigit,signalSelect.value)?'성립':'불성립');
+     '직전 '+(viewRound-1)+'회 '+(prevCount===null?'결과 없음':prevCount+'개 출현')+' / 연속 미출현 '+(g===null?'—':g)+'회'+
+     (signalSelect.value==='all'?' · 별도 끝수 공백 조건 없음':' · 선택 조건 '+labelSignal(signalSelect.value)+' '+(flag(viewRound,chosenDigit,signalSelect.value)?'성립':'불성립'));
    box.append(p);
-   const pairs=pair5(viewRound,chosenDigit);
-   const note=document.createElement('p');note.textContent=pairs.length?'같이 5회 공백인 다른 끝수: '+pairs.join('·')+'끝':'동시 5회 공백 끝수쌍 없음';
-   box.append(note);
+   if(signalSelect.value==='pair5'){
+     const pairs=pair5(viewRound,chosenDigit);
+     const note=document.createElement('p');
+     note.textContent=pairs.length?'같이 5회 공백인 다른 끝수: '+pairs.join('·')+'끝':'동시 5회 공백 끝수쌍 없음';
+     box.append(note);
+   }
    const nums=numberList(chosenDigit),data=laneData(viewRound),excluded=data?getExclusionSet(data.lanes):new Set();
    const remaining=nums.filter(n=>!excluded.has(n));
    const currentOutcome=statusDigit(viewRound,chosenDigit);
