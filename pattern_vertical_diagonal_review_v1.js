@@ -48,11 +48,12 @@
     <div class="lnvd-criteria">
       <b>검증 조건 (추첨 전 기준)</b>
       3열 세로: 직전 2회에서 3열이 연속 X.
-      4열 ↘ 대각: 3회 전 1열 → 2회 전 2열 → 직전 3열이 모두 X.
+      4열 대각: 3회 전 1열 → 2회 전 2열 → 직전 3열이 모두 X. 이번 대상 회차 4열까지 연결 관찰.
       두 조건을 동시에 만족하며 검증 회차의 3·4열에 각각 후보가 2개 이상 있을 때만 집계합니다.
       과거 1건 중복번호군의 6칸 배열을 이용하며, X는 당첨 전에는 정해지지 않는 결과이므로 과거 각 회차가 끝난 뒤에만 다음 회차의 대기 조건으로 사용합니다.
     </div>
     <h5 data-lnvd-current>다음 회차 · 대기 패턴</h5>
+    <p>회차는 <b>최신 → 과거</b> 순서로 위에서 아래로 표시합니다. 따라서 대각 연결은 화면에서 ↙ 방향으로 보입니다. 실제 검증은 언제나 과거 → 다음 회차 순서입니다.</p>
     <div data-lnvd-chart class="lnvd-chart"></div>
     <div data-lnvd-current-numbers class="lnvd-result"></div>
     <button type="button" data-lnvd-run class="lnvd-run">📊 과거 전체 회차 동일 조건 검증</button>
@@ -114,26 +115,32 @@
   function renderCurrent(){
     if(!currentModel)return;
     const next=currentModel.last+1,ready=matchAt(next);
-    const rows=[next-3,next-2,next-1],chart=$('[data-lnvd-chart]');chart.replaceChildren();
+    // Same newest-first order as the main six-column O/X matrix:
+    // target at the top, then preceding draw numbers descending below it.
+    // Read newest-to-oldest on screen, while pattern eligibility still uses
+    // earlier known draws (t-3 -> t-2 -> t-1 -> target).
+    const rows=[next,next-1,next-2,next-3],chart=$('[data-lnvd-chart]');
+    chart.replaceChildren();
     const headings=['회차','1','2','3','4','5','6'];
-    for(const v of headings){const el=document.createElement('span');el.className='lnvd-cell label';el.textContent=v;chart.append(el);}
-    for(let i=0;i<3;i++){
-      const r=group1(rows[i]),label=document.createElement('span');label.className='lnvd-cell label';
-      label.textContent=rows[i]+'회';chart.append(label);
+    for(const v of headings){
+      const el=document.createElement('span');el.className='lnvd-cell label';
+      el.textContent=v;chart.append(el);
+    }
+    for(let i=0;i<rows.length;i++){
+      const round=rows[i],data=group1(round);
+      const label=document.createElement('span');
+      label.className='lnvd-cell label';label.textContent=round+'회';chart.append(label);
       for(let j=0;j<6;j++){
-        const value=r.code[j],el=document.createElement('span');
+        const value=data.code[j],el=document.createElement('span');
+        const diag=(i===0&&j===3)||(i===1&&j===2)||(i===2&&j===1)||(i===3&&j===0);
+        const vertical=(i===1&&j===2)||(i===2&&j===2);
         el.className='lnvd-cell '+(value==='O'?'hit':value==='X'?'miss':value==='?'?'wait':'')+
-          ((i===0&&j===0)||(i===1&&j===1)||(i===1&&j===2)||(i===2&&j===2)?' mark':'');
+          (diag||vertical?' mark':'');
         el.textContent=value;chart.append(el);
       }
     }
-    const target=group1(next),label=document.createElement('span');
-    label.className='lnvd-cell label';label.textContent=next+'회';chart.append(label);
-    for(let j=0;j<6;j++){
-      const el=document.createElement('span');el.className='lnvd-cell wait';
-      el.textContent=target.lanes[j].length>=2?'?':'·';chart.append(el);
-    }
-    $('[data-lnvd-current]').textContent=next+'회 · 3열 수직 / 4열 대각 조건 '+(ready?'동시 충족':'미충족');
+    const target=group1(next);
+    $('[data-lnvd-current]').textContent=next+'회 · 3열 수직 / 4열 대각 대기 ('+(next)+'→'+(next-3)+'회 화면순) · 조건 '+(ready?'동시 충족':'미충족');
     const info=$('[data-lnvd-current-numbers]');info.replaceChildren();
     const chosen=target.lanes[2].concat(target.lanes[3]);
     const excluded=target.lanes.filter((_,i)=>i!==2&&i!==3).flat();
