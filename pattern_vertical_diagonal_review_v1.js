@@ -17,6 +17,7 @@
   #ln-connection-schedule-v1 .lnvd .lnvd-cell.hit{background:#ceefdc;color:#1e633e;border-color:#91c6a5}
   #ln-connection-schedule-v1 .lnvd .lnvd-cell.miss{background:#ffe1e6;color:#963546;border-color:#dfa4b0}
   #ln-connection-schedule-v1 .lnvd .lnvd-cell.miss.mark{outline:3px solid #e6ad49;outline-offset:-3px;background:#ffd69a;color:#70491c}
+  #ln-connection-schedule-v1 .lnvd .lnvd-cell.wait.mark{outline:3px solid #e6ad49;outline-offset:-3px;background:#fff0bf;color:#795514}
   #ln-connection-schedule-v1 .lnvd .lnvd-cell.wait{background:#fff3ce;color:#926c2b;border-color:#d2b16b}
   #ln-connection-schedule-v1 .lnvd .lnvd-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:11px 0}
   #ln-connection-schedule-v1 .lnvd .lnvd-stat{background:#fff;border:1px solid #c1d4df;padding:8px;border-radius:9px;min-width:0}
@@ -140,7 +141,7 @@
       }
     }
     const target=group1(next);
-    $('[data-lnvd-current]').textContent=next+'회 · 3열 수직 / 4열 대각 대기 ('+(next)+'→'+(next-3)+'회 화면순) · 조건 '+(ready?'동시 충족':'미충족');
+    $('[data-lnvd-current]').textContent=next+'회 · 3열 수직 / 4열 대각 대기 · 최신→과거 표시 · 조건 '+(ready?'동시 충족':'미충족');
     const info=$('[data-lnvd-current-numbers]');info.replaceChildren();
     const chosen=target.lanes[2].concat(target.lanes[3]);
     const excluded=target.lanes.filter((_,i)=>i!==2&&i!==3).flat();
