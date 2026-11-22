@@ -486,6 +486,15 @@
       }
     }
   }
+  // Shared, read-only geometry calculation for round-by-round signal
+  // auditing. A caller passes the rule before viewing its target outcome.
+  window.LNEndingGeometry={
+    candidatesAt,horizontalAt,
+    getModel:()=>model,
+    getMatrix:()=>matrix,
+    getConfig:settings
+  };
+  window.dispatchEvent(new Event('lneg:ready'));
   $('[data-lneg-run]').addEventListener('click',compute);
   $('[data-lneg-current]').addEventListener('click',()=>{
     if(!model&&!rebuild())return;
