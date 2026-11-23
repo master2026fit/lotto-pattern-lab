@@ -751,10 +751,11 @@ function returnToQuickMenu(){
 function updateNavControls(){
   const top=$("toTop"),menu=$("toMenu"),home=$("home"),quick=$("quickAccess");
   document.body.classList.toggle("watch-navigation",!!$("watch")?.classList.contains("active"));
-  if(top)top.classList.toggle("show",window.scrollY>110);
+  const inWatch=!!$("watch")?.classList.contains("active");
+  if(top)top.classList.toggle("show",inWatch||window.scrollY>110);
   if(menu&&home){
     const awayFromQuick=quick&&quick.getBoundingClientRect().bottom<90;
-    menu.classList.toggle("show",!home.classList.contains("active")||!!awayFromQuick);
+    menu.classList.toggle("show",inWatch||!home.classList.contains("active")||!!awayFromQuick);
   }
 }
 const RULES=[];
