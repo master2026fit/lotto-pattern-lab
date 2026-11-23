@@ -279,9 +279,12 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 .predraw-ledger-detail strong{color:#f0c981}
 @media(max-width:600px){.predraw-ledger-grid{grid-template-columns:repeat(6,minmax(0,1fr))}}
 
+
+/* Keep the page at phone viewport width while allowing dense matrices to scroll internally. */
+@media(max-width:720px){html,body{max-width:100%;overflow-x:clip}.app,.main,.page,#watch{width:100%;max-width:100%;min-width:0;box-sizing:border-box}#watch>*{max-width:100%;min-width:0;box-sizing:border-box}#watch table{max-width:100%}#watch .watch-fixed-navigation{max-width:none}body.watch-navigation .watch-fixed-navigation{left:auto!important;right:12px!important;max-width:calc(100vw - 24px)!important}#ln-connection-schedule-v1{max-width:100%;min-width:0;overflow-wrap:anywhere}}
 /* Dedicated visible navigation within the pattern research page. */
-#watch.active .watch-fixed-navigation{display:flex!important;position:fixed!important;right:12px!important;bottom:calc(92px + env(safe-area-inset-bottom,0px))!important;z-index:2147483000!important;gap:9px!important;align-items:center!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}
-#watch .watch-fixed-navigation{display:none}
+body.watch-navigation .watch-fixed-navigation{display:flex!important;position:fixed!important;right:12px!important;bottom:calc(22px + env(safe-area-inset-bottom,0px))!important;z-index:2147483000!important;gap:9px!important;align-items:center!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}
+body .watch-fixed-navigation{display:none}
 #watch .watch-fixed-navigation button{display:block!important;position:static!important;min-height:48px!important;padding:10px 15px!important;border-radius:24px!important;border:2px solid #f3d28a!important;background:#123e47!important;color:#fff!important;-webkit-text-fill-color:#fff!important;font-size:15px!important;font-weight:900!important;box-shadow:0 5px 18px #0009!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;transform:none!important}
 body.watch-navigation #toMenu,body.watch-navigation #toTop{display:none!important}
 </style>
@@ -758,7 +761,12 @@ function returnToQuickMenu(){
   if(quick)setTimeout(()=>quick.scrollIntoView({behavior:"smooth",block:"start"}),80);
   updateNavControls();
 }
+function mountWatchNavigation(){
+  const nav=document.querySelector(".watch-fixed-navigation");
+  if(nav&&nav.parentElement!==document.body)document.body.appendChild(nav);
+}
 function updateNavControls(){
+  mountWatchNavigation();
   const top=$("toTop"),menu=$("toMenu"),home=$("home"),quick=$("quickAccess");
   document.body.classList.toggle("watch-navigation",!!$("watch")?.classList.contains("active"));
   const inWatch=!!$("watch")?.classList.contains("active");
