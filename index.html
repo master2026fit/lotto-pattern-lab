@@ -285,7 +285,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 /* Dedicated visible navigation within the pattern research page. */
 body.watch-navigation .watch-fixed-navigation{display:flex!important;position:fixed!important;right:12px!important;bottom:calc(22px + env(safe-area-inset-bottom,0px))!important;z-index:2147483000!important;gap:9px!important;align-items:center!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}
 body .watch-fixed-navigation{display:none}
-#watch .watch-fixed-navigation button{display:block!important;position:static!important;min-height:48px!important;padding:10px 15px!important;border-radius:24px!important;border:2px solid #f3d28a!important;background:#123e47!important;color:#fff!important;-webkit-text-fill-color:#fff!important;font-size:15px!important;font-weight:900!important;box-shadow:0 5px 18px #0009!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;transform:none!important}
+body .watch-fixed-navigation button{display:block!important;position:static!important;min-height:48px!important;padding:10px 15px!important;border-radius:24px!important;border:2px solid #f3d28a!important;background:#123e47!important;color:#fff!important;-webkit-text-fill-color:#fff!important;font-size:15px!important;font-weight:900!important;box-shadow:0 5px 18px #0009!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;transform:none!important}
 body.watch-navigation #toMenu,body.watch-navigation #toTop{display:none!important}
 </style>
 </head>
@@ -764,13 +764,37 @@ function returnToQuickMenu(){
 function mountWatchNavigation(){
   const nav=document.querySelector(".watch-fixed-navigation");
   if(nav&&nav.parentElement!==document.body)document.body.appendChild(nav);
+  positionWatchNavigation();
 }
+function positionWatchNavigation(){
+  const nav=document.querySelector(".watch-fixed-navigation");
+  if(!nav||!document.body.classList.contains("watch-navigation"))return;
+  // Mobile browser desktop-site mode and pinch zoom use a visual viewport
+  // smaller than the layout viewport. Anchor controls to the visible viewport.
+  const vv=window.visualViewport;
+  const left=vv?vv.offsetLeft:0;
+  const top=vv?vv.offsetTop:0;
+  const width=vv?vv.width:window.innerWidth;
+  const height=vv?vv.height:window.innerHeight;
+  const navWidth=nav.offsetWidth||172;
+  const navHeight=nav.offsetHeight||50;
+  nav.style.setProperty("right","auto","important");
+  nav.style.setProperty("bottom","auto","important");
+  nav.style.setProperty("left",Math.max(left+8,left+width-navWidth-12)+"px","important");
+  nav.style.setProperty("top",Math.max(top+8,top+height-navHeight-22)+"px","important");
+}
+if(window.visualViewport){
+  window.visualViewport.addEventListener("resize",positionWatchNavigation,{passive:true});
+  window.visualViewport.addEventListener("scroll",positionWatchNavigation,{passive:true});
+}
+window.addEventListener("resize",positionWatchNavigation,{passive:true});
 function updateNavControls(){
   mountWatchNavigation();
   const top=$("toTop"),menu=$("toMenu"),home=$("home"),quick=$("quickAccess");
   document.body.classList.toggle("watch-navigation",!!$("watch")?.classList.contains("active"));
   const inWatch=!!$("watch")?.classList.contains("active");
   if(top)top.classList.toggle("show",inWatch||window.scrollY>110);
+  positionWatchNavigation();
   if(menu&&home){
     const awayFromQuick=quick&&quick.getBoundingClientRect().bottom<90;
     menu.classList.toggle("show",inWatch||!home.classList.contains("active")||!!awayFromQuick);
