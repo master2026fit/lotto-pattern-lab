@@ -162,7 +162,7 @@ dialog::backdrop{background:#030914bd;backdrop-filter:blur(6px)}
 .direct-tool-grid button small{font-size:10px;color:#d1e0eb;font-weight:600;line-height:1.4}
 .direct-tool-grid button:focus-visible{outline:3px solid #ffe2a5;outline-offset:2px}
 @media(max-width:660px){.direct-tool-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.direct-tool-grid button{min-height:60px;padding:8px}}
-@media(max-width:560px){body.watch-navigation #toMenu,body.watch-navigation #toTop{bottom:calc(100px + env(safe-area-inset-bottom,0px))}}
+@media(max-width:560px){body.watch-navigation #toMenu,body.watch-navigation #toTop{bottom:calc(100px + env(safe-area-inset-bottom,0px))}body.watch-navigation #toMenu{right:calc(14px + 66px);min-width:76px;z-index:20020}body.watch-navigation #toTop{right:14px;z-index:20020}}
 .footer{margin-top:60px;text-align:center;color:#8295af;font-size:12px;border-top:1px solid #27394f;padding-top:20px}
 .mobile-menu{display:none}
 @media(max-width:960px){.sidebar{width:196px;padding:22px 10px}.number-grid{grid-template-columns:repeat(6,minmax(0,1fr))}.cards{grid-template-columns:repeat(2,1fr)}}
@@ -756,6 +756,7 @@ function updateNavControls(){
   if(menu&&home){
     const awayFromQuick=quick&&quick.getBoundingClientRect().bottom<90;
     menu.classList.toggle("show",inWatch||!home.classList.contains("active")||!!awayFromQuick);
+    if(inWatch){menu.style.visibility="visible";menu.style.opacity="1";menu.style.pointerEvents="auto";}else{menu.style.removeProperty("visibility");menu.style.removeProperty("opacity");menu.style.removeProperty("pointer-events");}
   }
 }
 const RULES=[];
