@@ -585,7 +585,15 @@ function jumpToPatternTool(kind){
   const focus=()=>{
     if(!watch||!watch.classList.contains("active"))return false;
     const node=watch.querySelector(selector);
-    if(!node||!node.getClientRects().length)return false;
+    if(!node)return false;
+    // Sections live inside collapsible research panels; open every parent first.
+    let parent=node.parentElement;
+    while(parent&&parent!==watch){
+      if(parent.tagName==="DETAILS")parent.open=true;
+      if(parent.hidden)parent.hidden=false;
+      parent=parent.parentElement;
+    }
+    if(!node.getClientRects().length)return false;
     node.style.scrollMarginTop="16px";
     node.scrollIntoView({behavior:"auto",block:"start"});
     return true;
