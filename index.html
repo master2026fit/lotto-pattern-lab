@@ -570,14 +570,40 @@ function changeQuickItem(id){
   try{localStorage.setItem(QUICK_MENU_KEY,JSON.stringify(state.quickMenuIds));}catch(_){}
   renderQuickAccess();
 }
+let endingJumpObserver=null;
+let endingJumpTimers=[];
 function jumpToPatternTool(kind){
   const targetMap={lines:"[data-lnel]",table:"[data-lned-digits]",geometry:"[data-lneg]",recap:"[data-lnsr]",survival:"[data-lncm-master]"};
-  const target=targetMap[kind];
-  if(!target)return;
+  const selector=targetMap[kind];
+  if(!selector)return;
+  if(endingJumpObserver){endingJumpObserver.disconnect();endingJumpObserver=null;}
+  endingJumpTimers.forEach(clearTimeout);
+  endingJumpTimers=[];
   go("watch");
   document.querySelectorAll(".nav button[data-pattern-tool]").forEach(btn=>btn.classList.toggle("active",btn.dataset.patternTool===kind));
-  const focus=()=>{const node=document.querySelector(target);if(node)node.scrollIntoView({behavior:"smooth",block:"start"});};
-  setTimeout(focus,130);
+  const watch=document.getElementById("watch");
+  const focus=()=>{
+    if(!watch||!watch.classList.contains("active"))return false;
+    const node=watch.querySelector(selector);
+    if(!node||!node.getClientRects().length)return false;
+    node.style.scrollMarginTop="16px";
+    node.scrollIntoView({behavior:"auto",block:"start"});
+    return true;
+  };
+  // Analysis sections are mounted asynchronously after the watch page opens.
+  // Wait for the requested section instead of scrolling the top of the page.
+  if(!focus()&&watch){
+    endingJumpObserver=new MutationObserver(()=>{
+      if(focus()&&endingJumpObserver){endingJumpObserver.disconnect();endingJumpObserver=null;}
+    });
+    endingJumpObserver.observe(watch,{childList:true,subtree:true});
+  }
+  [150,450,900,1600].forEach(ms=>endingJumpTimers.push(setTimeout(()=>{
+    if(focus()&&endingJumpObserver){endingJumpObserver.disconnect();endingJumpObserver=null;}
+  },ms)));
+  endingJumpTimers.push(setTimeout(()=>{
+    if(endingJumpObserver){endingJumpObserver.disconnect();endingJumpObserver=null;}
+  },2500));
 }
 function openQuickItem(id){
   const item=QUICK_MENU_ITEMS.find(x=>x.id===id);
