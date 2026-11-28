@@ -13540,6 +13540,38 @@
     },
     {
       "target": 1257,
+      "next": 34,
+      "gap": 5,
+      "shift": 6,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "1-4-4-4",
+      "steps": [
+        {
+          "round": 1237,
+          "n": 10,
+          "slot": 1
+        },
+        {
+          "round": 1242,
+          "n": 16,
+          "slot": 4
+        },
+        {
+          "round": 1247,
+          "n": 22,
+          "slot": 4
+        },
+        {
+          "round": 1252,
+          "n": 28,
+          "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1257,
       "next": 35,
       "gap": 228,
       "shift": 5,
@@ -14367,6 +14399,38 @@
           "round": 1118,
           "n": 16,
           "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1258,
+      "next": 19,
+      "gap": 6,
+      "shift": -4,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "5-5-5-3",
+      "steps": [
+        {
+          "round": 1234,
+          "n": 35,
+          "slot": 5
+        },
+        {
+          "round": 1240,
+          "n": 31,
+          "slot": 5
+        },
+        {
+          "round": 1246,
+          "n": 27,
+          "slot": 5
+        },
+        {
+          "round": 1252,
+          "n": 23,
+          "slot": 3
         }
       ]
     },
@@ -23493,6 +23557,38 @@
     {
       "target": 1263,
       "next": 30,
+      "gap": 11,
+      "shift": 7,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "2-3-3-3",
+      "steps": [
+        {
+          "round": 1219,
+          "n": 2,
+          "slot": 2
+        },
+        {
+          "round": 1230,
+          "n": 9,
+          "slot": 3
+        },
+        {
+          "round": 1241,
+          "n": 16,
+          "slot": 3
+        },
+        {
+          "round": 1252,
+          "n": 23,
+          "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1263,
+      "next": 30,
       "gap": 149,
       "shift": -3,
       "count": 4,
@@ -30078,6 +30174,38 @@
         {
           "round": 968,
           "n": 24,
+          "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1267,
+      "next": 29,
+      "gap": 15,
+      "shift": -4,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "6-6-5-5",
+      "steps": [
+        {
+          "round": 1207,
+          "n": 45,
+          "slot": 6
+        },
+        {
+          "round": 1222,
+          "n": 41,
+          "slot": 6
+        },
+        {
+          "round": 1237,
+          "n": 37,
+          "slot": 5
+        },
+        {
+          "round": 1252,
+          "n": 33,
           "slot": 5
         }
       ]
@@ -43071,6 +43199,1510 @@
           "round": 1084,
           "n": 33,
           "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 1,
+      "gap": 105,
+      "shift": -10,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "4-4-5-4",
+      "steps": [
+        {
+          "round": 856,
+          "n": 41,
+          "slot": 4
+        },
+        {
+          "round": 961,
+          "n": 31,
+          "slot": 4
+        },
+        {
+          "round": 1066,
+          "n": 21,
+          "slot": 5
+        },
+        {
+          "round": 1171,
+          "n": 11,
+          "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 2,
+      "gap": 34,
+      "shift": -2,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "2-1-1-2",
+      "steps": [
+        {
+          "round": 1140,
+          "n": 10,
+          "slot": 2
+        },
+        {
+          "round": 1174,
+          "n": 8,
+          "slot": 1
+        },
+        {
+          "round": 1208,
+          "n": 6,
+          "slot": 1
+        },
+        {
+          "round": 1242,
+          "n": 4,
+          "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 2,
+      "gap": 46,
+      "shift": -6,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "4-4-1-2",
+      "steps": [
+        {
+          "round": 1092,
+          "n": 26,
+          "slot": 4
+        },
+        {
+          "round": 1138,
+          "n": 20,
+          "slot": 4
+        },
+        {
+          "round": 1184,
+          "n": 14,
+          "slot": 1
+        },
+        {
+          "round": 1230,
+          "n": 8,
+          "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 2,
+      "gap": 145,
+      "shift": -4,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "4-3-2-3",
+      "steps": [
+        {
+          "round": 696,
+          "n": 18,
+          "slot": 4
+        },
+        {
+          "round": 841,
+          "n": 14,
+          "slot": 3
+        },
+        {
+          "round": 986,
+          "n": 10,
+          "slot": 2
+        },
+        {
+          "round": 1131,
+          "n": 6,
+          "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 2,
+      "gap": 193,
+      "shift": -1,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "1-2-2-1",
+      "steps": [
+        {
+          "round": 504,
+          "n": 6,
+          "slot": 1
+        },
+        {
+          "round": 697,
+          "n": 5,
+          "slot": 2
+        },
+        {
+          "round": 890,
+          "n": 4,
+          "slot": 2
+        },
+        {
+          "round": 1083,
+          "n": 3,
+          "slot": 1
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 4,
+      "gap": 182,
+      "shift": -2,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "2-2-2-1",
+      "steps": [
+        {
+          "round": 548,
+          "n": 12,
+          "slot": 2
+        },
+        {
+          "round": 730,
+          "n": 10,
+          "slot": 2
+        },
+        {
+          "round": 912,
+          "n": 8,
+          "slot": 2
+        },
+        {
+          "round": 1094,
+          "n": 6,
+          "slot": 1
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 5,
+      "gap": 199,
+      "shift": -3,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "4-4-3-2",
+      "steps": [
+        {
+          "round": 480,
+          "n": 17,
+          "slot": 4
+        },
+        {
+          "round": 679,
+          "n": 14,
+          "slot": 4
+        },
+        {
+          "round": 878,
+          "n": 11,
+          "slot": 3
+        },
+        {
+          "round": 1077,
+          "n": 8,
+          "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 6,
+      "gap": 69,
+      "shift": -4,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "4-3-1-1",
+      "steps": [
+        {
+          "round": 1000,
+          "n": 22,
+          "slot": 4
+        },
+        {
+          "round": 1069,
+          "n": 18,
+          "slot": 3
+        },
+        {
+          "round": 1138,
+          "n": 14,
+          "slot": 1
+        },
+        {
+          "round": 1207,
+          "n": 10,
+          "slot": 1
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 7,
+      "gap": 43,
+      "shift": 0,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "2-1-1-2",
+      "steps": [
+        {
+          "round": 1104,
+          "n": 7,
+          "slot": 2
+        },
+        {
+          "round": 1147,
+          "n": 7,
+          "slot": 1
+        },
+        {
+          "round": 1190,
+          "n": 7,
+          "slot": 1
+        },
+        {
+          "round": 1233,
+          "n": 7,
+          "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 8,
+      "gap": 105,
+      "shift": -4,
+      "count": 5,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "2-2-3-5",
+      "steps": [
+        {
+          "round": 856,
+          "n": 24,
+          "slot": 2
+        },
+        {
+          "round": 961,
+          "n": 20,
+          "slot": 2
+        },
+        {
+          "round": 1066,
+          "n": 16,
+          "slot": 3
+        },
+        {
+          "round": 1171,
+          "n": 12,
+          "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 9,
+      "gap": 266,
+      "shift": -3,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "4-1-2-2",
+      "steps": [
+        {
+          "round": 212,
+          "n": 21,
+          "slot": 4
+        },
+        {
+          "round": 478,
+          "n": 18,
+          "slot": 1
+        },
+        {
+          "round": 744,
+          "n": 15,
+          "slot": 2
+        },
+        {
+          "round": 1010,
+          "n": 12,
+          "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 11,
+      "gap": 160,
+      "shift": -5,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "6-3-4-2",
+      "steps": [
+        {
+          "round": 636,
+          "n": 31,
+          "slot": 6
+        },
+        {
+          "round": 796,
+          "n": 26,
+          "slot": 3
+        },
+        {
+          "round": 956,
+          "n": 21,
+          "slot": 4
+        },
+        {
+          "round": 1116,
+          "n": 16,
+          "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 11,
+      "gap": 211,
+      "shift": -7,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "6-4-2-2",
+      "steps": [
+        {
+          "round": 432,
+          "n": 39,
+          "slot": 6
+        },
+        {
+          "round": 643,
+          "n": 32,
+          "slot": 4
+        },
+        {
+          "round": 854,
+          "n": 25,
+          "slot": 2
+        },
+        {
+          "round": 1065,
+          "n": 18,
+          "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 12,
+      "gap": 283,
+      "shift": -6,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "5-6-4-4",
+      "steps": [
+        {
+          "round": 144,
+          "n": 36,
+          "slot": 5
+        },
+        {
+          "round": 427,
+          "n": 30,
+          "slot": 6
+        },
+        {
+          "round": 710,
+          "n": 24,
+          "slot": 4
+        },
+        {
+          "round": 993,
+          "n": 18,
+          "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 12,
+      "gap": 287,
+      "shift": -6,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "4-5-4-2",
+      "steps": [
+        {
+          "round": 128,
+          "n": 36,
+          "slot": 4
+        },
+        {
+          "round": 415,
+          "n": 30,
+          "slot": 5
+        },
+        {
+          "round": 702,
+          "n": 24,
+          "slot": 4
+        },
+        {
+          "round": 989,
+          "n": 18,
+          "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 13,
+      "gap": 243,
+      "shift": -7,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "6-5-4-4",
+      "steps": [
+        {
+          "round": 304,
+          "n": 41,
+          "slot": 6
+        },
+        {
+          "round": 547,
+          "n": 34,
+          "slot": 5
+        },
+        {
+          "round": 790,
+          "n": 27,
+          "slot": 4
+        },
+        {
+          "round": 1033,
+          "n": 20,
+          "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 14,
+      "gap": 82,
+      "shift": -1,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "2-4-1-3",
+      "steps": [
+        {
+          "round": 948,
+          "n": 18,
+          "slot": 2
+        },
+        {
+          "round": 1030,
+          "n": 17,
+          "slot": 4
+        },
+        {
+          "round": 1112,
+          "n": 16,
+          "slot": 1
+        },
+        {
+          "round": 1194,
+          "n": 15,
+          "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 15,
+      "gap": 50,
+      "shift": 2,
+      "count": 5,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "2-3-3-3",
+      "steps": [
+        {
+          "round": 1076,
+          "n": 7,
+          "slot": 2
+        },
+        {
+          "round": 1126,
+          "n": 9,
+          "slot": 3
+        },
+        {
+          "round": 1176,
+          "n": 11,
+          "slot": 3
+        },
+        {
+          "round": 1226,
+          "n": 13,
+          "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 18,
+      "gap": 141,
+      "shift": -3,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "3-5-4-5",
+      "steps": [
+        {
+          "round": 712,
+          "n": 30,
+          "slot": 3
+        },
+        {
+          "round": 853,
+          "n": 27,
+          "slot": 5
+        },
+        {
+          "round": 994,
+          "n": 24,
+          "slot": 4
+        },
+        {
+          "round": 1135,
+          "n": 21,
+          "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 18,
+      "gap": 263,
+      "shift": -3,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "5-4-5-1",
+      "steps": [
+        {
+          "round": 224,
+          "n": 30,
+          "slot": 5
+        },
+        {
+          "round": 487,
+          "n": 27,
+          "slot": 4
+        },
+        {
+          "round": 750,
+          "n": 24,
+          "slot": 5
+        },
+        {
+          "round": 1013,
+          "n": 21,
+          "slot": 1
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 19,
+      "gap": 33,
+      "shift": 1,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "4-4-4-2",
+      "steps": [
+        {
+          "round": 1144,
+          "n": 15,
+          "slot": 4
+        },
+        {
+          "round": 1177,
+          "n": 16,
+          "slot": 4
+        },
+        {
+          "round": 1210,
+          "n": 17,
+          "slot": 4
+        },
+        {
+          "round": 1243,
+          "n": 18,
+          "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 19,
+      "gap": 132,
+      "shift": 4,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "1-1-2-4",
+      "steps": [
+        {
+          "round": 748,
+          "n": 3,
+          "slot": 1
+        },
+        {
+          "round": 880,
+          "n": 7,
+          "slot": 1
+        },
+        {
+          "round": 1012,
+          "n": 11,
+          "slot": 2
+        },
+        {
+          "round": 1144,
+          "n": 15,
+          "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 19,
+      "gap": 248,
+      "shift": 1,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "3-1-2-5",
+      "steps": [
+        {
+          "round": 284,
+          "n": 15,
+          "slot": 3
+        },
+        {
+          "round": 532,
+          "n": 16,
+          "slot": 1
+        },
+        {
+          "round": 780,
+          "n": 17,
+          "slot": 2
+        },
+        {
+          "round": 1028,
+          "n": 18,
+          "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 21,
+      "gap": 147,
+      "shift": 4,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "1-1-3-4",
+      "steps": [
+        {
+          "round": 688,
+          "n": 5,
+          "slot": 1
+        },
+        {
+          "round": 835,
+          "n": 9,
+          "slot": 1
+        },
+        {
+          "round": 982,
+          "n": 13,
+          "slot": 3
+        },
+        {
+          "round": 1129,
+          "n": 17,
+          "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 22,
+      "gap": 93,
+      "shift": 5,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "1-2-1-3",
+      "steps": [
+        {
+          "round": 904,
+          "n": 2,
+          "slot": 1
+        },
+        {
+          "round": 997,
+          "n": 7,
+          "slot": 2
+        },
+        {
+          "round": 1090,
+          "n": 12,
+          "slot": 1
+        },
+        {
+          "round": 1183,
+          "n": 17,
+          "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 22,
+      "gap": 153,
+      "shift": 3,
+      "count": 5,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "1-4-3-2",
+      "steps": [
+        {
+          "round": 664,
+          "n": 10,
+          "slot": 1
+        },
+        {
+          "round": 817,
+          "n": 13,
+          "slot": 4
+        },
+        {
+          "round": 970,
+          "n": 16,
+          "slot": 3
+        },
+        {
+          "round": 1123,
+          "n": 19,
+          "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 22,
+      "gap": 304,
+      "shift": 5,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "1-3-1-3",
+      "steps": [
+        {
+          "round": 60,
+          "n": 2,
+          "slot": 1
+        },
+        {
+          "round": 364,
+          "n": 7,
+          "slot": 3
+        },
+        {
+          "round": 668,
+          "n": 12,
+          "slot": 1
+        },
+        {
+          "round": 972,
+          "n": 17,
+          "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 23,
+      "gap": 256,
+      "shift": -4,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "5-5-4-2",
+      "steps": [
+        {
+          "round": 252,
+          "n": 39,
+          "slot": 5
+        },
+        {
+          "round": 508,
+          "n": 35,
+          "slot": 5
+        },
+        {
+          "round": 764,
+          "n": 31,
+          "slot": 4
+        },
+        {
+          "round": 1020,
+          "n": 27,
+          "slot": 2
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 23,
+      "gap": 301,
+      "shift": -1,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "6-2-4-6",
+      "steps": [
+        {
+          "round": 72,
+          "n": 27,
+          "slot": 6
+        },
+        {
+          "round": 373,
+          "n": 26,
+          "slot": 2
+        },
+        {
+          "round": 674,
+          "n": 25,
+          "slot": 4
+        },
+        {
+          "round": 975,
+          "n": 24,
+          "slot": 6
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 24,
+      "gap": 180,
+      "shift": 1,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "2-5-3-5",
+      "steps": [
+        {
+          "round": 556,
+          "n": 20,
+          "slot": 2
+        },
+        {
+          "round": 736,
+          "n": 21,
+          "slot": 5
+        },
+        {
+          "round": 916,
+          "n": 22,
+          "slot": 3
+        },
+        {
+          "round": 1096,
+          "n": 23,
+          "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 28,
+      "gap": 207,
+      "shift": -3,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "5-2-2-6",
+      "steps": [
+        {
+          "round": 448,
+          "n": 40,
+          "slot": 5
+        },
+        {
+          "round": 655,
+          "n": 37,
+          "slot": 2
+        },
+        {
+          "round": 862,
+          "n": 34,
+          "slot": 2
+        },
+        {
+          "round": 1069,
+          "n": 31,
+          "slot": 6
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 29,
+      "gap": 133,
+      "shift": 2,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "4-5-4-4",
+      "steps": [
+        {
+          "round": 744,
+          "n": 21,
+          "slot": 4
+        },
+        {
+          "round": 877,
+          "n": 23,
+          "slot": 5
+        },
+        {
+          "round": 1010,
+          "n": 25,
+          "slot": 4
+        },
+        {
+          "round": 1143,
+          "n": 27,
+          "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 31,
+      "gap": 70,
+      "shift": 5,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "2-3-1-4",
+      "steps": [
+        {
+          "round": 996,
+          "n": 11,
+          "slot": 2
+        },
+        {
+          "round": 1066,
+          "n": 16,
+          "slot": 3
+        },
+        {
+          "round": 1136,
+          "n": 21,
+          "slot": 1
+        },
+        {
+          "round": 1206,
+          "n": 26,
+          "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 32,
+      "gap": 87,
+      "shift": 3,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "4-2-4-3",
+      "steps": [
+        {
+          "round": 928,
+          "n": 20,
+          "slot": 4
+        },
+        {
+          "round": 1015,
+          "n": 23,
+          "slot": 2
+        },
+        {
+          "round": 1102,
+          "n": 26,
+          "slot": 4
+        },
+        {
+          "round": 1189,
+          "n": 29,
+          "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 33,
+      "gap": 108,
+      "shift": 0,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "5-5-4-5",
+      "steps": [
+        {
+          "round": 844,
+          "n": 33,
+          "slot": 5
+        },
+        {
+          "round": 952,
+          "n": 33,
+          "slot": 5
+        },
+        {
+          "round": 1060,
+          "n": 33,
+          "slot": 4
+        },
+        {
+          "round": 1168,
+          "n": 33,
+          "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 34,
+      "gap": 110,
+      "shift": 5,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "4-3-3-5",
+      "steps": [
+        {
+          "round": 836,
+          "n": 14,
+          "slot": 4
+        },
+        {
+          "round": 946,
+          "n": 19,
+          "slot": 3
+        },
+        {
+          "round": 1056,
+          "n": 24,
+          "slot": 3
+        },
+        {
+          "round": 1166,
+          "n": 29,
+          "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 34,
+      "gap": 164,
+      "shift": 8,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "1-2-2-3",
+      "steps": [
+        {
+          "round": 620,
+          "n": 2,
+          "slot": 1
+        },
+        {
+          "round": 784,
+          "n": 10,
+          "slot": 2
+        },
+        {
+          "round": 948,
+          "n": 18,
+          "slot": 2
+        },
+        {
+          "round": 1112,
+          "n": 26,
+          "slot": 3
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 36,
+      "gap": 203,
+      "shift": -2,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "6-5-5-6",
+      "steps": [
+        {
+          "round": 464,
+          "n": 44,
+          "slot": 6
+        },
+        {
+          "round": 667,
+          "n": 42,
+          "slot": 5
+        },
+        {
+          "round": 870,
+          "n": 40,
+          "slot": 5
+        },
+        {
+          "round": 1073,
+          "n": 38,
+          "slot": 6
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 36,
+      "gap": 293,
+      "shift": 1,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "2-6-4-5",
+      "steps": [
+        {
+          "round": 104,
+          "n": 32,
+          "slot": 2
+        },
+        {
+          "round": 397,
+          "n": 33,
+          "slot": 6
+        },
+        {
+          "round": 690,
+          "n": 34,
+          "slot": 4
+        },
+        {
+          "round": 983,
+          "n": 35,
+          "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 36,
+      "gap": 306,
+      "shift": 8,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "2-4-2-5",
+      "steps": [
+        {
+          "round": 52,
+          "n": 4,
+          "slot": 2
+        },
+        {
+          "round": 358,
+          "n": 12,
+          "slot": 4
+        },
+        {
+          "round": 664,
+          "n": 20,
+          "slot": 2
+        },
+        {
+          "round": 970,
+          "n": 28,
+          "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 40,
+      "gap": 274,
+      "shift": 5,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "3-2-4-4",
+      "steps": [
+        {
+          "round": 180,
+          "n": 20,
+          "slot": 3
+        },
+        {
+          "round": 454,
+          "n": 25,
+          "slot": 2
+        },
+        {
+          "round": 728,
+          "n": 30,
+          "slot": 4
+        },
+        {
+          "round": 1002,
+          "n": 35,
+          "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 41,
+      "gap": 260,
+      "shift": 7,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "4-3-5-4",
+      "steps": [
+        {
+          "round": 236,
+          "n": 13,
+          "slot": 4
+        },
+        {
+          "round": 496,
+          "n": 20,
+          "slot": 3
+        },
+        {
+          "round": 756,
+          "n": 27,
+          "slot": 5
+        },
+        {
+          "round": 1016,
+          "n": 34,
+          "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 42,
+      "gap": 292,
+      "shift": 5,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "3-3-5-6",
+      "steps": [
+        {
+          "round": 108,
+          "n": 22,
+          "slot": 3
+        },
+        {
+          "round": 400,
+          "n": 27,
+          "slot": 3
+        },
+        {
+          "round": 692,
+          "n": 32,
+          "slot": 5
+        },
+        {
+          "round": 984,
+          "n": 37,
+          "slot": 6
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 42,
+      "gap": 298,
+      "shift": 0,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "5-6-6-6",
+      "steps": [
+        {
+          "round": 84,
+          "n": 42,
+          "slot": 5
+        },
+        {
+          "round": 382,
+          "n": 42,
+          "slot": 6
+        },
+        {
+          "round": 680,
+          "n": 42,
+          "slot": 6
+        },
+        {
+          "round": 978,
+          "n": 42,
+          "slot": 6
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 44,
+      "gap": 116,
+      "shift": 8,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "3-4-5-4",
+      "steps": [
+        {
+          "round": 812,
+          "n": 12,
+          "slot": 3
+        },
+        {
+          "round": 928,
+          "n": 20,
+          "slot": 4
+        },
+        {
+          "round": 1044,
+          "n": 28,
+          "slot": 5
+        },
+        {
+          "round": 1160,
+          "n": 36,
+          "slot": 4
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 44,
+      "gap": 134,
+      "shift": 7,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "4-4-3-5",
+      "steps": [
+        {
+          "round": 740,
+          "n": 16,
+          "slot": 4
+        },
+        {
+          "round": 874,
+          "n": 23,
+          "slot": 4
+        },
+        {
+          "round": 1008,
+          "n": 30,
+          "slot": 3
+        },
+        {
+          "round": 1142,
+          "n": 37,
+          "slot": 5
+        }
+      ]
+    },
+    {
+      "target": 1276,
+      "next": 44,
+      "gap": 171,
+      "shift": 4,
+      "count": 4,
+      "sourceRound": 1252,
+      "createdAt": "2026-11-28T14:07:44.634Z",
+      "flow": "5-4-5-6",
+      "steps": [
+        {
+          "round": 592,
+          "n": 28,
+          "slot": 5
+        },
+        {
+          "round": 763,
+          "n": 32,
+          "slot": 4
+        },
+        {
+          "round": 934,
+          "n": 36,
+          "slot": 5
+        },
+        {
+          "round": 1105,
+          "n": 40,
+          "slot": 6
         }
       ]
     }
